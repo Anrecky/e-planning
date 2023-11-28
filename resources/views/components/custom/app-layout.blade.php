@@ -179,7 +179,7 @@
         <!-- END GLOBAL MANDATORY STYLES -->
 
     @endif
-
+    @vite(['resources/js/app.js'])
     {{ $footerFiles }}
     <script type="module" src="{{ asset('plugins/font-icons/feather/feather.min.js') }}"></script>
 
