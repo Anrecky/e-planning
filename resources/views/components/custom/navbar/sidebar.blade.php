@@ -80,7 +80,7 @@
                 <a href="#renstra" data-bs-toggle="collapse"
                     aria-expanded="{{ Request::is('*/renstra/*') ? 'true' : 'false' }}" class="dropdown-toggle">
                     <div class="">
-                        <i data-feather="award"></i><span class="icon-name"> RENSTRA</span>
+                        <i data-feather="award"></i><span class="icon-name fw-bold"> RENSTRA</span>
                     </div>
                     <div>
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
@@ -92,31 +92,26 @@
                 </a>
                 <ul class="collapse submenu list-unstyled {{ Request::is('*/renstra/*') ? 'show' : '' }}" id="renstra"
                     data-bs-parent="#accordionExample">
-                    <li class="{{ Request::routeIs('renstra.visi') ? 'active' : '' }}">
-                        <a href="{{ route('renstra.visi') }}"> Visi </a>
+                    <li class="{{ Request::routeIs('vision.index') ? 'active' : '' }}">
+                        <a href="{{ route('vision.index') }}"> Visi </a>
+                    </li>
+                    <li class="{{ Request::routeIs('mission.index') ? 'active' : '' }}">
+                        <a href="{{ route('mission.index') }}"> Misi </a>
+                    </li>
+                    <li class="{{ Request::routeIs('iku.index') ? 'active' : '' }}">
+                        <a href="{{ route('iku.index') }}"> Indikator Kinerja<br /> Utama </a>
                     </li>
                     <li class="{{ Request::routeIs('settings') ? 'active' : '' }}">
-                        <a href="{{ getRouterValue() }}/user/settings"> Misi </a>
-                    </li>
-                    <li class="{{ Request::routeIs('settings') ? 'active' : '' }}">
-                        <a href="{{ getRouterValue() }}/user/settings"> Indikator Kinerja<br /> Utama </a>
-                    </li>
-                    <li class="{{ Request::routeIs('settings') ? 'active' : '' }}">
-                        <a href="{{ getRouterValue() }}/user/settings"> Capaian Kinerja <br /> Tahun Sebelumnya </a>
+                        <a href="#"> Capaian Kinerja <br /> Tahun Sebelumnya </a>
                     </li>
                 </ul>
             </li>
-
-            <li class="menu">
-                <a href="#authentication" data-bs-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
+            <li class="menu {{ Request::is('*/rkt/*') ? 'active' : '' }}">
+                <a href="#" data-bs-toggle="collapse"
+                    aria-expanded="{{ Request::is('*/rkt/*') ? 'true' : 'false' }}" class="dropdown-toggle">
                     <div class="">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
-                            fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                            stroke-linejoin="round" class="feather feather-lock">
-                            <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
-                            <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
-                        </svg>
-                        <span>Authentication</span>
+                        <i data-feather="trending-up"></i><span class="icon-name fw-bold">RENCANA KINERJA
+                            TAHUNAN</span>
                     </div>
                     <div>
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
@@ -126,36 +121,43 @@
                         </svg>
                     </div>
                 </a>
-                <ul class="collapse submenu list-unstyled" id="authentication" data-bs-parent="#accordionExample">
-                    <li>
-                        <a href="{{ getRouterValue() }}/authentication/boxed/signin"> Sign In </a>
+                <ul class="collapse submenu list-unstyled {{ Request::is('*/rkt/*') ? 'show' : '' }}" id="renstra"
+                    data-bs-parent="#accordionExample">
+                    <li class="{{ Request::routeIs('vision.index') ? 'active' : '' }}">
+                        <a href="{{ route('vision.index') }}"> Visi </a>
                     </li>
-                    <li>
-                        <a href="{{ getRouterValue() }}/authentication/boxed/signup"> Sign Up </a>
+                    <li class="{{ Request::routeIs('mission.index') ? 'active' : '' }}">
+                        <a href="{{ route('mission.index') }}"> Misi </a>
                     </li>
-                    <li>
-                        <a href="{{ getRouterValue() }}/authentication/boxed/lockscreen"> Unlock </a>
+                    <li class="{{ Request::routeIs('iku.index') ? 'active' : '' }}">
+                        <a href="{{ route('iku.index') }}"> Indikator Kinerja<br /> Utama </a>
                     </li>
-                    <li>
-                        <a href="{{ getRouterValue() }}/authentication/boxed/password-reset"> Reset </a>
+                    <li class="{{ Request::routeIs('settings') ? 'active' : '' }}">
+                        <a href="#"> Capaian Kinerja <br /> Tahun Sebelumnya </a>
                     </li>
-                    <li>
-                        <a href="{{ getRouterValue() }}/authentication/boxed/2-step-verification"> 2 Step </a>
+                </ul>
+            </li>
+            <li class="menu {{ Request::is('*/perkin/*') ? 'active' : '' }}">
+                <a href="#perkin" data-bs-toggle="collapse"
+                    aria-expanded="{{ Request::is('*/perkin/*') ? 'true' : 'false' }}" class="dropdown-toggle">
+                    <div class="">
+                        <i data-feather="feather"></i><span class="icon-name fw-bold"> PERKIN</span>
+                    </div>
+                    <div>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                            fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                            stroke-linejoin="round" class="feather feather-chevron-right">
+                            <polyline points="9 18 15 12 9 6"></polyline>
+                        </svg>
+                    </div>
+                </a>
+                <ul class="collapse submenu list-unstyled {{ Request::is('*/perkin/*') ? 'show' : '' }}"
+                    id="perkin" data-bs-parent="#accordionExample">
+                    <li class="{{ Request::routeIs('vision.index') ? 'active' : '' }}">
+                        <a href="{{ route('vision.index') }}"> Sasaran Program </a>
                     </li>
-                    <li>
-                        <a href="{{ getRouterValue() }}/authentication/cover/signin"> Sign In Cover </a>
-                    </li>
-                    <li>
-                        <a href="{{ getRouterValue() }}/authentication/cover/signup"> Sign Up Cover </a>
-                    </li>
-                    <li>
-                        <a href="{{ getRouterValue() }}/authentication/cover/lockscreen"> Unlock Cover </a>
-                    </li>
-                    <li>
-                        <a href="{{ getRouterValue() }}/authentication/cover/password-reset"> Reset Cover </a>
-                    </li>
-                    <li>
-                        <a href="{{ getRouterValue() }}/authentication/cover/2-step-verification"> 2 Step Cover </a>
+                    <li class="{{ Request::routeIs('iku.index') ? 'active' : '' }}">
+                        <a href="{{ route('iku.index') }}"> Indikator Kinerja<br /> Utama </a>
                     </li>
                 </ul>
             </li>
