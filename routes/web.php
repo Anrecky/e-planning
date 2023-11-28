@@ -1,21 +1,13 @@
 <?php
 
+use App\Http\Controllers\RenstraController;
 use Illuminate\Support\Facades\Route;
 
-/*
-|--------------------------------------------------------------------------
-| Web Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register web routes for your application. These
-| routes are loaded by the RouteServiceProvider within a group which
-| contains the "web" middleware group. Now create something great!
-|
-*/
-
-require_once 'theme-routes.php';
-
-Route::get('/barebone', function () {
-    return view('barebone', ['title' => 'This is Title']);
+Route::middleware(['auth'])->prefix('admin')->group(function () {
+    Route::get('dasbor', function () {
+        return view('app.dashboard', ['title' => 'Dasbor']);
+    })->name('admin.dashboard');
+    Route::prefix('renstra')->group(function () {
+        Route::get('visi', [RenstraController::class, 'visi'])->name('renstra.visi');
+    });
 });
-
