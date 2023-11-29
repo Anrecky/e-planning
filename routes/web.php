@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\ProgramTargetController;
 use App\Http\Controllers\RenstraController;
 use Illuminate\Support\Facades\Route;
 
@@ -7,6 +8,7 @@ Route::middleware(['auth'])->prefix('admin')->group(function () {
     Route::get('dasbor', function () {
         return view('app.dashboard', ['title' => 'Dasbor']);
     })->name('admin.dashboard');
+
     Route::prefix('renstra')->group(function () {
         Route::get('visi', [RenstraController::class, 'vision'])->name('vision.index');
         Route::patch('edit-visi', [RenstraController::class, 'updateVision'])->name('vision.update');
@@ -16,5 +18,11 @@ Route::middleware(['auth'])->prefix('admin')->group(function () {
         Route::get('iku', [RenstraController::class, 'iku'])->name('iku.index');
         Route::post('tambah-iku', [RenstraController::class, 'storeIku'])->name('iku.store');
         Route::post('hapus-iku', [RenstraController::class, 'deleteIku'])->name('iku.delete');
+    });
+    Route::prefix('perkin')->group(function () {
+        Route::get('sasaran-program', [ProgramTargetController::class, 'index'])->name('program_target.index');
+        Route::post('sasaran-program', [ProgramTargetController::class, 'store'])->name('program_target.store');
+        Route::delete('sasaran-program/{programTarget}/hapus', [ProgramTargetController::class, 'destroy'])->name('program_target.delete');
+        Route::patch('sasaran-program/{programTarget}/update', [ProgramTargetController::class, 'update'])->name('program_target.update');
     });
 });

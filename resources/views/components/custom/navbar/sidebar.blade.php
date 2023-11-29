@@ -110,8 +110,7 @@
                 <a href="#" data-bs-toggle="collapse"
                     aria-expanded="{{ Request::is('*/rkt/*') ? 'true' : 'false' }}" class="dropdown-toggle">
                     <div class="">
-                        <i data-feather="trending-up"></i><span class="icon-name fw-bold">RENCANA KINERJA
-                            TAHUNAN</span>
+                        <i data-feather="trending-up"></i><span class="icon-name fw-bold">RKT</span>
                     </div>
                     <div>
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
@@ -153,8 +152,8 @@
                 </a>
                 <ul class="collapse submenu list-unstyled {{ Request::is('*/perkin/*') ? 'show' : '' }}"
                     id="perkin" data-bs-parent="#accordionExample">
-                    <li class="{{ Request::routeIs('vision.index') ? 'active' : '' }}">
-                        <a href="{{ route('vision.index') }}"> Sasaran Program </a>
+                    <li class="{{ Request::routeIs('program_target.index') ? 'active' : '' }}">
+                        <a href="{{ route('program_target.index') }}"> Sasaran Program </a>
                     </li>
                     <li class="{{ Request::routeIs('iku.index') ? 'active' : '' }}">
                         <a href="{{ route('iku.index') }}"> Indikator Kinerja<br /> Utama </a>
