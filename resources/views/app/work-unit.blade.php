@@ -101,25 +101,25 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach ($workUnits as $workUnits)
+                                @foreach ($workUnits as $workUnit)
                                     <tr>
                                         <td style="width:40px;">{{ $loop->iteration }}</td>
-                                        <td>{{ $workUnits->name }}</td>
-                                        <td>{{ $workUnits->code ?? '-' }}</td>
+                                        <td>{{ $workUnit->name }}</td>
+                                        <td>{{ $workUnit->code ?? '-' }}</td>
                                         <td class="text-center ">
                                             <button type="button" class="btn btn-sm btn-primary"
-                                                onclick="openEditModal({{ $workUnits->id }}, '{{ $workUnits->name }}', '{{ $workUnits->code }}')">
+                                                onclick="openEditModal({{ $workUnit->id }}, '{{ $workUnit->name }}', '{{ $workUnit->code }}')">
                                                 <i class="text-white" data-feather="edit-2"></i>
                                             </button>
 
                                             <a href="javascript:void(0);" class="btn btn-danger btn-sm" role="button"
-                                                onclick="confirmDelete({{ $workUnits->id }});">
+                                                onclick="confirmDelete({{ $workUnit->id }});">
                                                 <i class="text-white" data-feather="trash-2"></i>
                                             </a>
                                             <!-- Hidden form for delete request -->
-                                            <form id="delete-form-{{ $workUnits->id }}"
-                                                action="{{ route('work_unit.delete', $workUnits->id + 1) }}"
-                                                method="POST" style="display: none;">
+                                            <form id="delete-form-{{ $workUnit->id }}"
+                                                action="{{ route('work_unit.delete', $workUnit->id) }}" method="POST"
+                                                style="display: none;">
                                                 @csrf
                                                 @method('DELETE')
                                             </form>
