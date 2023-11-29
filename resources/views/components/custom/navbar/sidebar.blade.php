@@ -73,14 +73,14 @@
                         viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
                         stroke-linejoin="round" class="feather feather-minus">
                         <line x1="5" y1="12" x2="19" y2="12"></line>
-                    </svg><span>PERENCANAAN</span></div>
+                    </svg><span class="fw-bold">PERENCANAAN</span></div>
             </li>
 
             <li class="menu {{ Request::is('*/renstra/*') ? 'active' : '' }}">
                 <a href="#renstra" data-bs-toggle="collapse"
                     aria-expanded="{{ Request::is('*/renstra/*') ? 'true' : 'false' }}" class="dropdown-toggle">
                     <div class="">
-                        <i data-feather="award"></i><span class="icon-name fw-bold"> RENSTRA</span>
+                        <i data-feather="target"></i><span class="icon-name fw-bold"> RENSTRA</span>
                     </div>
                     <div>
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
@@ -140,7 +140,7 @@
                 <a href="#perkin" data-bs-toggle="collapse"
                     aria-expanded="{{ Request::is('*/perkin/*') ? 'true' : 'false' }}" class="dropdown-toggle">
                     <div class="">
-                        <i data-feather="feather"></i><span class="icon-name fw-bold"> PERKIN</span>
+                        <i data-feather="file-text"></i><span class="icon-name fw-bold"> PERKIN</span>
                     </div>
                     <div>
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
@@ -155,10 +155,26 @@
                     <li class="{{ Request::routeIs('program_target.index') ? 'active' : '' }}">
                         <a href="{{ route('program_target.index') }}"> Sasaran Program </a>
                     </li>
-                    <li class="{{ Request::routeIs('iku.index') ? 'active' : '' }}">
-                        <a href="{{ route('iku.index') }}"> Indikator Kinerja<br /> Utama </a>
+                    <li class="{{ Request::routeIs('performance_indicator.index') ? 'active' : '' }}">
+                        <a href="{{ route('performance_indicator.index') }}"> Indikator Kinerja </a>
                     </li>
                 </ul>
+            </li>
+
+            <li class="menu menu-heading">
+                <div class="heading"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                        viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                        stroke-linecap="round" stroke-linejoin="round" class="feather feather-minus">
+                        <line x1="5" y1="12" x2="19" y2="12"></line>
+                    </svg><span class="fw-bold">PENGATURAN</span></div>
+            </li>
+            <li class="menu {{ Request::routeIs('calendar') ? 'active' : '' }}">
+                <a href="{{ getRouterValue() }}/app/calendar" aria-expanded="false" class="dropdown-toggle">
+                    <div class="">
+                        <i data-feather="briefcase"></i>
+                        <span class="icon-name fw-bold">Unit Kerja</span>
+                    </div>
+                </a>
             </li>
 
         </ul>
