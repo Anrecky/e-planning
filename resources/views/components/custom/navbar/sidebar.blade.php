@@ -166,13 +166,77 @@
                         viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
                         stroke-linecap="round" stroke-linejoin="round" class="feather feather-minus">
                         <line x1="5" y1="12" x2="19" y2="12"></line>
+                    </svg><span class="fw-bold">PENGANGGARAN</span></div>
+            </li>
+            <li class="menu">
+                <a href="#" aria-expanded="false" class="dropdown-toggle">
+                    <div class="">
+                        <i data-feather="check-square"></i>
+                        <span class="icon-name fw-bold">USULAN DIPA</span>
+                    </div>
+                </a>
+            </li>
+            <li class="menu">
+                <a href="#" aria-expanded="false" class="dropdown-toggle">
+                    <div class="">
+                        <i data-feather="edit"></i>
+                        <span class="icon-name fw-bold">REVISI DIPA</span>
+                    </div>
+                </a>
+            </li>
+
+            <li class="menu menu-heading">
+                <div class="heading"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                        viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                        stroke-linecap="round" stroke-linejoin="round" class="feather feather-minus">
+                        <line x1="5" y1="12" x2="19" y2="12"></line>
                     </svg><span class="fw-bold">PENGATURAN</span></div>
             </li>
-            <li class="menu {{ Request::routeIs('work_unit.index') ? 'active' : '' }}">
-                <a href="{{ route('work_unit.index') }}" aria-expanded="false" class="dropdown-toggle">
+            <li class="menu">
+                <a href="#" aria-expanded="false" class="dropdown-toggle">
                     <div class="">
-                        <i data-feather="briefcase"></i>
-                        <span class="icon-name fw-bold">Unit Kerja</span>
+                        <i data-feather="layout"></i>
+                        <span class="icon-name fw-bold">INPUT PAGU LEMBAGA</span>
+                    </div>
+                </a>
+            </li>
+            <li class="menu">
+                <a href="#" aria-expanded="false" class="dropdown-toggle">
+                    <div class="">
+                        <i data-feather="trello"></i>
+                        <span class="icon-name fw-bold">PEMBAGIAN PAGU UNIT</span>
+                    </div>
+                </a>
+            </li>
+            <li class="menu">
+                <a href="#" aria-expanded="false" class="dropdown-toggle">
+                    <div class="">
+                        <i data-feather="dollar-sign"></i>
+                        <span class="icon-name fw-bold">SATUAN BELANJA</span>
+                    </div>
+                </a>
+            </li>
+            <li class="menu">
+                <a href="#" aria-expanded="false" class="dropdown-toggle">
+                    <div class="">
+                        <i data-feather="briefcase" data-bs-toggle="tooltip"></i>
+                        <span class="icon-name fw-bold">SATUAN BELANJA INTERNAL</span>
+                    </div>
+                </a>
+            </li>
+            <li class="menu">
+                <a href="#" aria-expanded="false" class="dropdown-toggle">
+                    <div class="">
+                        <i data-feather="users"></i>
+                        <span class="icon-name fw-bold">KELOLA USER</span>
+                    </div>
+                </a>
+            </li>
+            <li class="menu">
+                <a href="#" aria-expanded="false" class="dropdown-toggle">
+                    <div class="">
+                        <i data-feather="lock"></i>
+                        <span class="icon-name fw-bold">AKUN MANAJEMEN</span>
                     </div>
                 </a>
             </li>
