@@ -3,7 +3,13 @@
 use App\Http\Controllers\PerformanceIndicatorController;
 use App\Http\Controllers\ProgramTargetController;
 use App\Http\Controllers\RenstraController;
+use App\Http\Controllers\WorkUnitController;
 use Illuminate\Support\Facades\Route;
+
+
+Route::get('/', function () {
+    return redirect()->route('login');
+});
 
 Route::middleware(['auth'])->prefix('admin')->group(function () {
     Route::get('dasbor', function () {
@@ -31,5 +37,10 @@ Route::middleware(['auth'])->prefix('admin')->group(function () {
         Route::post('indikator-kinerja', [PerformanceIndicatorController::class, 'store'])->name('performance_indicator.store');
         Route::delete('indikator-kinerja/{performanceIndicator}/hapus', [PerformanceIndicatorController::class, 'destroy'])->name('performance_indicator.delete');
         Route::patch('indikator-kinerja/{performanceIndicator}/update', [PerformanceIndicatorController::class, 'update'])->name('performance_indicator.update');
+    });
+    Route::prefix('pengaturan')->group(function () {
+        Route::get('unit-kerja', [WorkUnitController::class, 'index'])->name('work_unit.index');
+        Route::post('unit-kerja', [WorkUnitController::class, 'store'])->name('work_unit.store');
+        Route::delete('unit-kerja/{unit_kerja}/hapus', [WorkUnitController::class, 'destroy'])->name('work_unit.delete');
     });
 });
