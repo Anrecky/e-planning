@@ -224,6 +224,8 @@ return [
         'performance_indicator.*' => 'indikator kerja',
         'work_unit' => 'unit kerja',
         'work_unit.*' => 'unit kerja',
+        'work_unit_name.*' => 'unit kerja',
+        'work_unit_code.*' => 'unit kerja',
         'vision' => 'visi',
         'vision.*' => 'visi',
         'mission' => 'misi',
