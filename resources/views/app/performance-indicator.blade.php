@@ -139,7 +139,7 @@
                                 @endforeach
                             </tbody>
                         </table>
-
+                        {{ $programTargetsHasPerformanceIndicators->links() }}
                     </div>
 
                 </div>
