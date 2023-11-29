@@ -4,6 +4,7 @@ use App\Http\Controllers\PerformanceIndicatorController;
 use App\Http\Controllers\ProgramTargetController;
 use App\Http\Controllers\RenstraController;
 use App\Http\Controllers\WorkUnitController;
+use App\Http\Controllers\ExpenditureUnitController;
 use Illuminate\Support\Facades\Route;
 
 
@@ -43,5 +44,9 @@ Route::middleware(['auth'])->prefix('admin')->group(function () {
         Route::post('unit-kerja', [WorkUnitController::class, 'store'])->name('work_unit.store');
         Route::patch('unit-kerja/{workUnit}/update', [WorkUnitController::class, 'update'])->name('work_unit.update');
         Route::delete('unit-kerja/{workUnit}/hapus', [WorkUnitController::class, 'destroy'])->name('work_unit.delete');
+        Route::get('satuan-belanja', [ExpenditureUnitController::class, 'index'])->name('expenditure_unit.index');
+        Route::post('satuan-belanja', [ExpenditureUnitController::class, 'store'])->name('expenditure_unit.store');
+        Route::patch('satuan-belanja/{expenditureUnit}/update', [ExpenditureUnitController::class, 'update'])->name('expenditure_unit.update');
+        Route::delete('satuan-belanja/{expenditureUnit}/hapus', [ExpenditureUnitController::class, 'destroy'])->name('expenditure_unit.delete');
     });
 });

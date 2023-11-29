@@ -3,6 +3,8 @@
 namespace Database\Seeders;
 
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+
+use App\Models\ExpenditureUnit;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
 use App\Models\User;
@@ -30,5 +32,6 @@ class DatabaseSeeder extends Seeder
         ]);
         ProgramTarget::factory(100)->create();
         WorkUnit::factory(100)->create();
+        ExpenditureUnit::factory(100)->create();
     }
 }

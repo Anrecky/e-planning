@@ -176,6 +176,14 @@
                     </div>
                 </a>
             </li>
+            <li class="menu {{ Request::routeIs('expenditure_unit.index') ? 'active' : '' }}">
+                <a href="{{ route('expenditure_unit.index') }}" aria-expanded="false" class="dropdown-toggle">
+                    <div class="">
+                        <i data-feather="credit-card"></i>
+                        <span class="icon-name fw-bold">Satuan Belanja</span>
+                    </div>
+                </a>
+            </li>
 
         </ul>
 
