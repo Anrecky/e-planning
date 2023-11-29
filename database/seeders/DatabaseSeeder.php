@@ -7,6 +7,7 @@ use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
 use App\Models\User;
 use App\Models\ProgramTarget;
+use App\Models\WorkUnit;
 
 class DatabaseSeeder extends Seeder
 {
@@ -28,5 +29,6 @@ class DatabaseSeeder extends Seeder
             RenstraSeeder::class,
         ]);
         ProgramTarget::factory(100)->create();
+        WorkUnit::factory(100)->create();
     }
 }
