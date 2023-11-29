@@ -50,6 +50,15 @@
             <div class="statbox widget box box-shadow">
                 <div style="min-height:50vh;" class="widget-content widget-content-area">
                     <div class="p-4 container">
+                        @if ($errors->any())
+                            <div class="alert alert-danger">
+                                <ul>
+                                    @foreach ($errors->all() as $error)
+                                        <li>{{ $error }}</li>
+                                    @endforeach
+                                </ul>
+                            </div>
+                        @endif
                         @if (session('success'))
                             <div class="alert alert-success alert-dismissible fade show" role="alert">
                                 {{ session('success') }}
