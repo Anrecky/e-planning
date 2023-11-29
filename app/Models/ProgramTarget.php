@@ -9,4 +9,9 @@ class ProgramTarget extends Model
 {
     use HasFactory;
     protected $fillable = ['name'];
+
+    public function performanceIndicators()
+    {
+        return $this->hasMany(PerformanceIndicator::class);
+    }
 }
