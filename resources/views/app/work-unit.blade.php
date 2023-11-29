@@ -218,8 +218,8 @@
         <script>
             function openEditModal(id, name, code) {
                 // Populate the form fields
-                document.getElementById('work_unit_name').code = name;
-                document.getElementById('work_unit_code').code = code;
+                document.getElementById('work_unit_name').value = name;
+                document.getElementById('work_unit_code').value = code;
 
                 // Update the form action URL
                 document.getElementById('edit-form').action = '/admin/pengaturan/unit-kerja/' + id + '/update';
