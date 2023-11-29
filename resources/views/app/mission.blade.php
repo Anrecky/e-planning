@@ -85,7 +85,7 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach ($missions as $index => $mission)
+                                @forelse ($missions as $index => $mission)
                                     <tr>
                                         <td style="width:40px;">{{ $loop->iteration }}</td>
                                         <td>{{ $mission }}</td>
@@ -96,7 +96,11 @@
                                             </a>
                                         </td>
                                     </tr>
-                                @endforeach
+                                @empty
+                                    <tr>
+                                        <td colspan="3" class="text-center">Data misi masih kosong..</td>
+                                    </tr>
+                                @endforelse
                             </tbody>
                         </table>
                     </div>
@@ -190,7 +194,6 @@
                         index: index
                     })
                     .then(function(response) {
-                        console.log(response);
                         // Handle success (e.g., show a success message and remove the row from the table)
                         Swal.fire(
                             'Dihapus!',
@@ -201,7 +204,6 @@
                         });
                     })
                     .catch(function(error) {
-                        console.log(error);
                         // Handle error (e.g., show an error message)
                         Swal.fire(
                             'Gangguan!',
