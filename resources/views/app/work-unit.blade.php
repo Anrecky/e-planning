@@ -118,11 +118,12 @@
                                             </a>
                                             <!-- Hidden form for delete request -->
                                             <form id="delete-form-{{ $workUnits->id }}"
-                                                action="{{ route('program_target.delete', $workUnits->id) }}"
+                                                action="{{ route('work_unit.delete', $workUnits->id + 1) }}"
                                                 method="POST" style="display: none;">
                                                 @csrf
                                                 @method('DELETE')
                                             </form>
+
                                         </td>
                                     </tr>
                                 @endforeach
@@ -142,31 +143,12 @@
         <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalCenterTitle">Input Unit Kerja
-                    </h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
-                        <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                            viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                            stroke-linecap="round" stroke-linejoin="round" class="feather feather-x">
-                            <line x1="18" y1="6" x2="6" y2="18">
-                            </line>
-                            <line x1="6" y1="6" x2="18" y2="18">
-                            </line>
-                        </svg>
-                    </button>
+                    <h5 class="modal-title" id="exampleModalCenterTitle">Input Unit Kerja</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
                     <form action="{{ route('work_unit.store') }}" method="POST">
                         @csrf
-
-                        <div class="form-group">
-                            <label for="program_target">Sasaran Program</label>
-                            <select id="program_target" name="program_target_id" class="form-control select2">
-                                <option value="">Pilih Sasaran Program</option>
-                                <!-- Options will be populated dynamically -->
-                            </select>
-                        </div>
-
                         <div class="form-group d-flex align-items-center my-2">
                             <button type="button" id="add-work_unit" class="btn btn-sm btn-primary py-0 px-2">
                                 <i data-feather="plus"></i>
@@ -177,7 +159,10 @@
                         <div id="work_unit-inputs" class="mt-2">
                             <div class="input-group mb-2">
                                 <span class="input-group-text">1.</span>
-                                <input type="text" name="work_unit[]" class="form-control">
+                                <input type="text" name="work_unit_name[]" class="form-control"
+                                    placeholder="Nama Unit Kerja">
+                                <input type="text" name="work_unit_code[]" class="form-control"
+                                    placeholder="Kode Unit Kerja">
                                 <button type="button" class="btn btn-danger remove-work_unit">
                                     <i data-feather="trash"></i>
                                 </button>
@@ -189,12 +174,11 @@
                             <i data-feather="save"></i><span class="icon-name">Simpan</span>
                         </button>
                     </form>
-
                 </div>
-
             </div>
         </div>
     </div>
+
     <!-- Edit Modal -->
     <div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="editModalTitle"
         aria-hidden="true">
@@ -214,7 +198,7 @@
                         </div>
                         <div class="form-group mt-3">
                             <label>Kode</label>
-                            <input type="text" id="work_unit_code" name="value" class="form-control" required>
+                            <input type="text" id="work_unit_code" name="code" class="form-control" required>
                         </div>
                         <!-- Add other fields as needed -->
                         <button type="submit" class="btn btn-primary mt-3">Update</button>
@@ -232,10 +216,10 @@
         <script src="{{ asset('plugins/table/datatable/datatables.js') }}"></script>
 
         <script>
-            function openEditModal(id, name, value) {
+            function openEditModal(id, name, code) {
                 // Populate the form fields
-                document.getElementById('work_unit_name').value = name;
-                document.getElementById('work_unit_code').value = value;
+                document.getElementById('work_unit_name').code = name;
+                document.getElementById('work_unit_code').code = code;
 
                 // Update the form action URL
                 document.getElementById('edit-form').action = '/admin/pengaturan/unit-kerja/' + id + '/update';
@@ -285,69 +269,43 @@
                         "sSearchPlaceholder": "Search...",
                         "sLengthMenu": "Results :  _MENU_",
                     },
+                    "drawCallback": function(settings) {
+                        feather.replace();
+                    },
                     "stripeClasses": [],
                     "lengthMenu": [7, 10, 20, 50],
                     "pageLength": 10
                 });
-                const missionContainer = document.getElementById('work_unit-inputs');
+                const workUnitContainer = document.getElementById('work_unit-inputs');
 
                 document.getElementById('add-work_unit').addEventListener('click', function() {
-                    const newInput = `<div class="input-group mb-2">
-                        <span class="input-group-text"></span>
-                        <input type="text" name="work_unit[]" class="form-control">
-                        <button type="button" class="btn btn-danger remove-work_unit">
-                            <i data-feather="trash"></i>
-                        </button>
-                      </div>`;
-                    missionContainer.insertAdjacentHTML('beforeend', newInput);
+                    const index = workUnitContainer.querySelectorAll('.input-group').length + 1;
+                    const newInputGroup = `
+        <div class="input-group mb-2">
+            <span class="input-group-text">${index}.</span>
+            <input type="text" name="work_unit_name[]" class="form-control" placeholder="Nama Unit Kerja">
+            <input type="text" name="work_unit_code[]" class="form-control" placeholder="Kode Unit Kerja">
+            <button type="button" class="btn btn-danger remove-work_unit">
+                <i data-feather="trash"></i>
+            </button>
+        </div>`;
+                    workUnitContainer.insertAdjacentHTML('beforeend', newInputGroup);
                     feather.replace();
-                    updateNumbering();
                 });
 
-                missionContainer.addEventListener('click', function(event) {
+                workUnitContainer.addEventListener('click', function(event) {
                     if (event.target.classList.contains('remove-work_unit')) {
                         event.target.closest('.input-group').remove();
                         updateNumbering();
                     }
                 });
-            });
-            $('#exampleModalCenter').on('shown.bs.modal', function() {
-                $('#program_target').select2({
-                    dropdownParent: $('#exampleModalCenter'),
-                    placeholder: 'Pilih Sasaran Program',
-                    theme: 'bootstrap-5',
-                    ajax: {
-                        transport: function(params, success, failure) {
-                            // Using Axios to fetch the data
-                            axios.get(`{{ route('program-targets.index') }}`, {
-                                    params: {
-                                        search: params.data.term,
-                                        limit: 10
-                                    }
-                                })
-                                .then(function(response) {
-                                    // Call the `success` function with the formatted results
-                                    success({
-                                        results: response.data.map(function(item) {
-                                            return {
-                                                id: item.id,
-                                                text: item.name
-                                            };
-                                        })
-                                    });
-                                })
-                                .catch(function(error) {
-                                    // Call the `failure` function in case of an error
-                                    failure(error);
-                                });
-                        },
-                        delay: 250,
-                        cache: true
-                    }
-                });
 
-            }).on('hidden.bs.modal', function() {
-                $('#program_target').select2('destroy');
+                function updateNumbering() {
+                    const inputGroups = workUnitContainer.querySelectorAll('.input-group');
+                    inputGroups.forEach((group, index) => {
+                        group.querySelector('.input-group-text').textContent = `${index + 1}.`;
+                    });
+                }
             });
         </script>
     </x-slot>

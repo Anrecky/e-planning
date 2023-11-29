@@ -41,6 +41,7 @@ Route::middleware(['auth'])->prefix('admin')->group(function () {
     Route::prefix('pengaturan')->group(function () {
         Route::get('unit-kerja', [WorkUnitController::class, 'index'])->name('work_unit.index');
         Route::post('unit-kerja', [WorkUnitController::class, 'store'])->name('work_unit.store');
-        Route::delete('unit-kerja/{unit_kerja}/hapus', [WorkUnitController::class, 'destroy'])->name('work_unit.delete');
+        Route::patch('unit-kerja/{workUnit}/update', [WorkUnitController::class, 'update'])->name('work_unit.update');
+        Route::delete('unit-kerja/{workUnit}/hapus', [WorkUnitController::class, 'destroy'])->name('work_unit.delete');
     });
 });
