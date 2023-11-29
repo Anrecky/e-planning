@@ -86,7 +86,7 @@
                         <!-- Button trigger modal -->
                         <button type="button" class="btn btn-primary btn-lg w-50 mt-4" data-bs-toggle="modal"
                             data-bs-target="#exampleModalCenter">
-                            Input Unit Kerja
+                            Input Kode Akun
                         </button>
                     </div>
 
@@ -95,31 +95,31 @@
                             <thead class="bg-primary text-white">
                                 <tr>
                                     <th scope="col" style="width:40px;">No.</th>
-                                    <th scope="col">Nama</th>
-                                    <th scope="col">Kode</th>
+                                    <th scope="col">Kode Akun</th>
+                                    <th scope="col">Deskripsi Akun</th>
                                     <th scope="col" class="text-center">Aksi</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach ($workUnits as $workUnit)
+                                @foreach ($accountCodes as $accountCode)
                                     <tr>
                                         <td style="width:40px;">{{ $loop->iteration }}</td>
-                                        <td>{{ $workUnit->name }}</td>
-                                        <td>{{ $workUnit->code ?? '-' }}</td>
+                                        <td>{{ $accountCode->code ?? '-' }}</td>
+                                        <td>{{ $accountCode->name }}</td>
                                         <td class="text-center ">
                                             <button type="button" class="btn btn-sm btn-primary"
-                                                onclick="openEditModal({{ $workUnit->id }}, '{{ $workUnit->name }}', '{{ $workUnit->code }}')">
+                                                onclick="openEditModal({{ $accountCode->id }}, '{{ $accountCode->name }}', '{{ $accountCode->code }}')">
                                                 <i class="text-white" data-feather="edit-2"></i>
                                             </button>
 
                                             <a href="javascript:void(0);" class="btn btn-danger btn-sm" role="button"
-                                                onclick="confirmDelete({{ $workUnit->id }});">
+                                                onclick="confirmDelete({{ $accountCode->id }});">
                                                 <i class="text-white" data-feather="trash-2"></i>
                                             </a>
                                             <!-- Hidden form for delete request -->
-                                            <form id="delete-form-{{ $workUnit->id }}"
-                                                action="{{ route('work_unit.delete', $workUnit->id) }}" method="POST"
-                                                style="display: none;">
+                                            <form id="delete-form-{{ $accountCode->id }}"
+                                                action="{{ route('account_code.delete', $accountCode->id) }}"
+                                                method="POST" style="display: none;">
                                                 @csrf
                                                 @method('DELETE')
                                             </form>
@@ -143,27 +143,27 @@
         <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalCenterTitle">Input Unit Kerja</h5>
+                    <h5 class="modal-title" id="exampleModalCenterTitle">Input Kode Akun</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <form action="{{ route('work_unit.store') }}" method="POST">
+                    <form action="{{ route('account_code.store') }}" method="POST">
                         @csrf
                         <div class="form-group d-flex align-items-center my-2">
-                            <button type="button" id="add-work_unit" class="btn btn-sm btn-primary py-0 px-2">
+                            <button type="button" id="add-account_code" class="btn btn-sm btn-primary py-0 px-2">
                                 <i data-feather="plus"></i>
                             </button>
-                            <label for="work_unit" class="ms-2 py-0 mb-0">Unit Kerja</label>
+                            <label for="account_code" class="ms-2 py-0 mb-0">Kode Akun</label>
                         </div>
 
-                        <div id="work_unit-inputs" class="mt-2">
+                        <div id="account_code-inputs" class="mt-2">
                             <div class="input-group mb-2">
                                 <span class="input-group-text">1.</span>
-                                <input type="text" name="work_unit_name[]" class="form-control"
-                                    placeholder="Nama Unit Kerja">
-                                <input type="text" name="work_unit_code[]" class="form-control"
-                                    placeholder="Kode Unit Kerja">
-                                <button type="button" class="btn btn-danger remove-work_unit">
+                                <input type="text" name="account_code_name[]" class="form-control"
+                                    placeholder="Nama Kode Akun">
+                                <input type="text" name="account_code_code[]" class="form-control"
+                                    placeholder="Kode Kode Akun">
+                                <button type="button" class="btn btn-danger remove-account_code">
                                     <i data-feather="trash"></i>
                                 </button>
                             </div>
@@ -185,7 +185,7 @@
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="editModalTitle">Edit Unit Kerja</h5>
+                    <h5 class="modal-title" id="editModalTitle">Edit Kode Akun</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
@@ -193,12 +193,14 @@
                         @csrf
                         @method('PATCH')
                         <div class="form-group">
-                            <label>Unit Kerja</label>
-                            <input type="text" id="work_unit_name" name="name" class="form-control" required>
+                            <label>Kode Akun</label>
+                            <input type="text" id="account_code_name" name="name" class="form-control"
+                                required>
                         </div>
                         <div class="form-group mt-3">
                             <label>Kode</label>
-                            <input type="text" id="work_unit_code" name="code" class="form-control" required>
+                            <input type="text" id="account_code_code" name="code" class="form-control"
+                                required>
                         </div>
                         <!-- Add other fields as needed -->
                         <button type="submit" class="btn btn-primary mt-3">Update</button>
@@ -218,11 +220,11 @@
         <script>
             function openEditModal(id, name, code) {
                 // Populate the form fields
-                document.getElementById('work_unit_name').value = name;
-                document.getElementById('work_unit_code').value = code;
+                document.getElementById('account_code_name').value = name;
+                document.getElementById('account_code_code').value = code;
 
                 // Update the form action URL
-                document.getElementById('edit-form').action = '/admin/pengaturan/unit-kerja/' + id + '/update';
+                document.getElementById('edit-form').action = '/admin/pengaturan/kode-akun/' + id + '/update';
 
                 // Show the modal
                 new bootstrap.Modal(document.getElementById('editModal')).show();
@@ -249,7 +251,7 @@
             }
 
             function updateNumbering() {
-                const missionInputs = document.querySelectorAll('#work_unit-inputs .input-group');
+                const missionInputs = document.querySelectorAll('#account_code-inputs .input-group');
                 missionInputs.forEach((input, index) => {
                     input.querySelector('.input-group-text').textContent = `${index + 1}.`;
                 });
@@ -276,32 +278,32 @@
                     "lengthMenu": [7, 10, 20, 50],
                     "pageLength": 10
                 });
-                const workUnitContainer = document.getElementById('work_unit-inputs');
+                const accountCodeContainer = document.getElementById('account_code-inputs');
 
-                document.getElementById('add-work_unit').addEventListener('click', function() {
-                    const index = workUnitContainer.querySelectorAll('.input-group').length + 1;
+                document.getElementById('add-account_code').addEventListener('click', function() {
+                    const index = accountCodeContainer.querySelectorAll('.input-group').length + 1;
                     const newInputGroup = `
         <div class="input-group mb-2">
             <span class="input-group-text">${index}.</span>
-            <input type="text" name="work_unit_name[]" class="form-control" placeholder="Nama Unit Kerja">
-            <input type="text" name="work_unit_code[]" class="form-control" placeholder="Kode Unit Kerja">
-            <button type="button" class="btn btn-danger remove-work_unit">
+            <input type="text" name="account_code_name[]" class="form-control" placeholder="Nama Kode Akun">
+            <input type="text" name="account_code_code[]" class="form-control" placeholder="Kode Kode Akun">
+            <button type="button" class="btn btn-danger remove-account_code">
                 <i data-feather="trash"></i>
             </button>
         </div>`;
-                    workUnitContainer.insertAdjacentHTML('beforeend', newInputGroup);
+                    accountCodeContainer.insertAdjacentHTML('beforeend', newInputGroup);
                     feather.replace();
                 });
 
-                workUnitContainer.addEventListener('click', function(event) {
-                    if (event.target.classList.contains('remove-work_unit')) {
+                accountCodeContainer.addEventListener('click', function(event) {
+                    if (event.target.classList.contains('remove-account_code')) {
                         event.target.closest('.input-group').remove();
                         updateNumbering();
                     }
                 });
 
                 function updateNumbering() {
-                    const inputGroups = workUnitContainer.querySelectorAll('.input-group');
+                    const inputGroups = accountCodeContainer.querySelectorAll('.input-group');
                     inputGroups.forEach((group, index) => {
                         group.querySelector('.input-group-text').textContent = `${index + 1}.`;
                     });

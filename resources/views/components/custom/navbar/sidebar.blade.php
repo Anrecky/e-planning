@@ -240,6 +240,22 @@
                     </div>
                 </a>
             </li>
+            <li class="menu {{ Request::routeIs('expenditure_unit.index') ? 'active' : '' }}">
+                <a href="{{ route('expenditure_unit.index') }}" aria-expanded="false" class="dropdown-toggle">
+                    <div class="">
+                        <i data-feather="credit-card"></i>
+                        <span class="icon-name fw-bold">Satuan Belanja</span>
+                    </div>
+                </a>
+            </li>
+            <li class="menu {{ Request::routeIs('account_code.index') ? 'active' : '' }}">
+                <a href="{{ route('account_code.index') }}" aria-expanded="false" class="dropdown-toggle">
+                    <div class="">
+                        <i data-feather="hash"></i>
+                        <span class="icon-name fw-bold">Kode Akun</span>
+                    </div>
+                </a>
+            </li>
 
         </ul>
 

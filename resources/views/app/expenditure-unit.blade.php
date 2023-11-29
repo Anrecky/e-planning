@@ -86,7 +86,7 @@
                         <!-- Button trigger modal -->
                         <button type="button" class="btn btn-primary btn-lg w-50 mt-4" data-bs-toggle="modal"
                             data-bs-target="#exampleModalCenter">
-                            Input Unit Kerja
+                            Input Satuan Belanja
                         </button>
                     </div>
 
@@ -101,25 +101,25 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach ($workUnits as $workUnit)
+                                @foreach ($expenditureUnits as $expenditureUnit)
                                     <tr>
                                         <td style="width:40px;">{{ $loop->iteration }}</td>
-                                        <td>{{ $workUnit->name }}</td>
-                                        <td>{{ $workUnit->code ?? '-' }}</td>
+                                        <td>{{ $expenditureUnit->name }}</td>
+                                        <td>{{ $expenditureUnit->code ?? '-' }}</td>
                                         <td class="text-center ">
                                             <button type="button" class="btn btn-sm btn-primary"
-                                                onclick="openEditModal({{ $workUnit->id }}, '{{ $workUnit->name }}', '{{ $workUnit->code }}')">
+                                                onclick="openEditModal({{ $expenditureUnit->id }}, '{{ $expenditureUnit->name }}', '{{ $expenditureUnit->code }}')">
                                                 <i class="text-white" data-feather="edit-2"></i>
                                             </button>
 
                                             <a href="javascript:void(0);" class="btn btn-danger btn-sm" role="button"
-                                                onclick="confirmDelete({{ $workUnit->id }});">
+                                                onclick="confirmDelete({{ $expenditureUnit->id }});">
                                                 <i class="text-white" data-feather="trash-2"></i>
                                             </a>
                                             <!-- Hidden form for delete request -->
-                                            <form id="delete-form-{{ $workUnit->id }}"
-                                                action="{{ route('work_unit.delete', $workUnit->id) }}" method="POST"
-                                                style="display: none;">
+                                            <form id="delete-form-{{ $expenditureUnit->id }}"
+                                                action="{{ route('expenditure_unit.delete', $expenditureUnit->id) }}"
+                                                method="POST" style="display: none;">
                                                 @csrf
                                                 @method('DELETE')
                                             </form>
@@ -143,27 +143,27 @@
         <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalCenterTitle">Input Unit Kerja</h5>
+                    <h5 class="modal-title" id="exampleModalCenterTitle">Input Satuan Belanja</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <form action="{{ route('work_unit.store') }}" method="POST">
+                    <form action="{{ route('expenditure_unit.store') }}" method="POST">
                         @csrf
                         <div class="form-group d-flex align-items-center my-2">
-                            <button type="button" id="add-work_unit" class="btn btn-sm btn-primary py-0 px-2">
+                            <button type="button" id="add-expenditure_unit" class="btn btn-sm btn-primary py-0 px-2">
                                 <i data-feather="plus"></i>
                             </button>
-                            <label for="work_unit" class="ms-2 py-0 mb-0">Unit Kerja</label>
+                            <label for="expenditure_unit" class="ms-2 py-0 mb-0">Satuan Belanja</label>
                         </div>
 
-                        <div id="work_unit-inputs" class="mt-2">
+                        <div id="expenditure_unit-inputs" class="mt-2">
                             <div class="input-group mb-2">
                                 <span class="input-group-text">1.</span>
-                                <input type="text" name="work_unit_name[]" class="form-control"
-                                    placeholder="Nama Unit Kerja">
-                                <input type="text" name="work_unit_code[]" class="form-control"
-                                    placeholder="Kode Unit Kerja">
-                                <button type="button" class="btn btn-danger remove-work_unit">
+                                <input type="text" name="expenditure_unit_name[]" class="form-control"
+                                    placeholder="Nama Satuan Belanja">
+                                <input type="text" name="expenditure_unit_code[]" class="form-control"
+                                    placeholder="Kode Satuan Belanja">
+                                <button type="button" class="btn btn-danger remove-expenditure_unit">
                                     <i data-feather="trash"></i>
                                 </button>
                             </div>
@@ -185,7 +185,7 @@
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="editModalTitle">Edit Unit Kerja</h5>
+                    <h5 class="modal-title" id="editModalTitle">Edit Satuan Belanja</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
@@ -193,12 +193,14 @@
                         @csrf
                         @method('PATCH')
                         <div class="form-group">
-                            <label>Unit Kerja</label>
-                            <input type="text" id="work_unit_name" name="name" class="form-control" required>
+                            <label>Satuan Belanja</label>
+                            <input type="text" id="expenditure_unit_name" name="name" class="form-control"
+                                required>
                         </div>
                         <div class="form-group mt-3">
                             <label>Kode</label>
-                            <input type="text" id="work_unit_code" name="code" class="form-control" required>
+                            <input type="text" id="expenditure_unit_code" name="code" class="form-control"
+                                required>
                         </div>
                         <!-- Add other fields as needed -->
                         <button type="submit" class="btn btn-primary mt-3">Update</button>
@@ -218,11 +220,11 @@
         <script>
             function openEditModal(id, name, code) {
                 // Populate the form fields
-                document.getElementById('work_unit_name').value = name;
-                document.getElementById('work_unit_code').value = code;
+                document.getElementById('expenditure_unit_name').value = name;
+                document.getElementById('expenditure_unit_code').value = code;
 
                 // Update the form action URL
-                document.getElementById('edit-form').action = '/admin/pengaturan/unit-kerja/' + id + '/update';
+                document.getElementById('edit-form').action = '/admin/pengaturan/satuan-belanja/' + id + '/update';
 
                 // Show the modal
                 new bootstrap.Modal(document.getElementById('editModal')).show();
@@ -249,7 +251,7 @@
             }
 
             function updateNumbering() {
-                const missionInputs = document.querySelectorAll('#work_unit-inputs .input-group');
+                const missionInputs = document.querySelectorAll('#expenditure_unit-inputs .input-group');
                 missionInputs.forEach((input, index) => {
                     input.querySelector('.input-group-text').textContent = `${index + 1}.`;
                 });
@@ -276,32 +278,32 @@
                     "lengthMenu": [7, 10, 20, 50],
                     "pageLength": 10
                 });
-                const workUnitContainer = document.getElementById('work_unit-inputs');
+                const expenditureUnitContainer = document.getElementById('expenditure_unit-inputs');
 
-                document.getElementById('add-work_unit').addEventListener('click', function() {
-                    const index = workUnitContainer.querySelectorAll('.input-group').length + 1;
+                document.getElementById('add-expenditure_unit').addEventListener('click', function() {
+                    const index = expenditureUnitContainer.querySelectorAll('.input-group').length + 1;
                     const newInputGroup = `
         <div class="input-group mb-2">
             <span class="input-group-text">${index}.</span>
-            <input type="text" name="work_unit_name[]" class="form-control" placeholder="Nama Unit Kerja">
-            <input type="text" name="work_unit_code[]" class="form-control" placeholder="Kode Unit Kerja">
-            <button type="button" class="btn btn-danger remove-work_unit">
+            <input type="text" name="expenditure_unit_name[]" class="form-control" placeholder="Nama Satuan Belanja">
+            <input type="text" name="expenditure_unit_code[]" class="form-control" placeholder="Kode Satuan Belanja">
+            <button type="button" class="btn btn-danger remove-expenditure_unit">
                 <i data-feather="trash"></i>
             </button>
         </div>`;
-                    workUnitContainer.insertAdjacentHTML('beforeend', newInputGroup);
+                    expenditureUnitContainer.insertAdjacentHTML('beforeend', newInputGroup);
                     feather.replace();
                 });
 
-                workUnitContainer.addEventListener('click', function(event) {
-                    if (event.target.classList.contains('remove-work_unit')) {
+                expenditureUnitContainer.addEventListener('click', function(event) {
+                    if (event.target.classList.contains('remove-expenditure_unit')) {
                         event.target.closest('.input-group').remove();
                         updateNumbering();
                     }
                 });
 
                 function updateNumbering() {
-                    const inputGroups = workUnitContainer.querySelectorAll('.input-group');
+                    const inputGroups = expenditureUnitContainer.querySelectorAll('.input-group');
                     inputGroups.forEach((group, index) => {
                         group.querySelector('.input-group-text').textContent = `${index + 1}.`;
                     });

@@ -1,9 +1,11 @@
 <?php
 
+use App\Http\Controllers\AccountCodeController;
 use App\Http\Controllers\PerformanceIndicatorController;
 use App\Http\Controllers\ProgramTargetController;
 use App\Http\Controllers\RenstraController;
 use App\Http\Controllers\WorkUnitController;
+use App\Http\Controllers\ExpenditureUnitController;
 use Illuminate\Support\Facades\Route;
 
 
@@ -41,6 +43,15 @@ Route::middleware(['auth'])->prefix('admin')->group(function () {
     Route::prefix('pengaturan')->group(function () {
         Route::get('unit-kerja', [WorkUnitController::class, 'index'])->name('work_unit.index');
         Route::post('unit-kerja', [WorkUnitController::class, 'store'])->name('work_unit.store');
-        Route::delete('unit-kerja/{unit_kerja}/hapus', [WorkUnitController::class, 'destroy'])->name('work_unit.delete');
+        Route::patch('unit-kerja/{workUnit}/update', [WorkUnitController::class, 'update'])->name('work_unit.update');
+        Route::delete('unit-kerja/{workUnit}/hapus', [WorkUnitController::class, 'destroy'])->name('work_unit.delete');
+        Route::get('satuan-belanja', [ExpenditureUnitController::class, 'index'])->name('expenditure_unit.index');
+        Route::post('satuan-belanja', [ExpenditureUnitController::class, 'store'])->name('expenditure_unit.store');
+        Route::patch('satuan-belanja/{expenditureUnit}/update', [ExpenditureUnitController::class, 'update'])->name('expenditure_unit.update');
+        Route::delete('satuan-belanja/{expenditureUnit}/hapus', [ExpenditureUnitController::class, 'destroy'])->name('expenditure_unit.delete');
+        Route::get('kode-akun', [AccountCodeController::class, 'index'])->name('account_code.index');
+        Route::post('kode-akun', [AccountCodeController::class, 'store'])->name('account_code.store');
+        Route::patch('kode-akun/{accountCode}/update', [AccountCodeController::class, 'update'])->name('account_code.update');
+        Route::delete('kode-akun/{accountCode}/hapus', [AccountCodeController::class, 'destroy'])->name('account_code.delete');
     });
 });
