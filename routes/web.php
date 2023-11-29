@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AccountCodeController;
 use App\Http\Controllers\PerformanceIndicatorController;
 use App\Http\Controllers\ProgramTargetController;
 use App\Http\Controllers\RenstraController;
@@ -48,5 +49,9 @@ Route::middleware(['auth'])->prefix('admin')->group(function () {
         Route::post('satuan-belanja', [ExpenditureUnitController::class, 'store'])->name('expenditure_unit.store');
         Route::patch('satuan-belanja/{expenditureUnit}/update', [ExpenditureUnitController::class, 'update'])->name('expenditure_unit.update');
         Route::delete('satuan-belanja/{expenditureUnit}/hapus', [ExpenditureUnitController::class, 'destroy'])->name('expenditure_unit.delete');
+        Route::get('kode-akun', [AccountCodeController::class, 'index'])->name('account_code.index');
+        Route::post('kode-akun', [AccountCodeController::class, 'store'])->name('account_code.store');
+        Route::patch('kode-akun/{accountCode}/update', [AccountCodeController::class, 'update'])->name('account_code.update');
+        Route::delete('kode-akun/{accountCode}/hapus', [AccountCodeController::class, 'destroy'])->name('account_code.delete');
     });
 });
