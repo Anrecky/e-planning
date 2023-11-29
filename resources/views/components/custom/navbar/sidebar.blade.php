@@ -192,6 +192,14 @@
                     </div>
                 </a>
             </li>
+            <li class="menu {{ Request::routeIs('account_code.index') ? 'active' : '' }}">
+                <a href="{{ route('account_code.index') }}" aria-expanded="false" class="dropdown-toggle">
+                    <div class="">
+                        <i data-feather="file"></i>
+                        <span class="icon-name fw-bold">Kode Akun</span>
+                    </div>
+                </a>
+            </li>
 
         </ul>
 
