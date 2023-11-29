@@ -168,8 +168,8 @@
                         <line x1="5" y1="12" x2="19" y2="12"></line>
                     </svg><span class="fw-bold">PENGATURAN</span></div>
             </li>
-            <li class="menu {{ Request::routeIs('calendar') ? 'active' : '' }}">
-                <a href="{{ getRouterValue() }}/app/calendar" aria-expanded="false" class="dropdown-toggle">
+            <li class="menu {{ Request::routeIs('work_unit.index') ? 'active' : '' }}">
+                <a href="{{ route('work_unit.index') }}" aria-expanded="false" class="dropdown-toggle">
                     <div class="">
                         <i data-feather="briefcase"></i>
                         <span class="icon-name fw-bold">Unit Kerja</span>
