@@ -83,4 +83,21 @@ class ProgramTargetController extends Controller
         // Redirect back with a success message
         return redirect()->back()->with('success', 'Sasaran Program berhasil dihapus.');
     }
+
+
+    public function getProgramTargets(Request $request)
+    {
+        $search = $request->input('search', '');
+        $limit = $request->input('limit', 10); // Default to 10 if not provided
+
+        $query = ProgramTarget::query();
+
+        if (!empty($search)) {
+            $query->where('name', 'LIKE', "%{$search}%");
+        }
+
+        $programTargets = $query->limit($limit)->get(['id', 'name']);
+
+        return response()->json($programTargets);
+    }
 }
