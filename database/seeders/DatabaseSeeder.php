@@ -31,9 +31,9 @@ class DatabaseSeeder extends Seeder
         $this->call([
             RenstraSeeder::class,
         ]);
-        ProgramTarget::factory(100)->create();
-        WorkUnit::factory(100)->create();
-        ExpenditureUnit::factory(100)->create();
-        AccountCode::factory(100)->create();
+        // ProgramTarget::factory(100)->create();
+        // WorkUnit::factory(100)->create();
+        // ExpenditureUnit::factory(100)->create();
+        // AccountCode::factory(100)->create();
     }
 }
