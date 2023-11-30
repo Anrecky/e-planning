@@ -107,7 +107,7 @@
                 </ul>
             </li>
             <li class="menu {{ Request::is('*/rkt/*') ? 'active' : '' }}">
-                <a href="#" data-bs-toggle="collapse"
+                <a href="#rkt" data-bs-toggle="collapse"
                     aria-expanded="{{ Request::is('*/rkt/*') ? 'true' : 'false' }}" class="dropdown-toggle">
                     <div class="">
                         <i data-feather="trending-up"></i><span class="icon-name fw-bold">RKT</span>
@@ -120,7 +120,7 @@
                         </svg>
                     </div>
                 </a>
-                <ul class="collapse submenu list-unstyled {{ Request::is('*/rkt/*') ? 'show' : '' }}" id="renstra"
+                <ul class="collapse submenu list-unstyled {{ Request::is('*/rkt/*') ? 'show' : '' }}" id="rkt"
                     data-bs-parent="#accordionExample">
                     <li class="{{ Request::routeIs('vision.index') ? 'active' : '' }}">
                         <a href="{{ route('vision.index') }}"> Visi </a>
@@ -192,8 +192,8 @@
                         <line x1="5" y1="12" x2="19" y2="12"></line>
                     </svg><span class="fw-bold">PENGATURAN</span></div>
             </li>
-            <li class="menu">
-                <a href="#" aria-expanded="false" class="dropdown-toggle">
+            <li class="menu {{ Request::routeIs('ins_budget.index') ? 'active' : '' }}">
+                <a href="{{ Request::routeIs('ins_budget.index') }}" aria-expanded="false" class="dropdown-toggle">
                     <div class="">
                         <i data-feather="layout"></i>
                         <span class="icon-name fw-bold">INPUT PAGU LEMBAGA</span>
@@ -254,14 +254,6 @@
                     <div class="">
                         <i data-feather="file"></i>
                         <span class="icon-name fw-bold">SBM&SBI</span>
-                    </div>
-                </a>
-            </li>
-            <li class="menu {{ Request::routeIs('ins_budget.index') ? 'active' : '' }}">
-                <a href="{{ route('ins_budget.index') }}" aria-expanded="false" class="dropdown-toggle">
-                    <div class="">
-                        <i data-feather="globe"></i>
-                        <span class="icon-name fw-bold">PAGU LEMBAGA</span>
                     </div>
                 </a>
             </li>
