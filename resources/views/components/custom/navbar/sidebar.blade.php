@@ -257,6 +257,14 @@
                     </div>
                 </a>
             </li>
+            <li class="menu {{ Request::routeIs('ins_budget.index') ? 'active' : '' }}">
+                <a href="{{ route('ins_budget.index') }}" aria-expanded="false" class="dropdown-toggle">
+                    <div class="">
+                        <i data-feather="globe"></i>
+                        <span class="icon-name fw-bold">PAGU LEMBAGA</span>
+                    </div>
+                </a>
+            </li>
 
         </ul>
 

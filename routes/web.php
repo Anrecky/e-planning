@@ -6,6 +6,7 @@ use App\Http\Controllers\ProgramTargetController;
 use App\Http\Controllers\RenstraController;
 use App\Http\Controllers\WorkUnitController;
 use App\Http\Controllers\ExpenditureUnitController;
+use App\Http\Controllers\InstitutionalBudgetController;
 use App\Http\Controllers\SBMSBIController;
 use Illuminate\Support\Facades\Route;
 
@@ -56,5 +57,7 @@ Route::middleware(['auth'])->prefix('admin')->group(function () {
         Route::delete('kode-akun/{accountCode}/hapus', [AccountCodeController::class, 'destroy'])->name('account_code.delete');
         Route::get('sbm-sbi', [SBMSBIController::class, 'index'])->name('sbm_sbi.index');
         Route::post('sbm-sbi', [SBMSBIController::class, 'store'])->name('sbm_sbi.store');
+        Route::get('pagu-lembaga', [InstitutionalBudgetController::class, 'index'])->name('ins_budget.index');
+        Route::post('pagu-lembaga', [InstitutionalBudgetController::class, 'store'])->name('ins_budget.store');
     });
 });
