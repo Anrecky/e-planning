@@ -193,7 +193,7 @@
                     </svg><span class="fw-bold">PENGATURAN</span></div>
             </li>
             <li class="menu {{ Request::routeIs('ins_budget.index') ? 'active' : '' }}">
-                <a href="{{ Request::routeIs('ins_budget.index') }}" aria-expanded="false" class="dropdown-toggle">
+                <a href="{{ route('ins_budget.index') }}" aria-expanded="false" class="dropdown-toggle">
                     <div class="">
                         <i data-feather="layout"></i>
                         <span class="icon-name fw-bold">INPUT PAGU LEMBAGA</span>
@@ -209,8 +209,7 @@
                 </a>
             </li>
             <li class="menu {{ Request::routeIs('expenditure_unit.index') ? 'active' : '' }}">
-                <a href="{{ Request::routeIs('expenditure_unit.index') }}" aria-expanded="false"
-                    class="dropdown-toggle">
+                <a href="{{ route('expenditure_unit.index') }}" aria-expanded="false" class="dropdown-toggle">
                     <div class="">
                         <i data-feather="dollar-sign"></i>
                         <span class="icon-name fw-bold">SATUAN BELANJA</span>
