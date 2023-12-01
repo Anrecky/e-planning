@@ -70,8 +70,8 @@
                                     <div class="col-md-12 my-2">
                                         <label class="form-label">Password</label>
                                         <div class="input-group has-validation">
-                                            <input name="password" autocomplete="false" type="password"
-                                                class="form-control" id="password-field" required>
+                                            <input name="password" type="password" class="form-control"
+                                                id="password-field" required>
                                             <span class="input-group-text">
                                                 <i data-feather="eye" class="feather icon-eye" id="togglePassword"
                                                     style="cursor: pointer;"></i>
