@@ -16,7 +16,7 @@
         <div class="navbar-nav theme-brand flex-row  text-center">
             <div class="nav-logo">
                 <div class="nav-item theme-logo">
-                    <a href="{{ route('admin.dashboard') }}">
+                    <a href="{{ route('user.index') }}">
                         <img src="{{ Vite::asset('resources/images/logo.svg') }}" class="navbar-logo logo-dark"
                             alt="logo">
                         <img src="{{ Vite::asset('resources/images/logo2.svg') }}" class="navbar-logo logo-light"
@@ -24,7 +24,7 @@
                     </a>
                 </div>
                 <div class="nav-item theme-text">
-                    <a href="{{ route('admin.dashboard') }}" class="nav-link"> E-Planning </a>
+                    <a href="{{ route('user.index') }}" class="nav-link"> E-Planning </a>
                 </div>
             </div>
             <div class="nav-item sidebar-toggle">
@@ -42,7 +42,7 @@
             <div class="profile-info">
                 <div class="user-info">
                     <div class="profile-img">
-                        <img src="{{ Vite::asset('resources/images/profile-30.png') }}" alt="avatar">
+                        {{-- <img src="{{ Vite::asset('resources/images/profile-30.png') }}" alt="avatar"> --}}
                     </div>
                     <div class="profile-content">
                         <h6 class="">Shaun Park</h6>
