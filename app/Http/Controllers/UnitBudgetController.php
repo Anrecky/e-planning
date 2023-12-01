@@ -39,7 +39,7 @@ class UnitBudgetController extends Controller
             );
         }
 
-        return response()->json(['message' => 'Unit budgets saved successfully']);
+        return response()->json(['message' => 'Pagu unit berhasil disimpan']);
     }
 
     /**
