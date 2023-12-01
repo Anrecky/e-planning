@@ -53,7 +53,7 @@
         @endif
         <div class="shadow-bottom"></div>
         <ul class="list-unstyled menu-categories" id="accordionExample">
-            <li class="menu {{ Route::is('admin.dashboard') ? 'active' : '' }}">
+            {{-- <li class="menu {{ Route::is('admin.dashboard') ? 'active' : '' }}">
                 <a href="{{ route('admin.dashboard') }}" aria-expanded="false" class="dropdown-toggle">
                     <div class="">
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
@@ -65,7 +65,7 @@
                         <span>Dashboard</span>
                     </div>
                 </a>
-            </li>
+            </li> --}}
 
 
             <li class="menu menu-heading">
