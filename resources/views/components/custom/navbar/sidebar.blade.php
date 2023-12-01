@@ -192,6 +192,14 @@
                         <line x1="5" y1="12" x2="19" y2="12"></line>
                     </svg><span class="fw-bold">PENGATURAN</span></div>
             </li>
+            <li class="menu {{ Request::routeIs('work_unit.index') ? 'active' : '' }}">
+                <a href="{{ route('work_unit.index') }}" aria-expanded="false" class="dropdown-toggle">
+                    <div class="">
+                        <i data-feather="briefcase"></i>
+                        <span class="icon-name fw-bold">UNIT KERJA</span>
+                    </div>
+                </a>
+            </li>
             <li class="menu {{ Request::routeIs('ins_budget.index') ? 'active' : '' }}">
                 <a href="{{ route('ins_budget.index') }}" aria-expanded="false" class="dropdown-toggle">
                     <div class="">
@@ -200,8 +208,8 @@
                     </div>
                 </a>
             </li>
-            <li class="menu">
-                <a href="#" aria-expanded="false" class="dropdown-toggle">
+            <li class="menu {{ Request::routeIs('unit_budget.index') ? 'active' : '' }}">
+                <a href="{{ route('unit_budget.index') }}" aria-expanded="false" class="dropdown-toggle">
                     <div class="">
                         <i data-feather="trello"></i>
                         <span class="icon-name fw-bold">PEMBAGIAN PAGU UNIT</span>
@@ -216,30 +224,7 @@
                     </div>
                 </a>
             </li>
-            <li class="menu">
-                <a href="#" aria-expanded="false" class="dropdown-toggle">
-                    <div class="">
-                        <i data-feather="briefcase" data-bs-toggle="tooltip"></i>
-                        <span class="icon-name fw-bold">SATUAN BELANJA INTERNAL</span>
-                    </div>
-                </a>
-            </li>
-            <li class="menu">
-                <a href="#" aria-expanded="false" class="dropdown-toggle">
-                    <div class="">
-                        <i data-feather="users"></i>
-                        <span class="icon-name fw-bold">KELOLA USER</span>
-                    </div>
-                </a>
-            </li>
-            <li class="menu">
-                <a href="#" aria-expanded="false" class="dropdown-toggle">
-                    <div class="">
-                        <i data-feather="lock"></i>
-                        <span class="icon-name fw-bold">AKUN MANAJEMEN</span>
-                    </div>
-                </a>
-            </li>
+
             <li class="menu {{ Request::routeIs('account_code.index') ? 'active' : '' }}">
                 <a href="{{ route('account_code.index') }}" aria-expanded="false" class="dropdown-toggle">
                     <div class="">
@@ -256,7 +241,14 @@
                     </div>
                 </a>
             </li>
-
+            <li class="menu">
+                <a href="#" aria-expanded="false" class="dropdown-toggle">
+                    <div class="">
+                        <i data-feather="users"></i>
+                        <span class="icon-name fw-bold">KELOLA USER</span>
+                    </div>
+                </a>
+            </li>
         </ul>
 
     </nav>
