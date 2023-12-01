@@ -241,8 +241,8 @@
                     </div>
                 </a>
             </li>
-            <li class="menu">
-                <a href="#" aria-expanded="false" class="dropdown-toggle">
+            <li class="menu {{ Request::routeIs('user.index') ? 'active' : '' }}">
+                <a href="{{ route('user.index') }}" aria-expanded="false" class="dropdown-toggle">
                     <div class="">
                         <i data-feather="users"></i>
                         <span class="icon-name fw-bold">KELOLA USER</span>
