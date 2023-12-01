@@ -182,7 +182,7 @@
                 cell1.innerHTML = rowCount; // For No.
                 cell2.innerHTML =
                     '<div class="form-group my-auto"><select class="form-select select-work_unit"></select></div>';
-                cell3.innerHTML = '0'; // For pagu
+                cell3.innerHTML = 'Rp ' + new Intl.NumberFormat('id-ID').format('0'); // For pagu
                 cell3.className = 'pagu text-center';
                 cell4.innerHTML =
                     '<button onclick="addRow()" type="button" class="btn btn-secondary text-white addRowButton"><i data-feather="plus" class="text-white"></i></button>';
@@ -193,6 +193,7 @@
                 defaultOption.textContent = 'Pilih Unit Kerja';
                 defaultOption.value = '';
                 newSelect.appendChild(defaultOption);
+
 
                 var existingOptions = document.querySelector('.select-work_unit').options;
                 for (var i = 0; i < existingOptions.length; i++) {
@@ -276,7 +277,7 @@
                 // POST request using Axios
                 axios.post('{{ route('unit_budget.store') }}', unitBudgets)
                     .then(function(response) {
-                        Swal.fire("Success", "Data saved successfully.", "success")
+                        Swal.fire("Success", "Pagu unit berhasil disimpan.", "success")
                             .then(() => window.location.reload());
                     })
                     .catch(function(error) {
