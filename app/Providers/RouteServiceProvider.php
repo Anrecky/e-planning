@@ -17,7 +17,7 @@ class RouteServiceProvider extends ServiceProvider
      *
      * @var string
      */
-    public const HOME = '/admin/dasbor';
+    public const HOME = '/admin/pengaturan/kelola-user';
 
     /**
      * Define your route model bindings, pattern filters, and other route configuration.

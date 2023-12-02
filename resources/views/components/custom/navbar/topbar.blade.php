@@ -43,7 +43,7 @@
         </div>
 
         <ul class="navbar-item flex-row ms-lg-auto ms-0">
-
+            {{--
             <li class="nav-item dropdown language-dropdown">
                 <a href="javascript:void(0);" class="nav-link dropdown-toggle" id="language-dropdown"
                     data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -66,7 +66,7 @@
                             src="{{ Vite::asset('resources/images/1x1/de.svg') }}" class="flag-width" alt="flag">
                         <span class="align-self-center">&nbsp;German</span></a>
                 </div>
-            </li>
+            </li> --}}
 
             <li class="nav-item theme-toggle-item">
                 <a href="javascript:void(0);" class="nav-link theme-toggle">
@@ -111,8 +111,8 @@
                     <div class="notification-scroll">
                         <div class="dropdown-item">
                             <div class="media server-log">
-                                <img src="{{ Vite::asset('resources/images/profile-16.jpeg') }}"
-                                    class="img-fluid me-2" alt="avatar">
+                                {{-- <img src="{{ Vite::asset('resources/images/profile-16.jpeg') }}"
+                                    class="img-fluid me-2" alt="avatar"> --}}
                                 <div class="media-body">
                                     <div class="data-info">
                                         <h6 class="">Kara Young</h6>
@@ -136,8 +136,8 @@
 
                         <div class="dropdown-item">
                             <div class="media ">
-                                <img src="{{ Vite::asset('resources/images/profile-15.jpeg') }}"
-                                    class="img-fluid me-2" alt="avatar">
+                                {{-- <img src="{{ Vite::asset('resources/images/profile-15.jpeg') }}"
+                                    class="img-fluid me-2" alt="avatar"> --}}
                                 <div class="media-body">
                                     <div class="data-info">
                                         <h6 class="">Daisy Anderson</h6>
@@ -161,8 +161,8 @@
 
                         <div class="dropdown-item">
                             <div class="media file-upload">
-                                <img src="{{ Vite::asset('resources/images/profile-21.jpeg') }}"
-                                    class="img-fluid me-2" alt="avatar">
+                                {{-- <img src="{{ Vite::asset('resources/images/profile-21.jpeg') }}" --}}
+                                class="img-fluid me-2" alt="avatar">
                                 <div class="media-body">
                                     <div class="data-info">
                                         <h6 class="">Oscar Garner</h6>
@@ -295,8 +295,8 @@
                     data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     <div class="avatar-container">
                         <div class="avatar avatar-sm avatar-indicators avatar-online">
-                            <img alt="avatar" src="{{ Vite::asset('resources/images/profile-30.png') }}"
-                                class="rounded-circle">
+                            {{-- <img alt="avatar" src="{{ Vite::asset('resources/images/profile-30.png') }}"
+                                class="rounded-circle"> --}}
                         </div>
                     </div>
                 </a>

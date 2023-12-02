@@ -1,4 +1,4 @@
-<x-custom.app-layout :scrollspy="false">
+<x-custom.404-layout :scrollspy="false">
     @php
         $title = $title ?? '404 Halaman Tidak Ditemukan!';
     @endphp
@@ -33,23 +33,11 @@
     </x-slot>
     <!-- END GLOBAL MANDATORY STYLES -->
 
-    <div class="container-fluid">
-        <div class="row">
-            <div class="col-md-4 mr-auto mt-5 text-md-left text-center">
-                <a href="/dashboard/analytics" class="ml-md-5">
-                    <img alt="image-404" src="{{ Vite::asset('resources/images/logo.svg') }}"
-                        class="dark-element theme-logo">
-                    <img alt="image-404" src="{{ Vite::asset('resources/images/logo2.svg') }}"
-                        class="light-element theme-logo">
-                </a>
-            </div>
-        </div>
-    </div>
     <div class="container-fluid error-content">
         <div class="">
             <h1 class="error-number">404</h1>
             <p class="mini-text">Ooops!</p>
-            <p class="error-text mb-5 mt-1">The page you requested was not found!</p>
+            <p class="error-text mb-5 mt-1">halaman yang Anda minta tidak di temukan!</p>
             <img src="{{ Vite::asset('resources/images/error.svg') }}" alt="cork-admin-404" class="error-img">
             <a href="{{ route('login') }}" class="btn btn-dark mt-5">Kembali</a>
         </div>

@@ -21,19 +21,15 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        // \App\Models\User::factory(10)->create();
-
-        // \App\Models\User::factory()->create([
-        //     'name' => 'Test User',
-        //     'email' => 'test@example.com',
-        // ]);
         User::create(['name' => 'Admin', 'email' => 'admin@mail.com', 'password' => Hash::make(env('ADMIN_PASS'))]);
         $this->call([
             RenstraSeeder::class,
         ]);
-        ProgramTarget::factory(100)->create();
-        WorkUnit::factory(100)->create();
-        ExpenditureUnit::factory(100)->create();
-        AccountCode::factory(100)->create();
+        if (env('APP_ENV') === 'local') {
+            ProgramTarget::factory(100)->create();
+            WorkUnit::factory(10)->create();
+            ExpenditureUnit::factory(100)->create();
+            AccountCode::factory(100)->create();
+        }
     }
 }

@@ -16,7 +16,7 @@
         <div class="navbar-nav theme-brand flex-row  text-center">
             <div class="nav-logo">
                 <div class="nav-item theme-logo">
-                    <a href="{{ route('admin.dashboard') }}">
+                    <a href="{{ route('user.index') }}">
                         <img src="{{ Vite::asset('resources/images/logo.svg') }}" class="navbar-logo logo-dark"
                             alt="logo">
                         <img src="{{ Vite::asset('resources/images/logo2.svg') }}" class="navbar-logo logo-light"
@@ -24,7 +24,7 @@
                     </a>
                 </div>
                 <div class="nav-item theme-text">
-                    <a href="{{ route('admin.dashboard') }}" class="nav-link"> E-Planning </a>
+                    <a href="{{ route('user.index') }}" class="nav-link"> E-Planning </a>
                 </div>
             </div>
             <div class="nav-item sidebar-toggle">
@@ -42,7 +42,7 @@
             <div class="profile-info">
                 <div class="user-info">
                     <div class="profile-img">
-                        <img src="{{ Vite::asset('resources/images/profile-30.png') }}" alt="avatar">
+                        {{-- <img src="{{ Vite::asset('resources/images/profile-30.png') }}" alt="avatar"> --}}
                     </div>
                     <div class="profile-content">
                         <h6 class="">Shaun Park</h6>
@@ -53,7 +53,7 @@
         @endif
         <div class="shadow-bottom"></div>
         <ul class="list-unstyled menu-categories" id="accordionExample">
-            <li class="menu {{ Route::is('admin.dashboard') ? 'active' : '' }}">
+            {{-- <li class="menu {{ Route::is('admin.dashboard') ? 'active' : '' }}">
                 <a href="{{ route('admin.dashboard') }}" aria-expanded="false" class="dropdown-toggle">
                     <div class="">
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
@@ -65,7 +65,7 @@
                         <span>Dashboard</span>
                     </div>
                 </a>
-            </li>
+            </li> --}}
 
 
             <li class="menu menu-heading">
@@ -107,7 +107,7 @@
                 </ul>
             </li>
             <li class="menu {{ Request::is('*/rkt/*') ? 'active' : '' }}">
-                <a href="#" data-bs-toggle="collapse"
+                <a href="#rkt" data-bs-toggle="collapse"
                     aria-expanded="{{ Request::is('*/rkt/*') ? 'true' : 'false' }}" class="dropdown-toggle">
                     <div class="">
                         <i data-feather="trending-up"></i><span class="icon-name fw-bold">RKT</span>
@@ -120,7 +120,7 @@
                         </svg>
                     </div>
                 </a>
-                <ul class="collapse submenu list-unstyled {{ Request::is('*/rkt/*') ? 'show' : '' }}" id="renstra"
+                <ul class="collapse submenu list-unstyled {{ Request::is('*/rkt/*') ? 'show' : '' }}" id="rkt"
                     data-bs-parent="#accordionExample">
                     <li class="{{ Request::routeIs('vision.index') ? 'active' : '' }}">
                         <a href="{{ route('vision.index') }}"> Visi </a>
@@ -192,63 +192,63 @@
                         <line x1="5" y1="12" x2="19" y2="12"></line>
                     </svg><span class="fw-bold">PENGATURAN</span></div>
             </li>
-            <li class="menu">
-                <a href="#" aria-expanded="false" class="dropdown-toggle">
+            <li class="menu {{ Request::routeIs('work_unit.index') ? 'active' : '' }}">
+                <a href="{{ route('work_unit.index') }}" aria-expanded="false" class="dropdown-toggle">
                     <div class="">
                         <i data-feather="briefcase"></i>
                         <span class="icon-name fw-bold">UNIT KERJA</span>
                     </div>
                 </a>
             </li>
-            <li class="menu">
-                <a href="#" aria-expanded="false" class="dropdown-toggle">
+            <li class="menu {{ Request::routeIs('ins_budget.index') ? 'active' : '' }}">
+                <a href="{{ route('ins_budget.index') }}" aria-expanded="false" class="dropdown-toggle">
+                    <div class="">
+                        <i data-feather="layout"></i>
+                        <span class="icon-name fw-bold">INPUT PAGU LEMBAGA</span>
+                    </div>
+                </a>
+            </li>
+            <li class="menu {{ Request::routeIs('unit_budget.index') ? 'active' : '' }}">
+                <a href="{{ route('unit_budget.index') }}" aria-expanded="false" class="dropdown-toggle">
+                    <div class="">
+                        <i data-feather="trello"></i>
+                        <span class="icon-name fw-bold">PEMBAGIAN PAGU UNIT</span>
+                    </div>
+                </a>
+            </li>
+            <li class="menu {{ Request::routeIs('expenditure_unit.index') ? 'active' : '' }}">
+                <a href="{{ route('expenditure_unit.index') }}" aria-expanded="false" class="dropdown-toggle">
                     <div class="">
                         <i data-feather="dollar-sign"></i>
                         <span class="icon-name fw-bold">SATUAN BELANJA</span>
                     </div>
                 </a>
             </li>
-            <li class="menu">
-                <a href="#" aria-expanded="false" class="dropdown-toggle">
+
+            <li class="menu {{ Request::routeIs('account_code.index') ? 'active' : '' }}">
+                <a href="{{ route('account_code.index') }}" aria-expanded="false" class="dropdown-toggle">
                     <div class="">
-                        <i data-feather="book"></i>
+                        <i data-feather="hash"></i>
                         <span class="icon-name fw-bold">KODE AKUN</span>
                     </div>
                 </a>
             </li>
-            <li class="menu">
-                <a href="#" aria-expanded="false" class="dropdown-toggle">
+            <li class="menu {{ Request::routeIs('sbm_sbi.index') ? 'active' : '' }}">
+                <a href="{{ route('sbm_sbi.index') }}" aria-expanded="false" class="dropdown-toggle">
+                    <div class="">
+                        <i data-feather="file"></i>
+                        <span class="icon-name fw-bold">SBM&SBI</span>
+                    </div>
+                </a>
+            </li>
+            <li class="menu {{ Request::routeIs('user.index') ? 'active' : '' }}">
+                <a href="{{ route('user.index') }}" aria-expanded="false" class="dropdown-toggle">
                     <div class="">
                         <i data-feather="trending-up"></i>
                         <span class="icon-name fw-bold">SBM DAN SBI</span>
                     </div>
                 </a>
             </li>
-            <li class="menu">
-                <a href="#" aria-expanded="false" class="dropdown-toggle">
-                    <div class="">
-                        <i data-feather="layout"></i>
-                        <span class="icon-name fw-bold">PAGU LEMBAGA</span>
-                    </div>
-                </a>
-            </li>
-            <li class="menu">
-                <a href="#" aria-expanded="false" class="dropdown-toggle">
-                    <div class="">
-                        <i data-feather="trello"></i>
-                        <span class="icon-name fw-bold">PAGU UNIT</span>
-                    </div>
-                </a>
-            </li>
-            <li class="menu">
-                <a href="#" aria-expanded="false" class="dropdown-toggle">
-                    <div class="">
-                        <i data-feather="users"></i>
-                        <span class="icon-name fw-bold">MANAJEMEN USER</span>
-                    </div>
-                </a>
-            </li>
-
         </ul>
 
     </nav>
