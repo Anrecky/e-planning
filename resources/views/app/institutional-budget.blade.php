@@ -53,7 +53,7 @@
                     </div>
                     <div style="margin-top:5rem;"
                         class="d-flex justify-content-center align-items-center text-center flex-wrap">
-                        <p class="fw-bold h1">
+                        <p class="fw-bold h1 ins-budget">
                             {{ isset($institutionalBudget->pagu) ? 'Rp.' . $institutionalBudget->pagu : '' }}
                         </p>
                     </div>
@@ -111,6 +111,8 @@
                 $("#idr").inputmask({
                     mask: "Rp999,999,999,999"
                 });
+                var oldPaguText = $('.ins-budget').text().replace('Rp.', '').trim();
+                $('.ins-budget').text('Rp ' + new Intl.NumberFormat('id-ID').format(oldPaguText))
             })
         </script>
     </x-slot>
