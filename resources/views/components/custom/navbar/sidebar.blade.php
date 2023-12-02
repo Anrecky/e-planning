@@ -195,16 +195,8 @@
             <li class="menu">
                 <a href="#" aria-expanded="false" class="dropdown-toggle">
                     <div class="">
-                        <i data-feather="layout"></i>
-                        <span class="icon-name fw-bold">INPUT PAGU LEMBAGA</span>
-                    </div>
-                </a>
-            </li>
-            <li class="menu">
-                <a href="#" aria-expanded="false" class="dropdown-toggle">
-                    <div class="">
-                        <i data-feather="trello"></i>
-                        <span class="icon-name fw-bold">PEMBAGIAN PAGU UNIT</span>
+                        <i data-feather="briefcase"></i>
+                        <span class="icon-name fw-bold">UNIT KERJA</span>
                     </div>
                 </a>
             </li>
@@ -219,8 +211,32 @@
             <li class="menu">
                 <a href="#" aria-expanded="false" class="dropdown-toggle">
                     <div class="">
-                        <i data-feather="briefcase" data-bs-toggle="tooltip"></i>
-                        <span class="icon-name fw-bold">SATUAN BELANJA INTERNAL</span>
+                        <i data-feather="book"></i>
+                        <span class="icon-name fw-bold">KODE AKUN</span>
+                    </div>
+                </a>
+            </li>
+            <li class="menu">
+                <a href="#" aria-expanded="false" class="dropdown-toggle">
+                    <div class="">
+                        <i data-feather="trending-up"></i>
+                        <span class="icon-name fw-bold">SBM DAN SBI</span>
+                    </div>
+                </a>
+            </li>
+            <li class="menu">
+                <a href="#" aria-expanded="false" class="dropdown-toggle">
+                    <div class="">
+                        <i data-feather="layout"></i>
+                        <span class="icon-name fw-bold">PAGU LEMBAGA</span>
+                    </div>
+                </a>
+            </li>
+            <li class="menu">
+                <a href="#" aria-expanded="false" class="dropdown-toggle">
+                    <div class="">
+                        <i data-feather="trello"></i>
+                        <span class="icon-name fw-bold">PAGU UNIT</span>
                     </div>
                 </a>
             </li>
@@ -228,31 +244,7 @@
                 <a href="#" aria-expanded="false" class="dropdown-toggle">
                     <div class="">
                         <i data-feather="users"></i>
-                        <span class="icon-name fw-bold">KELOLA USER</span>
-                    </div>
-                </a>
-            </li>
-            <li class="menu">
-                <a href="#" aria-expanded="false" class="dropdown-toggle">
-                    <div class="">
-                        <i data-feather="lock"></i>
-                        <span class="icon-name fw-bold">AKUN MANAJEMEN</span>
-                    </div>
-                </a>
-            </li>
-            <li class="menu {{ Request::routeIs('expenditure_unit.index') ? 'active' : '' }}">
-                <a href="{{ route('expenditure_unit.index') }}" aria-expanded="false" class="dropdown-toggle">
-                    <div class="">
-                        <i data-feather="credit-card"></i>
-                        <span class="icon-name fw-bold">Satuan Belanja</span>
-                    </div>
-                </a>
-            </li>
-            <li class="menu {{ Request::routeIs('account_code.index') ? 'active' : '' }}">
-                <a href="{{ route('account_code.index') }}" aria-expanded="false" class="dropdown-toggle">
-                    <div class="">
-                        <i data-feather="hash"></i>
-                        <span class="icon-name fw-bold">Kode Akun</span>
+                        <span class="icon-name fw-bold">MANAJEMEN USER</span>
                     </div>
                 </a>
             </li>
