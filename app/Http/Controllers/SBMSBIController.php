@@ -25,8 +25,8 @@ class SBMSBIController extends Controller
     {
         // Validate the request
         $request->validate([
-            'sbm' => 'required|file|mimes:jpg,jpeg,png,pdf,xlsx,xls,doc,docx,csv|max:5048', // adjust mime types and max size as needed
-            'sbi' => 'required|file|mimes:jpg,jpeg,png,pdf,xlsx,xls,doc,docx,csv|max:5048',
+            'sbm' => 'required|file|mimes:jpg,jpeg,png,pdf,xlsx,xls,doc,docx,csv|max:21048', // adjust mime types and max size as needed
+            'sbi' => 'required|file|mimes:jpg,jpeg,png,pdf,xlsx,xls,doc,docx,csv|max:21048',
             'sbmsbi_id' => 'nullable|exists:sbmsbis,id' // Check if the ID exists in the SBMSBI table only if it's not null
 
         ]);
