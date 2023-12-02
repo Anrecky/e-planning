@@ -48,7 +48,7 @@
     <div class="row layout-top-spacing">
         <div class="col-lg-12 layout-spacing">
             <div class="statbox widget box box-shadow">
-                <div style="min-height:50vh;" class="widget-content widget-content-area">
+                <div class="widget-content widget-content-area">
                     @if ($errors->any())
                         <div class="alert alert-danger">
                             <ul>
@@ -72,9 +72,9 @@
                                 aria-label="Close"></button>
                         </div>
                     @endif
-                    <div class="text-center">
+                    <div class="text-start">
                         <!-- Button trigger modal -->
-                        <button type="button" class="btn btn-primary btn-lg w-50 mt-4" data-bs-toggle="modal"
+                        <button type="button" class="btn btn-primary btn-md w-20" data-bs-toggle="modal"
                             data-bs-target="#exampleModalCenter">
                             Input Misi
                         </button>
@@ -84,7 +84,7 @@
                     {{-- <h1 style="margin-top:10vh;" class="text-center fw-bold">{{ $renstra->mission }}</h1> --}}
 
 
-                    <div class="table-responsive my-4">
+                    <div class="table-responsive mt-4">
                         <table class="table table-bordered table-hover">
                             <thead class="bg-light">
                                 <tr>

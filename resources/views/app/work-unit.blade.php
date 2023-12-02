@@ -55,7 +55,7 @@
         <div class="col-lg-12 layout-spacing">
             <div class="statbox widget box box-shadow">
                 <div style="min-height:50vh;" class="widget-content widget-content-area">
-                    <div class="p-4 container">
+                    <div class="p-3 container">
                         @if ($errors->any())
                             <div class="alert alert-danger">
                                 <ul>
@@ -82,15 +82,15 @@
                         @endif
                     </div>
 
-                    <div class="text-center">
+                    <div class="text-start">
                         <!-- Button trigger modal -->
-                        <button type="button" class="btn btn-primary btn-lg w-50 mt-4" data-bs-toggle="modal"
+                        <button type="button" class="btn btn-primary btn-md w-20 ms-4" data-bs-toggle="modal"
                             data-bs-target="#exampleModalCenter">
                             Input Unit Kerja
                         </button>
                     </div>
 
-                    <div class="table-responsive my-4 px-4">
+                    <div class="table-responsive px-4">
                         <table id="zero-config" class="table table-bordered">
                             <thead class="bg-primary text-white">
                                 <tr>
@@ -214,6 +214,10 @@
         <script src="{{ asset('plugins/editors/quill/quill.js') }}"></script>
         <script src="{{ asset('plugins/sweetalerts2/sweetalerts2.min.js') }}"></script>
         <script src="{{ asset('plugins/table/datatable/datatables.js') }}"></script>
+        <script src="{{asset('plugins-rtl/table/datatable/button-ext/dataTables.buttons.min.js')}}"></script>
+        <script src="{{asset('plugins-rtl/table/datatable/button-ext/jszip.min.js')}}"></script>
+        <script src="{{asset('plugins-rtl/table/datatable/button-ext/buttons.html5.min.js')}}"></script>
+        <script src="{{asset('plugins-rtl/table/datatable/button-ext/buttons.print.min.js')}}"></script>
 
         <script>
             function openEditModal(id, name, code) {
@@ -259,6 +263,7 @@
                     "dom": "<'dt--top-section'<'row'<'col-12 col-sm-6 d-flex justify-content-sm-start justify-content-center'l><'col-12 col-sm-6 d-flex justify-content-sm-end justify-content-center mt-sm-0 mt-3'f>>>" +
                         "<'table-responsive'tr>" +
                         "<'dt--bottom-section d-sm-flex justify-content-sm-between text-center'<'dt--pages-count  mb-sm-0 mb-3'i><'dt--pagination'p>>",
+                        "buttons":['print'],
                     "oLanguage": {
                         "oPaginate": {
                             "sPrevious": '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-arrow-left"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>',
@@ -272,6 +277,16 @@
                     "drawCallback": function(settings) {
                         feather.replace();
                     },
+                    buttons: [
+                        {
+                            text: 'Name',
+                            className: 'btn btn-primary toggle-vis mb-1',
+                            action: function(e, dt, node, config ) {
+                                var column = dt.column( 0 );
+                                column.visible( ! column.visible() );
+                            }
+                        },
+                    ],
                     "stripeClasses": [],
                     "lengthMenu": [7, 10, 20, 50],
                     "pageLength": 10

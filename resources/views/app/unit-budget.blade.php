@@ -45,7 +45,7 @@
     <div class="row layout-top-spacing">
         <div class="col-lg-12 layout-spacing">
             <div class="statbox widget box box-shadow">
-                <div style="min-height:50vh;" class="widget-content widget-content-area">
+                <div class="widget-content widget-content-area">
                     @if ($errors->any())
                         <div class="alert alert-danger">
                             <ul>
@@ -125,8 +125,8 @@
 
                             </tbody>
                         </table>
-                        <div class="text-center">
-                            <button id="save-unit_budgets" class="btn btn-primary btn-lg">Simpan Data</button>
+                        <div class="text-end">
+                            <button id="save-unit_budgets" class="btn btn-primary btn-md">Simpan Data</button>
                         </div>
                     </div>
 
