@@ -49,7 +49,7 @@
         <div class="col-lg-12 layout-spacing">
             <div class="statbox widget box box-shadow">
                 <div style="min-height:50vh;" class="widget-content widget-content-area">
-                    <div class="p-4 container">
+                    <div class="p-3 container">
                         @if ($errors->any())
                             <div class="alert alert-danger">
                                 <ul>
@@ -75,15 +75,15 @@
                         @endif
                     </div>
 
-                    <div class="text-center">
+                    <div class="text-start">
                         <!-- Button trigger modal -->
-                        <button type="button" class="btn btn-primary btn-lg w-50 mt-4" data-bs-toggle="modal"
+                        <button type="button" class="btn btn-primary btn-md w-20 ms-3" data-bs-toggle="modal"
                             data-bs-target="#exampleModalCenter">
                             Input Sasaran Program
                         </button>
                     </div>
 
-                    <div class="container">
+                    <div class="container p-3">
                         <table id="zero-config" class="table table-bordered table-hover">
                             <thead class="bg-light">
                                 <tr>

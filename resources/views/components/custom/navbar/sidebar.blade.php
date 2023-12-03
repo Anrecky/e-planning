@@ -68,11 +68,14 @@
 
 
             <li class="menu menu-heading">
-                <div class="heading"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                <div class="heading">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
                         viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
                         stroke-linejoin="round" class="feather feather-minus">
                         <line x1="5" y1="12" x2="19" y2="12"></line>
-                    </svg><span class="fw-bold">PERENCANAAN</span></div>
+                    </svg>
+                    <span class="fw-bold">PERENCANAAN</span>
+                </div>
             </li>
 
             <li class="menu {{ Request::is('*/renstra/*') ? 'active' : '' }}">
@@ -109,7 +112,7 @@
                 <a href="#rkt" data-bs-toggle="collapse"
                     aria-expanded="{{ Request::is('*/rkt/*') ? 'true' : 'false' }}" class="dropdown-toggle">
                     <div class="">
-                        <i data-feather="trending-up"></i><span class="icon-name fw-bold">RKT</span>
+                        <i data-feather="calendar"></i><span class="icon-name fw-bold">RKT</span>
                     </div>
                     <div>
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
@@ -203,7 +206,7 @@
                 <a href="{{ route('ins_budget.index') }}" aria-expanded="false" class="dropdown-toggle">
                     <div class="">
                         <i data-feather="layout"></i>
-                        <span class="icon-name fw-bold">INPUT PAGU LEMBAGA</span>
+                        <span class="icon-name fw-bold">PAGU LEMBAGA</span>
                     </div>
                 </a>
             </li>
@@ -211,7 +214,7 @@
                 <a href="{{ route('unit_budget.index') }}" aria-expanded="false" class="dropdown-toggle">
                     <div class="">
                         <i data-feather="trello"></i>
-                        <span class="icon-name fw-bold">PEMBAGIAN PAGU UNIT</span>
+                        <span class="icon-name fw-bold">PAGU UNIT</span>
                     </div>
                 </a>
             </li>
@@ -227,7 +230,7 @@
             <li class="menu {{ Request::routeIs('account_code.index') ? 'active' : '' }}">
                 <a href="{{ route('account_code.index') }}" aria-expanded="false" class="dropdown-toggle">
                     <div class="">
-                        <i data-feather="hash"></i>
+                        <i data-feather="book"></i>
                         <span class="icon-name fw-bold">KODE AKUN</span>
                     </div>
                 </a>
@@ -235,8 +238,8 @@
             <li class="menu {{ Request::routeIs('sbm_sbi.index') ? 'active' : '' }}">
                 <a href="{{ route('sbm_sbi.index') }}" aria-expanded="false" class="dropdown-toggle">
                     <div class="">
-                        <i data-feather="file"></i>
-                        <span class="icon-name fw-bold">SBM&SBI</span>
+                        <i data-feather="trending-up"></i>
+                        <span class="icon-name fw-bold">SBM DAN SBI</span>
                     </div>
                 </a>
             </li>
@@ -244,7 +247,7 @@
                 <a href="{{ route('user.index') }}" aria-expanded="false" class="dropdown-toggle">
                     <div class="">
                         <i data-feather="users"></i>
-                        <span class="icon-name fw-bold">KELOLA USER</span>
+                        <span class="icon-name fw-bold">MANAJEMEN USER</span>
                     </div>
                 </a>
             </li>

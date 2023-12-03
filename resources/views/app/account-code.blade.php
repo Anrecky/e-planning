@@ -55,7 +55,7 @@
         <div class="col-lg-12 layout-spacing">
             <div class="statbox widget box box-shadow">
                 <div style="min-height:50vh;" class="widget-content widget-content-area">
-                    <div class="p-4 container">
+                    <div class="p-3 container">
                         @if ($errors->any())
                             <div class="alert alert-danger">
                                 <ul>
@@ -82,15 +82,15 @@
                         @endif
                     </div>
 
-                    <div class="text-center">
+                    <div class="text-start">
                         <!-- Button trigger modal -->
-                        <button type="button" class="btn btn-primary btn-lg w-50 mt-4" data-bs-toggle="modal"
+                        <button type="button" class="btn btn-primary btn-md w-20 ms-4" data-bs-toggle="modal"
                             data-bs-target="#exampleModalCenter">
                             Input Kode Akun
                         </button>
                     </div>
 
-                    <div class="table-responsive my-4 px-4">
+                    <div class="table-responsive px-4">
                         <table id="zero-config" class="table table-bordered">
                             <thead class="bg-primary text-white">
                                 <tr>
