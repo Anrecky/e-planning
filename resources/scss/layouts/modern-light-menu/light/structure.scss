@@ -1214,7 +1214,7 @@ body {
             }
 
             &.menu:first-child ul.submenu > li a {
-                justify-content: flex-start;
+                justify-content: space-between;
 
                 i {
                     align-self: center;
@@ -1460,6 +1460,147 @@ body {
         }
     }
 
+    li.submenu {
+        > .dropdown-toggle {
+            display: flex;
+            justify-content: space-between;
+            cursor: pointer;
+            font-size: 12px;
+            color: #191e3a;
+            padding: 10.2px 16px;
+            font-weight: 400;
+            transition: 0.6s;
+            letter-spacing: 1px;
+            margin-bottom: 2px;
+            margin: 0 16px 0 16px;
+            border-radius: 8px;
+            margin-top: 2px;
+
+            &.disabled {
+                opacity: 0.5;
+                cursor: default;
+                svg:not(.bage-icon) {
+                    opacity: 0.5;
+                }
+                &:hover {
+                    color: #191e3a;
+                    svg:not(.bage-icon) {
+                        color: #515365;
+                        opacity: 0.5;
+                    }
+                }
+            }
+
+            > div {
+                align-self: center;
+
+                span {
+                    &.sidebar-label {
+                        position: absolute;
+                        right: 12px;
+                        svg {
+                            width: 15px;
+                            height: 15px;
+                            vertical-align: sub;
+                        }
+                    }
+                }
+            }
+        }
+
+        // .dropdown-toggle:after {
+        //     display: none;
+        // }
+
+        > .dropdown-toggle svg:not(.badge-icon) {
+            color: #515365;
+            fill: rgb(136 142 168 / 10%);
+            margin-right: 6px;
+            vertical-align: middle;
+            width: 20px;
+            height: 20px;
+            stroke-width: 1.8;
+        }
+
+        &.active > .dropdown-toggle {
+            background-color: #4361ee;
+
+            svg,
+            span {
+                color: #fff;
+            }
+
+            &[aria-expanded="true"] {
+                // background: rgba(0, 0, 0, 0.10);
+                background: #4361ee;
+            }
+
+            &:hover {
+                color: #fff;
+
+                svg:not(.badge-icon) {
+                    color: #fff;
+                    fill: #4361ee0a;
+                }
+            }
+        }
+
+        > {
+            .dropdown-toggle {
+                &[aria-expanded="false"] svg.feather-chevron-right {
+                    transform: rotate(0);
+                    transition: 0.5s;
+                }
+
+                &[aria-expanded="true"] {
+                    svg {
+                        &.feather-chevron-right {
+                            background-color: transparent;
+                            transform: rotate(90deg);
+                            transition: 0.5s;
+                        }
+                        color: #4361ee;
+                        fill: rgb(33 150 243 / 10%);
+                    }
+
+                    // background: #4361ee;
+
+                    span {
+                        color: #4361ee;
+                    }
+
+                    &:hover {
+                        color: #4361ee;
+
+                        svg {
+                            color: #4361ee !important;
+                            fill: #4361ee0a;
+                        }
+                    }
+                }
+
+                &:hover {
+                    color: $primary;
+
+                    svg:not(.badge-icon) {
+                        color: $primary;
+                        fill: #4361ee0a;
+                    }
+                }
+
+                svg.feather-chevron-right {
+                    vertical-align: middle;
+                    margin-right: 0;
+                    width: 15px;
+                }
+            }
+
+            a span:not(.badge) {
+                vertical-align: middle;
+            }
+        }
+    }
+
     ul.submenu > li a {
         position: relative;
         display: flex;
@@ -1598,7 +1739,7 @@ body {
                 }
 
                 &.active a {
-                    color: #fff;
+                    color: #4361ee;
                 }
 
                 a {

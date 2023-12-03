@@ -92,7 +92,7 @@
 
                     <div class="table-responsive px-4">
                         <table id="zero-config" class="table table-bordered">
-                            <thead class="bg-primary text-white">
+                            <thead>
                                 <tr>
                                     <th scope="col" style="width:40px;">No.</th>
                                     <th scope="col">Nama</th>
@@ -263,7 +263,6 @@
                     "dom": "<'dt--top-section'<'row'<'col-12 col-sm-6 d-flex justify-content-sm-start justify-content-center'l><'col-12 col-sm-6 d-flex justify-content-sm-end justify-content-center mt-sm-0 mt-3'f>>>" +
                         "<'table-responsive'tr>" +
                         "<'dt--bottom-section d-sm-flex justify-content-sm-between text-center'<'dt--pages-count  mb-sm-0 mb-3'i><'dt--pagination'p>>",
-                        "buttons":['print'],
                     "oLanguage": {
                         "oPaginate": {
                             "sPrevious": '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-arrow-left"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>',
@@ -277,16 +276,6 @@
                     "drawCallback": function(settings) {
                         feather.replace();
                     },
-                    buttons: [
-                        {
-                            text: 'Name',
-                            className: 'btn btn-primary toggle-vis mb-1',
-                            action: function(e, dt, node, config ) {
-                                var column = dt.column( 0 );
-                                column.visible( ! column.visible() );
-                            }
-                        },
-                    ],
                     "stripeClasses": [],
                     "lengthMenu": [7, 10, 20, 50],
                     "pageLength": 10
