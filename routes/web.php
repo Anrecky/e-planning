@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AccountCodeController;
+use App\Http\Controllers\BudgetImplementationController;
 use App\Http\Controllers\PerformanceIndicatorController;
 use App\Http\Controllers\ProgramTargetController;
 use App\Http\Controllers\RenstraController;
@@ -67,5 +68,6 @@ Route::middleware(['auth'])->prefix('admin')->group(function () {
         Route::post('user', [UserController::class, 'store'])->name('user.store');
         Route::patch('user/{user}/update', [UserController::class, 'update'])->name('user.update');
         Route::delete('user/{user}/hapus', [UserController::class, 'destroy'])->name('user.delete');
+        Route::get('dipa', [BudgetImplementationController::class, 'index'])->name('budget_implementation.index');
     });
 });
