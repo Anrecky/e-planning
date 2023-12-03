@@ -37,7 +37,7 @@
             }
 
             tr.activity-row td {
-                background-color: wheat;
+                background-color: #fcf5e9;
             }
         </style>
         <!--  END CUSTOM STYLE FILE  -->
@@ -141,8 +141,6 @@
     <!--  BEGIN CUSTOM SCRIPTS FILE  -->
     <x-slot:footerFiles>
         <script src="{{ asset('plugins/global/vendors.min.js') }}"></script>
-        <script src="{{ asset('plugins-rtl/input-mask/jquery.inputmask.bundle.min.js') }}"></script>
-        <script src="{{ asset('plugins-rtl/input-mask/input-mask.js') }}"></script>
         <script>
             document.addEventListener('DOMContentLoaded', function() {
                 const theadTh = document.querySelectorAll('thead tr th');
@@ -157,39 +155,58 @@
                     const btnShowModalId = event.relatedTarget.id;
                     const createInputContainer = document.getElementById('create-input_container');
                     if (btnShowModalId === 'add-activity_btn') return createInputContainer.innerHTML =
-                        ` <input type="text" name="activity_code" required class="form-control" style="max-width: 160px !important;" placeholder="KD.Keg"> <input type="text" required name="activity_name" class="form-control" placeholder="Uraian">`;
+                        `<input type="text" name="activity_code" required class="form-control" style="max-width: 160px !important;"placeholder="KD.Keg"> <input type="text" required name="activity_name" class="form-control" placeholder="Uraian">`;
                     if (btnShowModalId === 'add-account_code_btn') return createInputContainer.innerHTML =
-                        ` <input type="text" name="account_code" required class="form-control" style="max-width: 160px !important;" placeholder="KD.Akun"> <input type="text" required name="account_name" class="form-control" placeholder="Uraian">`;
+                        `<input type="text" name="account_code" required class="form-control" style="max-width: 160px !important;"placeholder="KD.Akun"> <input type="text" required name="account_name" class="form-control"placeholder="Uraian">`;
                     if (btnShowModalId === 'add-expenditure_detail_btn') {
                         createInputContainer.innerHTML =
-                            `<input type="text" required name="expenditure_description" class="form-control" placeholder="Uraian Detail">
-                                          <input type="text" required name="expenditure_volume" class="form-control" style="max-width: 100px !important;" placeholder="Volume">
-                                          <input type="text" name="unit" required class="form-control" style="max-width: 100px !important;" placeholder="Satuan">
-                                          <input type="text" name="unit_price" required class="form-control" placeholder="Harga Satuan">`;
+                            `<input type="text" required name="expenditure_description" class="form-control" placeholder="Uraian Detail"><input type="text" required name="expenditure_volume" class="form-control"style="max-width: 100px !important;" placeholder="Volume"><input type="text" name="unit" required class="form-control" style="max-width: 100px !important;" placeholder="Satuan"><input type="text" name="unit_price" required class="form-control" placeholder="Harga Satuan"><input type="text" name="total" required class="form-control" placeholder="total">`;
 
-                        // Apply Inputmask for IDR format
-                        Inputmask('decimal', {
-                            groupSeparator: '.',
-                            radixPoint: ',',
-                            digits: 2,
-                            autoGroup: true,
-                            prefix: 'Rp ', // Space after Rp is important
-                            rightAlign: false,
-                            oncleared: function() {
-                                self.Value('');
-                            }
-                        }).mask(createInputContainer.querySelector('input[name="unit_price"]'));
+                        // Now add the event listeners
+                        const volumeInput = createInputContainer.querySelector(
+                            'input[name="expenditure_volume"]');
+                        const priceInput = createInputContainer.querySelector('input[name="unit_price"]');
+                        const totalInput = createInputContainer.querySelector('input[name="total"]');
 
-                        // For 'expenditure_volume', you can use a simple numeric mask
-                        Inputmask('numeric').mask(createInputContainer.querySelector(
-                            'input[name="expenditure_volume"]'));
+                        volumeInput.addEventListener('input', () => calculateAndUpdateTotal(volumeInput,
+                            priceInput, totalInput));
+                        priceInput.addEventListener('input', () => calculateAndUpdateTotal(volumeInput,
+                            priceInput, totalInput));
+                        volumeInput.addEventListener('keypress', enforceNumericInput);
                     }
-                })
 
+                })
 
                 tableBody.addEventListener('click', handleRowClick);
                 form.addEventListener('submit', handleFormSubmit);
             });
+
+            function formatAsIDRCurrency(value) {
+                return new Intl.NumberFormat('id-ID', {
+                    style: 'currency',
+                    currency: 'IDR'
+                }).format(value);
+            }
+
+            function enforceNumericInput(event) {
+                const charCode = (event.which) ? event.which : event.keyCode;
+                if (charCode > 31 && (charCode < 48 || charCode > 57)) {
+                    event.preventDefault();
+                }
+            }
+
+            function calculateAndUpdateTotal(volumeInput, priceInput, totalInput) {
+                const volume = parseFloat(volumeInput.value.replace(/[^0-9,.-]/g, '').replace(',', '.'));
+                let unitPrice = parseFloat(priceInput.value.replace(/Rp\s?|,00/g, '').replace(/\./g, '').replace(/[^\d]/g, ''));
+
+                if (!isNaN(volume) && !isNaN(unitPrice)) {
+                    const total = volume * unitPrice;
+                    totalInput.value = formatAsIDRCurrency(total);
+                    priceInput.value = formatAsIDRCurrency(unitPrice);
+                } else {
+                    totalInput.value = '';
+                }
+            }
 
             function handleRowClick(e) {
                 if (e.target.closest('tr')) {
@@ -206,13 +223,32 @@
             function toggleButtonsBasedOnRow(row) {
                 const isActivityRow = row.classList.contains('activity-row');
                 const isAccountRow = row.classList.contains('account-row');
+                const isExpenditureRow = row.classList.contains('expenditure-row');
                 toggleButtonVisibility('add-expenditure_detail_btn', !isActivityRow);
-                toggleButtonVisibility('add-account_code_btn', isActivityRow || isAccountRow);
+                toggleButtonVisibility('add-account_code_btn', isActivityRow || isAccountRow || isExpenditureRow);
+                row.classList.add(isActivityRow ? 'activity-parent' : (isAccountRow ? 'account-parent' : ''));
             }
 
             function toggleButtonVisibility(buttonId, show) {
                 const button = document.getElementById(buttonId);
                 button.classList.toggle('show', show);
+            }
+
+            function determineRowType(formData) {
+                // Check if it's an Activity
+                if (formData.activity_code || formData.activity_name) {
+                    return 'activity';
+                }
+                // Check if it's an Account
+                else if (formData.account_code || formData.account_name) {
+                    return 'account';
+                }
+                // Check if it's an Expenditure
+                else if (formData.expenditure_description || formData.expenditure_volume) {
+                    return 'expenditure';
+                }
+
+                return null; // or some default type if necessary
             }
 
             function handleFormSubmit(event) {
@@ -228,27 +264,90 @@
                 // Check the type of form data
                 const isActivity = formData.activity_code || formData.activity_name;
                 const isAccount = formData.account_code || formData.account_name;
-                const activityOrAccount = isAccount !== undefined ? "account" : "activity";
+                const isExpenditure = formData.expenditure_description || formData.expenditure_volume;
+                const trType = determineRowType(formData);
 
-                createAndAppendRow(formData, activityOrAccount);
+                createAndAppendRow(formData, trType);
                 event.target.reset();
-
+                // Hide the modal after form submission
+                $('#createModal').modal('hide');
             }
 
+
             function createAndAppendRow(data, type) {
+                if (type === null) {
+                    alert("Terdapat kesalahan pemrosesan...");
+                    return;
+                }
                 const newRow = document.createElement('tr');
+                const tableBody = document.querySelector('tbody');
                 newRow.innerHTML =
-                    `<td class="text-center">${(data.activity_code || data.account_code) ?? "" }</td><td>${(data.activity_name || data.account_name) ?? ""}</td><td>${data.volume ?? ""}</td><td>${data.unit ?? ""}</td><td>${data.unit_price ?? ""}</td><td>${data.total ?? ""}</td>`;
+                    `<td class="text-center">${data.activity_code || data.account_code || ""}</td><td>${data.activity_name || data.account_name || data.expenditure_description || ""}</td><td>${data.expenditure_volume || ""}</td><td>${data.unit || ""}</td><td>${data.unit_price || ""}</td><td>${data.total || ""}</td>`;
+                newRow.classList.add(`${type}-row`);
+
                 if (type === 'activity') {
-                    newRow.classList.add('activity-row');
+                    tableBody.appendChild(newRow);
                 } else {
-                    newRow.classList.add('account-row');
+                    insertRowBasedOnType(newRow, type);
                 }
-                if (type === 'account') {
-                    refElem = document.querySelector('tr.selected')
-                    return refElem.insertAdjacentElement('afterend', newRow);
+            }
+
+            function insertRowBasedOnType(newRow, type) {
+                const tableBody = document.querySelector('tbody');
+                const selectedRow = document.querySelector('tr.selected');
+                if (!selectedRow) {
+                    return;
                 }
-                return document.querySelector('#budget_implementation-table tbody').appendChild(newRow);
+
+                let referenceRow = selectedRow;
+                // Logic for inserting an activity row.
+                if (type === 'activity') {
+                    referenceRow = tableBody.lastElementChild;
+                    while (referenceRow && !referenceRow.classList.contains('activity-row')) {
+                        referenceRow = referenceRow.previousElementSibling;
+                    }
+                }
+                // Logic for inserting an account row.
+                else if (type === 'account') {
+                    while (referenceRow.nextElementSibling &&
+                        (referenceRow.nextElementSibling.classList.contains('account-row') ||
+                            referenceRow.nextElementSibling.classList.contains('expenditure-row'))) {
+                        referenceRow = referenceRow.nextElementSibling;
+                    }
+                }
+                // Logic for inserting an expenditure row.
+                else if (type === 'expenditure') {
+                    while (referenceRow.nextElementSibling && referenceRow.nextElementSibling.classList.contains(
+                            'expenditure-row')) {
+                        referenceRow = referenceRow.nextElementSibling;
+                    }
+                }
+
+                // Perform the insertion after the determined reference row.
+                if (referenceRow === tableBody.lastElementChild) {
+                    tableBody.appendChild(newRow); // Append at the end if referenceRow is the last child.
+                } else {
+                    referenceRow.insertAdjacentElement('afterend', newRow); // Insert after the reference row.
+                }
+            }
+
+
+            function handleRowClick(e) {
+                if (e.target.closest('tr')) {
+                    clearSelectedRows();
+                    const clickedRow = e.target.closest('tr');
+                    clickedRow.classList.add('selected');
+                    toggleButtonsBasedOnRow(clickedRow);
+
+                    // Mark the clicked row as the parent for the next entry
+                    if (clickedRow.classList.contains('activity-row')) {
+                        clickedRow.classList.add('activity-parent');
+                        // Remove the account-parent class if it exists
+                        clickedRow.classList.remove('account-parent');
+                    } else if (clickedRow.classList.contains('account-row')) {
+                        clickedRow.classList.add('account-parent');
+                    }
+                }
             }
         </script>
     </x-slot>
