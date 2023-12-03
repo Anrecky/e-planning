@@ -45,8 +45,7 @@
                         {{-- <img src="{{ Vite::asset('resources/images/profile-30.png') }}" alt="avatar"> --}}
                     </div>
                     <div class="profile-content">
-                        <h6 class="">Shaun Park</h6>
-                        <p class="">Project Leader</p>
+                        <h6 class="">{{ auth()->user()->name }}</h6>
                     </div>
                 </div>
             </div>
@@ -168,8 +167,8 @@
                         <line x1="5" y1="12" x2="19" y2="12"></line>
                     </svg><span class="fw-bold">PENGANGGARAN</span></div>
             </li>
-            <li class="menu">
-                <a href="#" aria-expanded="false" class="dropdown-toggle">
+            <li class="menu {{ Request::routeIs('budget_implementation.index') ? 'active' : '' }}">
+                <a href="{{ route('budget_implementation.index') }}" aria-expanded="false" class="dropdown-toggle">
                     <div class="">
                         <i data-feather="check-square"></i>
                         <span class="icon-name fw-bold">USULAN DIPA</span>
