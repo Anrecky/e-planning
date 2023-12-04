@@ -64,8 +64,49 @@
                 </a>
             </li> --}}
 
+            <li class="menu {{ Request::is('*/perkin/*') ? 'active' : '' }}">
+                <a href="#perencanaan" data-bs-toggle="collapse"
+                    aria-expanded="{{ Request::is('*/perkin/*') ? 'true' : '' }}"
+                    class="dropdown-toggle {{ Request::is('*/perkin/*') ? 'collapsed' : '' }}">
+                    <div class="">
+                        <span class="fw-bold">PERENCANAAN</span>
+                    </div>
+                    <div>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                            fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                            stroke-linejoin="round" class="feather feather-chevron-right">
+                            <polyline points="9 18 15 12 9 6"></polyline>
+                        </svg>
+                    </div>
+                </a>
+                <ul class="collapse submenu list-unstyled {{ Request::is('*/perkin/*') ? 'show' : '' }}"
+                    id="perencanaan" data-bs-parent="#accordionExample">
+                    <li>
+                        <a href="#level-three" data-bs-toggle="collapse" aria-expanded="false"
+                            class="dropdown-toggle collapsed">
+                            <div>
+                                <i data-feather="target"></i><span class="icon-name fw-bold"> RENSTRA</span>
+                            </div>
+                            <div>
 
-            <li class="menu {{ Request::is('*/perencanaan/*') ? 'active' : '' }}">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                    viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                    stroke-linecap="round" stroke-linejoin="round"
+                                    class="feather feather-chevron-right">
+                                    <polyline points="9 18 15 12 9 6"></polyline>
+                                </svg>
+                            </div>
+                        </a>
+                        <ul class="collapse list-unstyled sub-submenu" id="level-three" data-bs-parent="#pages">
+                            <li>
+                                <a href="javascript:void(0);"> Item Level 2a </a>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </li>
+
+            {{-- <li class="menu {{ Request::is('*/perencanaan/*') ? 'active' : '' }}">
                 <a href="#perencanaan" data-bs-toggle="collapse"
                     aria-expanded="{{ Request::is('*/perencanaan/*') ? 'true' : 'false' }}" class="dropdown-toggle">
                     <div>
@@ -175,7 +216,7 @@
                         </ul>
                     </li>
                 </ul>
-            </li>
+            </li> --}}
 
             <li class="menu {{ Request::is('*/penganggaran/*') ? 'active' : '' }}">
                 <a href="#penganggaran" data-bs-toggle="collapse"

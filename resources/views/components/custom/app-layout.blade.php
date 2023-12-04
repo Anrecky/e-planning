@@ -69,6 +69,30 @@
     <!-- BEGIN GLOBAL MANDATORY STYLES -->
     {{ $headerFiles }}
     <!-- END GLOBAL MANDATORY STYLES -->
+
+    <style>
+        a.dropdown-toggle.collapsed::after,
+        a.dropdown-toggle.collapsed::before {
+            display: none !important;
+        }
+
+        #sidebar ul.menu-categories ul.submenu>li a {
+            margin-left: 0.15rem;
+            font-size: 0.75rem
+        }
+
+        #sidebar ul.menu-categories ul.submenu>li a::before {
+            display: none !important;
+        }
+
+        #sidebar ul.menu-categories ul.submenu>li a::after {
+            display: none !important;
+        }
+
+        #sidebar ul.menu-categories ul.submenu>li ul.sub-submenu>li a {
+            margin-left: 2rem;
+        }
+    </style>
 </head>
 
 <body @class([
