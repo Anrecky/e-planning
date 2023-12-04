@@ -94,7 +94,7 @@
 
                     <div class="table-responsive mt-4">
                         <table class="table table-bordered">
-                            <thead class="bg-primary text-white">
+                            <thead>
                                 <tr>
                                     <th scope="col" style="width:40px;">No.</th>
                                     <th scope="col">Sasaran Program</th>
