@@ -152,8 +152,6 @@
                     .filter(value => value !== ''); // exclude empty (unselected) values
             }
 
-            console.log(getSelectedWorkUnitIds())
-
             function canAddRow() {
                 return selectedValues.length < workUnits.length;
             }
