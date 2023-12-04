@@ -27,7 +27,7 @@ class DatabaseSeeder extends Seeder
         ]);
         if (env('APP_ENV') === 'local') {
             ProgramTarget::factory(100)->create();
-            WorkUnit::factory(10)->create();
+            WorkUnit::factory(100)->create();
             ExpenditureUnit::factory(100)->create();
             AccountCode::factory(100)->create();
         }
