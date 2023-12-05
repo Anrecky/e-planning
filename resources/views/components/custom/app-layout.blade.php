@@ -92,6 +92,14 @@
         #sidebar ul.menu-categories ul.submenu>li ul.sub-submenu>li a {
             margin-left: 2rem;
         }
+
+        #sidebar ul.menu-categories ul.submenu>li ul.sub-submenu>li a::before {
+            display: block !important;
+        }
+
+        #sidebar ul.menu-categories ul.submenu>li ul.sub-submenu>li a::after {
+            display: block !important;
+        }
     </style>
 </head>
 

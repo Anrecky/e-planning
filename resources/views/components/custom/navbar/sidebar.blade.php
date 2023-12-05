@@ -64,10 +64,10 @@
                 </a>
             </li> --}}
 
-            <li class="menu {{ Request::is('*/perkin/*') ? 'active' : '' }}">
+            <li class="menu {{ Request::is('*/renstra/*') || Request::is('*/perkin/*') ? 'active' : '' }}">
                 <a href="#perencanaan" data-bs-toggle="collapse"
-                    aria-expanded="{{ Request::is('*/perkin/*') ? 'true' : '' }}"
-                    class="dropdown-toggle {{ Request::is('*/perkin/*') ? 'collapsed' : '' }}">
+                    aria-expanded="{{ Request::is('*/renstra/*') || Request::is('*/perkin/*') ? 'true' : 'false' }}"
+                    class="dropdown-toggle {{ Request::is('*/renstra/*') || Request::is('*/perkin/*') ? 'collapsed' : '' }}">
                     <div class="">
                         <span class="fw-bold">PERENCANAAN</span>
                     </div>
@@ -79,11 +79,12 @@
                         </svg>
                     </div>
                 </a>
-                <ul class="collapse submenu list-unstyled {{ Request::is('*/perkin/*') ? 'show' : '' }}"
+                <ul class="collapse submenu list-unstyled {{ Request::is('*/renstra/*') || Request::is('*/perkin/*') ? 'show' : '' }}"
                     id="perencanaan" data-bs-parent="#accordionExample">
                     <li>
-                        <a href="#level-three" data-bs-toggle="collapse" aria-expanded="false"
-                            class="dropdown-toggle collapsed">
+                        <a href="#renstra" data-bs-toggle="collapse"
+                            aria-expanded="{{ Request::is('*/renstra/*') ? 'true' : 'false' }}"
+                            class="dropdown-toggle {{ Request::is('*/renstra/*') ? 'collapsed' : '' }}">
                             <div>
                                 <i data-feather="target"></i><span class="icon-name fw-bold"> RENSTRA</span>
                             </div>
@@ -97,9 +98,61 @@
                                 </svg>
                             </div>
                         </a>
-                        <ul class="collapse list-unstyled sub-submenu" id="level-three" data-bs-parent="#pages">
-                            <li>
-                                <a href="javascript:void(0);"> Item Level 2a </a>
+                        <ul class="collapse list-unstyled sub-submenu {{ Request::is('*/renstra/*') ? 'show' : '' }}"
+                            id="renstra" data-bs-parent="#perencanaan">
+                            <li class="{{ Request::routeIs('vision.index') ? 'active' : '' }}">
+                                <a href="{{ route('vision.index') }}"> Visi </a>
+                            </li>
+                            <li class="{{ Request::routeIs('mission.index') ? 'active' : '' }}">
+                                <a href="{{ route('mission.index') }}"> Misi </a>
+                            </li>
+                            <li class="{{ Request::routeIs('iku.index') ? 'active' : '' }}">
+                                <a href="{{ route('iku.index') }}"> Indikator Kinerja<br /> Utama </a>
+                            </li>
+                            <li class="{{ Request::routeIs('settings') ? 'active' : '' }}">
+                                <a href="#"> Capaian Kinerja <br /> Tahun Sebelumnya </a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li>
+                        <a href="#" class="dropdown-toggle ">
+                            <div>
+                                <i data-feather="calendar"></i><span class="icon-name fw-bold"> RKT</span>
+                            </div>
+                            <div>
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                    viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                    stroke-linecap="round" stroke-linejoin="round"
+                                    class="feather feather-chevron-right">
+                                    <polyline points="9 18 15 12 9 6"></polyline>
+                                </svg>
+                            </div>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#perkin" data-bs-toggle="collapse"
+                            aria-expanded="{{ Request::is('*/perkin/*') ? 'true' : 'false' }}"
+                            class="dropdown-toggle {{ Request::is('*/perkin/*') ? 'collapsed' : '' }}">
+                            <div>
+                                <i data-feather="file-text"></i><span class="icon-name fw-bold"> PERKIN</span>
+                            </div>
+                            <div>
+
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                    viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                    stroke-linecap="round" stroke-linejoin="round"
+                                    class="feather feather-chevron-right">
+                                    <polyline points="9 18 15 12 9 6"></polyline>
+                                </svg>
+                            </div>
+                        </a>
+                        <ul class="collapse list-unstyled sub-submenu {{ Request::is('*/perkin/*') ? 'show' : '' }}"
+                            id="perkin" data-bs-parent="#perencanaan">
+                            <li class="{{ Request::routeIs('program_target.index') ? 'active' : '' }}">
+                                <a href="{{ route('program_target.index') }}"> Sasaran Program </a>
+                            </li>
+                            <li class="{{ Request::routeIs('performance_indicator.index') ? 'active' : '' }}">
+                                <a href="{{ route('performance_indicator.index') }}"> Indikator Kinerja </a>
                             </li>
                         </ul>
                     </li>
