@@ -1733,7 +1733,7 @@ body {
                     padding: 10px 12px 10px 48px;
                     padding-left: 25px;
                     margin-left: 72px;
-                    font-size: 15px;
+                    font-size: 0.75rem;
                     color: #515365;
                     letter-spacing: 1px;
                 }
@@ -1751,6 +1751,11 @@ body {
                             border: 1.9px solid #4361ee;
                             box-shadow: none;
                         }
+
+                        svg:not(.badge-icon) {
+                            color: #4361ee;
+                            fill: #4361ee0a;
+                        }
                     }
 
                     &:before {
@@ -1767,6 +1772,33 @@ body {
 
                 &.active a:before {
                     background-color: #009688;
+                }
+
+                > .ssubmenu svg:not(.badge-icon) {
+                    color: #515365;
+                    fill: rgb(136 142 168 / 10%);
+                    margin-right: 6px;
+                    vertical-align: middle;
+                    width: 20px;
+                    height: 20px;
+                    stroke-width: 1.8;
+                }
+
+                &.active > .ssubmenu {
+                    svg,
+                    span {
+                        color: #4361ee;
+                    }
+                }
+
+                .ssubmenu div {
+                    display: flex;
+                    flex-direction: row;
+                    align-items: center; /* Pusatkan elemen secara vertikal jika diperlukan */
+                }
+
+                .ssubmenu div i {
+                    margin-right: 5px; /* Jarak antara ikon dan teks */
                 }
             }
         }

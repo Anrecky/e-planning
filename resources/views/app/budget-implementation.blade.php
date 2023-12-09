@@ -78,20 +78,23 @@
                         <div class="d-flex flex-wrap justify-content-between py-2 my-2">
                             <div class="d-flex flex-wrap gap-1 my-2">
                                 <button id="add-activity_btn" class="btn btn-primary shadow-sm" data-bs-toggle="modal"
-                                    data-bs-target="#createModal">Rekam SubKomp</button>
+                                    data-bs-target="#createModal">Rekam Sub Komponen</button>
                                 <button id="add-account_code_btn" data-bs-toggle="modal" data-bs-target="#createModal"
                                     class="btn btn-primary shadow-sm">Rekam Akun</button>
                                 <button id="add-expenditure_detail_btn" data-bs-toggle="modal"
                                     data-bs-target="#createModal" class="btn btn-primary shadow-sm">Rekam
                                     Detail</button>
                             </div>
-                            <div class="d-flex flex-wrap gap-1 my-2">
-                                <button id="save-dipa" class="btn btn-outline-primary shadow-sm bs-tooltip"
-                                    title="Simpan data DIPA"><i data-feather="save"></i></button>
+                            <div class="d-flex flex-wrap gap-1 my-2 mx-1">
+                                <button id="save-dipa" class="btn btn-outline-success shadow-sm bs-tooltip"
+                                    title="Simpan data DIPA"><i data-feather="save"></i>
+                                </button>
                                 <button id="edit-dipa" class="btn btn-outline-warning shadow-sm bs-tooltip"
-                                    title="Edit data DIPA"><i data-feather="edit"></i></button>
+                                    title="Edit data DIPA"><i data-feather="edit"></i>
+                                </button>
                                 <button id="delete-dipa" class="btn btn-outline-danger shadow-sm bs-tooltip"
-                                    title="Hapus data DIPA"><i data-feather="trash"></i></button>
+                                    title="Hapus data DIPA"><i data-feather="trash"></i>
+                                </button>
                             </div>
                         </div>
 
@@ -129,8 +132,8 @@
                     <form id="form-create">
                         <div id="create-input_container" class="input-group my-2">
                         </div>
-                        <button class="btn btn-success text-center align-items-center mt-1 mt-2 py-auto" type="submit">
-                            <i data-feather="save"></i><span class="icon-name ms-1">Simpan</span>
+                        <button class="btn btn-primary text-center align-items-center mt-1 mt-2 py-auto" type="submit">
+                            <span class="icon-name">Simpan</span>
                         </button>
                     </form>
                 </div>
