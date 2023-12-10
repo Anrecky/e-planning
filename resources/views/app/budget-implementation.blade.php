@@ -38,6 +38,12 @@
 
             tr.activity-row td {
                 background-color: #fcf5e9;
+                font-weight: bold !important;
+                font-style: italic !important;
+            }
+
+            tr.account-row td {
+                font-style: italic !important;
             }
         </style>
         <!--  END CUSTOM STYLE FILE  -->
@@ -110,7 +116,53 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <!-- Rows will be dynamically added here -->
+                                @forelse ($budgetImplementations as $activityCode => $budgetImplementation)
+                                    @php
+                                        $activity = $budgetImplementation->first(); // Get the activity from the first item in the group
+                                    @endphp
+                                    <tr class="activity-row">
+                                        <td>{{ $activityCode }}</td>
+                                        <td>{{ $activity->activity_name }}</td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                    </tr>
+                                    @foreach ($budgetImplementation->groupBy('account_code_id') as $accountGroup)
+                                        @php
+                                            $accountCode = $accountGroup->first()->accountCode; // Get the account code from the first item in the group
+                                        @endphp
+
+                                        @if ($accountCode)
+                                            <!-- Account Code Row -->
+                                            <tr>
+                                                <td>{{ $accountCode->code }}</td>
+                                                <td>{{ $accountCode->name }}</td>
+                                                <td></td>
+                                                <td></td>
+                                                <td></td>
+                                                <td></td>
+                                            </tr>
+                                            @foreach ($accountGroup as $bi)
+                                                <!-- Expenditure Detail Row -->
+                                                @if ($bi->expenditureDetail)
+                                                    <tr>
+                                                        <td></td> <!-- Empty cell for alignment -->
+                                                        <td>{{ $bi->expenditureDetail->name }}</td>
+                                                        <td>{{ $bi->expenditureDetail->volume }}</td>
+                                                        <td>{{ $bi->expenditureDetail->unit }}</td>
+                                                        <td>{{ number_format($bi->expenditureDetail->price, 2) }}
+                                                        </td>
+                                                        <td>{{ number_format($bi->expenditureDetail->total, 2) }}
+                                                        </td>
+                                                    </tr>
+                                                @endif
+                                            @endforeach
+                                        @endif
+                                    @endforeach
+
+                                @empty
+                                @endforelse
                             </tbody>
                         </table>
                     </div>
@@ -118,7 +170,6 @@
             </div>
         </div>
     </div>
-
     <!-- Create Modal -->
     <div class="modal fade" id="createModal" tabindex="-1" role="dialog" aria-labelledby="createModalTitle"
         aria-hidden="true">
@@ -145,6 +196,8 @@
     <x-slot:footerFiles>
         <script src="{{ asset('plugins/global/vendors.min.js') }}"></script>
         <script>
+            const accountCodes = @json($accountCodes);
+            const expenditureUnits = @json($expenditureUnits);
             document.addEventListener('DOMContentLoaded', function() {
                 const theadTh = document.querySelectorAll('thead tr th');
                 theadTh.forEach(th => th.classList.add('bg-primary'));
@@ -153,17 +206,33 @@
                 const form = document.getElementById('form-create');
                 const table = document.getElementById('budget_implementation-table');
                 const createModalEl = document.getElementById('createModal');
+                const saveDipaBtn = document.getElementById('save-dipa');
 
                 createModalEl.addEventListener('show.bs.modal', event => {
                     const btnShowModalId = event.relatedTarget.id;
                     const createInputContainer = document.getElementById('create-input_container');
                     if (btnShowModalId === 'add-activity_btn') return createInputContainer.innerHTML =
                         `<input type="text" name="activity_code" required class="form-control" style="max-width: 160px !important;"placeholder="KD.Keg"> <input type="text" required name="activity_name" class="form-control" placeholder="Uraian">`;
-                    if (btnShowModalId === 'add-account_code_btn') return createInputContainer.innerHTML =
-                        `<input type="text" name="account_code" required class="form-control" style="max-width: 160px !important;"placeholder="KD.Akun"> <input type="text" required name="account_name" class="form-control"placeholder="Uraian">`;
-                    if (btnShowModalId === 'add-expenditure_detail_btn') {
+                    if (btnShowModalId === 'add-account_code_btn') {
+                        let options = accountCodes.map(code =>
+                            `<option value="${code.code}" data-account-name="${code.name}">${code.code}</option>`
+                        ).join('');
                         createInputContainer.innerHTML =
-                            `<input type="text" required name="expenditure_description" class="form-control" placeholder="Uraian Detail"><input type="text" required name="expenditure_volume" class="form-control"style="max-width: 100px !important;" placeholder="Volume"><input type="text" name="unit" required class="form-control" style="max-width: 100px !important;" placeholder="Satuan"><input type="text" name="unit_price" required class="form-control" placeholder="Harga Satuan"><input type="text" name="total" required class="form-control" placeholder="total">`;
+                            `<select name="account_code" id="account-code-select" required class="form-control" style="max-width: 200px !important;"><option value="">Pilih Kode Akun</option>${options}</select><input type="text" id="account-name-input" disabled required name="account_name" class="form-control" placeholder="Uraian">`;
+
+                        // Add event listener for change event
+                        document.getElementById('account-code-select').addEventListener('change', function() {
+                            const selectedOption = this.options[this.selectedIndex];
+                            const accountName = selectedOption.getAttribute('data-account-name');
+                            document.getElementById('account-name-input').value = accountName || '';
+                        });
+                    }
+                    if (btnShowModalId === 'add-expenditure_detail_btn') {
+                        let options = expenditureUnits.map(unit =>
+                            `<option value="${unit.code}">${unit.code}</option>`
+                        ).join('');
+                        createInputContainer.innerHTML =
+                            `<input type="text" required name="expenditure_description" class="form-control" placeholder="Uraian Detail"><input type="text" required name="expenditure_volume" class="form-control"style="max-width: 100px !important;" placeholder="Volume"><select name="unit" required class="form-control" style="max-width: 150px !important;"><option value="">Pilih Satuan</option>${options}</select><input type="text" name="unit_price" required class="form-control" placeholder="Harga Satuan"><input type="text" name="total" required class="form-control" placeholder="total">`;
 
                         // Now add the event listeners
                         const volumeInput = createInputContainer.querySelector(
@@ -182,12 +251,85 @@
 
                 tableBody.addEventListener('click', handleRowClick);
                 form.addEventListener('submit', handleFormSubmit);
+                saveDipaBtn.addEventListener('click', handleSaveDipaClick);
             });
+
+            function handleSaveDipaClick() {
+                const dipaData = groupRows();
+
+                // Replace with your server's endpoint URL
+                const endpoint = '{{ route('budget_implementation.store') }}';
+
+                // Using Axios to send a POST request
+                axios.post(endpoint, {
+                        dipa: dipaData
+                    })
+                    .then(response => {
+                        // Handle success
+                        console.log('Data sent successfully:', response);
+                    })
+                    .catch(error => {
+                        // Handle error
+                        console.error('Error sending data:', error);
+                    });
+            }
+
+
+            function groupRows() {
+                let rows = document.querySelectorAll('tr');
+                let groupedRows = [];
+                let currentActivity = null;
+                let currentAccount = null;
+
+                rows.forEach(row => {
+                    if (row.classList.contains('activity-row')) {
+                        let activityData = {
+                            code: row.children[0].textContent,
+                            name: row.children[1].textContent
+                        };
+                        currentActivity = {
+                            activity: activityData,
+                            accounts: []
+                        };
+                        groupedRows.push(currentActivity);
+                    } else if (row.classList.contains('account-row')) {
+                        let accountData = {
+                            code: row.children[0].textContent,
+                            name: row.children[1].textContent
+                        };
+                        currentAccount = {
+                            account: accountData,
+                            expenditures: []
+                        };
+                        if (currentActivity) {
+                            currentActivity.accounts.push(currentAccount);
+                        }
+                    } else if (row.classList.contains('expenditure-row')) {
+                        let unit_price = row.children[4].textContent.replace(/Rp|\./g, '').trim();
+                        let total = row.children[5].textContent.replace(/Rp|\./g, '').trim();
+
+                        let expenditureData = {
+                            description: row.children[1].textContent,
+                            volume: row.children[2].textContent,
+                            unit: row.children[3].textContent,
+                            unit_price: unit_price,
+                            total: total
+                        };
+                        if (currentAccount) {
+                            currentAccount.expenditures.push(expenditureData);
+                        }
+                    }
+                });
+
+                return groupedRows;
+            }
 
             function formatAsIDRCurrency(value) {
                 return new Intl.NumberFormat('id-ID', {
                     style: 'currency',
-                    currency: 'IDR'
+                    currency: 'IDR',
+                    minimumFractionDigits: 0,
+                    maximumFractionDigits: 0
                 }).format(value);
             }
 
@@ -212,10 +354,22 @@
             }
 
             function handleRowClick(e) {
+
                 if (e.target.closest('tr')) {
                     clearSelectedRows();
-                    e.target.closest('tr').classList.add('selected');
-                    toggleButtonsBasedOnRow(e.target.closest('tr'));
+                    const clickedRow = e.target.closest('tr');
+                    clickedRow.classList.add('selected');
+                    toggleButtonsBasedOnRow(clickedRow);
+
+                    // Mark the clicked row as the parent for the next entry
+                    if (clickedRow.classList.contains('activity-row')) {
+                        clickedRow.classList.add('activity-parent');
+                        clickedRow.classList.remove('account-parent');
+                    } else if (clickedRow.classList.contains('account-row')) {
+                        clickedRow.classList.add('account-parent');
+                    } else {
+
+                    }
                 }
             }
 
@@ -276,7 +430,6 @@
                 $('#createModal').modal('hide');
             }
 
-
             function createAndAppendRow(data, type) {
                 if (type === null) {
                     alert("Terdapat kesalahan pemrosesan...");
@@ -331,25 +484,6 @@
                     tableBody.appendChild(newRow); // Append at the end if referenceRow is the last child.
                 } else {
                     referenceRow.insertAdjacentElement('afterend', newRow); // Insert after the reference row.
-                }
-            }
-
-
-            function handleRowClick(e) {
-                if (e.target.closest('tr')) {
-                    clearSelectedRows();
-                    const clickedRow = e.target.closest('tr');
-                    clickedRow.classList.add('selected');
-                    toggleButtonsBasedOnRow(clickedRow);
-
-                    // Mark the clicked row as the parent for the next entry
-                    if (clickedRow.classList.contains('activity-row')) {
-                        clickedRow.classList.add('activity-parent');
-                        // Remove the account-parent class if it exists
-                        clickedRow.classList.remove('account-parent');
-                    } else if (clickedRow.classList.contains('account-row')) {
-                        clickedRow.classList.add('account-parent');
-                    }
                 }
             }
         </script>

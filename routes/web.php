@@ -69,5 +69,6 @@ Route::middleware(['auth'])->prefix('admin')->group(function () {
         Route::patch('user/{user}/update', [UserController::class, 'update'])->name('user.update');
         Route::delete('user/{user}/hapus', [UserController::class, 'destroy'])->name('user.delete');
         Route::get('dipa', [BudgetImplementationController::class, 'index'])->name('budget_implementation.index');
+        Route::post('dipa', [BudgetImplementationController::class, 'store'])->name('budget_implementation.store');
     });
 });

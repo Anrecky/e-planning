@@ -64,10 +64,10 @@
                 </a>
             </li> --}}
 
-            <li class="menu {{ Request::is('*/perkin/*') ? 'active' : '' }}">
+            <li class="menu {{ Request::is('*/renstra/*') || Request::is('*/perkin/*') ? 'active' : '' }}">
                 <a href="#perencanaan" data-bs-toggle="collapse"
-                    aria-expanded="{{ Request::is('*/perkin/*') ? 'true' : '' }}"
-                    class="dropdown-toggle {{ Request::is('*/perkin/*') ? 'collapsed' : '' }}">
+                    aria-expanded="{{ Request::is('*/renstra/*') || Request::is('*/perkin/*') ? 'true' : 'false' }}"
+                    class="dropdown-toggle {{ Request::is('*/renstra/*') || Request::is('*/perkin/*') ? 'collapsed' : '' }}">
                     <div class="">
                         <span class="fw-bold">PERENCANAAN</span>
                     </div>
@@ -79,7 +79,7 @@
                         </svg>
                     </div>
                 </a>
-                <ul class="collapse submenu list-unstyled {{ Request::is('*/perkin/*') ? 'show' : '' }}"
+                <ul class="collapse submenu list-unstyled {{ Request::is('*/renstra/*') || Request::is('*/perkin/*') ? 'show' : '' }}"
                     id="perencanaan" data-bs-parent="#accordionExample">
                     <li class="submenu">
                         <a href="#renstra" data-bs-toggle="collapse" aria-expanded="false"
