@@ -1,5 +1,5 @@
 <div class="table-responsive my-4">
-    <div class="d-flex flex-wrap justify-content-between py-2 my-2">
+    <div class="d-flex flex-wrap justify-content-between py-2 my-2 me-1">
         <div class="d-flex flex-wrap gap-1 my-2">
             <button id="add-activity_btn" class="btn btn-primary shadow-sm" data-bs-toggle="modal"
                 data-bs-target="#createModal">Rekam SubKomp</button>

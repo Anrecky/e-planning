@@ -82,8 +82,8 @@
                 <ul class="collapse submenu list-unstyled {{ Request::is('*/renstra/*') || Request::is('*/perkin/*') ? 'show' : '' }}"
                     id="perencanaan" data-bs-parent="#accordionExample">
                     <li class="submenu">
-                        <a href="#renstra" data-bs-toggle="collapse" aria-expanded="false"
-                            class="dropdown-toggle collapsed">
+                        <a href="#renstra" data-bs-toggle="collapse" aria-expanded="{{ Request::is('*/renstra/*') || Request::is('*/perkin/*') ? 'true' : 'false' }}"
+                            class="dropdown-toggle {{ Request::is('*/renstra/*') || Request::is('*/perkin/*') ? 'collapsed' : '' }}">
                             <div>
                                 <i data-feather="folder"></i><span class="icon-name fw-bold">RENSTRA</span>
                             </div>
@@ -96,7 +96,7 @@
                                 </svg>
                             </div>
                         </a>
-                        <ul class="collapse list-unstyled sub-submenu" id="renstra" data-bs-parent="#perencanaan">
+                        <ul class="collapse list-unstyled sub-submenu {{ Request::is('*/renstra/*') || Request::is('*/perkin/*') ? 'show' : '' }}" id="renstra" data-bs-parent="#perencanaan">
                             <li class="{{ Request::routeIs('vision.index') ? 'active' : '' }}">
                                 <a class="ssubmenu" href="{{ route('vision.index') }}" aria-expanded="false">
                                     <div>
