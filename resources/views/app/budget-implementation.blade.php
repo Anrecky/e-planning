@@ -45,6 +45,12 @@
             tr.account-row td {
                 font-style: italic !important;
             }
+
+            tr td:first-child,
+            tr td:nth-child(3),
+            tr td:nth-child(4) {
+                text-align: center;
+            }
         </style>
         <!--  END CUSTOM STYLE FILE  -->
     </x-slot>
@@ -55,116 +61,10 @@
 
     <div class="row layout-top-spacing">
         <div class="col-lg-12 layout-spacing">
-            <div class="statbox widget box box-shadow">
-                <div style="min-height:50vh;" class="widget-content widget-content-area">
-                    @if ($errors->any())
-                        <div class="alert alert-danger">
-                            <ul>
-                                @foreach ($errors->all() as $error)
-                                    <li>{{ $error }}</li>
-                                @endforeach
-                            </ul>
-                        </div>
-                    @endif
-                    @if (session('success'))
-                        <div class="alert alert-success alert-dismissible fade show" role="alert">
-                            {{ session('success') }}
-                            <button type="button" class="btn-close" data-bs-dismiss="alert"
-                                aria-label="Close"></button>
-                        </div>
-                    @endif
-                    @if (session('error'))
-                        <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                            {{ session('error') }}
-                            <button type="button" class="btn-close" data-bs-dismiss="alert"
-                                aria-label="Close"></button>
-                        </div>
-                    @endif
-                    <div class="table-responsive my-4">
-                        <div class="d-flex flex-wrap justify-content-between py-2 my-2">
-                            <div class="d-flex flex-wrap gap-1 my-2">
-                                <button id="add-activity_btn" class="btn btn-primary shadow-sm" data-bs-toggle="modal"
-                                    data-bs-target="#createModal">Rekam SubKomp</button>
-                                <button id="add-account_code_btn" data-bs-toggle="modal" data-bs-target="#createModal"
-                                    class="btn btn-primary shadow-sm">Rekam Akun</button>
-                                <button id="add-expenditure_detail_btn" data-bs-toggle="modal"
-                                    data-bs-target="#createModal" class="btn btn-primary shadow-sm">Rekam
-                                    Detail</button>
-                            </div>
-                            <div class="d-flex flex-wrap gap-1 my-2">
-                                <button id="save-dipa" class="btn btn-outline-primary shadow-sm bs-tooltip"
-                                    title="Simpan data DIPA"><i data-feather="save"></i></button>
-                                <button id="edit-dipa" class="btn btn-outline-warning shadow-sm bs-tooltip"
-                                    title="Edit data DIPA"><i data-feather="edit"></i></button>
-                                <button id="delete-dipa" class="btn btn-outline-danger shadow-sm bs-tooltip"
-                                    title="Hapus data DIPA"><i data-feather="trash"></i></button>
-                            </div>
-                        </div>
-
-                        <table id="budget_implementation-table" class="table table-bordered">
-                            <thead>
-                                <tr class="text-center">
-                                    <th scope="col">Kode</th>
-                                    <th scope="col">SubKomponen</th>
-                                    <th scope="col">Volume</th>
-                                    <th scope="col">Satuan</th>
-                                    <th scope="col">Harga Satuan</th>
-                                    <th scope="col">Jumlah Biaya</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @forelse ($budgetImplementations as $activityCode => $budgetImplementation)
-                                    @php
-                                        $activity = $budgetImplementation->first(); // Get the activity from the first item in the group
-                                    @endphp
-                                    <tr class="activity-row">
-                                        <td>{{ $activityCode }}</td>
-                                        <td>{{ $activity->activity_name }}</td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                    </tr>
-                                    @foreach ($budgetImplementation->groupBy('account_code_id') as $accountGroup)
-                                        @php
-                                            $accountCode = $accountGroup->first()->accountCode; // Get the account code from the first item in the group
-                                        @endphp
-
-                                        @if ($accountCode)
-                                            <!-- Account Code Row -->
-                                            <tr>
-                                                <td>{{ $accountCode->code }}</td>
-                                                <td>{{ $accountCode->name }}</td>
-                                                <td></td>
-                                                <td></td>
-                                                <td></td>
-                                                <td></td>
-                                            </tr>
-                                            @foreach ($accountGroup as $bi)
-                                                <!-- Expenditure Detail Row -->
-                                                @if ($bi->expenditureDetail)
-                                                    <tr>
-                                                        <td></td> <!-- Empty cell for alignment -->
-                                                        <td>{{ $bi->expenditureDetail->name }}</td>
-                                                        <td>{{ $bi->expenditureDetail->volume }}</td>
-                                                        <td>{{ $bi->expenditureDetail->unit }}</td>
-                                                        <td>{{ number_format($bi->expenditureDetail->price, 2) }}
-                                                        </td>
-                                                        <td>{{ number_format($bi->expenditureDetail->total, 2) }}
-                                                        </td>
-                                                    </tr>
-                                                @endif
-                                            @endforeach
-                                        @endif
-                                    @endforeach
-
-                                @empty
-                                @endforelse
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>
+            <x-custom.statbox>
+                <x-custom.alerts />
+                <x-custom.budget-implementation-table :groupedBI="$groupedBI" />
+            </x-custom.statbox>
         </div>
     </div>
     <!-- Create Modal -->
@@ -198,6 +98,8 @@
             document.addEventListener('DOMContentLoaded', function() {
                 const theadTh = document.querySelectorAll('thead tr th');
                 theadTh.forEach(th => th.classList.add('bg-primary'));
+                const tdMoney = document.querySelectorAll(
+                    'tr.expenditure-row td:nth-child(5),tr.expenditure-row td:nth-child(6)')
 
                 const tableBody = document.querySelector('tbody');
                 const form = document.getElementById('form-create');
@@ -271,7 +173,6 @@
                     });
             }
 
-
             function groupRows() {
                 let rows = document.querySelectorAll('tr');
                 let groupedRows = [];
@@ -281,16 +182,19 @@
                 rows.forEach(row => {
                     if (row.classList.contains('activity-row')) {
                         let activityData = {
+                            id: row.dataset.activity,
                             code: row.children[0].textContent,
                             name: row.children[1].textContent
                         };
                         currentActivity = {
+                            bi: row.dataset.bi,
                             activity: activityData,
                             accounts: []
                         };
                         groupedRows.push(currentActivity);
                     } else if (row.classList.contains('account-row')) {
                         let accountData = {
+                            id: row.dataset.accountCode,
                             code: row.children[0].textContent,
                             name: row.children[1].textContent
                         };
@@ -306,6 +210,7 @@
                         let total = row.children[5].textContent.replace(/Rp|\./g, '').trim();
 
                         let expenditureData = {
+                            id: row.dataset.expenditure,
                             description: row.children[1].textContent,
                             volume: row.children[2].textContent,
                             unit: row.children[3].textContent,

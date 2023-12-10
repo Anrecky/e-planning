@@ -3,32 +3,49 @@
 namespace App\Http\Controllers;
 
 use App\Models\BudgetImplementation;
+use App\Models\BudgetImplementationDetail;
 use App\Models\AccountCode;
 use App\Models\ExpenditureUnit;
 use App\Models\Activity;
-use App\Models\ExpenditureDetail;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Arr;
-use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Validator;
+use App\Services\BudgetImplementationInputArrayService;
 
 
 class BudgetImplementationController extends Controller
 {
+    protected $budgetService;
+
+    public function __construct(BudgetImplementationInputArrayService $budgetService)
+    {
+        $this->budgetService = $budgetService;
+    }
+
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
         $title = "DIPA";
-        $budgetImplementations = BudgetImplementation::with('accountCode', 'expenditureDetail', 'expenditureDetail.expenditureUnit')
-            ->where('revisi', 0)
-            ->get()
-            ->groupBy('activity_code');
+
+        // Retrieving BudgetImplementations with necessary relations
+        $budgetImplementations = BudgetImplementation::query()
+            ->with(['activity', 'accountCode', 'details'])
+            ->initialBudget()
+            ->get();
+
+        // Grouping by activity code, then further grouping each activity's data by account code
+        $groupedBI = $budgetImplementations->groupBy('activity.code')->map(function ($activityGroup) {
+            return $activityGroup->groupBy('accountCode.code');
+        });
+
         $accountCodes = AccountCode::all();
         $expenditureUnits = ExpenditureUnit::all();
-        return view('app.budget-implementation', compact('title', 'accountCodes', 'expenditureUnits', 'budgetImplementations'));
+
+        return view('app.budget-implementation', compact('title', 'groupedBI', 'accountCodes', 'expenditureUnits'));
     }
+
 
     /**
      * Show the form for creating a new resource.
@@ -40,83 +57,40 @@ class BudgetImplementationController extends Controller
 
     public function store(Request $request)
     {
-        // Decode the JSON data from the request
-        $reqData = $request->input('dipa');
+
+        $validator = Validator::make($request->all(), [
+            'dipa.*.bi' => 'sometimes|integer',
+            'dipa.*.activity.id' => 'sometimes|integer',
+            'dipa.*.activity.code' => 'required|string',
+            'dipa.*.activity.name' => 'required|string',
+            'dipa.*.accounts' => 'nullable|array',
+            'dipa.*.accounts.*.account.id' => 'sometimes|string',
+            'dipa.*.accounts.*.account.code' => 'required|string',
+            'dipa.*.accounts.*.account.name' => 'required|string',
+            'dipa.*.accounts.*.expenditures' => 'sometimes|array',
+            'dipa.*.accounts.*.expenditures.*.id' => 'sometimes|string',
+            'dipa.*.accounts.*.expenditures.*.budget_implementation' => 'sometimes|string',
+            'dipa.*.accounts.*.expenditures.*.description' => 'required|string',
+            'dipa.*.accounts.*.expenditures.*.volume' => 'required|numeric',
+            'dipa.*.accounts.*.expenditures.*.unit' => 'required|string',
+            'dipa.*.accounts.*.expenditures.*.unit_price' => 'required|numeric',
+            'dipa.*.accounts.*.expenditures.*.total' => 'required|numeric',
+        ]);
+
+        return response()->json($this->budgetService->process($validator->validated()['dipa']));
+
+        if ($validator->fails()) {
+            return response()->json($validator->errors(), 422);
+        }
 
         try {
-            foreach ($reqData as $dipa) {
-                $activityCode = Str::of($dipa['activity']['code'])->upper();
-                $activityName = $dipa['activity']['name'];
-
-                // Find or create a BudgetImplementation with revisi 0
-                $budgetImplementation = BudgetImplementation::where([
-                    ['activity_code', $activityCode],
-                    ['revisi', 0]
-                ])->first() ?: new BudgetImplementation;
-                $budgetImplementation->activity_name = $activityName;
-                $budgetImplementation->activity_code = $activityCode;
-                $budgetImplementation->save();
-
-                foreach ($dipa['accounts'] as $accountData) {
-                    $accountCode = AccountCode::where('code', $accountData['account']['code'])->first();
-                    if ($budgetImplementation->account_code_id === null) {
-                        $budgetImplementation->accountCode()->associate($accountCode)->save();
-                    } else {
-                        $budgetImplementation = new BudgetImplementation;
-                        $budgetImplementation->activity_name = $activityName;
-                        $budgetImplementation->activity_code = $activityCode;
-                        $budgetImplementation->save();
-                        $budgetImplementation->accountCode()->associate($accountCode)->save();
-                    }
-
-                    foreach ($accountData['expenditures'] as $expenditureData) {
-                        $expenditureDetail = new ExpenditureDetail;
-                        $expenditureDetail->name = $expenditureData['description'];
-                        $expenditureDetail->volume = $expenditureData['volume'];
-                        $expenditureDetail->price = $expenditureData['unit_price'];
-                        $expenditureDetail->total = $expenditureData['total'];
-                        $expenditureDetail->expenditure_unit_id = $this->findExpenditureUnitId($expenditureData['unit']);
-                        $expenditureDetail->save();
-
-                        if ($budgetImplementation->expenditure_detail_id === null) {
-                            $budgetImplementation->expenditureDetail()->associate($expenditureDetail)->save();
-                        } else {
-                            $budgetImplementation = new BudgetImplementation;
-                            $budgetImplementation->activity_name = $activityName;
-                            $budgetImplementation->activity_code = $activityCode;
-                            $budgetImplementation->save();
-                            $budgetImplementation->accountCode()->associate($accountCode)->save();
-                            $budgetImplementation->expenditureDetail()->associate($expenditureDetail)->save();
-                        }
-                    }
-                }
-            }
         } catch (\Exception $e) {
             Log::error('Error in store function: ' . $e->getMessage());
             return response()->json(['error' => $e->getMessage()], 500);
         }
 
-        return response()->json(["message" => "success"]);
+        return response()->json(['message' => 'Success']);
     }
-
-
-
-    /**
-     * Find the ID of the Expenditure Unit based on the unit name.
-     * This is a placeholder function and should be implemented according to your application logic.
-     *
-     * @param string $unitName
-     * @return int
-     */
-    private function findExpenditureUnitId($code)
-    {
-        // Implement the logic to find the Expenditure Unit ID based on the unit name.
-        // This could involve querying the ExpenditureUnit model.
-        $expenditureUnit = ExpenditureUnit::where('code', $code)->first();
-        return $expenditureUnit ? $expenditureUnit->id : null;
-    }
-
-
 
     /**
      * Display the specified resource.

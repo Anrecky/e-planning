@@ -8,15 +8,52 @@ use Illuminate\Database\Eloquent\Model;
 class BudgetImplementation extends Model
 {
     use HasFactory;
-    protected $fillable = ['activity_code'];
 
+    protected $fillable = ['revision', 'activity_id', 'account_code_id'];
+
+    public function activity()
+    {
+        return $this->belongsTo(Activity::class, 'activity_id');
+    }
     public function accountCode()
     {
         return $this->belongsTo(AccountCode::class);
     }
-
-    public function expenditureDetail()
+    public function details()
     {
-        return $this->belongsTo(ExpenditureDetail::class);
+        return $this->hasMany(BudgetImplementationDetail::class);
+    }
+
+    /**
+     * Scope a query to only include initial DIPA (Daftar Isian Pelaksanaan Anggaran) records.
+     *
+     * @param  \Illuminate\Database\Eloquent\Builder  $query
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function scopeInitialBudget($query)
+    {
+        return $query->where('revision', 0);
+    }
+    /**
+     * Scope a query to group data by activity code.
+     *
+     * @param  \Illuminate\Database\Eloquent\Builder  $query
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function scopeGroupByActivityCode($query)
+    {
+        return $query->join('activities', 'activities.id', '=', 'budget_implementations.activity_id')
+            ->groupBy('activities.code');
+    }
+    /**
+     * Scope a query to group data by account code.
+     *
+     * @param  \Illuminate\Database\Eloquent\Builder  $query
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function scopeGroupByAccountCode($query)
+    {
+        return $query->join('account_codes', 'account_codes.id', '=', 'budget_implementations.account_code_id')
+            ->groupBy('account_codes.code');
     }
 }

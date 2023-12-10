@@ -9,4 +9,9 @@ class ExpenditureUnit extends Model
 {
     use HasFactory;
     protected $fillable = ['name', 'code'];
+    public static function findExpenditureUnitId($unitCode)
+    {
+        $expenditureUnit = self::firstWhere('code', $unitCode);
+        return $expenditureUnit ? $expenditureUnit->id : null;
+    }
 }

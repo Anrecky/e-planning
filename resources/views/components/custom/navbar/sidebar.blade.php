@@ -273,6 +273,44 @@
 
             <li class="menu {{ Request::is('*/penganggaran/*') ? 'active' : '' }}">
                 <a href="#penganggaran" data-bs-toggle="collapse"
+                    aria-expanded="{{ Request::is('*/penganggaran/*') ? 'true' : 'false' }}"
+                    class="dropdown-toggle {{ Request::is('*/penganggaran/*') ? 'collapsed' : '' }}">
+                    <div>
+                        <span class="fw-bold">PENGANGGARAN</span>
+                    </div>
+                    <div>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                            fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                            stroke-linejoin="round" class="feather feather-chevron-right">
+                            <polyline points="9 18 15 12 9 6"></polyline>
+                        </svg>
+                    </div>
+                </a>
+                <ul class="collapse submenu list-unstyled {{ Request::is('*/penganggaran/*') ? 'show' : '' }}"
+                    id="penganggaran" data-bs-parent="#accordionExample">
+                    <li class="submenu {{ Request::routeIs('budget_implementation.index') ? 'active' : '' }}">
+                        <a href="{{ route('budget_implementation.index') }}"
+                            aria-expanded="{{ Request::is('*/dipa/*') ? 'false' : 'true' }}" class="dropdown-toggle">
+                            <div class="">
+                                <i data-feather="check-square"></i>
+                                <span class="icon-name fw-bold">USULAN DIPA</span>
+                            </div>
+                        </a>
+                    </li>
+                    <li class="submenu">
+                        <a href="#" aria-expanded="false" class="dropdown-toggle">
+                            <div class="">
+                                <i data-feather="edit"></i>
+                                <span class="icon-name fw-bold">REVISI DIPA</span>
+                            </div>
+                        </a>
+                    </li>
+                </ul>
+            </li>
+
+
+            {{-- <li class="menu {{ Request::is('*/penganggaran/*') ? 'active' : '' }}">
+                <a href="#penganggaran" data-bs-toggle="collapse"
                     aria-expanded="{{ Request::is('*/penganggaran/*') ? 'true' : 'false' }}" class="dropdown-toggle">
                     <div>
                         <span class="fw-bold">PENGANGGARAN</span>
@@ -305,7 +343,7 @@
                         </a>
                     </li>
                 </ul>
-            </li>
+            </li> --}}
 
             <li class="menu {{ Request::is('*/pengaturan/*') ? 'active' : '' }}">
                 <a href="#pengaturan" data-bs-toggle="collapse"

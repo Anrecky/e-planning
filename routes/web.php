@@ -68,6 +68,8 @@ Route::middleware(['auth'])->prefix('admin')->group(function () {
         Route::post('user', [UserController::class, 'store'])->name('user.store');
         Route::patch('user/{user}/update', [UserController::class, 'update'])->name('user.update');
         Route::delete('user/{user}/hapus', [UserController::class, 'destroy'])->name('user.delete');
+    });
+    Route::prefix('penganggaran')->group(function () {
         Route::get('dipa', [BudgetImplementationController::class, 'index'])->name('budget_implementation.index');
         Route::post('dipa', [BudgetImplementationController::class, 'store'])->name('budget_implementation.store');
     });

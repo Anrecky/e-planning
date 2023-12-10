@@ -4,19 +4,15 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Builder;
 
-class AccountCode extends Model
+class Activity extends Model
 {
     use HasFactory;
+
+    protected $fillable = ['code', 'name'];
 
     public function budgetImplementations()
     {
         return $this->hasMany(BudgetImplementation::class);
-    }
-
-    public function scopeCode(Builder $query, string $code): void
-    {
-        $query->where('code', $code);
     }
 }
