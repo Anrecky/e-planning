@@ -165,7 +165,7 @@
                     })
                     .then(response => {
                         // Handle success
-                        console.log('Data sent successfully:', response);
+                        window.location.reload();
                     })
                     .catch(error => {
                         // Handle error
