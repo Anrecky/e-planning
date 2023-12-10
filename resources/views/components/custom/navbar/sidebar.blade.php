@@ -81,15 +81,13 @@
                 </a>
                 <ul class="collapse submenu list-unstyled {{ Request::is('*/renstra/*') || Request::is('*/perkin/*') ? 'show' : '' }}"
                     id="perencanaan" data-bs-parent="#accordionExample">
-                    <li>
-                        <a href="#renstra" data-bs-toggle="collapse"
-                            aria-expanded="{{ Request::is('*/renstra/*') ? 'true' : 'false' }}"
-                            class="dropdown-toggle {{ Request::is('*/renstra/*') ? 'collapsed' : '' }}">
+                    <li class="submenu">
+                        <a href="#renstra" data-bs-toggle="collapse" aria-expanded="false"
+                            class="dropdown-toggle collapsed">
                             <div>
-                                <i data-feather="target"></i><span class="icon-name fw-bold"> RENSTRA</span>
+                                <i data-feather="folder"></i><span class="icon-name fw-bold">RENSTRA</span>
                             </div>
                             <div>
-
                                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
                                     viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
                                     stroke-linecap="round" stroke-linejoin="round"
@@ -98,26 +96,42 @@
                                 </svg>
                             </div>
                         </a>
-                        <ul class="collapse list-unstyled sub-submenu {{ Request::is('*/renstra/*') ? 'show' : '' }}"
-                            id="renstra" data-bs-parent="#perencanaan">
+                        <ul class="collapse list-unstyled sub-submenu" id="renstra" data-bs-parent="#perencanaan">
                             <li class="{{ Request::routeIs('vision.index') ? 'active' : '' }}">
-                                <a href="{{ route('vision.index') }}"> Visi </a>
+                                <a class="ssubmenu" href="{{ route('vision.index') }}" aria-expanded="false">
+                                    <div>
+                                        <i data-feather="file"></i><span class="icon-name fw-bold">Visi</span>
+                                    </div>
+                                </a>
                             </li>
                             <li class="{{ Request::routeIs('mission.index') ? 'active' : '' }}">
-                                <a href="{{ route('mission.index') }}"> Misi </a>
+                                <a class="ssubmenu" href="{{ route('mission.index') }}">
+                                    <div>
+                                        <i data-feather="file"></i><span class="icon-name fw-bold">Misi</span>
+                                    </div>
+                                </a>
                             </li>
                             <li class="{{ Request::routeIs('iku.index') ? 'active' : '' }}">
-                                <a href="{{ route('iku.index') }}"> Indikator Kinerja<br /> Utama </a>
+                                <a class="ssubmenu" href="{{ route('iku.index') }}">
+                                    <div>
+                                        <i data-feather="file"></i><span class="icon-name fw-bold">Indikator Kinerja Utama</span>
+                                    </div>
+                                </a>
                             </li>
                             <li class="{{ Request::routeIs('settings') ? 'active' : '' }}">
-                                <a href="#"> Capaian Kinerja <br /> Tahun Sebelumnya </a>
+                                <a class="ssubmenu" href="javascript:void(0);">
+                                    <div>
+                                        <i data-feather="file"></i><span class="icon-name fw-bold">Capaian Kinerja <br> Tahun Sebelumnya</span>
+                                    </div>
+                                </a>
                             </li>
                         </ul>
                     </li>
-                    <li>
-                        <a href="#" class="dropdown-toggle ">
+                    <li class="submenu">
+                        <a href="#rkt" data-bs-toggle="collapse" aria-expanded="false"
+                            class="dropdown-toggle collapsed">
                             <div>
-                                <i data-feather="calendar"></i><span class="icon-name fw-bold"> RKT</span>
+                                <i data-feather="folder"></i><span class="icon-name fw-bold">RKT</span>
                             </div>
                             <div>
                                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
@@ -128,16 +142,44 @@
                                 </svg>
                             </div>
                         </a>
+                        <ul class="collapse list-unstyled sub-submenu" id="rkt" data-bs-parent="#perencanaan">
+                            <li class="">
+                                <a class="ssubmenu" href="#">
+                                    <div>
+                                        <i data-feather="file"></i><span class="icon-name fw-bold">Visi</span>
+                                    </div>
+                                </a>
+                            </li>
+                            <li class="">
+                                <a class="ssubmenu" href="#">
+                                    <div>
+                                        <i data-feather="file"></i><span class="icon-name fw-bold">Misi</span>
+                                    </div>
+                                </a>
+                            </li>
+                            <li class="">
+                                <a class="ssubmenu" href="#">
+                                    <div>
+                                        <i data-feather="file"></i><span class="icon-name fw-bold">Indikator Kinerja Utama</span>
+                                    </div>
+                                </a>
+                            </li>
+                            <li class="">
+                                <a class="ssubmenu" href="javascript:void(0);">
+                                    <div>
+                                        <i data-feather="file"></i><span class="icon-name fw-bold">Capaian Kinerja <br> Tahun Sebelumnya</span>
+                                    </div>
+                                </a>
+                            </li>
+                        </ul>
                     </li>
-                    <li>
-                        <a href="#perkin" data-bs-toggle="collapse"
-                            aria-expanded="{{ Request::is('*/perkin/*') ? 'true' : 'false' }}"
-                            class="dropdown-toggle {{ Request::is('*/perkin/*') ? 'collapsed' : '' }}">
+                    <li class="submenu">
+                        <a href="#perkin" data-bs-toggle="collapse" aria-expanded="false"
+                            class="dropdown-toggle collapsed">
                             <div>
-                                <i data-feather="file-text"></i><span class="icon-name fw-bold"> PERKIN</span>
+                                <i data-feather="folder"></i><span class="icon-name fw-bold">PERKIN</span>
                             </div>
                             <div>
-
                                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
                                     viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
                                     stroke-linecap="round" stroke-linejoin="round"
@@ -146,13 +188,20 @@
                                 </svg>
                             </div>
                         </a>
-                        <ul class="collapse list-unstyled sub-submenu {{ Request::is('*/perkin/*') ? 'show' : '' }}"
-                            id="perkin" data-bs-parent="#perencanaan">
+                        <ul class="collapse list-unstyled sub-submenu" id="perkin" data-bs-parent="#perencanaan">
                             <li class="{{ Request::routeIs('program_target.index') ? 'active' : '' }}">
-                                <a href="{{ route('program_target.index') }}"> Sasaran Program </a>
+                                <a class="ssubmenu" href="{{ route('program_target.index') }}">
+                                    <div>
+                                        <i data-feather="file"></i><span class="icon-name fw-bold">Sasaran Program</span>
+                                    </div>
+                                </a>
                             </li>
                             <li class="{{ Request::routeIs('performance_indicator.index') ? 'active' : '' }}">
-                                <a href="{{ route('performance_indicator.index') }}"> Indikator Kinerja </a>
+                                <a class="ssubmenu" href="{{ route('performance_indicator.index') }}">                                    
+                                    <div>
+                                        <i data-feather="file"></i><span class="icon-name fw-bold">Indikator Kinerja</span>
+                                    </div>
+                                </a>
                             </li>
                         </ul>
                     </li>
@@ -325,11 +374,11 @@
                 </a>
                 <ul class="collapse submenu list-unstyled {{ Request::is('*/penganggaran/*') ? 'show' : '' }}"
                     id="penganggaran" data-bs-parent="#accordionExample">
-                    <li class="submenu">
+                    <li class="submenu {{ Request::routeIs('budget_implementation.index') ? 'active' : '' }}">
                         <a href="{{ route('budget_implementation.index') }}" aria-expanded="false"
                             class="dropdown-toggle">
                             <div class="">
-                                <i data-feather="check-square"></i>
+                                <i data-feather="folder"></i>
                                 <span class="icon-name fw-bold">USULAN DIPA</span>
                             </div>
                         </a>
@@ -337,7 +386,7 @@
                     <li class="submenu">
                         <a href="#" aria-expanded="false" class="dropdown-toggle">
                             <div class="">
-                                <i data-feather="edit"></i>
+                                <i data-feather="folder"></i>
                                 <span class="icon-name fw-bold">REVISI DIPA</span>
                             </div>
                         </a>
@@ -364,7 +413,7 @@
                     <li class="submenu {{ Request::routeIs('work_unit.index') ? 'active' : '' }}">
                         <a href="{{ route('work_unit.index') }}" aria-expanded="false" class="dropdown-toggle">
                             <div class="">
-                                <i data-feather="briefcase"></i>
+                                <i data-feather="folder"></i>
                                 <span class="icon-name fw-bold">UNIT KERJA</span>
                             </div>
                         </a>
@@ -372,7 +421,7 @@
                     <li class="submenu {{ Request::routeIs('ins_budget.index') ? 'active' : '' }}">
                         <a href="{{ route('ins_budget.index') }}" aria-expanded="false" class="dropdown-toggle">
                             <div class="">
-                                <i data-feather="layout"></i>
+                                <i data-feather="folder"></i>
                                 <span class="icon-name fw-bold">PAGU LEMBAGA</span>
                             </div>
                         </a>
@@ -380,7 +429,7 @@
                     <li class="submenu {{ Request::routeIs('unit_budget.index') ? 'active' : '' }}">
                         <a href="{{ route('unit_budget.index') }}" aria-expanded="false" class="dropdown-toggle">
                             <div class="">
-                                <i data-feather="trello"></i>
+                                <i data-feather="folder"></i>
                                 <span class="icon-name fw-bold">PAGU UNIT</span>
                             </div>
                         </a>
@@ -389,7 +438,7 @@
                         <a href="{{ route('expenditure_unit.index') }}" aria-expanded="false"
                             class="dropdown-toggle">
                             <div class="">
-                                <i data-feather="dollar-sign"></i>
+                                <i data-feather="folder"></i>
                                 <span class="icon-name fw-bold">SATUAN BELANJA</span>
                             </div>
                         </a>
@@ -398,7 +447,7 @@
                     <li class="submenu {{ Request::routeIs('account_code.index') ? 'active' : '' }}">
                         <a href="{{ route('account_code.index') }}" aria-expanded="false" class="dropdown-toggle">
                             <div class="">
-                                <i data-feather="book"></i>
+                                <i data-feather="folder"></i>
                                 <span class="icon-name fw-bold">KODE AKUN</span>
                             </div>
                         </a>
@@ -406,7 +455,7 @@
                     <li class="submenu {{ Request::routeIs('sbm_sbi.index') ? 'active' : '' }}">
                         <a href="{{ route('sbm_sbi.index') }}" aria-expanded="false" class="dropdown-toggle">
                             <div class="">
-                                <i data-feather="trending-up"></i>
+                                <i data-feather="folder"></i>
                                 <span class="icon-name fw-bold">SBM DAN SBI</span>
                             </div>
                         </a>
@@ -414,7 +463,7 @@
                     <li class="submenu {{ Request::routeIs('user.index') ? 'active' : '' }}">
                         <a href="{{ route('user.index') }}" aria-expanded="false" class="dropdown-toggle">
                             <div class="">
-                                <i data-feather="users"></i>
+                                <i data-feather="folder"></i>
                                 <span class="icon-name fw-bold">MANAJEMEN USER</span>
                             </div>
                         </a>

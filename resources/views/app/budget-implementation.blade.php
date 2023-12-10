@@ -80,8 +80,8 @@
                     <form id="form-create">
                         <div id="create-input_container" class="input-group my-2">
                         </div>
-                        <button class="btn btn-success text-center align-items-center mt-1 mt-2 py-auto" type="submit">
-                            <i data-feather="save"></i><span class="icon-name ms-1">Simpan</span>
+                        <button class="btn btn-primary text-center align-items-center mt-1 mt-2 py-auto" type="submit">
+                            <span class="icon-name">Simpan</span>
                         </button>
                     </form>
                 </div>
