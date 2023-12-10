@@ -68,12 +68,12 @@ class BudgetImplementationInputArrayService
             [
                 'activity_id' => $activity->id,
                 'account_code_id' => $accountCodeId,
-                'revision' => $revision
+                'revision' => 0
             ],
             [
                 'activity_id' => $activity->id,
                 'account_code_id' => $accountCodeId,
-                'revision' => $revision
+                'revision' => 0
             ]
         );
 
