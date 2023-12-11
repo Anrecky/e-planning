@@ -82,8 +82,8 @@
                 <ul class="collapse submenu list-unstyled {{ Request::is('*/renstra/*') || Request::is('*/perkin/*') ? 'show' : '' }}"
                     id="perencanaan" data-bs-parent="#accordionExample">
                     <li class="submenu">
-                        <a href="#renstra" data-bs-toggle="collapse" aria-expanded="{{ Request::is('*/renstra/*') || Request::is('*/perkin/*') ? 'true' : 'false' }}"
-                            class="dropdown-toggle {{ Request::is('*/renstra/*') || Request::is('*/perkin/*') ? 'collapsed' : '' }}">
+                        <a href="#renstra" data-bs-toggle="collapse" aria-expanded="{{ Request::is('*/renstra/*') ? 'true' : 'false' }}"
+                            class="dropdown-toggle {{ Request::is('*/renstra/*') ? 'collapsed' : '' }}">
                             <div>
                                 <i data-feather="folder"></i><span class="icon-name fw-bold">RENSTRA</span>
                             </div>
@@ -96,7 +96,7 @@
                                 </svg>
                             </div>
                         </a>
-                        <ul class="collapse list-unstyled sub-submenu {{ Request::is('*/renstra/*') || Request::is('*/perkin/*') ? 'show' : '' }}" id="renstra" data-bs-parent="#perencanaan">
+                        <ul class="collapse list-unstyled sub-submenu {{ Request::is('*/renstra/*') ? 'show' : '' }}" id="renstra" data-bs-parent="#perencanaan">
                             <li class="{{ Request::routeIs('vision.index') ? 'active' : '' }}">
                                 <a class="ssubmenu" href="{{ route('vision.index') }}" aria-expanded="false">
                                     <div>
@@ -174,8 +174,8 @@
                         </ul>
                     </li>
                     <li class="submenu">
-                        <a href="#perkin" data-bs-toggle="collapse" aria-expanded="false"
-                            class="dropdown-toggle collapsed">
+                        <a href="#perkin" data-bs-toggle="collapse" aria-expanded="{{Request::is('*/perkin/*') ? 'true' : 'false' }}"
+                            class="dropdown-toggle {{Request::is('*/perkin/*') ? 'collapsed' : '' }}">
                             <div>
                                 <i data-feather="folder"></i><span class="icon-name fw-bold">PERKIN</span>
                             </div>
@@ -188,7 +188,7 @@
                                 </svg>
                             </div>
                         </a>
-                        <ul class="collapse list-unstyled sub-submenu" id="perkin" data-bs-parent="#perencanaan">
+                        <ul class="collapse list-unstyled sub-submenu {{ Request::is('*/perkin/*') ? 'show' : '' }}" id="perkin" data-bs-parent="#perencanaan">
                             <li class="{{ Request::routeIs('program_target.index') ? 'active' : '' }}">
                                 <a class="ssubmenu" href="{{ route('program_target.index') }}">
                                     <div>
@@ -207,118 +207,6 @@
                     </li>
                 </ul>
             </li>
-
-            {{-- <li class="menu {{ Request::is('*/perencanaan/*') ? 'active' : '' }}">
-                <a href="#perencanaan" data-bs-toggle="collapse"
-                    aria-expanded="{{ Request::is('*/perencanaan/*') ? 'true' : 'false' }}" class="dropdown-toggle">
-                    <div>
-                        <span class="fw-bold">PERENCANAAN</span>
-                    </div>
-                    <div>
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
-                            fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                            stroke-linejoin="round" class="feather feather-chevron-right">
-                            <polyline points="9 18 15 12 9 6"></polyline>
-                        </svg>
-                    </div>
-                </a>
-                <ul class="collapse submenu list-unstyled {{ Request::is('*/perencanaan/*') ? 'show' : '' }}"
-                    id="perencanaan">
-                    <!-- Submenu for RENSTRA with Dropdown -->
-                    <li class="submenu">
-                        <a href="#renstra" data-bs-toggle="collapse"
-                            aria-expanded="{{ Request::is('*/renstra/*') ? 'true' : 'false' }}" class="dropdown-toggle">
-                            <div>
-                                <i data-feather="target"></i><span class="icon-name fw-bold">RENSTRA</span>
-                            </div>
-                            <div>
-                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                                    viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                                    stroke-linecap="round" stroke-linejoin="round"
-                                    class="feather feather-chevron-right">
-                                    <polyline points="9 18 15 12 9 6"></polyline>
-                                </svg>
-                            </div>
-                        </a>
-                        <ul class="list-unstyled sub-submenu collapse {{ Request::is('*/renstra/*') ? 'show' : '' }}"
-                            id="renstra" data-bs-parent="#accordionExample">
-                            <li class="{{ Request::routeIs('vision.index') ? 'active' : '' }}">
-                                <a href="{{ route('vision.index') }}"> Visi </a>
-                            </li>
-                            <li class="{{ Request::routeIs('mission.index') ? 'active' : '' }}">
-                                <a href="{{ route('mission.index') }}"> Misi </a>
-                            </li>
-                            <li class="{{ Request::routeIs('iku.index') ? 'active' : '' }}">
-                                <a href="{{ route('iku.index') }}"> Indikator Kinerja<br /> Utama </a>
-                            </li>
-                            <li class="{{ Request::routeIs('settings') ? 'active' : '' }}">
-                                <a href="#"> Capaian Kinerja <br /> Tahun Sebelumnya </a>
-                            </li>
-                        </ul>
-                    </li>
-
-                    <!-- Submenu for RKT with Dropdown -->
-                    <li class="submenu">
-                        <a href="#rkt" data-bs-toggle="collapse"
-                            aria-expanded="{{ Request::is('*/rkt/*') ? 'true' : 'false' }}" class="dropdown-toggle">
-                            <div>
-                                <i data-feather="calendar"></i><span class="icon-name fw-bold">RKT</span>
-                            </div>
-                            <div>
-                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                                    viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                                    stroke-linecap="round" stroke-linejoin="round"
-                                    class="feather feather-chevron-right">
-                                    <polyline points="9 18 15 12 9 6"></polyline>
-                                </svg>
-                            </div>
-                        </a>
-                        <ul class="collapse sub-submenu list-unstyled {{ Request::is('*/rkt/*') ? 'show' : '' }}"
-                            id="rkt" data-bs-parent="#accordionExample">
-                            <li class="{{ Request::routeIs('vision.index') ? 'active' : '' }}">
-                                <a href="{{ route('vision.index') }}"> Visi </a>
-                            </li>
-                            <li class="{{ Request::routeIs('mission.index') ? 'active' : '' }}">
-                                <a href="{{ route('mission.index') }}"> Misi </a>
-                            </li>
-                            <li class="{{ Request::routeIs('iku.index') ? 'active' : '' }}">
-                                <a href="{{ route('iku.index') }}"> Indikator Kinerja<br /> Utama </a>
-                            </li>
-                            <li class="{{ Request::routeIs('settings') ? 'active' : '' }}">
-                                <a href="#"> Capaian Kinerja <br /> Tahun Sebelumnya </a>
-                            </li>
-                        </ul>
-                    </li>
-
-                    <!-- Submenu for PERKIN with Dropdown -->
-                    <li class="submenu">
-                        <a href="#perkin" data-bs-toggle="collapse"
-                            aria-expanded="{{ Request::is('*/perkin/*') ? 'true' : 'false' }}"
-                            class="dropdown-toggle">
-                            <div>
-                                <i data-feather="file-text"></i><span class="icon-name fw-bold">PERKIN</span>
-                            </div>
-                            <div>
-                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                                    viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                                    stroke-linecap="round" stroke-linejoin="round"
-                                    class="feather feather-chevron-right">
-                                    <polyline points="9 18 15 12 9 6"></polyline>
-                                </svg>
-                            </div>
-                        </a>
-                        <ul class="collapse sub-submenu list-unstyled {{ Request::is('*/perkin/*') ? 'show' : '' }}"
-                            id="perkin" data-bs-parent="#accordionExample">
-                            <li class="{{ Request::routeIs('program_target.index') ? 'active' : '' }}">
-                                <a href="{{ route('program_target.index') }}"> Sasaran Program </a>
-                            </li>
-                            <li class="{{ Request::routeIs('performance_indicator.index') ? 'active' : '' }}">
-                                <a href="{{ route('performance_indicator.index') }}"> Indikator Kinerja </a>
-                            </li>
-                        </ul>
-                    </li>
-                </ul>
-            </li> --}}
 
             <li class="menu {{ Request::is('*/penganggaran/*') ? 'active' : '' }}">
                 <a href="#penganggaran" data-bs-toggle="collapse"
@@ -339,7 +227,7 @@
                     id="penganggaran" data-bs-parent="#accordionExample">
                     <li class="submenu {{ Request::routeIs('budget_implementation.index') ? 'active' : '' }}">
                         <a href="{{ route('budget_implementation.index') }}"
-                            aria-expanded="{{ Request::is('*/dipa/*') ? 'false' : 'true' }}" class="dropdown-toggle">
+                            aria-expanded="false" class="dropdown-toggle">
                             <div class="">
                                 <i data-feather="check-square"></i>
                                 <span class="icon-name fw-bold">USULAN DIPA</span>
@@ -396,7 +284,7 @@
 
             <li class="menu {{ Request::is('*/pengaturan/*') ? 'active' : '' }}">
                 <a href="#pengaturan" data-bs-toggle="collapse"
-                    aria-expanded="{{ Request::is('*/perencanaan/*') ? 'true' : 'false' }}" class="dropdown-toggle">
+                    aria-expanded="{{ Request::is('*/pengaturan/*') ? 'true' : 'false' }}" class="dropdown-toggle {{ Request::is('*/pengaturan/*') ? 'collapsed' : '' }}">
                     <div>
                         <span class="fw-bold">PENGATURAN</span>
                     </div>

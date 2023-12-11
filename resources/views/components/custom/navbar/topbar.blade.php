@@ -109,8 +109,8 @@
                                 &#x1F44B;
                             </div>
                             <div class="media-body">
-                                <h5>Shaun Park</h5>
-                                <p>Project Leader</p>
+                                <h5>{{ Auth::user()->name }}</h5>
+                                <!-- <p>{{ Auth::user()->role }}</p> -->
                             </div>
                         </div>
                     </div>
