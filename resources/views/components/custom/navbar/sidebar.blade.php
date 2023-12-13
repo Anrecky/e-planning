@@ -82,8 +82,7 @@
                 <ul class="collapse submenu list-unstyled {{ Request::is('*/penerimaan/*') ? 'show' : '' }}"
                     id="penerimaan" data-bs-parent="#accordionExample">
                     <li class="submenu">
-                        <a href="#"
-                            aria-expanded="false" class="dropdown-toggle">
+                        <a href="#" aria-expanded="false" class="dropdown-toggle">
                             <div class="">
                                 <i data-feather="folder"></i>
                                 <span class="icon-name fw-bold">LOREM IPSUM</span>
@@ -108,11 +107,10 @@
                         </svg>
                     </div>
                 </a>
-                <ul class="collapse submenu list-unstyled {{ Request::is('*/aset/*') ? 'show' : '' }}"
-                    id="aset" data-bs-parent="#accordionExample">
+                <ul class="collapse submenu list-unstyled {{ Request::is('*/aset/*') ? 'show' : '' }}" id="aset"
+                    data-bs-parent="#accordionExample">
                     <li class="submenu">
-                        <a href="#"
-                            aria-expanded="false" class="dropdown-toggle">
+                        <a href="#" aria-expanded="false" class="dropdown-toggle">
                             <div class="">
                                 <i data-feather="folder"></i>
                                 <span class="icon-name fw-bold">LOREM IPSUM</span>
@@ -140,7 +138,8 @@
                 <ul class="collapse submenu list-unstyled {{ Request::is('*/renstra/*') || Request::is('*/perkin/*') ? 'show' : '' }}"
                     id="perencanaan" data-bs-parent="#accordionExample">
                     <li class="submenu">
-                        <a href="#renstra" data-bs-toggle="collapse" aria-expanded="{{ Request::is('*/renstra/*') ? 'true' : 'false' }}"
+                        <a href="#renstra" data-bs-toggle="collapse"
+                            aria-expanded="{{ Request::is('*/renstra/*') ? 'true' : 'false' }}"
                             class="dropdown-toggle {{ Request::is('*/renstra/*') ? 'collapsed' : '' }}">
                             <div>
                                 <i data-feather="folder"></i><span class="icon-name fw-bold">RENSTRA</span>
@@ -154,7 +153,8 @@
                                 </svg>
                             </div>
                         </a>
-                        <ul class="collapse list-unstyled sub-submenu {{ Request::is('*/renstra/*') ? 'show' : '' }}" id="renstra" data-bs-parent="#perencanaan">
+                        <ul class="collapse list-unstyled sub-submenu {{ Request::is('*/renstra/*') ? 'show' : '' }}"
+                            id="renstra" data-bs-parent="#perencanaan">
                             <li class="{{ Request::routeIs('vision.index') ? 'active' : '' }}">
                                 <a class="ssubmenu" href="{{ route('vision.index') }}" aria-expanded="false">
                                     <div>
@@ -179,7 +179,8 @@
                             <li class="{{ Request::routeIs('settings') ? 'active' : '' }}">
                                 <a class="ssubmenu" href="javascript:void(0);">
                                     <div>
-                                        <i data-feather="file"></i><span class="icon-name fw-bold">Capaian Kinerja <br> Tahun Sebelumnya</span>
+                                        <i data-feather="file"></i><span class="icon-name fw-bold">Capaian Kinerja
+                                            <br> Tahun Sebelumnya</span>
                                     </div>
                                 </a>
                             </li>
@@ -225,15 +226,17 @@
                             <li class="">
                                 <a class="ssubmenu" href="javascript:void(0);">
                                     <div>
-                                        <i data-feather="file"></i><span class="icon-name fw-bold">Capaian Kinerja <br> Tahun Sebelumnya</span>
+                                        <i data-feather="file"></i><span class="icon-name fw-bold">Capaian Kinerja
+                                            <br> Tahun Sebelumnya</span>
                                     </div>
                                 </a>
                             </li>
                         </ul>
                     </li>
                     <li class="submenu">
-                        <a href="#perkin" data-bs-toggle="collapse" aria-expanded="{{Request::is('*/perkin/*') ? 'true' : 'false' }}"
-                            class="dropdown-toggle {{Request::is('*/perkin/*') ? 'collapsed' : '' }}">
+                        <a href="#perkin" data-bs-toggle="collapse"
+                            aria-expanded="{{ Request::is('*/perkin/*') ? 'true' : 'false' }}"
+                            class="dropdown-toggle {{ Request::is('*/perkin/*') ? 'collapsed' : '' }}">
                             <div>
                                 <i data-feather="folder"></i><span class="icon-name fw-bold">PERKIN</span>
                             </div>
@@ -246,18 +249,21 @@
                                 </svg>
                             </div>
                         </a>
-                        <ul class="collapse list-unstyled sub-submenu {{ Request::is('*/perkin/*') ? 'show' : '' }}" id="perkin" data-bs-parent="#perencanaan">
+                        <ul class="collapse list-unstyled sub-submenu {{ Request::is('*/perkin/*') ? 'show' : '' }}"
+                            id="perkin" data-bs-parent="#perencanaan">
                             <li class="{{ Request::routeIs('program_target.index') ? 'active' : '' }}">
                                 <a class="ssubmenu" href="{{ route('program_target.index') }}">
                                     <div>
-                                        <i data-feather="file"></i><span class="icon-name fw-bold">Sasaran Program</span>
+                                        <i data-feather="file"></i><span class="icon-name fw-bold">Sasaran
+                                            Program</span>
                                     </div>
                                 </a>
                             </li>
                             <li class="{{ Request::routeIs('performance_indicator.index') ? 'active' : '' }}">
-                                <a class="ssubmenu" href="{{ route('performance_indicator.index') }}">                                    
+                                <a class="ssubmenu" href="{{ route('performance_indicator.index') }}">
                                     <div>
-                                        <i data-feather="file"></i><span class="icon-name fw-bold">Indikator Kinerja</span>
+                                        <i data-feather="file"></i><span class="icon-name fw-bold">Indikator
+                                            Kinerja</span>
                                     </div>
                                 </a>
                             </li>
@@ -284,8 +290,8 @@
                 <ul class="collapse submenu list-unstyled {{ Request::is('*/penganggaran/*') ? 'show' : '' }}"
                     id="penganggaran" data-bs-parent="#accordionExample">
                     <li class="submenu {{ Request::routeIs('budget_implementation.index') ? 'active' : '' }}">
-                        <a href="{{ route('budget_implementation.index') }}"
-                            aria-expanded="false" class="dropdown-toggle">
+                        <a href="{{ route('budget_implementation.index') }}" aria-expanded="false"
+                            class="dropdown-toggle">
                             <div class="">
                                 <i data-feather="folder"></i>
                                 <span class="icon-name fw-bold">USULAN DIPA</span>
@@ -301,8 +307,7 @@
                         </a>
                     </li>
                     <li class="submenu">
-                        <a href=""
-                            aria-expanded="false" class="dropdown-toggle">
+                        <a href="" aria-expanded="false" class="dropdown-toggle">
                             <div class="">
                                 <i data-feather="folder"></i>
                                 <span class="icon-name fw-bold">RENCANA <br>PENARIKAN DANA</span>
@@ -310,8 +315,7 @@
                         </a>
                     </li>
                     <li class="submenu">
-                        <a href=""
-                            aria-expanded="false" class="dropdown-toggle">
+                        <a href="{{ route('activity_recap.index') }}" aria-expanded="false" class="dropdown-toggle">
                             <div class="">
                                 <i data-feather="folder"></i>
                                 <span class="icon-name fw-bold">REKAP KEGIATAN <br>DAN UPLOAD DATA <br>DUKUNG</span>
@@ -339,8 +343,7 @@
                 <ul class="collapse submenu list-unstyled {{ Request::is('*/pembayaran/*') ? 'show' : '' }}"
                     id="pembayaran" data-bs-parent="#accordionExample">
                     <li class="submenu">
-                        <a href="#"
-                            aria-expanded="false" class="dropdown-toggle">
+                        <a href="#" aria-expanded="false" class="dropdown-toggle">
                             <div class="">
                                 <i data-feather="folder"></i>
                                 <span class="icon-name fw-bold">RUH PEMBAYARAN</span>
@@ -348,8 +351,7 @@
                         </a>
                     </li>
                     <li class="submenu">
-                        <a href="#"
-                            aria-expanded="false" class="dropdown-toggle">
+                        <a href="#" aria-expanded="false" class="dropdown-toggle">
                             <div class="">
                                 <i data-feather="folder"></i>
                                 <span class="icon-name fw-bold">CETAK</span>
@@ -357,8 +359,7 @@
                         </a>
                     </li>
                     <li class="submenu">
-                        <a href="#"
-                            aria-expanded="false" class="dropdown-toggle">
+                        <a href="#" aria-expanded="false" class="dropdown-toggle">
                             <div class="">
                                 <i data-feather="folder"></i>
                                 <span class="icon-name fw-bold">CATAT/UPLOAD</span>
@@ -386,8 +387,7 @@
                 <ul class="collapse submenu list-unstyled {{ Request::is('*/pelaporan/*') ? 'show' : '' }}"
                     id="pelaporan" data-bs-parent="#accordionExample">
                     <li class="submenu">
-                        <a href="#"
-                            aria-expanded="false" class="dropdown-toggle">
+                        <a href="#" aria-expanded="false" class="dropdown-toggle">
                             <div class="">
                                 <i data-feather="folder"></i>
                                 <span class="icon-name fw-bold">LOREM IPSUM</span>
@@ -435,7 +435,8 @@
 
             <li class="menu {{ Request::is('*/pengaturan/*') ? 'active' : '' }}">
                 <a href="#pengaturan" data-bs-toggle="collapse"
-                    aria-expanded="{{ Request::is('*/pengaturan/*') ? 'true' : 'false' }}" class="dropdown-toggle {{ Request::is('*/pengaturan/*') ? 'collapsed' : '' }}">
+                    aria-expanded="{{ Request::is('*/pengaturan/*') ? 'true' : 'false' }}"
+                    class="dropdown-toggle {{ Request::is('*/pengaturan/*') ? 'collapsed' : '' }}">
                     <div>
                         <span class="fw-bold">ADMINISTRASI</span>
                     </div>
@@ -523,7 +524,8 @@
                         </ul>
                     </li>
                     <li class="submenu">
-                        <a href="#sttpembayaran" data-bs-toggle="collapse" aria-expanded="{{ Request::is('*/sttpembayaran/*') ? 'true' : 'false' }}"
+                        <a href="#sttpembayaran" data-bs-toggle="collapse"
+                            aria-expanded="{{ Request::is('*/sttpembayaran/*') ? 'true' : 'false' }}"
                             class="dropdown-toggle {{ Request::is('*/sttpembayaran/*') ? 'collapsed' : '' }}">
                             <div>
                                 <i data-feather="folder"></i><span class="icon-name fw-bold">SETTING <br>PEMBAYARAN</span>
@@ -537,7 +539,8 @@
                                 </svg>
                             </div>
                         </a>
-                        <ul class="collapse list-unstyled sub-submenu {{ Request::is('*/sttpembayaran/*') ? 'show' : '' }}" id="sttpembayaran" data-bs-parent="#pengaturan">
+                        <ul class="collapse list-unstyled sub-submenu {{ Request::is('*/sttpembayaran/*') ? 'show' : '' }}"
+                            id="sttpembayaran" data-bs-parent="#pengaturan">
                             <li class="">
                                 <a class="ssubmenu" href="" aria-expanded="false">
                                     <div>

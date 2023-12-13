@@ -56,4 +56,45 @@ class BudgetImplementation extends Model
         return $query->join('account_codes', 'account_codes.id', '=', 'budget_implementations.account_code_id')
             ->groupBy('account_codes.code');
     }
+    /**
+     * Calculate the total sum of 'total' from details for this budget implementation.
+     */
+    public function calculateDetailsTotalSum()
+    {
+        return $this->details->sum('total');
+    }
+
+    /**
+     * Static function to get grouped data with total sums.
+     */
+    public static function getGroupedDataWithTotals()
+    {
+        $budgetImplementations = self::with(['activity', 'accountCode', 'details'])
+            ->initialBudget()
+            ->get();
+
+        return $budgetImplementations->groupBy('activity.code')->map(function ($activityGroup) {
+            $activityTotalSum = $activityGroup->reduce(function ($carry, $budgetImplementation) {
+                return $carry + $budgetImplementation->calculateDetailsTotalSum();
+            }, 0);
+
+            $accountGroups = $activityGroup->groupBy('accountCode.code')->map(function ($accountGroup) {
+                $accountTotalSum = $accountGroup->reduce(function ($carry, $budgetImplementation) {
+                    return $carry + $budgetImplementation->calculateDetailsTotalSum();
+                }, 0);
+
+                if ($accountGroup->isNotEmpty()) {
+                    $accountGroup->first()->account_total_sum = $accountTotalSum;
+                }
+
+                return $accountGroup;
+            });
+
+            if ($activityGroup->isNotEmpty()) {
+                $activityGroup->first()->activity_total_sum = $activityTotalSum;
+            }
+
+            return $accountGroups;
+        });
+    }
 }

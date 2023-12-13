@@ -36,10 +36,9 @@ class BudgetImplementationController extends Controller
             ->initialBudget()
             ->get();
 
-        // Grouping by activity code, then further grouping each activity's data by account code
-        $groupedBI = $budgetImplementations->groupBy('activity.code')->map(function ($activityGroup) {
-            return $activityGroup->groupBy('accountCode.code');
-        });
+        // Get grouped data with total sums using the new method in the model
+        $groupedBI = BudgetImplementation::getGroupedDataWithTotals();
+
 
         $accountCodes = AccountCode::all();
         $expenditureUnits = ExpenditureUnit::all();
