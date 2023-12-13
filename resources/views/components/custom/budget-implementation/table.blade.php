@@ -42,7 +42,8 @@
                             <td></td>
                             <td></td>
                             <td></td>
-                            <td></td>
+                            <td>Rp {{ number_format($budgetImplementations->first()->activity_total_sum, 0, ',', '.') }}
+                            </td>
                         </tr>
                         @php $isActivityDisplayed = true; @endphp
                     @endif
@@ -57,7 +58,9 @@
                                 <td></td>
                                 <td></td>
                                 <td></td>
-                                <td></td>
+                                <td>Rp
+                                    {{ number_format($budgetImplementations->first()->account_total_sum, 0, ',', '.') }}
+                                </td>
                             </tr>
                         @endif
 
@@ -78,6 +81,5 @@
                 @endforeach
             @endforeach
         </tbody>
-
     </table>
 </div>
