@@ -211,7 +211,17 @@
         <!-- END GLOBAL MANDATORY STYLES -->
 
     @endif
+    <script>
+        window.Laravel = {
+            csrfToken: "{{ csrf_token() }}",
+            routes: {
+                budgetImplementationStore: "{{ route('budget_implementation.store') }}"
+            }
+            // Add other variables here
+        };
+    </script>
     @vite(['resources/js/app.js'])
+
     {{ $footerFiles }}
     <script type="module" src="{{ asset('plugins/font-icons/feather/feather.min.js') }}"></script>
 

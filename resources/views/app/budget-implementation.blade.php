@@ -7,6 +7,9 @@
     <!-- BEGIN GLOBAL MANDATORY STYLES -->
     <x-slot:headerFiles>
         <!--  BEGIN CUSTOM STYLE FILE  -->
+        <link rel="stylesheet" href="{{ asset('plugins/sweetalerts2/sweetalerts2.css') }}">
+        @vite(['resources/scss/light/plugins/sweetalerts2/custom-sweetalert.scss'])
+        @vite(['resources/scss/dark/plugins/sweetalerts2/custom-sweetalert.scss'])
         @vite(['resources/scss/light/assets/components/modal.scss'])
         @vite(['resources/scss/dark/assets/components/modal.scss'])
         <link rel="stylesheet" href="{{ asset('plugins/animate/animate.css') }}">
@@ -24,7 +27,7 @@
         <div class="col-lg-12 layout-spacing">
             <x-custom.statbox>
                 <x-custom.alerts />
-                <x-custom.budget-implementation-table :groupedBI="$groupedBI" />
+                <x-custom.budget-implementation.table :groupedBI="$groupedBI" />
             </x-custom.statbox>
         </div>
     </div>
@@ -49,10 +52,13 @@
             </div>
         </div>
     </div>
+    <!-- Edit Modal -->
+    <x-custom.budget-implementation.edit-modal />
 
     <!--  BEGIN CUSTOM SCRIPTS FILE  -->
     <x-slot:footerFiles>
         <script src="{{ asset('plugins/global/vendors.min.js') }}"></script>
+        <script src="{{ asset('plugins/sweetalerts2/sweetalerts2.min.js') }}"></script>
         <script>
             const accountCodes = @json($accountCodes);
             const expenditureUnits = @json($expenditureUnits);
@@ -67,9 +73,121 @@
                 const table = document.getElementById('budget_implementation-table');
                 const createModalEl = document.getElementById('createModal');
                 const saveDipaBtn = document.getElementById('save-dipa');
+                const editDipaBtn = document.getElementById('edit-dipa');
+                const deleteDipaBtn = document.getElementById('delete-dipa');
+                const editModalEl = document.getElementById('editModal');
+                const editModal = bootstrap.Modal.getOrCreateInstance(editModalEl)
+
+                editDipaBtn.addEventListener('click', event => {
+                    const trSelected = document.querySelector('tr.selected');
+
+                    if (!trSelected) {
+                        Swal.fire({
+                            title: 'Pilih dipa!',
+                            text: 'Silahkan pilih dipa untuk di edit terlebih dahulu.',
+                            icon: 'warning',
+                            confirmButtonText: 'OK'
+                        });
+                    } else {
+                        editModal.show();
+                    }
+                });
+
+                deleteDipaBtn.addEventListener('click', event => {
+                    const trSelected = document.querySelector('tr.selected');
+                    if (!trSelected) {
+                        Swal.fire({
+                            title: 'Pilih dipa!',
+                            text: 'Silahkan pilih dipa untuk di edit terlebih dahulu.',
+                            icon: 'warning',
+                            confirmButtonText: 'OK'
+                        });
+                    } else {
+                        if (trSelected.classList.contains('activity-row')) return confirmDelete('activity',
+                            trSelected.dataset.bi, trSelected.children[0].textContent);
+                        if (trSelected.classList.contains('account-row')) return confirmDelete('account',
+                            trSelected.dataset.bi, trSelected.children[0].textContent);
+                        if (trSelected.classList.contains('expenditure-row')) return confirmDelete('detail',
+                            trSelected.dataset.expenditure, trSelected.children[1].textContent);
+                        return;
+                    }
+                });
+
+                editModalEl.addEventListener('show.bs.modal', function(event) {
+                    const trSelected = document.querySelector('tr.selected');
+                    const editInputContainer = document.getElementById('edit-input_container');
+
+                    if (trSelected.classList.contains('activity-row')) {
+                        editModalTitle.textContent = "Input Sub Komponen";
+                        editInputContainer.innerHTML =
+                            `<input type="hidden" name="id" value="${trSelected.dataset.bi}"><input type="hidden" name="type" value="activity"><input type="text" name="code" value="${trSelected.children[0].textContent}" required class="form-control" style="max-width: 160px !important;"placeholder="KD.Keg"> <input type="text" value="${trSelected.children[1].textContent}" required name="name" class="form-control" placeholder="Uraian">`
+                    } else if (trSelected.classList.contains('account-row')) {
+                        editModalTitle.textContent = "Input Kode Akun";
+
+                        let options = accountCodes.map(code =>
+                            `<option value="${code.code}" data-account-name="${code.name}">${code.code}</option>`
+                        ).join('');
+
+                        editInputContainer.innerHTML =
+                            `<input type="hidden" name="id" value="${trSelected.dataset.bi}"><input type="hidden" name="type" value="account"><select name="code" id="account-code-select" required class="form-control" style="max-width: 200px !important;"><option value="">Pilih Kode Akun</option>${options}</select><input type="text" id="account-name-input" disabled required name="name" class="form-control" placeholder="Uraian">`;
+
+                        // Set the value of the select element
+                        const accountCodeSelect = document.getElementById('account-code-select');
+                        accountCodeSelect.value = trSelected.children[0].textContent;
+
+                        // Add event listener for change event
+                        accountCodeSelect.addEventListener('change', function() {
+                            const selectedOption = this.options[this.selectedIndex];
+                            const accountName = selectedOption.getAttribute('data-account-name');
+                            document.getElementById('account-name-input').value = accountName || '';
+                        });
+
+                        // Manually trigger the change event
+                        accountCodeSelect.dispatchEvent(new Event('change'));
+                    } else {
+                        editModalTitle.textContent = "Input Detail";
+
+                        let options = expenditureUnits.map(unit =>
+                            `<option value="${unit.code}">${unit.code}</option>`
+                        ).join('');
+
+                        editInputContainer.innerHTML =
+                            `<input type="hidden" name="id" value="${trSelected.dataset.expenditure}"><input type="hidden" name="type" value="detail"><input type="text" required name="name" value="${trSelected.children[1].textContent}" class="form-control" placeholder="Uraian Detail">
+            <input type="text" required name="volume" value="${trSelected.children[2].textContent}" class="form-control" style="max-width: 100px !important;" placeholder="Volume">
+            <select name="unit" required class="form-control" style="max-width: 150px !important;">${options}</select>
+            <input type="text" name="unit_price" value="${trSelected.children[4].textContent}" required class="form-control" placeholder="Harga Satuan">
+            <input type="text" name="total" value="${trSelected.children[5].textContent}" required class="form-control" placeholder="Total">`;
+
+                        // Set the correct unit in the dropdown
+                        const unitSelect = editInputContainer.querySelector('select[name="unit"]');
+                        unitSelect.value = trSelected.children[3].textContent;
+
+                        // Now add the event listeners
+                        const volumeInput = editInputContainer.querySelector(
+                            'input[name="volume"]');
+                        const priceInput = editInputContainer.querySelector('input[name="unit_price"]');
+                        const totalInput = editInputContainer.querySelector('input[name="total"]');
+
+                        volumeInput.addEventListener('input', () => calculateAndUpdateTotal(volumeInput,
+                            priceInput, totalInput));
+                        priceInput.addEventListener('input', () => calculateAndUpdateTotal(volumeInput,
+                            priceInput, totalInput));
+                        volumeInput.addEventListener('keypress', enforceNumericInput);
+                    }
+                });
 
                 createModalEl.addEventListener('show.bs.modal', event => {
                     const btnShowModalId = event.relatedTarget.id;
+                    const createModalTitle = document.getElementById('createModalTitle');
+
+                    const modalTitles = {
+                        'add-activity_btn': 'Input Sub Komponen',
+                        'add-account_code_btn': 'Input Kode Akun',
+                        default: 'Input Detail'
+                    };
+
+                    createModalTitle.textContent = modalTitles[event.relatedTarget.id] || modalTitles.default;
+
                     const createInputContainer = document.getElementById('create-input_container');
                     if (btnShowModalId === 'add-activity_btn') return createInputContainer.innerHTML =
                         `<input type="text" name="activity_code" required class="form-control" style="max-width: 160px !important;"placeholder="KD.Keg"> <input type="text" required name="activity_name" class="form-control" placeholder="Uraian">`;
@@ -116,23 +234,45 @@
 
             function handleSaveDipaClick() {
                 const dipaData = groupRows();
+                const endpoint = window.Laravel.routes.budgetImplementationStore;
 
-                // Replace with your server's endpoint URL
-                const endpoint = '{{ route('budget_implementation.store') }}';
+                // Show a loading indicator
+                Swal.fire({
+                    title: 'Menyimpan data...',
+                    text: 'Mohon menunggu data untuk disimpan terlebih dahulu.',
+                    allowOutsideClick: false,
+                    didOpen: () => {
+                        Swal.showLoading();
+                    }
+                });
 
-                // Using Axios to send a POST request
                 axios.post(endpoint, {
                         dipa: dipaData
                     })
                     .then(response => {
-                        // Handle success
-                        window.location.reload();
+                        // Success feedback
+                        Swal.fire({
+                            title: 'Success!',
+                            text: 'Data has been saved successfully.',
+                            icon: 'success',
+                            confirmButtonText: 'OK'
+                        }).then(() => {
+                            window.location.reload();
+
+                        });
                     })
                     .catch(error => {
-                        // Handle error
+                        // Error handling
                         console.error('Error sending data:', error);
+                        Swal.fire({
+                            title: 'Error!',
+                            text: 'Something went wrong. Please try again.',
+                            icon: 'error',
+                            confirmButtonText: 'OK'
+                        });
                     });
             }
+
 
             function groupRows() {
                 let rows = document.querySelectorAll('tr');
@@ -186,6 +326,41 @@
 
                 return groupedRows;
             }
+
+            function confirmDelete(rowType, id, name) {
+                let rowTypeName = rowType === 'detail' ? 'detail' : (rowType === 'activiy' ? "Kode Keg" : "Kode Akun");
+                Swal.fire({
+                    title: `Anda yakin ingin hapus \n(${rowTypeName} : ${name})?`,
+                    text: "Data tidak dapat dikembalikan!",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Ya, hapus!'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        axios.delete(`/admin/penganggaran/hapus-dipa/${rowType}/${id}`)
+                            .then(res => {
+                                Swal.fire({
+                                    title: 'Terhapus!',
+                                    text: 'Data berhasil dihapus.',
+                                    icon: 'success'
+                                }).then(() => {
+                                    window.location.reload();
+                                });
+                            })
+                            .catch(error => {
+                                console.error(error);
+                                Swal.fire({
+                                    title: 'Error!',
+                                    text: 'Gagal menghapus data.',
+                                    icon: 'error'
+                                });
+                            });
+                    }
+                });
+            }
+
 
             function formatAsIDRCurrency(value) {
                 return new Intl.NumberFormat('id-ID', {
