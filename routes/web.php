@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AccountCodeController;
+use App\Http\Controllers\ActivityRecapController;
 use App\Http\Controllers\BudgetImplementationController;
 use App\Http\Controllers\PerformanceIndicatorController;
 use App\Http\Controllers\ProgramTargetController;
@@ -74,5 +75,6 @@ Route::middleware(['auth'])->prefix('admin')->group(function () {
         Route::post('dipa', [BudgetImplementationController::class, 'store'])->name('budget_implementation.store');
         Route::patch('edit-dipa', [BudgetImplementationController::class, 'update'])->name('budget_implementation.update');
         Route::delete('hapus-dipa/{type}/{id}', [BudgetImplementationController::class, 'destroy'])->name('budget_implementation.delete');
+        Route::get('rekap-kegiatan-dan-upload-data-dukung', [ActivityRecapController::class, 'index'])->name('activity_recap.index');
     });
 });
