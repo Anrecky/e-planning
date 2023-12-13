@@ -11,6 +11,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Validator;
 use App\Services\BudgetImplementationInputArrayService;
+use Illuminate\Support\Str;
 
 
 class BudgetImplementationController extends Controller
@@ -93,14 +94,6 @@ class BudgetImplementationController extends Controller
     }
 
     /**
-     * Display the specified resource.
-     */
-    public function show(BudgetImplementation $budgetImplementation)
-    {
-        //
-    }
-
-    /**
      * Show the form for editing the specified resource.
      */
     public function edit(BudgetImplementation $budgetImplementation)
@@ -111,16 +104,119 @@ class BudgetImplementationController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, BudgetImplementation $budgetImplementation)
+    public function update(Request $request)
     {
-        //
+        $validatedData = $request->validate([
+            'type' => 'required|in:activity,account,detail',
+            'id' => 'required|integer',
+            'code' => 'sometimes|string',
+            'name' => 'required|string|max:255',
+            'volume' => 'required|integer',
+            'unit' => 'required|string|max:255',
+            'unit_price' => 'required|string',
+            'total' => 'required|string',
+        ]);
+        try {
+            switch ($validatedData['type']) {
+                case 'activity':
+                    $budgetImplementation = BudgetImplementation::findOrFail($validatedData['id']);
+                    $activity = Activity::updateOrCreate(
+                        ['code' => $validatedData['code']],
+                        ['name' => $validatedData['name']]
+                    );
+                    $budgetImplementation->activity()->associate($activity)->save();
+                    return back()->with(['success' => 'Berhasil memperbarui data detail']);
+                    break;
+
+                case 'account':
+                    $budgetImplementation = BudgetImplementation::findOrFail($validatedData['id']);
+                    $accountCode = AccountCode::firstWhere('code', $validatedData['code']);
+                    $budgetImplementation->accountCode()->associate($accountCode)->save();
+                    return back()->with(['success' => 'Berhasil memperbarui data dipa']);
+                    break;
+
+                case 'detail':
+                    $validatedData['unit_price'] = $this->convertToDecimal($validatedData['unit_price']);
+                    $validatedData['total'] = $this->convertToDecimal($validatedData['total']);
+                    $expenditureUnit = ExpenditureUnit::firstWhere('code', $validatedData['unit']);
+                    $budgetImplementationDetail = BudgetImplementationDetail::findOrFail($validatedData['id']);
+                    $budgetImplementationDetail->name = $validatedData['name'];
+                    $budgetImplementationDetail->volume = $validatedData['volume'];
+                    $budgetImplementationDetail->price = $validatedData['unit_price'];
+                    $budgetImplementationDetail->total = $validatedData['total'];
+                    $budgetImplementationDetail->expenditureUnit()->associate($expenditureUnit);
+                    $budgetImplementationDetail->save();
+                    return back()->with(['success' => 'Berhasil memperbarui data detail']);
+                    break;
+
+                default:
+                    return back();
+            }
+        } catch (\Throwable $th) {
+            Log::error($th);
+            return back();
+        }
     }
+    private function convertToDecimal($value)
+    {
+        // Remove the currency symbol, non-breaking spaces (\u{A0} or &nbsp;), and any regular spaces
+        $number = str_replace(['Rp', ' ', "\xc2\xa0"], '', $value);
+
+        // Replace Indonesian thousand separator (dot) with nothing
+        $number = str_replace('.', '', $number);
+
+        // Replace Indonesian decimal separator (comma) with a dot
+        $number = str_replace(',', '.', $number);
+
+        // Convert to float and format to two decimal places
+        return number_format((float)$number, 2, '.', '');
+    }
+
+
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(BudgetImplementation $budgetImplementation)
+    public function destroy($type, $id)
     {
-        //
+        if ($type === 'detail') {
+            try {
+                BudgetImplementationDetail::find($id)->delete();
+                return response()->json(['success' => 'true', 'message' => 'Berhasil menghapus data detail dipa.'], 200);
+            } catch (\Throwable $th) {
+                Log::error($th);
+                return response()->json(['error' => 'true', 'message' => $th]);
+            }
+        }
+        if ($type === 'activity') {
+            try {
+                // Find the BudgetImplementation record by ID
+                $budgetImplementation = BudgetImplementation::find($id);
+
+                // Check if the record exists
+                if (!$budgetImplementation) {
+                    return response()->json(['error' => 'true', 'message' => 'Budget Implementation not found.'], 404);
+                }
+
+                // Get the activity_id from the found record
+                $activityId = $budgetImplementation->activity_id;
+
+                // Delete all BudgetImplementation records with the same activity_id
+                BudgetImplementation::where('activity_id', $activityId)->delete();
+
+                return response()->json(['success' => 'true', 'message' => 'Berhasil menghapus data dipa.'], 200);
+            } catch (\Throwable $th) {
+                Log::error($th);
+                return response()->json(['error' => 'true', 'message' => $th->getMessage()], 500);
+            }
+        }
+
+        try {
+            BudgetImplementation::find($id)->delete();
+            return response()->json(['success' => 'true', 'message' => 'Berhasil menghapus data dipa.'], 200);
+        } catch (\Throwable $th) {
+            Log::error($th);
+            return response()->json(['error' => 'true', 'message' => $th]);
+        }
     }
 }

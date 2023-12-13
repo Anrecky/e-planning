@@ -72,5 +72,7 @@ Route::middleware(['auth'])->prefix('admin')->group(function () {
     Route::prefix('penganggaran')->group(function () {
         Route::get('dipa', [BudgetImplementationController::class, 'index'])->name('budget_implementation.index');
         Route::post('dipa', [BudgetImplementationController::class, 'store'])->name('budget_implementation.store');
+        Route::patch('edit-dipa', [BudgetImplementationController::class, 'update'])->name('budget_implementation.update');
+        Route::delete('hapus-dipa/{type}/{id}', [BudgetImplementationController::class, 'destroy'])->name('budget_implementation.delete');
     });
 });

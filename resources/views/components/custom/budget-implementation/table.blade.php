@@ -39,7 +39,10 @@
                             data-bi="{{ $budgetImplementations->first()->id }}" class="activity-row">
                             <td>{{ $activityCode }}</td>
                             <td>{{ $budgetImplementations->first()->activity->name }}</td>
-                            <td colspan="4"></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
                         </tr>
                         @php $isActivityDisplayed = true; @endphp
                     @endif
@@ -47,7 +50,8 @@
                     @foreach ($budgetImplementations as $budgetImplementation)
                         @if ($budgetImplementation->accountCode)
                             <!-- Account Code Row -->
-                            <tr data-account-code="{{ $budgetImplementation->accountCode->id }}" class="account-row">
+                            <tr data-bi="{{ $budgetImplementations->first()->id }}"
+                                data-account-code="{{ $budgetImplementation->accountCode->id }}" class="account-row">
                                 <td>{{ $budgetImplementation->accountCode->code }}</td>
                                 <td>{{ $budgetImplementation->accountCode->name }}</td>
                                 <td></td>
