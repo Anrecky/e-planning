@@ -100,6 +100,10 @@
         #sidebar ul.menu-categories ul.submenu>li ul.sub-submenu>li a::after {
             display: block !important;
         }
+
+        span.icon-name.fw-bold {
+            white-space: break-spaces !important;
+        }
     </style>
 </head>
 
