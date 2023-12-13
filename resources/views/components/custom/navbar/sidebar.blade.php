@@ -64,6 +64,64 @@
                 </a>
             </li> --}}
 
+            <li class="menu {{ Request::is('*/penerimaan/*') ? 'active' : '' }}">
+                <a href="#penerimaan" data-bs-toggle="collapse"
+                    aria-expanded="{{ Request::is('*/penerimaan/*') ? 'true' : 'false' }}"
+                    class="dropdown-toggle {{ Request::is('*/penerimaan/*') ? 'collapsed' : '' }}">
+                    <div>
+                        <span class="fw-bold">PENERIMAAN</span>
+                    </div>
+                    <div>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                            fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                            stroke-linejoin="round" class="feather feather-chevron-right">
+                            <polyline points="9 18 15 12 9 6"></polyline>
+                        </svg>
+                    </div>
+                </a>
+                <ul class="collapse submenu list-unstyled {{ Request::is('*/penerimaan/*') ? 'show' : '' }}"
+                    id="penerimaan" data-bs-parent="#accordionExample">
+                    <li class="submenu">
+                        <a href="#"
+                            aria-expanded="false" class="dropdown-toggle">
+                            <div class="">
+                                <i data-feather="folder"></i>
+                                <span class="icon-name fw-bold">LOREM IPSUM</span>
+                            </div>
+                        </a>
+                    </li>
+                </ul>
+            </li>
+
+            <li class="menu {{ Request::is('*/aset/*') ? 'active' : '' }}">
+                <a href="#aset" data-bs-toggle="collapse"
+                    aria-expanded="{{ Request::is('*/aset/*') ? 'true' : 'false' }}"
+                    class="dropdown-toggle {{ Request::is('*/aset/*') ? 'collapsed' : '' }}">
+                    <div>
+                        <span class="fw-bold">ASET</span>
+                    </div>
+                    <div>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                            fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                            stroke-linejoin="round" class="feather feather-chevron-right">
+                            <polyline points="9 18 15 12 9 6"></polyline>
+                        </svg>
+                    </div>
+                </a>
+                <ul class="collapse submenu list-unstyled {{ Request::is('*/aset/*') ? 'show' : '' }}"
+                    id="aset" data-bs-parent="#accordionExample">
+                    <li class="submenu">
+                        <a href="#"
+                            aria-expanded="false" class="dropdown-toggle">
+                            <div class="">
+                                <i data-feather="folder"></i>
+                                <span class="icon-name fw-bold">LOREM IPSUM</span>
+                            </div>
+                        </a>
+                    </li>
+                </ul>
+            </li>
+
             <li class="menu {{ Request::is('*/renstra/*') || Request::is('*/perkin/*') ? 'active' : '' }}">
                 <a href="#perencanaan" data-bs-toggle="collapse"
                     aria-expanded="{{ Request::is('*/renstra/*') || Request::is('*/perkin/*') ? 'true' : 'false' }}"
@@ -229,7 +287,7 @@
                         <a href="{{ route('budget_implementation.index') }}"
                             aria-expanded="false" class="dropdown-toggle">
                             <div class="">
-                                <i data-feather="check-square"></i>
+                                <i data-feather="folder"></i>
                                 <span class="icon-name fw-bold">USULAN DIPA</span>
                             </div>
                         </a>
@@ -237,14 +295,107 @@
                     <li class="submenu">
                         <a href="#" aria-expanded="false" class="dropdown-toggle">
                             <div class="">
-                                <i data-feather="edit"></i>
+                                <i data-feather="folder"></i>
                                 <span class="icon-name fw-bold">REVISI DIPA</span>
+                            </div>
+                        </a>
+                    </li>
+                    <li class="submenu">
+                        <a href=""
+                            aria-expanded="false" class="dropdown-toggle">
+                            <div class="">
+                                <i data-feather="folder"></i>
+                                <span class="icon-name fw-bold">RENCANA PENARIKAN DANA</span>
+                            </div>
+                        </a>
+                    </li>
+                    <li class="submenu">
+                        <a href=""
+                            aria-expanded="false" class="dropdown-toggle">
+                            <div class="">
+                                <i data-feather="folder"></i>
+                                <span class="icon-name fw-bold">REKAP KEGIATAN DAN UPLOAD DATA DUKUNG</span>
                             </div>
                         </a>
                     </li>
                 </ul>
             </li>
 
+            <li class="menu {{ Request::is('*/pembayaran/*') ? 'active' : '' }}">
+                <a href="#pembayaran" data-bs-toggle="collapse"
+                    aria-expanded="{{ Request::is('*/pembayaran/*') ? 'true' : 'false' }}"
+                    class="dropdown-toggle {{ Request::is('*/pembayaran/*') ? 'collapsed' : '' }}">
+                    <div>
+                        <span class="fw-bold">PEMBAYARAN</span>
+                    </div>
+                    <div>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                            fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                            stroke-linejoin="round" class="feather feather-chevron-right">
+                            <polyline points="9 18 15 12 9 6"></polyline>
+                        </svg>
+                    </div>
+                </a>
+                <ul class="collapse submenu list-unstyled {{ Request::is('*/pembayaran/*') ? 'show' : '' }}"
+                    id="pembayaran" data-bs-parent="#accordionExample">
+                    <li class="submenu">
+                        <a href="#"
+                            aria-expanded="false" class="dropdown-toggle">
+                            <div class="">
+                                <i data-feather="folder"></i>
+                                <span class="icon-name fw-bold">RUH PEMBAYARAN</span>
+                            </div>
+                        </a>
+                    </li>
+                    <li class="submenu">
+                        <a href="#"
+                            aria-expanded="false" class="dropdown-toggle">
+                            <div class="">
+                                <i data-feather="folder"></i>
+                                <span class="icon-name fw-bold">CETAK</span>
+                            </div>
+                        </a>
+                    </li>
+                    <li class="submenu">
+                        <a href="#"
+                            aria-expanded="false" class="dropdown-toggle">
+                            <div class="">
+                                <i data-feather="folder"></i>
+                                <span class="icon-name fw-bold">CATAT/UPLOAD</span>
+                            </div>
+                        </a>
+                    </li>
+                </ul>
+            </li>
+
+            <li class="menu {{ Request::is('*/pelaporan/*') ? 'active' : '' }}">
+                <a href="#pelaporan" data-bs-toggle="collapse"
+                    aria-expanded="{{ Request::is('*/pelaporan/*') ? 'true' : 'false' }}"
+                    class="dropdown-toggle {{ Request::is('*/pelaporan/*') ? 'collapsed' : '' }}">
+                    <div>
+                        <span class="fw-bold">PELAPORAN</span>
+                    </div>
+                    <div>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                            fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                            stroke-linejoin="round" class="feather feather-chevron-right">
+                            <polyline points="9 18 15 12 9 6"></polyline>
+                        </svg>
+                    </div>
+                </a>
+                <ul class="collapse submenu list-unstyled {{ Request::is('*/pelaporan/*') ? 'show' : '' }}"
+                    id="pelaporan" data-bs-parent="#accordionExample">
+                    <li class="submenu">
+                        <a href="#"
+                            aria-expanded="false" class="dropdown-toggle">
+                            <div class="">
+                                <i data-feather="folder"></i>
+                                <span class="icon-name fw-bold">LOREM IPSUM</span>
+                            </div>
+                        </a>
+                    </li>
+                </ul>
+            </li>
 
             {{-- <li class="menu {{ Request::is('*/penganggaran/*') ? 'active' : '' }}">
                 <a href="#penganggaran" data-bs-toggle="collapse"
@@ -331,7 +482,6 @@
                             </div>
                         </a>
                     </li>
-
                     <li class="submenu {{ Request::routeIs('account_code.index') ? 'active' : '' }}">
                         <a href="{{ route('account_code.index') }}" aria-expanded="false" class="dropdown-toggle">
                             <div class="">
@@ -339,6 +489,38 @@
                                 <span class="icon-name fw-bold">KODE AKUN</span>
                             </div>
                         </a>
+                    </li>
+                    <li class="submenu">
+                        <a href="#sttpembayaran" data-bs-toggle="collapse" aria-expanded="{{ Request::is('*/sttpembayaran/*') ? 'true' : 'false' }}"
+                            class="dropdown-toggle {{ Request::is('*/sttpembayaran/*') ? 'collapsed' : '' }}">
+                            <div>
+                                <i data-feather="folder"></i><span class="icon-name fw-bold">SETTING PEMBAYARAN</span>
+                            </div>
+                            <div>
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                    viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                    stroke-linecap="round" stroke-linejoin="round"
+                                    class="feather feather-chevron-right">
+                                    <polyline points="9 18 15 12 9 6"></polyline>
+                                </svg>
+                            </div>
+                        </a>
+                        <ul class="collapse list-unstyled sub-submenu {{ Request::is('*/sttpembayaran/*') ? 'show' : '' }}" id="sttpembayaran" data-bs-parent="#pengaturan">
+                            <li class="">
+                                <a class="ssubmenu" href="" aria-expanded="false">
+                                    <div>
+                                        <i data-feather="file"></i><span class="icon-name fw-bold">JENIS SPP</span>
+                                    </div>
+                                </a>
+                            </li>
+                            <li class="">
+                                <a class="ssubmenu" href="">
+                                    <div>
+                                        <i data-feather="file"></i><span class="icon-name fw-bold">CARA BAYAR</span>
+                                    </div>
+                                </a>
+                            </li>
+                        </ul>
                     </li>
                     <li class="submenu {{ Request::routeIs('sbm_sbi.index') ? 'active' : '' }}">
                         <a href="{{ route('sbm_sbi.index') }}" aria-expanded="false" class="dropdown-toggle">
