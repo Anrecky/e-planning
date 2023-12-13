@@ -158,21 +158,21 @@
                             <li class="{{ Request::routeIs('vision.index') ? 'active' : '' }}">
                                 <a class="ssubmenu" href="{{ route('vision.index') }}" aria-expanded="false">
                                     <div>
-                                        <i data-feather="file"></i><span class="icon-name fw-bold">Visi</span>
+                                        <i data-feather="file"></i><span class="icon-name fw-bold">VISI</span>
                                     </div>
                                 </a>
                             </li>
                             <li class="{{ Request::routeIs('mission.index') ? 'active' : '' }}">
                                 <a class="ssubmenu" href="{{ route('mission.index') }}">
                                     <div>
-                                        <i data-feather="file"></i><span class="icon-name fw-bold">Misi</span>
+                                        <i data-feather="file"></i><span class="icon-name fw-bold">MISI</span>
                                     </div>
                                 </a>
                             </li>
                             <li class="{{ Request::routeIs('iku.index') ? 'active' : '' }}">
                                 <a class="ssubmenu" href="{{ route('iku.index') }}">
                                     <div>
-                                        <i data-feather="file"></i><span class="icon-name fw-bold">Indikator Kinerja Utama</span>
+                                        <i data-feather="file"></i><span class="icon-name fw-bold">Indikator Kinerja <br>Utama</span>
                                     </div>
                                 </a>
                             </li>
@@ -204,21 +204,21 @@
                             <li class="">
                                 <a class="ssubmenu" href="#">
                                     <div>
-                                        <i data-feather="file"></i><span class="icon-name fw-bold">Visi</span>
+                                        <i data-feather="file"></i><span class="icon-name fw-bold">VISI</span>
                                     </div>
                                 </a>
                             </li>
                             <li class="">
                                 <a class="ssubmenu" href="#">
                                     <div>
-                                        <i data-feather="file"></i><span class="icon-name fw-bold">Misi</span>
+                                        <i data-feather="file"></i><span class="icon-name fw-bold">MISI</span>
                                     </div>
                                 </a>
                             </li>
                             <li class="">
                                 <a class="ssubmenu" href="#">
                                     <div>
-                                        <i data-feather="file"></i><span class="icon-name fw-bold">Indikator Kinerja Utama</span>
+                                        <i data-feather="file"></i><span class="icon-name fw-bold">Indikator Kinerja <br>Utama</span>
                                     </div>
                                 </a>
                             </li>
@@ -305,7 +305,7 @@
                             aria-expanded="false" class="dropdown-toggle">
                             <div class="">
                                 <i data-feather="folder"></i>
-                                <span class="icon-name fw-bold">RENCANA PENARIKAN DANA</span>
+                                <span class="icon-name fw-bold">RENCANA <br>PENARIKAN DANA</span>
                             </div>
                         </a>
                     </li>
@@ -314,7 +314,7 @@
                             aria-expanded="false" class="dropdown-toggle">
                             <div class="">
                                 <i data-feather="folder"></i>
-                                <span class="icon-name fw-bold">REKAP KEGIATAN DAN UPLOAD DATA DUKUNG</span>
+                                <span class="icon-name fw-bold">REKAP KEGIATAN <br>DAN UPLOAD DATA <br>DUKUNG</span>
                             </div>
                         </a>
                     </li>
@@ -437,7 +437,7 @@
                 <a href="#pengaturan" data-bs-toggle="collapse"
                     aria-expanded="{{ Request::is('*/pengaturan/*') ? 'true' : 'false' }}" class="dropdown-toggle {{ Request::is('*/pengaturan/*') ? 'collapsed' : '' }}">
                     <div>
-                        <span class="fw-bold">PENGATURAN</span>
+                        <span class="fw-bold">ADMINISTRASI</span>
                     </div>
                     <div>
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
@@ -491,10 +491,42 @@
                         </a>
                     </li>
                     <li class="submenu">
+                        <a href="#passet" data-bs-toggle="collapse" aria-expanded="{{ Request::is('*/passet/*') ? 'true' : 'false' }}"
+                            class="dropdown-toggle {{ Request::is('*/passet/*') ? 'collapsed' : '' }}">
+                            <div>
+                                <i data-feather="folder"></i><span class="icon-name fw-bold">ASET</span>
+                            </div>
+                            <div>
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                    viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                    stroke-linecap="round" stroke-linejoin="round"
+                                    class="feather feather-chevron-right">
+                                    <polyline points="9 18 15 12 9 6"></polyline>
+                                </svg>
+                            </div>
+                        </a>
+                        <ul class="collapse list-unstyled sub-submenu {{ Request::is('*/passet/*') ? 'show' : '' }}" id="passet" data-bs-parent="#pengaturan">
+                            <li class="">
+                                <a class="ssubmenu" href="#">
+                                    <div>
+                                        <i data-feather="file"></i><span class="icon-name fw-bold">Kategori Aset</span>
+                                    </div>
+                                </a>
+                            </li>
+                            <li class="">
+                                <a class="ssubmenu" href="#">
+                                    <div>
+                                        <i data-feather="file"></i><span class="icon-name fw-bold">Jenis Aset</span>
+                                    </div>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="submenu">
                         <a href="#sttpembayaran" data-bs-toggle="collapse" aria-expanded="{{ Request::is('*/sttpembayaran/*') ? 'true' : 'false' }}"
                             class="dropdown-toggle {{ Request::is('*/sttpembayaran/*') ? 'collapsed' : '' }}">
                             <div>
-                                <i data-feather="folder"></i><span class="icon-name fw-bold">SETTING PEMBAYARAN</span>
+                                <i data-feather="folder"></i><span class="icon-name fw-bold">SETTING <br>PEMBAYARAN</span>
                             </div>
                             <div>
                                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
@@ -509,14 +541,14 @@
                             <li class="">
                                 <a class="ssubmenu" href="" aria-expanded="false">
                                     <div>
-                                        <i data-feather="file"></i><span class="icon-name fw-bold">JENIS SPP</span>
+                                        <i data-feather="file"></i><span class="icon-name fw-bold">Jenis SPP</span>
                                     </div>
                                 </a>
                             </li>
                             <li class="">
                                 <a class="ssubmenu" href="">
                                     <div>
-                                        <i data-feather="file"></i><span class="icon-name fw-bold">CARA BAYAR</span>
+                                        <i data-feather="file"></i><span class="icon-name fw-bold">Cara Bayar</span>
                                     </div>
                                 </a>
                             </li>

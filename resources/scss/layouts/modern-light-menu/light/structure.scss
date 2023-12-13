@@ -886,6 +886,17 @@ body {
 
 /* 
 ===============
+    Topbar
+===============
+*/
+
+.info-datetime {
+    color: #191e3a;
+    font-weight: 600;
+}
+
+/* 
+===============
     Sidebar
 ===============
 */
@@ -1460,6 +1471,16 @@ body {
         }
     }
 
+    .submenu div {
+        display: flex;
+        flex-direction: row;
+        align-items: center; /* Pusatkan elemen secara vertikal jika diperlukan */
+    }
+
+    .submenu div i {
+        margin-right: 5px; /* Jarak antara ikon dan teks */
+    }
+
     li.submenu {
         > .dropdown-toggle {
             display: flex;
@@ -1613,16 +1634,16 @@ body {
 
     li.menu ul.submenu > li {
         a {
-            &:before {
-                content: "";
-                background-color: #bfc9d4;
-                position: absolute;
-                height: 7px;
-                width: 7px;
-                top: 18px;
-                left: 5px;
-                border-radius: 50%;
-            }
+            // &:before {
+            //     content: "";
+            //     background-color: #bfc9d4;
+            //     position: absolute;
+            //     height: 7px;
+            //     width: 7px;
+            //     top: 18px;
+            //     left: 5px;
+            //     border-radius: 50%;
+            // }
             &:hover {
                 color: $primary;
                 &:before {
@@ -1758,20 +1779,20 @@ body {
                         }
                     }
 
-                    &:before {
-                        content: "";
-                        background-color: #bfc9d4;
-                        position: absolute;
-                        top: 18.5px !important;
-                        border-radius: 50%;
-                        left: 3px;
-                        height: 4px;
-                        width: 4px;
-                    }
+                    // &:before {
+                    //     content: "";
+                    //     background-color: #bfc9d4;
+                    //     position: absolute;
+                    //     top: 18.5px !important;
+                    //     border-radius: 50%;
+                    //     left: 3px;
+                    //     height: 4px;
+                    //     width: 4px;
+                    // }
                 }
 
                 &.active a:before {
-                    background-color: #009688;
+                    background-color: #4361ee;
                 }
 
                 > .ssubmenu svg:not(.badge-icon) {

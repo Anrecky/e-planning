@@ -21,7 +21,10 @@
             </svg>
         </a>
 
-        <div class="search-animated toggle-search">
+        <div class="info-datetime">
+            <div id="datetime-info">Loading...</div> <!-- Div baru untuk menampilkan informasi tanggal dan waktu -->
+        </div>
+        <!-- <div class="search-animated toggle-search">
             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
                 stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
                 class="feather feather-search">
@@ -40,7 +43,7 @@
                 </div>
             </form>
             <span class="badge badge-secondary">Ctrl + /</span>
-        </div>
+        </div> -->
 
         <ul class="navbar-item flex-row ms-lg-auto ms-0">
             {{--

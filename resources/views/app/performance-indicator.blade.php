@@ -27,6 +27,9 @@
                 border-radius: 0px !important;
             }
 
+            td{
+                white-space: normal !important;
+            }
             a.text-danger {
                 transition: color 0.3s ease;
             }
