@@ -17,7 +17,7 @@ return new class extends Migration
             $table->foreignIdFor(Activity::class)
                 ->constrained()
                 ->onUpdate('cascade')
-                ->onDelete('restrict');
+                ->onDelete('cascade');
 
             $table->foreignIdFor(AccountCode::class)
                 ->nullable()
