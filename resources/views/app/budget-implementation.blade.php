@@ -15,7 +15,6 @@
         <link rel="stylesheet" href="{{ asset('plugins/animate/animate.css') }}">
         @vite(['resources/scss/light/assets/elements/alert.scss'])
         @vite(['resources/scss/dark/assets/elements/alert.scss'])
-        @vite(['resources/scss/light/assets/custom.scss'])
         <!--  END CUSTOM STYLE FILE  -->
     </x-slot>
     <!-- END GLOBAL MANDATORY STYLES -->
