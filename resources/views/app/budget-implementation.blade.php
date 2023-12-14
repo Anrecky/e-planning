@@ -15,6 +15,46 @@
         <link rel="stylesheet" href="{{ asset('plugins/animate/animate.css') }}">
         @vite(['resources/scss/light/assets/elements/alert.scss'])
         @vite(['resources/scss/dark/assets/elements/alert.scss'])
+        <style>
+            #add-account_code_btn,
+            #add-expenditure_detail_btn {
+                opacity: 0;
+                visibility: hidden;
+
+                &.show {
+                    opacity: 1;
+                    visibility: visible;
+                }
+            }
+
+            th,
+            tr {
+                td:first-child {
+                    font-weight: bold !important;
+                }
+
+                &.selected td {
+                    background-color: #2196f3 !important;
+                    color: white;
+                }
+
+                &.activity-row td {
+                    background-color: #fcf5e9;
+                    font-weight: bold !important;
+                    font-style: italic !important;
+                }
+
+                &.account-row td {
+                    font-style: italic !important;
+                }
+
+                td:first-child,
+                td:nth-child(3),
+                td:nth-child(4) {
+                    text-align: center;
+                }
+            }
+        </style>
         <!--  END CUSTOM STYLE FILE  -->
     </x-slot>
     <!-- END GLOBAL MANDATORY STYLES -->
