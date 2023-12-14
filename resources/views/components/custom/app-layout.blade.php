@@ -100,10 +100,6 @@
         #sidebar ul.menu-categories ul.submenu>li ul.sub-submenu>li a::after {
             display: block !important;
         }
-
-        span.icon-name.fw-bold {
-            white-space: break-spaces !important;
-        }
     </style>
 </head>
 
@@ -252,7 +248,16 @@
             }
 
             // Set zona waktu lokal ke Indonesia/Jakarta
-            const options = { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric', hour: '2-digit', minute: '2-digit', second: '2-digit', timeZone: 'Asia/Jakarta' };
+            const options = {
+                weekday: 'long',
+                day: 'numeric',
+                month: 'long',
+                year: 'numeric',
+                hour: '2-digit',
+                minute: '2-digit',
+                second: '2-digit',
+                timeZone: 'Asia/Jakarta'
+            };
             const formattedDatetime = currentDate.toLocaleString('id-ID', options);
 
             // Tampilkan informasi hari, tanggal, bulan, tahun, waktu lokal, dan zona waktu
