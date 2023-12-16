@@ -291,8 +291,8 @@
                     .then(response => {
                         // Success feedback
                         Swal.fire({
-                            title: 'Success!',
-                            text: 'Data has been saved successfully.',
+                            title: 'Berhasil!',
+                            text: 'Data berhasil untuk disimpan.',
                             icon: 'success',
                             confirmButtonText: 'OK'
                         }).then(() => {
@@ -302,10 +302,10 @@
                     })
                     .catch(error => {
                         // Error handling
-                        console.error('Error sending data:', error);
+
                         Swal.fire({
-                            title: 'Error!',
-                            text: 'Something went wrong. Please try again.',
+                            title: 'Gangguan!',
+                            text: 'Terjadi kesalahan. Silahkan coba sesaat lagi.',
                             icon: 'error',
                             confirmButtonText: 'OK'
                         });
@@ -391,7 +391,7 @@
                             .catch(error => {
                                 console.error(error);
                                 Swal.fire({
-                                    title: 'Error!',
+                                    title: 'Gangguan!',
                                     text: 'Gagal menghapus data.',
                                     icon: 'error'
                                 });
