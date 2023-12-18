@@ -172,7 +172,8 @@
                             <li class="{{ Request::routeIs('iku.index') ? 'active' : '' }}">
                                 <a class="ssubmenu" href="{{ route('iku.index') }}">
                                     <div>
-                                        <i data-feather="file"></i><span class="icon-name fw-bold">Indikator Kinerja <br>Utama</span>
+                                        <i data-feather="file"></i><span class="icon-name fw-bold">Indikator Kinerja
+                                            <br>Utama</span>
                                     </div>
                                 </a>
                             </li>
@@ -219,7 +220,8 @@
                             <li class="">
                                 <a class="ssubmenu" href="#">
                                     <div>
-                                        <i data-feather="file"></i><span class="icon-name fw-bold">Indikator Kinerja <br>Utama</span>
+                                        <i data-feather="file"></i><span class="icon-name fw-bold">Indikator Kinerja
+                                            <br>Utama</span>
                                     </div>
                                 </a>
                             </li>
@@ -314,7 +316,7 @@
                             </div>
                         </a>
                     </li>
-                    <li class="submenu">
+                    <li class="ssubmenu {{ Request::routeIs('activity_recap.index') ? 'active' : '' }}">
                         <a href="{{ route('activity_recap.index') }}" aria-expanded="false" class="dropdown-toggle">
                             <div class="">
                                 <i data-feather="folder"></i>
@@ -492,7 +494,8 @@
                         </a>
                     </li>
                     <li class="submenu">
-                        <a href="#passet" data-bs-toggle="collapse" aria-expanded="{{ Request::is('*/passet/*') ? 'true' : 'false' }}"
+                        <a href="#passet" data-bs-toggle="collapse"
+                            aria-expanded="{{ Request::is('*/passet/*') ? 'true' : 'false' }}"
                             class="dropdown-toggle {{ Request::is('*/passet/*') ? 'collapsed' : '' }}">
                             <div>
                                 <i data-feather="folder"></i><span class="icon-name fw-bold">ASET</span>
@@ -506,11 +509,13 @@
                                 </svg>
                             </div>
                         </a>
-                        <ul class="collapse list-unstyled sub-submenu {{ Request::is('*/passet/*') ? 'show' : '' }}" id="passet" data-bs-parent="#pengaturan">
+                        <ul class="collapse list-unstyled sub-submenu {{ Request::is('*/passet/*') ? 'show' : '' }}"
+                            id="passet" data-bs-parent="#pengaturan">
                             <li class="">
                                 <a class="ssubmenu" href="#">
                                     <div>
-                                        <i data-feather="file"></i><span class="icon-name fw-bold">Kategori Aset</span>
+                                        <i data-feather="file"></i><span class="icon-name fw-bold">Kategori
+                                            Aset</span>
                                     </div>
                                 </a>
                             </li>
@@ -528,7 +533,8 @@
                             aria-expanded="{{ Request::is('*/sttpembayaran/*') ? 'true' : 'false' }}"
                             class="dropdown-toggle {{ Request::is('*/sttpembayaran/*') ? 'collapsed' : '' }}">
                             <div>
-                                <i data-feather="folder"></i><span class="icon-name fw-bold">SETTING <br>PEMBAYARAN</span>
+                                <i data-feather="folder"></i><span class="icon-name fw-bold">SETTING
+                                    <br>PEMBAYARAN</span>
                             </div>
                             <div>
                                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
