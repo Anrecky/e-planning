@@ -83,18 +83,49 @@
 
             .btn-outline-success:hover .feather-upload {
                 stroke: white;
-                /* Hover state color */
             }
 
-            .recap-description[contenteditable="true"] {
-                background-color: #f9f9f9;
-                padding: 5px;
-                border: 1px dashed #ccc;
-            }
 
             .recap-description:hover {
-                background-color: #e9ecef;
+                background-color: lightyellow;
                 cursor: pointer;
+                color: black;
+                opacity: 1;
+            }
+
+            .recap-description {
+                transition: 0.305s ease-in-out all;
+                opacity: 0.95;
+            }
+
+            .valid-row td {
+                background-color: #00ab55;
+                color: white;
+            }
+
+            .valid-row button.btn-success {
+                background: white;
+                color: #00ab55 !important;
+            }
+
+            .valid-row button.btn-success:hover {
+                background: black !important;
+                color: white !important;
+            }
+
+            .invalid-row button.btn-danger {
+                background: white;
+                color: #e7515a !important;
+            }
+
+            .invalid-row button.btn-danger:hover {
+                background: black !important;
+                color: white !important;
+            }
+
+            .invalid-row td {
+                background-color: #e7515a;
+                color: white;
             }
         </style>
 
@@ -122,7 +153,7 @@
                         </thead>
                         <tbody>
                             @forelse ($activities as $activity)
-                                <tr>
+                                <tr class="{{ $activity->activityRecap->is_valid ? 'valid-row' : 'invalid-row' }}">
                                     <td id="activity-{{ $activity->id }}">{{ $activity->code }}</td>
                                     <td>{{ $activity->name }}</td>
                                     <td>
@@ -134,16 +165,16 @@
 
                                             {{-- "View File" Link/Button --}}
                                             <a href="{{ route('activity-recap.show-file', $activity->activityRecap) }}"
-                                                class="btn btn-outline-primary btn-sm"
+                                                class="btn btn-primary btn-sm"
                                                 @if ($fileMimeType == 'application/pdf') target="_blank"
                                                @elseif ($fileMimeType == 'application/zip') download @endif>
-                                                <i class="feather icon-eye"></i> View File
+                                                <i class="feather icon-eye"></i> Lihat File
                                             </a>
 
                                             {{-- "Change File" Button --}}
-                                            <button type="button" class="btn btn-outline-secondary btn-sm ms-2"
+                                            <button type="button" class="btn btn-secondary btn-sm ms-2"
                                                 onclick="showFilePondInput('{{ $activity->id }}');">
-                                                <i class="feather icon-edit"></i> Change File
+                                                <i class="feather icon-edit"></i> Ganti File
                                             </button>
 
                                             {{-- Hidden FilePond Input --}}
@@ -160,14 +191,14 @@
                                         <div class="d-flex flex-wrap justify-content-center gap-2">
                                             {{-- Reject Button --}}
                                             <button type="button"
-                                                class="btn-lg btn btn-outline-danger text-center d-flex justify-content-center align-items-center gap-1 update-status"
+                                                class="btn-lg btn btn-danger text-center d-flex justify-content-center align-items-center gap-1 update-status"
                                                 data-activity-id="{{ $activity->id }}" data-new-status="0">
                                                 <i data-feather="x-square" class="feather-upload"></i><span
                                                     class="icon-name">Tolak</span>
                                             </button>
                                             {{-- Accept Button --}}
                                             <button type="button"
-                                                class="btn-lg btn btn-outline-success text-center d-flex justify-content-center align-items-center gap-1 update-status"
+                                                class="btn-lg btn btn-success text-center d-flex justify-content-center align-items-center gap-1 update-status"
                                                 data-activity-id="{{ $activity->id }}" data-new-status="1">
                                                 <i data-feather="check-square" class="feather-upload"></i><span
                                                     class="icon-name">Terima</span>
