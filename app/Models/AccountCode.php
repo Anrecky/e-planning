@@ -19,4 +19,10 @@ class AccountCode extends Model
     {
         $query->where('code', $code);
     }
+    public function calculateTotalSum()
+    {
+        return $this->budgetImplementations->sum(function ($budgetImplementation) {
+            return $budgetImplementation->details->sum('total');
+        });
+    }
 }
