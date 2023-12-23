@@ -211,7 +211,7 @@
                             priceInput, totalInput));
                         priceInput.addEventListener('input', () => calculateAndUpdateTotal(volumeInput,
                             priceInput, totalInput));
-                        volumeInput.addEventListener('keypress', enforceNumericInput);
+                        volumeInput.addEventListener('keypress', window.enforceNumericInput);
                     }
                 });
 
@@ -249,19 +249,31 @@
                             `<option value="${unit.code}">${unit.code}</option>`
                         ).join('');
                         createInputContainer.innerHTML =
-                            `<input type="text" required name="expenditure_description" class="form-control" placeholder="Uraian Detail"><input type="text" required name="expenditure_volume" class="form-control"style="max-width: 100px !important;" placeholder="Volume"><select name="unit" required class="form-control" style="max-width: 150px !important;"><option value="">Pilih Satuan</option>${options}</select><input type="text" name="unit_price" required class="form-control" placeholder="Harga Satuan"><input type="text" name="total" required class="form-control" placeholder="total">`;
+                            `<input type="text" required name="expenditure_description" class="form-control" placeholder="Uraian Detail"><input type="text" required name="expenditure_volume" class="form-control"style="max-width: 100px !important;" placeholder="Volume"><select name="unit" required class="form-control" style="max-width: 150px !important;"><option value="">Pilih Satuan</option>${options}</select><input type="text" disabled name="unit_price" required class="form-control" placeholder="Harga Satuan"><input disabled type="text" name="total" required class="form-control" placeholder="total">`;
 
                         // Now add the event listeners
                         const volumeInput = createInputContainer.querySelector(
                             'input[name="expenditure_volume"]');
                         const priceInput = createInputContainer.querySelector('input[name="unit_price"]');
                         const totalInput = createInputContainer.querySelector('input[name="total"]');
+                        if (volumeInput && priceInput && totalInput) {
+                            volumeInput.addEventListener('input', function() {
+                                const isVolumeFilled = volumeInput.value.trim() !== '';
+                                priceInput.disabled = !isVolumeFilled;
+                                totalInput.disabled = !isVolumeFilled;
 
+                                if (!isVolumeFilled) {
+                                    // Clear values when volume is not filled
+                                    priceInput.value = '';
+                                    totalInput.value = '';
+                                }
+                            });
+                        }
                         volumeInput.addEventListener('input', () => calculateAndUpdateTotal(volumeInput,
                             priceInput, totalInput));
                         priceInput.addEventListener('input', () => calculateAndUpdateTotal(volumeInput,
                             priceInput, totalInput));
-                        volumeInput.addEventListener('keypress', enforceNumericInput);
+                        volumeInput.addEventListener('keypress', window.enforceNumericInput);
                     }
 
                 })
@@ -401,30 +413,14 @@
             }
 
 
-            function formatAsIDRCurrency(value) {
-                return new Intl.NumberFormat('id-ID', {
-                    style: 'currency',
-                    currency: 'IDR',
-                    minimumFractionDigits: 0,
-                    maximumFractionDigits: 0
-                }).format(value);
-            }
-
-            function enforceNumericInput(event) {
-                const charCode = (event.which) ? event.which : event.keyCode;
-                if (charCode > 31 && (charCode < 48 || charCode > 57)) {
-                    event.preventDefault();
-                }
-            }
-
             function calculateAndUpdateTotal(volumeInput, priceInput, totalInput) {
                 const volume = parseFloat(volumeInput.value.replace(/[^0-9,.-]/g, '').replace(',', '.'));
                 let unitPrice = parseFloat(priceInput.value.replace(/Rp\s?|,00/g, '').replace(/\./g, '').replace(/[^\d]/g, ''));
 
                 if (!isNaN(volume) && !isNaN(unitPrice)) {
                     const total = volume * unitPrice;
-                    totalInput.value = formatAsIDRCurrency(total);
-                    priceInput.value = formatAsIDRCurrency(unitPrice);
+                    totalInput.value = window.formatAsIDRCurrency(total);
+                    priceInput.value = window.formatAsIDRCurrency(unitPrice);
                 } else {
                     totalInput.value = '';
                 }
