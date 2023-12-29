@@ -54,18 +54,6 @@
                 border: 1px solid #ced4da;
             }
 
-            /* Style for Feather icons */
-            .feather {
-                width: 24px;
-                height: 24px;
-                stroke-width: 2;
-                stroke: #007bff;
-                /* Bootstrap primary color */
-                fill: none;
-                stroke-linecap: round;
-                stroke-linejoin: round;
-            }
-
             .btn-outline-danger .feather-upload {
                 stroke: #ff0000;
                 /* Normal state color */
@@ -127,6 +115,38 @@
                 background-color: #e7515a;
                 color: white;
             }
+
+            .invalid-row .feather-upload.accept {
+                stroke: white;
+            }
+
+            .invalid-row button.btn-success:hover .feather-upload.accept {
+                stroke: blue;
+            }
+
+            .invalid-row button.btn-success:hover .icon-name {
+                color: blue !important;
+            }
+
+            .invalid-row button.btn-success:hover {
+                background: white !important;
+            }
+
+            .valid-row .feather-upload.reject {
+                stroke: white;
+            }
+
+            .valid-row button.btn-danger:hover .feather-upload.reject {
+                stroke: blue;
+            }
+
+            .valid-row button.btn-danger:hover .icon-name {
+                color: blue !important;
+            }
+
+            .valid-row button.btn-danger:hover {
+                background: white !important;
+            }
         </style>
 
         <!--  END CUSTOM STYLE FILE  -->
@@ -146,6 +166,7 @@
                             <tr class="text-center">
                                 <th scope="col">Kode</th>
                                 <th scope="col">Deskripsi</th>
+                                <th scope="col">Total</th>
                                 <th scope="col">Upload Data Dukung</th>
                                 <th style="width:20rem" scope="col">Aksi</th>
                                 <th scope="col">Keterangan</th>
@@ -153,13 +174,14 @@
                         </thead>
                         <tbody>
                             @forelse ($activities as $activity)
-                                <tr class="{{ $activity->activityRecap->is_valid ? 'valid-row' : 'invalid-row' }}">
+                                <tr class="{{ $activity->activityRecap?->is_valid ? 'valid-row' : 'invalid-row' }}">
                                     <td id="activity-{{ $activity->id }}">{{ $activity->code }}</td>
                                     <td>{{ $activity->name }}</td>
+                                    <td>{{ $activity->calculateTotalSumFormatted() }}</td>
                                     <td>
-                                        @if ($activity->activityRecap && $activity->activityRecap->attachment_path)
+                                        @if ($activity->activityRecap && $activity->activityRecap?->attachment_path)
                                             @php
-                                                $filePath = Storage::disk(App\Supports\Disk::ActivityRecapAttachment)->path($activity->activityRecap->attachment_path);
+                                                $filePath = Storage::disk(App\Supports\Disk::ActivityRecapAttachment)->path($activity->activityRecap?->attachment_path);
                                                 $fileMimeType = mime_content_type($filePath);
                                             @endphp
 
@@ -193,21 +215,20 @@
                                             <button type="button"
                                                 class="btn-lg btn btn-danger text-center d-flex justify-content-center align-items-center gap-1 update-status"
                                                 data-activity-id="{{ $activity->id }}" data-new-status="0">
-                                                <i data-feather="x-square" class="feather-upload"></i><span
+                                                <i data-feather="x-square" class="feather-upload reject"></i><span
                                                     class="icon-name">Tolak</span>
                                             </button>
                                             {{-- Accept Button --}}
                                             <button type="button"
                                                 class="btn-lg btn btn-success text-center d-flex justify-content-center align-items-center gap-1 update-status"
                                                 data-activity-id="{{ $activity->id }}" data-new-status="1">
-                                                <i data-feather="check-square" class="feather-upload"></i><span
+                                                <i data-feather="check-square" class="feather-upload accept"></i><span
                                                     class="icon-name">Terima</span>
                                             </button>
                                         </div>
                                     </td>
                                     <td class="recap-description">
-                                        {{-- Show existing description if available --}}
-                                        {{ $activity->activityRecap->description ?? '' }}
+                                        {{ $activity->activityRecap?->description ?? '' }}
                                     </td>
                                 </tr>
                             @empty
