@@ -308,15 +308,16 @@
                             </div>
                         </a>
                     </li>
-                    <li class="submenu">
-                        <a href="" aria-expanded="false" class="dropdown-toggle">
+                    <li class="submenu {{ Request::routeIs('withdrawal_plan.index') ? 'active' : '' }}">
+                        <a href="{{ route('withdrawal_plan.index') }}" aria-expanded="false"
+                            class="dropdown-toggle">
                             <div class="">
                                 <i data-feather="folder"></i>
                                 <span class="icon-name fw-bold">RENCANA <br>PENARIKAN DANA</span>
                             </div>
                         </a>
                     </li>
-                    <li class="ssubmenu {{ Request::routeIs('activity_recap.index') ? 'active' : '' }}">
+                    <li class="submenu {{ Request::routeIs('activity_recap.index') ? 'active' : '' }}">
                         <a href="{{ route('activity_recap.index') }}" aria-expanded="false" class="dropdown-toggle">
                             <div class="">
                                 <i data-feather="folder"></i>
