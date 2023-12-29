@@ -15,7 +15,6 @@
         <link rel="stylesheet" href="{{ asset('plugins/animate/animate.css') }}">
         @vite(['resources/scss/light/assets/elements/alert.scss'])
         @vite(['resources/scss/dark/assets/elements/alert.scss'])
-        @vite(['resources/scss/light/assets/custom.scss'])
         <style>
             .month-filter-wrapper {
                 /* Add custom styling as per your application's design */

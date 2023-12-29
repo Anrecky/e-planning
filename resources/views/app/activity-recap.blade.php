@@ -15,7 +15,6 @@
         <link rel="stylesheet" href="{{ asset('plugins/animate/animate.css') }}">
         @vite(['resources/scss/light/assets/elements/alert.scss'])
         @vite(['resources/scss/dark/assets/elements/alert.scss'])
-        @vite(['resources/scss/light/assets/custom.scss'])
         <link rel="stylesheet" href="{{ asset('plugins/filepond/filepond.min.css') }}">
         <link rel="stylesheet" href="{{ asset('plugins/filepond/FilePondPluginImagePreview.min.css') }}">
         @vite(['resources/scss/light/plugins/filepond/custom-filepond.scss'])
