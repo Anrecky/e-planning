@@ -102,12 +102,12 @@ class ActivityRecapController extends Controller
         $activityId = $request->input('activity_id');
         $newStatus = $request->input('is_valid');
 
-        $activityRecap = ActivityRecap::where('activity_id', $activityId)->first();
+        $activityRecap = ActivityRecap::firstOrNew(['activity_id' => $activityId]);
         if ($activityRecap) {
             $activityRecap->is_valid = $newStatus;
             $activityRecap->save();
 
-            return response()->json(['message' => 'Status updated successfully']);
+            return response()->json(['message' => 'Status berhasil diupdate']);
         }
 
         return response()->json(['message' => 'Activity Recap not found'], 404);
