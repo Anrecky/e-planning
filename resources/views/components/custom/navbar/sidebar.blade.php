@@ -318,7 +318,7 @@
                         <a href="{{ route('activity_recap.index') }}" aria-expanded="false" class="dropdown-toggle">
                             <div class="">
                                 <i data-feather="folder"></i>
-                                <span class="icon-name fw-bold">REKAP KEGIATAN <br>DAN UPLOAD DATA <br>DUKUNG</span>
+                                <span class="icon-name fw-bold">REKAP KEGIATAN <br>DAN UPLOAD DATA<br>DUKUNG</span>
                             </div>
                         </a>
                     </li>
