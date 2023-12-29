@@ -12,6 +12,7 @@ use App\Http\Controllers\InstitutionalBudgetController;
 use App\Http\Controllers\SBMSBIController;
 use App\Http\Controllers\UnitBudgetController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\WithdrawalPlanController;
 use Illuminate\Support\Facades\Route;
 
 
@@ -24,7 +25,9 @@ Route::middleware(['auth'])->prefix('admin')->group(function () {
         return view('app.dashboard', ['title' => 'Dasbor']);
     })->name('admin.dashboard');
 
-    Route::get('/api/program-targets', [ProgramTargetController::class, 'getProgramTargets'])->name('program-targets.index');
+    Route::get('/api/program-targets', [ProgramTargetController::class, 'getProgramTargets'])->name('program_targets.index');
+    Route::get('/api/withdrawal-plans/{activityId}', [WithdrawalPlanController::class, 'getWithdrawalPlans'])->name('withdrawal_plans.activity');
+
 
     Route::prefix('renstra')->group(function () {
         Route::get('visi', [RenstraController::class, 'vision'])->name('vision.index');
@@ -80,5 +83,7 @@ Route::middleware(['auth'])->prefix('admin')->group(function () {
         Route::get('rekap-kegiatan/bukti-dukung/{activityRecap}', [ActivityRecapController::class, 'showFile'])
             ->name('activity-recap.show-file');
         Route::post('rekap-kegiatan-dan-upload-data-dukung/update-status', [ActivityRecapController::class, 'updateStatus'])->name('activity_recap.update_status');
+        Route::get('rencana-penarikan-dana', [WithdrawalPlanController::class, 'index'])->name('withdrawal_plan.index');
+        Route::post('rencana-penarikan-dana', [WithdrawalPlanController::class, 'store'])->name('withdrawal_plan.store');
     });
 });
