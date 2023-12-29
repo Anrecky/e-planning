@@ -73,28 +73,33 @@ class BudgetImplementation extends Model
             ->initialBudget()
             ->get();
 
-        return $budgetImplementations->groupBy('activity.code')->map(function ($activityGroup) {
-            $activityTotalSum = $activityGroup->reduce(function ($carry, $budgetImplementation) {
-                return $carry + $budgetImplementation->calculateDetailsTotalSum();
-            }, 0);
-
-            $accountGroups = $activityGroup->groupBy('accountCode.code')->map(function ($accountGroup) {
-                $accountTotalSum = $accountGroup->reduce(function ($carry, $budgetImplementation) {
+        return $budgetImplementations
+            ->groupBy('activity.code')
+            ->sortKeysUsing(function ($key1, $key2) {
+                return strtolower($key1) <=> strtolower($key2); // Case-insensitive sorting
+            })
+            ->map(function ($activityGroup) {
+                $activityTotalSum = $activityGroup->reduce(function ($carry, $budgetImplementation) {
                     return $carry + $budgetImplementation->calculateDetailsTotalSum();
                 }, 0);
 
-                if ($accountGroup->isNotEmpty()) {
-                    $accountGroup->first()->account_total_sum = $accountTotalSum;
+                $accountGroups = $activityGroup->groupBy('accountCode.code')->map(function ($accountGroup) {
+                    $accountTotalSum = $accountGroup->reduce(function ($carry, $budgetImplementation) {
+                        return $carry + $budgetImplementation->calculateDetailsTotalSum();
+                    }, 0);
+
+                    if ($accountGroup->isNotEmpty()) {
+                        $accountGroup->first()->account_total_sum = $accountTotalSum;
+                    }
+
+                    return $accountGroup;
+                });
+
+                if ($activityGroup->isNotEmpty()) {
+                    $activityGroup->first()->activity_total_sum = $activityTotalSum;
                 }
 
-                return $accountGroup;
+                return $accountGroups;
             });
-
-            if ($activityGroup->isNotEmpty()) {
-                $activityGroup->first()->activity_total_sum = $activityTotalSum;
-            }
-
-            return $accountGroups;
-        });
     }
 }

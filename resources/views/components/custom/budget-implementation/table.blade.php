@@ -37,7 +37,7 @@
                     @if (!$isActivityDisplayed)
                         <tr data-activity="{{ $budgetImplementations->first()->activity->id }}"
                             data-bi="{{ $budgetImplementations->first()->id }}" class="activity-row">
-                            <td>{{ $activityCode }}</td>
+                            <td>{{ $budgetImplementations->first()->activity->code }}</td>
                             <td>{{ $budgetImplementations->first()->activity->name }}</td>
                             <td></td>
                             <td></td>

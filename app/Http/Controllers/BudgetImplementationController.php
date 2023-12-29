@@ -30,15 +30,8 @@ class BudgetImplementationController extends Controller
     {
         $title = "DIPA";
 
-        // Retrieving BudgetImplementations with necessary relations
-        $budgetImplementations = BudgetImplementation::query()
-            ->with(['activity', 'accountCode', 'details'])
-            ->initialBudget()
-            ->get();
-
         // Get grouped data with total sums using the new method in the model
         $groupedBI = BudgetImplementation::getGroupedDataWithTotals();
-
 
         $accountCodes = AccountCode::all();
         $expenditureUnits = ExpenditureUnit::all();
@@ -110,10 +103,10 @@ class BudgetImplementationController extends Controller
             'id' => 'required|integer',
             'code' => 'sometimes|string',
             'name' => 'required|string|max:255',
-            'volume' => 'required|integer',
-            'unit' => 'required|string|max:255',
-            'unit_price' => 'required|string',
-            'total' => 'required|string',
+            'volume' => 'sometimes|integer',
+            'unit' => 'sometimes|string|max:255',
+            'unit_price' => 'sometimes|string',
+            'total' => 'sometimes|string',
         ]);
         try {
             switch ($validatedData['type']) {
@@ -197,11 +190,8 @@ class BudgetImplementationController extends Controller
                     return response()->json(['error' => 'true', 'message' => 'Budget Implementation not found.'], 404);
                 }
 
-                // Get the activity_id from the found record
-                $activityId = $budgetImplementation->activity_id;
-
                 // Delete all BudgetImplementation records with the same activity_id
-                BudgetImplementation::where('activity_id', $activityId)->delete();
+                Activity::find($budgetImplementation->activity_id)->delete();
 
                 return response()->json(['success' => 'true', 'message' => 'Berhasil menghapus data dipa.'], 200);
             } catch (\Throwable $th) {

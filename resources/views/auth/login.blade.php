@@ -28,12 +28,12 @@
 
                         <div class="position-relative">
 
-                            <img src="{{ Vite::asset('resources/images/auth-cover.svg') }}" alt="auth-img">
+                            <img src="{{ Vite::asset('resources/images/1.svg') }}" alt="auth-img">
 
-                            <h2 class="mt-5 text-white font-weight-bolder px-2">Join the community of expert developers
+                            <h2 class="mt-5 text-white font-weight-bolder px-2">Sistem Perencanaan Digitalisasi Moderen
                             </h2>
-                            <p class="text-white px-2">It is easy to setup with great customer experience. Start your
-                                7-day free trial</p>
+                            <p class="text-white px-2">Sistem yang memiliki fitur kalkulasi otomatisasi, efektif, dan
+                                terintegrasi</p>
                         </div>
 
                     </div>
@@ -56,8 +56,8 @@
                                 @csrf
                                 <div class="row">
                                     <div class="col-md-12 mb-3">
-                                        <h2>Sign In</h2>
-                                        <p>Enter your email and password to login</p>
+                                        <h2>Masuk ke Sistem</h2>
+                                        <p>Silahkan masukkan email dan password anda untuk masuk ke sistem</p>
                                     </div>
                                     <div class="col-md-12">
                                         <label class="form-label">Email</label>

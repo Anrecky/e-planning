@@ -27,9 +27,10 @@
                 border-radius: 0px !important;
             }
 
-            td{
+            td {
                 white-space: normal !important;
             }
+
             a.text-danger {
                 transition: color 0.3s ease;
             }
@@ -319,7 +320,7 @@
                     ajax: {
                         transport: function(params, success, failure) {
                             // Using Axios to fetch the data
-                            axios.get(`{{ route('program-targets.index') }}`, {
+                            axios.get(`{{ route('program_targets.index') }}`, {
                                     params: {
                                         search: params.data.term,
                                         limit: 10

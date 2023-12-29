@@ -15,7 +15,46 @@
         <link rel="stylesheet" href="{{ asset('plugins/animate/animate.css') }}">
         @vite(['resources/scss/light/assets/elements/alert.scss'])
         @vite(['resources/scss/dark/assets/elements/alert.scss'])
-        @vite(['resources/scss/light/assets/custom.scss'])
+        <style>
+            #add-account_code_btn,
+            #add-expenditure_detail_btn {
+                opacity: 0;
+                visibility: hidden;
+
+                &.show {
+                    opacity: 1;
+                    visibility: visible;
+                }
+            }
+
+            th,
+            tr {
+                td:first-child {
+                    font-weight: bold !important;
+                }
+
+                &.selected td {
+                    background-color: #2196f3 !important;
+                    color: white;
+                }
+
+                &.activity-row td {
+                    background-color: #fcf5e9;
+                    font-weight: bold !important;
+                    font-style: italic !important;
+                }
+
+                &.account-row td {
+                    font-style: italic !important;
+                }
+
+                td:first-child,
+                td:nth-child(3),
+                td:nth-child(4) {
+                    text-align: center;
+                }
+            }
+        </style>
         <!--  END CUSTOM STYLE FILE  -->
     </x-slot>
     <!-- END GLOBAL MANDATORY STYLES -->
@@ -172,7 +211,7 @@
                             priceInput, totalInput));
                         priceInput.addEventListener('input', () => calculateAndUpdateTotal(volumeInput,
                             priceInput, totalInput));
-                        volumeInput.addEventListener('keypress', enforceNumericInput);
+                        volumeInput.addEventListener('keypress', window.enforceNumericInput);
                     }
                 });
 
@@ -210,19 +249,31 @@
                             `<option value="${unit.code}">${unit.code}</option>`
                         ).join('');
                         createInputContainer.innerHTML =
-                            `<input type="text" required name="expenditure_description" class="form-control" placeholder="Uraian Detail"><input type="text" required name="expenditure_volume" class="form-control"style="max-width: 100px !important;" placeholder="Volume"><select name="unit" required class="form-control" style="max-width: 150px !important;"><option value="">Pilih Satuan</option>${options}</select><input type="text" name="unit_price" required class="form-control" placeholder="Harga Satuan"><input type="text" name="total" required class="form-control" placeholder="total">`;
+                            `<input type="text" required name="expenditure_description" class="form-control" placeholder="Uraian Detail"><input type="text" required name="expenditure_volume" class="form-control"style="max-width: 100px !important;" placeholder="Volume"><select name="unit" required class="form-control" style="max-width: 150px !important;"><option value="">Pilih Satuan</option>${options}</select><input type="text" disabled name="unit_price" required class="form-control" placeholder="Harga Satuan"><input disabled type="text" name="total" required class="form-control" placeholder="total">`;
 
                         // Now add the event listeners
                         const volumeInput = createInputContainer.querySelector(
                             'input[name="expenditure_volume"]');
                         const priceInput = createInputContainer.querySelector('input[name="unit_price"]');
                         const totalInput = createInputContainer.querySelector('input[name="total"]');
+                        if (volumeInput && priceInput && totalInput) {
+                            volumeInput.addEventListener('input', function() {
+                                const isVolumeFilled = volumeInput.value.trim() !== '';
+                                priceInput.disabled = !isVolumeFilled;
+                                totalInput.disabled = !isVolumeFilled;
 
+                                if (!isVolumeFilled) {
+                                    // Clear values when volume is not filled
+                                    priceInput.value = '';
+                                    totalInput.value = '';
+                                }
+                            });
+                        }
                         volumeInput.addEventListener('input', () => calculateAndUpdateTotal(volumeInput,
                             priceInput, totalInput));
                         priceInput.addEventListener('input', () => calculateAndUpdateTotal(volumeInput,
                             priceInput, totalInput));
-                        volumeInput.addEventListener('keypress', enforceNumericInput);
+                        volumeInput.addEventListener('keypress', window.enforceNumericInput);
                     }
 
                 })
@@ -252,8 +303,8 @@
                     .then(response => {
                         // Success feedback
                         Swal.fire({
-                            title: 'Success!',
-                            text: 'Data has been saved successfully.',
+                            title: 'Berhasil!',
+                            text: 'Data berhasil untuk disimpan.',
                             icon: 'success',
                             confirmButtonText: 'OK'
                         }).then(() => {
@@ -263,10 +314,10 @@
                     })
                     .catch(error => {
                         // Error handling
-                        console.error('Error sending data:', error);
+
                         Swal.fire({
-                            title: 'Error!',
-                            text: 'Something went wrong. Please try again.',
+                            title: 'Gangguan!',
+                            text: 'Terjadi kesalahan. Silahkan coba sesaat lagi.',
                             icon: 'error',
                             confirmButtonText: 'OK'
                         });
@@ -352,7 +403,7 @@
                             .catch(error => {
                                 console.error(error);
                                 Swal.fire({
-                                    title: 'Error!',
+                                    title: 'Gangguan!',
                                     text: 'Gagal menghapus data.',
                                     icon: 'error'
                                 });
@@ -362,30 +413,14 @@
             }
 
 
-            function formatAsIDRCurrency(value) {
-                return new Intl.NumberFormat('id-ID', {
-                    style: 'currency',
-                    currency: 'IDR',
-                    minimumFractionDigits: 0,
-                    maximumFractionDigits: 0
-                }).format(value);
-            }
-
-            function enforceNumericInput(event) {
-                const charCode = (event.which) ? event.which : event.keyCode;
-                if (charCode > 31 && (charCode < 48 || charCode > 57)) {
-                    event.preventDefault();
-                }
-            }
-
             function calculateAndUpdateTotal(volumeInput, priceInput, totalInput) {
                 const volume = parseFloat(volumeInput.value.replace(/[^0-9,.-]/g, '').replace(',', '.'));
                 let unitPrice = parseFloat(priceInput.value.replace(/Rp\s?|,00/g, '').replace(/\./g, '').replace(/[^\d]/g, ''));
 
                 if (!isNaN(volume) && !isNaN(unitPrice)) {
                     const total = volume * unitPrice;
-                    totalInput.value = formatAsIDRCurrency(total);
-                    priceInput.value = formatAsIDRCurrency(unitPrice);
+                    totalInput.value = window.formatAsIDRCurrency(total);
+                    priceInput.value = window.formatAsIDRCurrency(unitPrice);
                 } else {
                     totalInput.value = '';
                 }

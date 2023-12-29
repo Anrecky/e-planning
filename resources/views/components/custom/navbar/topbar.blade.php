@@ -99,8 +99,8 @@
                     data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     <div class="avatar-container">
                         <div class="avatar avatar-sm avatar-indicators avatar-online">
-                            {{-- <img alt="avatar" src="{{ Vite::asset('resources/images/profile-30.png') }}"
-                                class="rounded-circle"> --}}
+                            <img alt="avatar" src="{{ Vite::asset('resources/images/1.svg') }}"
+                                class="rounded-circle">
                         </div>
                     </div>
                 </a>

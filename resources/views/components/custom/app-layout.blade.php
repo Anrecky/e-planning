@@ -100,10 +100,6 @@
         #sidebar ul.menu-categories ul.submenu>li ul.sub-submenu>li a::after {
             display: block !important;
         }
-
-        span.icon-name.fw-bold {
-            white-space: break-spaces !important;
-        }
     </style>
 </head>
 
@@ -236,32 +232,43 @@
     </script>
 
     <script>
-        function updateClock() {
-            const datetimeElement = document.getElementById('datetime-info');
-            const currentDate = new Date();
+        if (window.location.pathname !== '/login') {
+            function updateClock() {
+                const datetimeElement = document.getElementById('datetime-info');
+                const currentDate = new Date();
 
-            // Tentukan zona waktu
-            let timezoneAbbreviation = '';
-            const timezoneOffset = currentDate.getTimezoneOffset() / 60;
-            if (timezoneOffset === -7) {
-                timezoneAbbreviation = 'WIB';
-            } else if (timezoneOffset === -8) {
-                timezoneAbbreviation = 'WITA';
-            } else if (timezoneOffset === -9) {
-                timezoneAbbreviation = 'WIT';
+                // Tentukan zona waktu
+                let timezoneAbbreviation = '';
+                const timezoneOffset = currentDate.getTimezoneOffset() / 60;
+                if (timezoneOffset === -7) {
+                    timezoneAbbreviation = 'WIB';
+                } else if (timezoneOffset === -8) {
+                    timezoneAbbreviation = 'WITA';
+                } else if (timezoneOffset === -9) {
+                    timezoneAbbreviation = 'WIT';
+                }
+
+                // Set zona waktu lokal ke Indonesia/Jakarta
+                const options = {
+                    weekday: 'long',
+                    day: 'numeric',
+                    month: 'long',
+                    year: 'numeric',
+                    hour: '2-digit',
+                    minute: '2-digit',
+                    second: '2-digit',
+                    timeZone: 'Asia/Jakarta'
+                };
+                const formattedDatetime = currentDate.toLocaleString('id-ID', options);
+
+                // Tampilkan informasi hari, tanggal, bulan, tahun, waktu lokal, dan zona waktu
+                const fullDatetimeInfo = `${formattedDatetime} ${timezoneAbbreviation}`;
+                datetimeElement.textContent = fullDatetimeInfo;
             }
 
-            // Set zona waktu lokal ke Indonesia/Jakarta
-            const options = { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric', hour: '2-digit', minute: '2-digit', second: '2-digit', timeZone: 'Asia/Jakarta' };
-            const formattedDatetime = currentDate.toLocaleString('id-ID', options);
-
-            // Tampilkan informasi hari, tanggal, bulan, tahun, waktu lokal, dan zona waktu
-            const fullDatetimeInfo = `${formattedDatetime} ${timezoneAbbreviation}`;
-            datetimeElement.textContent = fullDatetimeInfo;
+            // Panggil updateClock setiap detik
+            setInterval(updateClock, 1000);
         }
-
-        // Panggil updateClock setiap detik
-        setInterval(updateClock, 1000);
     </script>
 </body>
 
