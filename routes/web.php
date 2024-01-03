@@ -13,6 +13,7 @@ use App\Http\Controllers\SBMSBIController;
 use App\Http\Controllers\UnitBudgetController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\WithdrawalPlanController;
+use App\Http\Controllers\RuhPaymentController;
 use Illuminate\Support\Facades\Route;
 
 
@@ -85,5 +86,8 @@ Route::middleware(['auth'])->prefix('admin')->group(function () {
         Route::post('rekap-kegiatan-dan-upload-data-dukung/update-status', [ActivityRecapController::class, 'updateStatus'])->name('activity_recap.update_status');
         Route::get('rencana-penarikan-dana', [WithdrawalPlanController::class, 'index'])->name('withdrawal_plan.index');
         Route::post('rencana-penarikan-dana', [WithdrawalPlanController::class, 'store'])->name('withdrawal_plan.store');
+    });
+    Route::prefix('pembayaran')->group(function () {
+        Route::get('ruh-pembayaran', [RuhPaymentController::class, 'index'])->name('ruh_payment.index');
     });
 });

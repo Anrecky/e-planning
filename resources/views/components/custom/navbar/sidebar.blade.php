@@ -346,7 +346,7 @@
                 <ul class="collapse submenu list-unstyled {{ Request::is('*/pembayaran/*') ? 'show' : '' }}"
                     id="pembayaran" data-bs-parent="#accordionExample">
                     <li class="submenu">
-                        <a href="#" aria-expanded="false" class="dropdown-toggle">
+                        <a href="{{ route('ruh_payment.index') }}" aria-expanded="false" class="dropdown-toggle">
                             <div class="">
                                 <i data-feather="folder"></i>
                                 <span class="icon-name fw-bold">RUH PEMBAYARAN</span>
@@ -549,14 +549,14 @@
                         <ul class="collapse list-unstyled sub-submenu {{ Request::is('*/sttpembayaran/*') ? 'show' : '' }}"
                             id="sttpembayaran" data-bs-parent="#pengaturan">
                             <li class="">
-                                <a class="ssubmenu" href="" aria-expanded="false">
+                                <a class="ssubmenu" href="#" aria-expanded="false">
                                     <div>
                                         <i data-feather="file"></i><span class="icon-name fw-bold">Jenis SPP</span>
                                     </div>
                                 </a>
                             </li>
                             <li class="">
-                                <a class="ssubmenu" href="">
+                                <a class="ssubmenu" href="#">
                                     <div>
                                         <i data-feather="file"></i><span class="icon-name fw-bold">Cara Bayar</span>
                                     </div>

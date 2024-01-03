@@ -20,12 +20,6 @@
         @vite(['resources/scss/dark/plugins/table/datatable/dt-global_style.scss'])
 
         <style>
-            .input-group .toggle-password {
-                border-top-right-radius: 0;
-                border-bottom-right-radius: 0;
-                border-right: 0;
-            }
-
             td,
             th {
                 border-radius: 0px !important;
@@ -92,7 +86,7 @@
                         <!-- Button trigger modal -->
                         <button type="button" class="btn btn-primary btn-md w-20 ms-4" data-bs-toggle="modal"
                             data-bs-target="#exampleModalCenter">
-                            Input User
+                            Input Data Pembayaran
                         </button>
                     </div>
 
@@ -101,38 +95,14 @@
                             <thead class="bg-primary text-white">
                                 <tr>
                                     <th scope="col" style="width:40px;">No.</th>
-                                    <th scope="col">Nama</th>
-                                    <th scope="col">Email</th>
+                                    <th scope="col">Jenis Pembayaran</th>
+                                    <th scope="col">Deskripsi Akun</th>
+                                    <th scope="col">Data Belanja</th>
                                     <th scope="col" class="text-center">Aksi</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach ($users as $user)
-                                    <tr>
-                                        <td style="width:40px;">{{ $loop->iteration }}</td>
-                                        <td>{{ $user->name }}</td>
-                                        <td>{{ $user->email ?? '-' }}</td>
-                                        <td class="text-center ">
-                                            <button type="button" class="btn btn-sm btn-primary"
-                                                onclick="openEditModal({{ $user->id }}, '{{ $user->name }}', '{{ $user->email }}')">
-                                                <i class="text-white" data-feather="edit-2"></i>
-                                            </button>
-
-                                            <a href="javascript:void(0);" class="btn btn-danger btn-sm" role="button"
-                                                onclick="confirmDelete({{ $user->id }});">
-                                                <i class="text-white" data-feather="trash-2"></i>
-                                            </a>
-                                            <!-- Hidden form for delete request -->
-                                            <form id="delete-form-{{ $user->id }}"
-                                                action="{{ route('user.delete', $user->id) }}" method="POST"
-                                                style="display: none;">
-                                                @csrf
-                                                @method('DELETE')
-                                            </form>
-
-                                        </td>
-                                    </tr>
-                                @endforeach
+                                
                             </tbody>
                         </table>
 
@@ -144,37 +114,32 @@
     </div>
 
     <!-- Create Modal -->
-    <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog"
+    <!-- <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog"
         aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalCenterTitle">Input User</h5>
+                    <h5 class="modal-title" id="exampleModalCenterTitle">Input Data Pembayaran</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <form action="{{ route('user.store') }}" method="POST">
+                    <form action="{{ route('account_code.store') }}" method="POST">
                         @csrf
                         <div class="form-group d-flex align-items-center my-2">
-                            <button type="button" id="add-user" class="btn btn-sm btn-primary py-0 px-2">
+                            <button type="button" id="add-account_code" class="btn btn-sm btn-primary py-0 px-2">
                                 <i data-feather="plus"></i>
                             </button>
-                            <label for="user" class="ms-2 py-0 mb-0">User</label>
+                            <label for="account_code" class="ms-2 py-0 mb-0">Kode Akun</label>
                         </div>
 
-                        <div id="user-inputs" class="mt-2">
+                        <div id="account_code-inputs" class="mt-2">
                             <div class="input-group mb-2">
                                 <span class="input-group-text">1.</span>
-                                <input type="text" name="user_name[]" class="form-control" placeholder="Nama User">
-                                <input type="text" name="user_email[]" class="form-control" placeholder="Email User">
-                                <input type="password" name="user_password[]" autocomplete="new-password"
-                                    class="form-control" placeholder="Password">
-                                <button type="button" onclick="togglePasswordVisibility(event)"
-                                    class="btn btn-outline-secondary toggle-password">
-                                    <i data-feather="eye" class="feather icon-eye" id="togglePassword"
-                                        style="cursor: pointer;"></i>
-                                </button>
-                                <button type="button" class="btn btn-danger remove-user">
+                                <input type="text" name="account_code_name[]" class="form-control"
+                                    placeholder="Nama Kode Akun">
+                                <input type="text" name="account_code_code[]" class="form-control"
+                                    placeholder="Kode Kode Akun">
+                                <button type="button" class="btn btn-danger remove-account_code">
                                     <i data-feather="trash"></i>
                                 </button>
                             </div>
@@ -188,15 +153,15 @@
                 </div>
             </div>
         </div>
-    </div>
+    </div> -->
 
     <!-- Edit Modal -->
-    <div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="editModalTitle"
+    <!-- <div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="editModalTitle"
         aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="editModalTitle">Edit User</h5>
+                    <h5 class="modal-title" id="editModalTitle">Edit Kode Akun</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
@@ -204,33 +169,21 @@
                         @csrf
                         @method('PATCH')
                         <div class="form-group">
-                            <label>User</label>
-                            <input type="text" id="user_name" name="name" class="form-control" required>
+                            <label>Kode Akun</label>
+                            <input type="text" id="account_code_name" name="name" class="form-control"
+                                required>
                         </div>
                         <div class="form-group mt-3">
-                            <label>Email</label>
-                            <input type="text" id="user_email" name="email" class="form-control" required>
+                            <label>Kode</label>
+                            <input type="text" id="account_code_code" name="code" class="form-control"
+                                required>
                         </div>
-                        <div class="form-group mt-3">
-                            <label for="password">Password Baru? (opsional)</label>
-                            <div class="input-group">
-                                <input type="password" id="password"
-                                    placeholder="Kosongkan inputan jika ingin ubah password baru" name="password"
-                                    class="form-control">
-                                <button type="button" onclick="togglePasswordVisibility(event)"
-                                    class="btn btn-outline-secondary toggle-password">
-                                    <i data-feather="eye" class="feather icon-eye" id="togglePassword"
-                                        style="cursor: pointer;"></i>
-                                </button>
-                            </div>
-                        </div>
-                        <!-- Add other fields as needed -->
                         <button type="submit" class="btn btn-primary mt-3">Update</button>
                     </form>
                 </div>
             </div>
         </div>
-    </div>
+    </div> -->
 
     <!--  BEGIN CUSTOM SCRIPTS FILE  -->
     <x-slot:footerFiles>
@@ -240,19 +193,13 @@
         <script src="{{ asset('plugins/table/datatable/datatables.js') }}"></script>
 
         <script>
-            window.onload = function() {
-                document.querySelectorAll('input[type="password"]').forEach(function(input) {
-                    input.value = '';
-                });
-            };
-
-            function openEditModal(id, name, email) {
+            function openEditModal(id, name, code) {
                 // Populate the form fields
-                document.getElementById('user_name').value = name;
-                document.getElementById('user_email').value = email;
+                document.getElementById('account_code_name').value = name;
+                document.getElementById('account_code_code').value = code;
 
                 // Update the form action URL
-                document.getElementById('edit-form').action = '/admin/pengaturan/user/' + id + '/update';
+                document.getElementById('edit-form').action = '/admin/pengaturan/kode-akun/' + id + '/update';
 
                 // Show the modal
                 new bootstrap.Modal(document.getElementById('editModal')).show();
@@ -261,21 +208,6 @@
             window.addEventListener('load', function() {
                 feather.replace();
             })
-            // Function to toggle password visibility
-            function togglePasswordVisibility(event) {
-                const button = event.target.tagName === 'I' ? event.target.parentNode : event.target;
-                const passwordInput = button.previousElementSibling;
-
-                if (passwordInput.type === 'password') {
-                    passwordInput.type = 'text';
-                    button.innerHTML = '<i data-feather="eye-off" class="feather icon-eye-off"></i>';
-                } else {
-                    passwordInput.type = 'password';
-                    button.innerHTML = '<i data-feather="eye" class="feather icon-eye"></i>';
-                }
-                feather.replace();
-            }
-
 
             function confirmDelete(id) {
                 Swal.fire({
@@ -294,7 +226,7 @@
             }
 
             function updateNumbering() {
-                const missionInputs = document.querySelectorAll('#user-inputs .input-group');
+                const missionInputs = document.querySelectorAll('#account_code-inputs .input-group');
                 missionInputs.forEach((input, index) => {
                     input.querySelector('.input-group-text').textContent = `${index + 1}.`;
                 });
@@ -321,35 +253,32 @@
                     "lengthMenu": [7, 10, 20, 50],
                     "pageLength": 10
                 });
-                const userContainer = document.getElementById('user-inputs');
+                const accountCodeContainer = document.getElementById('account_code-inputs');
 
-                document.getElementById('add-user').addEventListener('click', function() {
-                    const index = userContainer.querySelectorAll('.input-group').length + 1;
+                document.getElementById('add-account_code').addEventListener('click', function() {
+                    const index = accountCodeContainer.querySelectorAll('.input-group').length + 1;
                     const newInputGroup = `
                     <div class="input-group mb-2">
                         <span class="input-group-text">${index}.</span>
-                        <input type="text" name="user_name[]" class="form-control" placeholder="Nama User">
-                        <input type="text" name="user_email[]" class="form-control" placeholder="Email User">
-                        <input type="password" name="user_password[]" autocomplete="new-password" class="form-control" placeholder="Password">
-                        <button type="button" onclick="togglePasswordVisibility(event)" class="btn btn-outline-secondary toggle-password"><i data-feather="eye" class="feather icon-eye" id="togglePassword" style="cursor: pointer;"></i></button>
-                        <button type="button" class="btn btn-danger remove-user">
+                        <input type="text" name="account_code_name[]" class="form-control" placeholder="Nama Kode Akun">
+                        <input type="text" name="account_code_code[]" class="form-control" placeholder="Kode Kode Akun">
+                        <button type="button" class="btn btn-danger remove-account_code">
                             <i data-feather="trash"></i>
                         </button>
-                    </div>
-                    `;
-                    userContainer.insertAdjacentHTML('beforeend', newInputGroup);
+                    </div>`;
+                    accountCodeContainer.insertAdjacentHTML('beforeend', newInputGroup);
                     feather.replace();
                 });
 
-                userContainer.addEventListener('click', function(event) {
-                    if (event.target.classList.contains('remove-user')) {
+                accountCodeContainer.addEventListener('click', function(event) {
+                    if (event.target.classList.contains('remove-account_code')) {
                         event.target.closest('.input-group').remove();
                         updateNumbering();
                     }
                 });
 
                 function updateNumbering() {
-                    const inputGroups = userContainer.querySelectorAll('.input-group');
+                    const inputGroups = accountCodeContainer.querySelectorAll('.input-group');
                     inputGroups.forEach((group, index) => {
                         group.querySelector('.input-group-text').textContent = `${index + 1}.`;
                     });
