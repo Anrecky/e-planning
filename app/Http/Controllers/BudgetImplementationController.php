@@ -30,13 +30,15 @@ class BudgetImplementationController extends Controller
     {
         $title = "DIPA";
 
+        $totalSum = BudgetImplementationDetail::sum('total');
+
         // Get grouped data with total sums using the new method in the model
         $groupedBI = BudgetImplementation::getGroupedDataWithTotals();
 
         $accountCodes = AccountCode::all();
         $expenditureUnits = ExpenditureUnit::all();
 
-        return view('app.budget-implementation', compact('title', 'groupedBI', 'accountCodes', 'expenditureUnits'));
+        return view('app.budget-implementation', compact('title', 'groupedBI', 'accountCodes', 'expenditureUnits', 'totalSum'));
     }
 
 
