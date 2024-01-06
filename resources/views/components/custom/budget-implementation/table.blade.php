@@ -20,6 +20,13 @@
     </div>
     <table id="budget_implementation-table" class="table table-bordered">
         <thead>
+            <tr>
+                <th class="invisible"></th>
+                <th style="background:none !important;border:none !important;border-radius:0 !important;width:fit-content !important;text-decoration-color:red !important;text-decoration-thickness:0.225rem !important;"
+                    class="text-dark h3 text-center fw-bold text-decoration-underline">
+                    Rp {{ number_format($totalSum, 0, ',', '.') }}
+                </th>
+            </tr>
             <tr class="text-center">
                 <th scope="col">Kode</th>
                 <th scope="col">SubKomponen</th>

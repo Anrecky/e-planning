@@ -66,7 +66,7 @@
         <div class="col-lg-12 layout-spacing">
             <x-custom.statbox>
                 <x-custom.alerts />
-                <x-custom.budget-implementation.table :groupedBI="$groupedBI" />
+                <x-custom.budget-implementation.table :totalSum="$totalSum" :groupedBI="$groupedBI" />
             </x-custom.statbox>
         </div>
     </div>
