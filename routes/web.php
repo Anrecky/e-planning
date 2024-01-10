@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AccountCodeController;
+use App\Http\Controllers\AccountCodeReceptionController;
 use App\Http\Controllers\ActivityRecapController;
 use App\Http\Controllers\BudgetImplementationController;
 use App\Http\Controllers\PerformanceIndicatorController;
@@ -75,6 +76,10 @@ Route::middleware(['auth'])->prefix('admin')->group(function () {
         Route::post('user', [UserController::class, 'store'])->name('user.store');
         Route::patch('user/{user}/update', [UserController::class, 'update'])->name('user.update');
         Route::delete('user/{user}/hapus', [UserController::class, 'destroy'])->name('user.delete');
+        Route::get('penerimaan/kode-akun', [AccountCodeReceptionController::class, 'index'])->name('account_code_reception.index');
+        Route::post('penerimaan/kode-akun', [AccountCodeReceptionController::class, 'store'])->name('account_code_reception.store');
+        Route::patch('penerimaan/kode-akun/{accountCodeReception}/update', [AccountCodeReceptionController::class, 'update'])->name('account_code_reception.update');
+        Route::delete('penerimaan/kode-akun/{accountCodeReception}/hapus', [AccountCodeReceptionController::class, 'destroy'])->name('account_code_reception.delete');
     });
     Route::prefix('penganggaran')->group(function () {
         Route::get('dipa', [BudgetImplementationController::class, 'index'])->name('budget_implementation.index');
