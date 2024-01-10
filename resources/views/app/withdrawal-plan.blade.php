@@ -213,7 +213,6 @@
                         "activityId": activityId,
                         "withdrawalPlans": withdrawalPlans
                     });
-                    console.log(response)
 
                     if (response.status === 200) {
                         // Assuming the server sends back a success message
@@ -221,10 +220,12 @@
                             title: 'Berhasil',
                             text: response.data.message || 'Data penarikan dana berhasil disimpan.',
                             icon: 'success'
+                        }).then((result) => {
+                            if (result.isConfirmed || result.isDismissed) {
+                                $('#withdrawalPlanModal').modal('hide'); // Close the modal
+                                location.reload(); // Reload the page
+                            }
                         });
-
-                        // Optionally, you can add code here to update the UI based on the successful save
-                        // For example, refresh the data on the page, close a modal, etc.
                     } else {
                         // If the server response status is not 200
                         Swal.fire({
@@ -249,6 +250,7 @@
                     });
                 }
             }
+
 
             function setupActivityRows() {
                 document.querySelectorAll('.activity-row').forEach(row => {
