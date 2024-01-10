@@ -14,6 +14,8 @@ use App\Http\Controllers\UnitBudgetController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\WithdrawalPlanController;
 use App\Http\Controllers\RuhPaymentController;
+use App\Http\Controllers\ReceptionController;
+use App\Http\Controllers\AssetsController;
 use Illuminate\Support\Facades\Route;
 
 
@@ -89,5 +91,11 @@ Route::middleware(['auth'])->prefix('admin')->group(function () {
     });
     Route::prefix('pembayaran')->group(function () {
         Route::get('ruh-pembayaran', [RuhPaymentController::class, 'index'])->name('ruh_payment.index');
+    });
+    Route::prefix('penerimaan')->group(function () {
+        Route::get('rekam-penerimaan', [ReceptionController::class, 'index'])->name('reception.index');
+    });
+    Route::prefix('aset')->group(function () {
+        Route::get('rekam-aset', [AssetsController::class, 'index'])->name('assets.index');
     });
 });

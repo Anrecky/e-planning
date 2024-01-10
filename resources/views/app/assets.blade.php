@@ -66,7 +66,7 @@
         <div class="col-lg-12 layout-spacing">
             <x-custom.statbox>
                 <x-custom.alerts />
-                <x-custom.budget-implementation.table :groupedBI="$groupedBI" />
+                <x-custom.aset.table/>
             </x-custom.statbox>
         </div>
     </div>
@@ -76,7 +76,7 @@
         <div class="modal-dialog modal-lg" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="createModalTitle">Input Sub Komponen</h5>
+                    <h5 class="modal-title" id="createModalTitle">Input Data Aset</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Tutup"></button>
                 </div>
                 <div class="modal-body">
@@ -92,15 +92,13 @@
         </div>
     </div>
     <!-- Edit Modal -->
-    <x-custom.budget-implementation.edit-modal />
+    <x-custom.aset.edit-modal />
 
     <!--  BEGIN CUSTOM SCRIPTS FILE  -->
     <x-slot:footerFiles>
         <script src="{{ asset('plugins/global/vendors.min.js') }}"></script>
         <script src="{{ asset('plugins/sweetalerts2/sweetalerts2.min.js') }}"></script>
         <script>
-            const accountCodes = @json($accountCodes);
-            const expenditureUnits = @json($expenditureUnits);
             document.addEventListener('DOMContentLoaded', function() {
                 const theadTh = document.querySelectorAll('thead tr th');
                 theadTh.forEach(th => th.classList.add('bg-primary'));
@@ -159,7 +157,8 @@
                     if (trSelected.classList.contains('activity-row')) {
                         editModalTitle.textContent = "Input Sub Komponen";
                         editInputContainer.innerHTML =
-                            `<input type="hidden" name="id" value="${trSelected.dataset.bi}"><input type="hidden" name="type" value="activity"><input type="text" name="code" value="${trSelected.children[0].textContent}" required class="form-control" style="max-width: 160px !important;"placeholder="KD.Keg"> <input type="text" value="${trSelected.children[1].textContent}" required name="name" class="form-control" placeholder="Uraian">`
+                            `<input type="hidden" name="id" value="${trSelected.dataset.bi}"><input type="hidden" name="type" value="activity"><input type="text" name="code" value="${trSelected.children[0].textContent}" required class="form-control" style="max-width: 160px !important;"placeholder="KD.Keg"> 
+                            <input type="text" value="${trSelected.children[1].textContent}" required name="name" class="form-control" placeholder="Uraian">`
                     } else if (trSelected.classList.contains('account-row')) {
                         editModalTitle.textContent = "Input Kode Akun";
 
@@ -220,7 +219,7 @@
                     const createModalTitle = document.getElementById('createModalTitle');
 
                     const modalTitles = {
-                        'add-activity_btn': 'Input Sub Komponen',
+                        'add-activity_btn': 'Rekam Aset',
                         'add-account_code_btn': 'Input Kode Akun',
                         default: 'Input Detail'
                     };

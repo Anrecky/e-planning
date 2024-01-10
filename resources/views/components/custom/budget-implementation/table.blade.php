@@ -9,13 +9,10 @@
                 class="btn btn-primary shadow-sm">Rekam
                 Detail</button>
         </div>
-        <div class="d-flex flex-wrap gap-1 my-2">
-            <button id="save-dipa" class="btn btn-outline-primary shadow-sm bs-tooltip" title="Simpan data DIPA"><i
-                    data-feather="save"></i></button>
-            <button id="edit-dipa" class="btn btn-outline-warning shadow-sm bs-tooltip" title="Edit data DIPA"><i
-                    data-feather="edit"></i></button>
-            <button id="delete-dipa" class="btn btn-outline-danger shadow-sm bs-tooltip" title="Hapus data DIPA"><i
-                    data-feather="trash"></i></button>
+        <div class="d-flex flex-wrap gap-2 my-2">
+            <button id="save-dipa" class="btn btn-outline-success shadow-sm bs-tooltip">Simpan</button>
+            <button id="edit-dipa" class="btn btn-outline-warning shadow-sm bs-tooltip">Ubah</button>
+            <button id="delete-dipa" class="btn btn-outline-danger shadow-sm bs-tooltip">Hapus</button>
         </div>
     </div>
     <table id="budget_implementation-table" class="table table-bordered">

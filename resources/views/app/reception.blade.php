@@ -66,7 +66,7 @@
         <div class="col-lg-12 layout-spacing">
             <x-custom.statbox>
                 <x-custom.alerts />
-                <x-custom.budget-implementation.table :groupedBI="$groupedBI" />
+                <x-custom.reception.table/>
             </x-custom.statbox>
         </div>
     </div>
@@ -76,7 +76,7 @@
         <div class="modal-dialog modal-lg" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="createModalTitle">Input Sub Komponen</h5>
+                    <h5 class="modal-title" id="createModalTitle">Input Data Penerimaan</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Tutup"></button>
                 </div>
                 <div class="modal-body">
@@ -92,15 +92,13 @@
         </div>
     </div>
     <!-- Edit Modal -->
-    <x-custom.budget-implementation.edit-modal />
+    <x-custom.reception.edit-modal />
 
     <!--  BEGIN CUSTOM SCRIPTS FILE  -->
     <x-slot:footerFiles>
         <script src="{{ asset('plugins/global/vendors.min.js') }}"></script>
         <script src="{{ asset('plugins/sweetalerts2/sweetalerts2.min.js') }}"></script>
         <script>
-            const accountCodes = @json($accountCodes);
-            const expenditureUnits = @json($expenditureUnits);
             document.addEventListener('DOMContentLoaded', function() {
                 const theadTh = document.querySelectorAll('thead tr th');
                 theadTh.forEach(th => th.classList.add('bg-primary'));
