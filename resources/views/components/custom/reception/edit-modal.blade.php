@@ -3,8 +3,9 @@
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="editModalTitle"></h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Tutup"></button>
+                <h5 class="modal-title" id="editModalTitle">Edit Data Penerimaan</h5>
+                <button type="button" class="btn-close text-white" data-bs-dismiss="modal" aria-label="Tutup"><i
+                        data-feather="x-circle" class="feather-24"></i></button>
             </div>
             <div class="modal-body">
                 <form id="form-edit" action="{{ route('budget_implementation.update') }}" method="POST">
