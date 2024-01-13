@@ -31,7 +31,7 @@
                     </td>
                     <td>{{ in_array('fungsional', $reception->type) ? 'Rp ' . number_format($reception->revenue_target, 0, ',', '.') : '-' }}
                     </td>
-                    <td>
+                    <td class="text-center">
                         <button type="button" class="btn btn-sm btn-primary" data-bs-target="#editModal"
                             data-bs-toggle="modal" data-reception="{{ $reception }}"
                             data-update-url="{{ route('reception.update', $reception) }}">
