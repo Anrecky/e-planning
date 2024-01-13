@@ -9,10 +9,12 @@ class Reception extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['name', 'code'];
+    protected $casts = [
+        'type' => 'array'
+    ];
 
     public function accountCodeReception()
     {
-        $this->belongsTo(AccountCodeReception::class);
+        return $this->belongsTo(AccountCodeReception::class);
     }
 }
