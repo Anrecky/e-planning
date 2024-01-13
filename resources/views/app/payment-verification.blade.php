@@ -66,7 +66,37 @@
         <div class="col-lg-12 layout-spacing">
             <x-custom.statbox>
                 <x-custom.alerts />
-                <x-custom.aset.table/>
+                <div class="table-responsive my-4">
+                    <div class="d-flex flex-wrap justify-content-between py-2 my-2 me-1">
+                        <div class="d-flex flex-wrap gap-1 my-2">
+                            <button id="add-activity_btn" class="btn btn-primary shadow-sm" data-bs-toggle="modal" data-bs-target="#createModal">Rekam Verifikasi Pembayaran
+                            </button>
+                        </div>
+                        <div class="d-flex flex-wrap gap-2 my-2">
+                            <button id="save-dipa" class="btn btn-outline-success shadow-sm bs-tooltip">Simpan</button>
+                            <button id="edit-dipa" class="btn btn-outline-warning shadow-sm bs-tooltip">Ubah</button>
+                            <button id="delete-dipa" class="btn btn-outline-danger shadow-sm bs-tooltip">Hapus</button>
+                        </div>
+                    </div>
+                    <table id="assets-table" class="table table-bordered">
+                        <thead>
+                            <tr class="text-center">
+                                <th scope="col">Uraian Pencairan</th>
+                                <th scope="col">Tanggal Kegiatan</th>
+                                <th scope="col">Jumlah</th>
+                                <th scope="col">Nama Penyedia</th>
+                                <th scope="col">Pelaksana Kegiatan</th>
+                                <th scope="col">Verifikator</th>
+                                <th scope="col">Pemeriksa</th>
+                                <th scope="col">Menyetujui</th>
+                                <th scope="col">Aksi</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            
+                        </tbody>
+                    </table>
+                </div>
             </x-custom.statbox>
         </div>
     </div>
@@ -82,67 +112,65 @@
                 <div class="modal-body">
                     <form id="form-create">
                         <div class="mb-4 row">
-                            <label for="inputCategory" class="col-sm-2 col-form-label">Kategori</label>
+                            <label for="inputDisbursementDescription" class="col-sm-2 col-form-label">Uraian Pencairan</label>
                             <div class="col-sm-8">
-                                <input readonly disabled type="text" class="form-control" id="inputCategory">
-                            </div>
-                            <div class="col-sm-2">
-                                <button class="btn btn-primary btn-lg">...</button>
+                                <input type="text" class="form-control" id="inputDisbursementDescription">
                             </div>
                         </div>
                         <div class="mb-4 row">
-                            <label for="selectTypeAssets" class="col-sm-2 col-form-label">Jenis</label>
+                            <label for="inputActivityDate" class="col-sm-2 col-form-label">Tanggal Kegiatan</label>
                             <div class="col-sm-8">
-                                <input readonly disabled type="text" class="form-control" id="selectTypeAssets">
-                            </div>
-                            <div class="col-sm-2">
-                                <button class="btn btn-primary btn-lg">...</button>
-                            </div>
-                        </div>
-                        <div class="mb-4 row">
-                            <label for="inputBrand" class="col-sm-2 col-form-label">Merek</label>
-                            <div class="col-sm-8">
-                                <input type="text" class="form-control" id="inputBrand">
-                            </div>
-                        </div>
-                        <div class="mb-4 row">
-                            <label for="selectAcquisitionYear" class="col-sm-2 col-form-label">Tahun Perolehan</label>
-                            <div class="col-sm-8">
-                                <select class="form-select" id="selectAcquisitionYear">
-                                    <option selected>Choose...</option>
-                                    <option value="1">One</option>
-                                    <option value="2">Two</option>
-                                    <option value="3">Three</option>
-                                </select>
-                            </div>
-                        </div>
-                        <div class="mb-4 row">
-                            <label for="inputCodeAssets" class="col-sm-2 col-form-label">Kode Aset</label>
-                            <div class="col-sm-8">
-                                <input type="text" class="form-control" id="inputCodeAssets">
-                            </div>
-                        </div>
-                        <div class="mb-4 row">
-                            <label for="inputCondition" class="col-sm-2 col-form-label">Kondisi</label>
-                            <div class="col-sm-8">
-                                <input readonly disabled type="text" class="form-control" id="inputCondition">
-                            </div>
-                            <div class="col-sm-2">
-                                <button class="btn btn-primary btn-lg">...</button>
-                            </div>
-                        </div>
-                        <div class="mb-4 row">
-                            <label for="inputDescription" class="col-sm-2 col-form-label">Keterangan</label>
-                            <div class="col-sm-1 col-form-label">
-                                <div class="input-group-text">
-                                    <input class="form-check-input mt-0" type="checkbox" value="" aria-label="Checkbox for following text input">
+                                <div class="input-group">
+                                    <input type="date" id="inputActivityDate" name="tanggal" class="form-control">
                                 </div>
                             </div>
-                            <div class="col-sm-7">
-                                <div class="form-floating">
-                                    <textarea class="form-control" placeholder="Leave a comment here" id="floatingTextarea2" style="height: 20vh"></textarea>
-                                    <label for="floatingTextarea2">Keterangan</label>
-                                </div>
+                        </div>
+                        <div class="mb-4 row">
+                            <label for="inputAmount" class="col-sm-2 col-form-label">Jumlah</label>
+                            <div class="col-sm-8">
+                                <input type="number" class="form-control" id="inputAmount">
+                            </div>
+                        </div>
+                        <div class="mb-4 row">
+                            <label for="inputSupplierName" class="col-sm-2 col-form-label">Nama Penyedia</label>
+                            <div class="col-sm-8">
+                                <input type="text" class="form-control" id="inputSupplierName">
+                            </div>
+                        </div>
+                        <div class="mb-4 row">
+                            <label for="selectActivityExecutor" class="col-sm-2 col-form-label">Pelaksana Kegiatan</label>
+                            <div class="col-sm-8">
+                                <input readonly disabled type="text" class="form-control" id="selectActivityExecutor">
+                            </div>
+                            <div class="col-sm-2">
+                                <button class="btn btn-primary btn-lg">...</button>
+                            </div>
+                        </div>
+                        <div class="mb-4 row">
+                            <label for="selectVerifier" class="col-sm-2 col-form-label">Verifikator</label>
+                            <div class="col-sm-8">
+                                <input readonly disabled type="text" class="form-control" id="selectVerifier">
+                            </div>
+                            <div class="col-sm-2">
+                                <button class="btn btn-primary btn-lg">...</button>
+                            </div>
+                        </div>
+                        <div class="mb-4 row">
+                            <label for="selectInspector" class="col-sm-2 col-form-label">Pemeriksa</label>
+                            <div class="col-sm-8">
+                                <input readonly disabled type="text" class="form-control" id="selectInspector">
+                            </div>
+                            <div class="col-sm-2">
+                                <button class="btn btn-primary btn-lg">...</button>
+                            </div>
+                        </div>
+                        <div class="mb-4 row">
+                            <label for="selectApprove" class="col-sm-2 col-form-label">Menyetujui</label>
+                            <div class="col-sm-8">
+                                <input readonly disabled type="text" class="form-control" id="selectApprove">
+                            </div>
+                            <div class="col-sm-2">
+                                <button class="btn btn-primary btn-lg">...</button>
                             </div>
                         </div>
                         <button class="btn btn-primary text-center align-items-center mt-2 py-auto" type="submit">
@@ -164,6 +192,10 @@
             document.addEventListener('DOMContentLoaded', function() {
                 const theadTh = document.querySelectorAll('thead tr th');
                 theadTh.forEach(th => th.classList.add('bg-primary'));
+            });
+
+            document.getElementById('tglPickerButton').addEventListener('click', function() {
+                document.getElementById('tanggal').click();
             });
         </script>
     </x-slot>

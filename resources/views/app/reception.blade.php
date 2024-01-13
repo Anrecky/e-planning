@@ -72,12 +72,41 @@
                 <div class="modal-body">
                     <form id="form-create">
                         <div class="mb-3 row">
-                            <label for="inputPassword" class="col-sm-2 col-form-label">Kode Akun</label>
+                            <label for="inputAccountCode" class="col-sm-2 col-form-label">Kode Akun</label>
                             <div class="col-sm-8">
-                                <input readonly disabled type="password" class="form-control" id="inputPassword">
+                                <input readonly disabled type="text" class="form-control" id="inputAccountCode">
                             </div>
                             <div class="col-sm-2">
                                 <button class="btn btn-primary btn-lg">...</button>
+                            </div>
+                        </div>
+                        <div class="mb-3 row">
+                            <label for="inputDescriptionReception" class="col-sm-2 col-form-label">Uraian</label>
+                            <div class="col-sm-8">
+                                <input type="number" class="form-control" id="inputDescriptionReception">
+                            </div>
+                        </div>
+                        <div class="mb-3 row">
+                            <label for="selectType" class="col-sm-2 col-form-label">Jenis</label>
+                            <div class="col-sm-10 col-form-label">
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="radio" name="inlineRadioOptions" id="umum" value="option1">
+                                    <label class="form-check-label" for="umum">Umum</label>
+                                </div>
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="radio" name="inlineRadioOptions" id="fungsional" value="option2">
+                                    <label class="form-check-label" for="fungsional">Fungsional</label>
+                                </div>
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="radio" name="inlineRadioOptions" id="pajak" value="option3">
+                                    <label class="form-check-label" for="pajak">Pajak</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="mb-3 row">
+                            <label for="inputIncomeTarget" class="col-sm-2 col-form-label">Target Pendapatan</label>
+                            <div class="col-sm-8">
+                                <input type="number" class="form-control" id="inputIncomeTarget">
                             </div>
                         </div>
                         <button class="btn btn-primary text-center align-items-center mt-1 mt-2 py-auto" type="submit">
