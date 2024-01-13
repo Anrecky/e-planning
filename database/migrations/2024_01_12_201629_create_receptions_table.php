@@ -19,7 +19,7 @@ return new class extends Migration
                 ->onUpdate('cascade')
                 ->onDelete('cascade');
             $table->text('description')->nullable();
-            $table->enum('type', ['umum', 'fungsional', 'pajak'])->default('umum');
+            $table->json('type');
             $table->decimal('revenue_target', 15, 2)->default(0);
             $table->timestamps();
         });
