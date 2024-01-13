@@ -62,7 +62,7 @@
         <div class="col-lg-12 layout-spacing">
             <x-custom.statbox>
                 <x-custom.alerts />
-                <x-custom.reception.table />
+                <x-custom.reception.table :receptions="$receptions" />
             </x-custom.statbox>
         </div>
     </div>
@@ -95,18 +95,18 @@
                             <p class="col-sm-3 col-form-label text-dark">Jenis</p>
                             <div class="col-sm-7">
                                 <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="checkbox" checked name="type"
-                                        id="inlineRadio1" value="option1">
+                                    <input class="form-check-input" type="checkbox" checked name="type[]"
+                                        id="inlineRadio1" value="umum">
                                     <label class="form-check-label mb-0" for="inlineRadio1">Umum</label>
                                 </div>
                                 <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="checkbox" name="type" id="inlineRadio2"
-                                        value="option2">
+                                    <input class="form-check-input" type="checkbox" name="type[]" id="inlineRadio2"
+                                        value="fungsional">
                                     <label class="form-check-label mb-0" for="inlineRadio2">Fungsional</label>
                                 </div>
                                 <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="checkbox" name="type" id="inlineRadio2"
-                                        value="option2">
+                                    <input class="form-check-input" type="checkbox" name="type[]" id="inlineRadio2"
+                                        value="pajak">
                                     <label class="form-check-label mb-0" for="inlineRadio2">Pajak</label>
                                 </div>
                             </div>
@@ -140,6 +140,9 @@
             document.addEventListener('DOMContentLoaded', function() {
                 const theadTh = document.querySelectorAll('thead tr th');
                 const createModalEl = document.getElementById('createModal');
+                const editModalEl = document.getElementById('editModal');
+                const createForm = document.getElementById('form-create');
+
                 theadTh.forEach(th => th.classList.add('bg-primary'));
 
                 createModalEl.addEventListener('show.bs.modal', function() {
@@ -177,6 +180,100 @@
                 }).on('hidden.bs.modal', function() {
                     $('#accountCode').select2('destroy');
                 });
+
+                $(editModalEl).on('shown.bs.modal', async function(e) {
+                    let reception = $(e.relatedTarget).data('reception');
+                    let updateUrl = $(e.relatedTarget).data('updateUrl');
+                    const formEdit = $("#form-edit");
+                    const editSelectEl = $('#editSelectAccountCode')
+
+                    formEdit.attr('action', updateUrl);
+
+                    formEdit.find('[name="description"]').val(reception.description)
+                    formEdit.find('[name="target"]').on('input', handleInput);
+                    formEdit.find('[name="target"]').val(reception.revenue_target.replace(/\.00$/, ''))
+                        .trigger('input');
+                    reception.type.forEach((type) => formEdit.find(`#${type}-checkbox`).prop('checked',
+                        true))
+
+                    editSelectEl.select2({
+                        theme: 'bootstrap-5',
+                        dropdownParent: $("#editModal"),
+                        ajax: {
+                            transport: async function(params, success, failure) {
+                                try {
+                                    const res = await axios.get(
+                                        `{{ route('account_code_receptions.index') }}`, {
+                                            params: {
+                                                search: params.data.term,
+                                                limit: 10
+                                            }
+                                        })
+                                    await success({
+                                        results: res.data.map(function(item) {
+                                            return {
+                                                id: item.id,
+                                                text: `${item.code} (${item.name})`
+                                            };
+                                        })
+                                    });
+
+                                } catch (error) {
+                                    let errorMessage =
+                                        'Gagal untuk mengambil data kode akun penerimaan.';
+                                    if (error.response && error.response.data && error
+                                        .response.data.message) {
+                                        errorMessage = error.response.data.message;
+                                    }
+
+                                    Swal.fire({
+                                        title: 'Kesalahan',
+                                        text: errorMessage,
+                                        icon: 'error'
+                                    });
+                                }
+
+                            }
+                        }
+                    });
+
+                    const res = await axios.get(
+                        `/admin/api/selected-account-code-reception/${reception.account_code_reception_id}`
+                    )
+                    const selectedAccountCode = res.data;
+                    var option = new Option(selectedAccountCode.code, selectedAccountCode.id,
+                        selectedAccountCode.id === reception
+                        .account_code_reception_id ?
+                        true : false, selectedAccountCode.id === reception.account_code_reception_id ?
+                        true : false);
+                    editSelectEl.append(option).trigger('change');
+                    editSelectEl.trigger({
+                        type: 'select2:select',
+                        params: {
+                            data: selectedAccountCode.data
+                        }
+                    });
+
+                }).on('hidden.bs.modal', function() {
+                    const formEdit = $("#form-edit");
+                    formEdit.find('[name="type[]"]').each((idx, el) => $(el).prop('checked', false))
+                    formEdit.find('select[name="accountCode"]').select2('destroy');
+                })
+
+                $(createForm).on('submit', function(e) {
+                    let rawTarget = document.getElementById('target').value;
+                    // Remove 'Rp' and dots, then convert to number
+                    let targetValue = parseInt(rawTarget.replace('-', 0).replace('Rp', '').replace(/\./g,
+                        ''));
+                    document.getElementById('target').value = targetValue
+                })
+                $("#form-edit").on('submit', function(e) {
+                    let rawTarget = $("#form-edit").find('[name="target"]').val();
+                    // Remove 'Rp' and dots, then convert to number
+                    let targetValue = parseInt(rawTarget.replace('-', 0).replace('Rp', '').replace(/\./g,
+                        ''));
+                    $("#form-edit").find('[name="target"]').val(targetValue)
+                })
 
                 function handleInput(e) {
                     const input = e.target;
