@@ -10,4 +10,9 @@ class AccountCodeReception extends Model
     use HasFactory;
 
     protected $fillable = ['name', 'code'];
+
+    public function receptions()
+    {
+        return $this->hasMany(Reception::class);
+    }
 }

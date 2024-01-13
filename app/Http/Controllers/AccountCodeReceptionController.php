@@ -93,4 +93,20 @@ class AccountCodeReceptionController extends Controller
         $accountCodeReception->delete();
         return redirect()->back()->with('success', 'Kode akun berhasil dihapus.');
     }
+
+    public function getAccountCodes(Request $request)
+    {
+        $search = $request->input('search', '');
+        $limit = $request->input('limit', 10);
+
+        $query = AccountCodeReception::query();
+
+        if (!empty($search)) {
+            $query->where('name', 'LIKE', "%{$search}%")->orWhere('code', 'LIKE', "%{$search}%");
+        }
+
+        $accountCodeReception = $query->limit($limit)->get(['id', 'name', 'code']);
+
+        return response()->json($accountCodeReception);
+    }
 }
