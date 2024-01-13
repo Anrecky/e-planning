@@ -32,6 +32,7 @@ Route::middleware(['auth'])->prefix('admin')->group(function () {
     Route::get('/api/program-targets', [ProgramTargetController::class, 'getProgramTargets'])->name('program_targets.index');
     Route::get('/api/withdrawal-plans/{activityId}', [WithdrawalPlanController::class, 'getWithdrawalPlans'])->name('withdrawal_plans.activity');
     Route::get('/api/account-code-receptions', [AccountCodeReceptionController::class, 'getAccountCodes'])->name('account_code_receptions.index');
+    Route::get('/api/selected-account-code-reception/{accountCodeReception}', [AccountCodeReceptionController::class, 'getSelectedAccountCode'])->name('account_code_receptions.selected');
 
 
     Route::prefix('renstra')->group(function () {
@@ -101,6 +102,8 @@ Route::middleware(['auth'])->prefix('admin')->group(function () {
     Route::prefix('penerimaan')->group(function () {
         Route::get('rekam-penerimaan', [ReceptionController::class, 'index'])->name('reception.index');
         Route::post('rekam-penerimaan', [ReceptionController::class, 'store'])->name('reception.store');
+        Route::patch('rekam-penerimaan/{reception}/update', [ReceptionController::class, 'update'])->name('reception.update');
+        Route::delete('rekam-penerimaan/{reception}/hapus', [ReceptionController::class, 'destroy'])->name('reception.delete');
     });
     Route::prefix('aset')->group(function () {
         Route::get('rekam-aset', [AssetsController::class, 'index'])->name('assets.index');
