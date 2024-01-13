@@ -22,6 +22,22 @@ function enforceNumericInput(event) {
         event.preventDefault();
     }
 }
+function confirmDelete(id) {
+    Swal.fire({
+        title: 'Anda yakin ingin hapus?',
+        text: "Data tidak dapat dikembalikan!",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Ya, hapus!'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            document.getElementById('delete-form-' + id).submit();
+        }
+    });
+}
 
 window.formatAsIDRCurrency = formatAsIDRCurrency;
 window.enforceNumericInput = enforceNumericInput;
+window.confirmDelete = confirmDelete;

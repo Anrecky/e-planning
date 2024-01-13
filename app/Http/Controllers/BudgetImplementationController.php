@@ -72,13 +72,12 @@ class BudgetImplementationController extends Controller
             'dipa.*.accounts.*.expenditures.*.total' => 'required|numeric',
         ]);
 
-        return response()->json($this->budgetService->process($validator->validated()['dipa']));
-
         if ($validator->fails()) {
             return response()->json($validator->errors(), 422);
         }
 
         try {
+            return response()->json($this->budgetService->process($validator->validated()['dipa']));
         } catch (\Exception $e) {
             Log::error('Error in store function: ' . $e->getMessage());
             return response()->json(['error' => $e->getMessage()], 500);

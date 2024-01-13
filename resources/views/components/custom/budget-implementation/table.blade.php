@@ -10,6 +10,7 @@
                 Detail</button>
         </div>
         <div class="d-flex flex-wrap gap-2 my-2">
+            <h4 class="totalCost mx-4 my-2">Rp {{ number_format($totalSum, 0, ',', '.') }}</h4>
             <button id="save-dipa" class="btn btn-outline-success shadow-sm bs-tooltip">Simpan</button>
             <button id="edit-dipa" class="btn btn-outline-warning shadow-sm bs-tooltip">Ubah</button>
             <button id="delete-dipa" class="btn btn-outline-danger shadow-sm bs-tooltip">Hapus</button>
@@ -17,13 +18,13 @@
     </div>
     <table id="budget_implementation-table" class="table table-bordered">
         <thead>
-            <tr>
+            <!-- <tr>
                 <th class="invisible"></th>
                 <th style="background:none !important;border:none !important;border-radius:0 !important;width:fit-content !important;text-decoration-color:red !important;text-decoration-thickness:0.225rem !important;"
                     class="text-dark h3 text-center fw-bold text-decoration-underline">
                     Rp {{ number_format($totalSum, 0, ',', '.') }}
                 </th>
-            </tr>
+            </tr> -->
             <tr class="text-center">
                 <th scope="col">Kode</th>
                 <th scope="col">SubKomponen</th>

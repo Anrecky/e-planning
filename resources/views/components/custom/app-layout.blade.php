@@ -100,6 +100,26 @@
         #sidebar ul.menu-categories ul.submenu>li ul.sub-submenu>li a::after {
             display: block !important;
         }
+
+        .feather-16 {
+            width: 16px;
+            height: 16px;
+        }
+
+        .feather-24 {
+            width: 24px !important;
+            height: 24px !important;
+        }
+
+        .feather-32 {
+            width: 32px !important;
+            height: 32px !important;
+        }
+
+        .feather-64 {
+            width: 64px !important;
+            height: 64px !important;
+        }
     </style>
 </head>
 
