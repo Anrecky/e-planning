@@ -105,7 +105,13 @@ class AccountCodeReceptionController extends Controller
             $query->where('name', 'LIKE', "%{$search}%")->orWhere('code', 'LIKE', "%{$search}%");
         }
 
-        $accountCodeReception = $query->limit($limit)->get(['id', 'name', 'code']);
+        $accountCodeReception = $query->get(['id', 'name', 'code']);
+
+        return response()->json($accountCodeReception);
+    }
+
+    public function getSelectedAccountCode(Request $request, AccountCodeReception $accountCodeReception)
+    {
 
         return response()->json($accountCodeReception);
     }
