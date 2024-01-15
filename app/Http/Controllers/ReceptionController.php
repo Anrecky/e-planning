@@ -70,4 +70,10 @@ class ReceptionController extends Controller
         $reception->delete();
         return redirect()->back()->with('success', 'Data penerimaan berhasil dihapus.');
     }
+
+    public function deleteSome(Reception $reception)
+    {
+        $reception->delete();
+        return response()->json($reception)->with('success', 'Data penerimaan berhasil dihapus.');
+    }
 }

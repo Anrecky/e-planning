@@ -1,17 +1,17 @@
-<!-- <div class="text-start">
-    <button type="button" id="btnCreateModal" class="btn btn-primary btn-md w-20 ms-4" data-bs-toggle="modal" data-bs-target="#createModal">Rekam Data Penerimaan</button>
-</div> -->
-
 <div class="table-responsive px-4 my-4">
-    <div class="d-flex flex-wrap justify-content-between my-2 me-1">
+    <div class="d-flex flex-wrap justify-content-between my-2 me-1 align-items-center">
         <div class="my-2">
             <button id="btnCreateModal" class="btn btn-primary shadow-sm" data-bs-toggle="modal"
                 data-bs-target="#createModal">Rekam Data Penerimaan</button>
+        </div>
+        <div>
+            <button id="btnDeleteSome" class="btn btn-danger shadow-sm">Hapus Beberapa</button>
         </div>
     </div>
     <table id="reception-table" class="table table-bordered">
         <thead>
             <tr class="text-center">
+                <th class="checkbox-column dt-no-sorting"> Record Id </th>
                 <th scope="col" class="text-white">KD Akun</th>
                 <th scope="col" class="text-white">Uraian</th>
                 <th scope="col" class="text-white">Perpajakan</th>
@@ -23,6 +23,7 @@
         <tbody>
             @foreach ($receptions as $reception)
                 <tr>
+                    <td data-reception-id="{{ $reception->id }}" class="checkbox-column"> {{ $reception->id }}</td>
                     <td>{{ $reception->accountCodeReception->code }}</td>
                     <td>{{ $reception->description }}</td>
                     <td>{{ in_array('pajak', $reception->type) ? 'Rp ' . number_format($reception->revenue_target, 0, ',', '.') : '-' }}
