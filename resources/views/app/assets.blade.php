@@ -66,7 +66,7 @@
         <div class="col-lg-12 layout-spacing">
             <x-custom.statbox>
                 <x-custom.alerts />
-                <x-custom.aset.table/>
+                <x-custom.aset.table />
             </x-custom.statbox>
         </div>
     </div>
@@ -84,14 +84,20 @@
                         <div class="mb-4 row">
                             <label for="inputCategory" class="col-sm-2 col-form-label">Kategori</label>
                             <div class="col-sm-8">
-                                <input readonly disabled type="text" class="form-control" id="inputCategory">
-                            </div>
-                            <div class="col-sm-2">
-                                <button class="btn btn-primary btn-lg">...</button>
+                                <div class="form-check form-check-inline">
+                                    <input checked class="form-check-input" type="radio" name="asset_category"
+                                        id="asset_category_1" value="IT">
+                                    <label class="form-check-label" for="asset_category_1">IT</label>
+                                </div>
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="radio" name="asset_category"
+                                        id="asset_category_2" value="NonIT">
+                                    <label class="form-check-label" for="asset_category_2">Non IT</label>
+                                </div>
                             </div>
                         </div>
                         <div class="mb-4 row">
-                            <label for="selectTypeAssets" class="col-sm-2 col-form-label">Jenis</label>
+                            <label for="selectTypeAssets" class="col-sm-2 col-form-label">Barang Aset</label>
                             <div class="col-sm-8">
                                 <input readonly disabled type="text" class="form-control" id="selectTypeAssets">
                             </div>
@@ -109,10 +115,10 @@
                             <label for="selectAcquisitionYear" class="col-sm-2 col-form-label">Tahun Perolehan</label>
                             <div class="col-sm-8">
                                 <select class="form-select" id="selectAcquisitionYear">
-                                    <option selected>Choose...</option>
-                                    <option value="1">One</option>
-                                    <option value="2">Two</option>
-                                    <option value="3">Three</option>
+                                    <option selected disabled value="">Pilih Tahun...</option>
+                                    @for ($tahun = 2000; $tahun <= 2035; $tahun++)
+                                        <option value="{{ $tahun }}">{{ $tahun }}</option>
+                                    @endfor
                                 </select>
                             </div>
                         </div>
@@ -135,7 +141,8 @@
                             <label for="inputDescription" class="col-sm-2 col-form-label">Keterangan</label>
                             <div class="col-sm-1 col-form-label">
                                 <div class="input-group-text">
-                                    <input class="form-check-input mt-0" type="checkbox" value="" aria-label="Checkbox for following text input">
+                                    <input class="form-check-input mt-0" type="checkbox" value=""
+                                        aria-label="Checkbox for following text input">
                                 </div>
                             </div>
                             <div class="col-sm-7">

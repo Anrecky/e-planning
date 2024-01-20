@@ -3,6 +3,7 @@
 use App\Http\Controllers\AccountCodeController;
 use App\Http\Controllers\AccountCodeReceptionController;
 use App\Http\Controllers\ActivityRecapController;
+use App\Http\Controllers\AssetCategoryController;
 use App\Http\Controllers\BudgetImplementationController;
 use App\Http\Controllers\PerformanceIndicatorController;
 use App\Http\Controllers\ProgramTargetController;
@@ -16,10 +17,11 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\WithdrawalPlanController;
 use App\Http\Controllers\RuhPaymentController;
 use App\Http\Controllers\ReceptionController;
-use App\Http\Controllers\AssetsController;
+use App\Http\Controllers\AssetController;
+use App\Http\Controllers\AssetItemController;
 use App\Http\Controllers\PaymentVerificationController;
 use App\Http\Controllers\DetailedFAReportController;
-use Illuminate\Support\Facades\Route;
+
 
 
 Route::get('/', function () {
@@ -84,6 +86,12 @@ Route::middleware(['auth'])->prefix('admin')->group(function () {
         // Route::post('penerimaan/kode-akun', [AccountCodeReceptionController::class, 'store'])->name('account_code_reception.store');
         // Route::patch('penerimaan/kode-akun/{accountCodeReception}/update', [AccountCodeReceptionController::class, 'update'])->name('account_code_reception.update');
         // Route::delete('penerimaan/kode-akun/{accountCodeReception}/hapus', [AccountCodeReceptionController::class, 'destroy'])->name('account_code_reception.delete');
+
+        // Asset Item Routes
+        Route::resource('barang-aset', AssetItemController::class)->names([
+            'index' => 'asset_item.index',
+            'store' => 'asset_item.store'
+        ]);
     });
     Route::prefix('codeAccount')->group(function () {
         Route::get('kode-akun', [AccountCodeController::class, 'index'])->name('account_code.index');
@@ -116,12 +124,15 @@ Route::middleware(['auth'])->prefix('admin')->group(function () {
         Route::post('rekam-penerimaan', [ReceptionController::class, 'store'])->name('reception.store');
         Route::patch('rekam-penerimaan/{reception}/update', [ReceptionController::class, 'update'])->name('reception.update');
         Route::delete('rekam-penerimaan/{reception}/hapus', [ReceptionController::class, 'destroy'])->name('reception.delete');
+        Route::delete('rekam-penerimaan/{reception}/hapus-beberapa', [ReceptionController::class, 'deleteSome'])->name('reception.deleteSome');
     });
     Route::prefix('aset')->group(function () {
-        Route::get('rekam-aset', [AssetsController::class, 'index'])->name('assets.index');
+        // Asset
+        Route::resource('rekam-aset', AssetController::class)->names([
+            'index' => 'asset.index'
+        ]);
     });
     Route::prefix('pembayaran')->group(function () {
-        
     });
     Route::prefix('ruh-pembayaran')->group(function () {
         Route::get('rekam-verifikasi', [PaymentVerificationController::class, 'index'])->name('payment-verification.index');

@@ -60,8 +60,8 @@
                 </a>
             </li>
 
-            <li class="menu {{ Request::routeIs('assets.index') ? 'active' : '' }}">
-                <a href="{{ route('assets.index') }}" aria-expanded="{{ Request::is('*/aset/*') ? 'true' : 'false' }}"
+            <li class="menu {{ Request::routeIs('asset.index') ? 'active' : '' }}">
+                <a href="{{ route('asset.index') }}" aria-expanded="{{ Request::is('*/aset/*') ? 'true' : 'false' }}"
                     class="dropdown-toggle {{ Request::is('*/aset/*') ? 'collapsed' : '' }}">
                     <div>
                         <span class="fw-bold">ASET</span>
@@ -415,7 +415,8 @@
                         <ul class="collapse list-unstyled sub-submenu {{ Request::is('*/cetak-laporan/*') ? 'show' : '' }}"
                             id="cetak-laporan" data-bs-parent="#pelaporan">
                             <li class="{{ Request::routeIs('detailed-FA-report.index') ? 'active' : '' }}">
-                                <a class="ssubmenu" href="{{ route('detailed-FA-report.index') }}" aria-expanded="false">
+                                <a class="ssubmenu" href="{{ route('detailed-FA-report.index') }}"
+                                    aria-expanded="false">
                                     <div>
                                         <i data-feather="file"></i><span class="icon-name fw-bold">Laporan FA
                                             Detail</span>
@@ -505,7 +506,8 @@
                                 </a>
                             </li>
                             <li class="{{ Request::routeIs('account_code_reception.index') ? 'active' : '' }}">
-                                <a class="ssubmenu" href="{{ route('account_code_reception.index') }}" aria-expanded="false">
+                                <a class="ssubmenu" href="{{ route('account_code_reception.index') }}"
+                                    aria-expanded="false">
                                     <div>
                                         <i data-feather="file"></i><span class="icon-name fw-bold">Penerimaan</span>
                                     </div>
@@ -515,8 +517,8 @@
                     </li>
                     <li class="submenu">
                         <a href="#passet" data-bs-toggle="collapse"
-                            aria-expanded="{{ Request::is('*/passet/*') ? 'true' : 'false' }}"
-                            class="dropdown-toggle {{ Request::is('*/passet/*') ? 'collapsed' : '' }}">
+                            aria-expanded="{{ Request::is('*/passet/*', '*/barang-aset') ? 'true' : 'false' }}"
+                            class="dropdown-toggle {{ Request::is('*/passet/*', '*/barang-aset') ? 'collapsed' : '' }}">
                             <div>
                                 <i data-feather="folder"></i><span class="icon-name fw-bold">ASET</span>
                             </div>
@@ -529,20 +531,19 @@
                                 </svg>
                             </div>
                         </a>
-                        <ul class="collapse list-unstyled sub-submenu {{ Request::is('*/passet/*') ? 'show' : '' }}"
+                        <ul class="collapse list-unstyled sub-submenu {{ Request::is('*/barang-aset') ? 'show' : '' }}"
                             id="passet" data-bs-parent="#pengaturan">
-                            <li class="">
-                                <a class="ssubmenu" href="#">
+                            <li class="{{ Request::routeIs('asset_item.index') ? 'active' : '' }}">
+                                <a class="ssubmenu" href="{{ route('asset_item.index') }}">
                                     <div>
-                                        <i data-feather="file"></i><span class="icon-name fw-bold">Kategori
-                                            Aset</span>
+                                        <i data-feather="file"></i><span class="icon-name fw-bold">Barang</span>
                                     </div>
                                 </a>
                             </li>
                             <li class="">
                                 <a class="ssubmenu" href="#">
                                     <div>
-                                        <i data-feather="file"></i><span class="icon-name fw-bold">Jenis Aset</span>
+                                        <i data-feather="file"></i><span class="icon-name fw-bold">Kondisi</span>
                                     </div>
                                 </a>
                             </li>
