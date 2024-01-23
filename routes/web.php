@@ -90,7 +90,11 @@ Route::middleware(['auth'])->prefix('admin')->group(function () {
         // Asset Item Routes
         Route::resource('barang-aset', AssetItemController::class)->names([
             'index' => 'asset_item.index',
-            'store' => 'asset_item.store'
+            'store' => 'asset_item.store',
+            'update' => 'asset_item.update',
+            'destroy' => 'asset_item.destroy'
+        ])->parameters([
+            'barang-aset' => 'assetItem', // Replace 'custom_param' with your desired parameter name
         ]);
     });
     Route::prefix('codeAccount')->group(function () {
