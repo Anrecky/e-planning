@@ -18,6 +18,8 @@
         <link rel="stylesheet" href="{{ asset('plugins/table/datatable/datatables.css') }}">
         @vite(['resources/scss/light/plugins/table/datatable/dt-global_style.scss'])
         @vite(['resources/scss/dark/plugins/table/datatable/dt-global_style.scss'])
+        @vite(['resources/scss/light/plugins/editors/quill/quill.snow.scss'])
+        @vite(['resources/scss/dark/plugins/editors/quill/quill.snow.scss'])
 
         <style>
             td,
@@ -108,7 +110,7 @@
                                         <td>{{ $assetItem->category === 'NonIT' ? 'Non IT' : 'IT' }}</td>
                                         <td class="text-center ">
                                             <button type="button" class="btn btn-sm btn-primary"
-                                                onclick="openEditModal({{ $assetItem->id }}, '{{ $assetItem->name }}', '{{ $assetItem->category }}')">
+                                                onclick="openEditModal({{ $assetItem->id }}, '{{ $assetItem->name }}', '{{ $assetItem->category }}','{{ $assetItem->description }}')">
                                                 <i class="text-white" data-feather="edit-2"></i>
                                             </button>
 
@@ -118,7 +120,7 @@
                                             </a>
                                             <!-- Hidden form for delete request -->
                                             <form id="delete-form-{{ $assetItem->id }}"
-                                                action="{{ route('account_code_reception.delete', $assetItem->id) }}"
+                                                action="{{ route('asset_item.destroy', $assetItem->id) }}"
                                                 method="POST" style="display: none;">
                                                 @csrf
                                                 @method('DELETE')
@@ -169,7 +171,7 @@
                                         <label class="form-check-label" for="asset_category_1">IT</label>
                                     </div>
                                     <div class="form-check form-check-inline mx-2">
-                                        <input class="form-check-input" type="radio" name="asset_item_category[]"
+                                        <input class="form-check-input" type="radio" name="asset_item_category[0]"
                                             id="asset_category_2" value="NonIT">
                                         <label class="form-check-label" for="asset_category_2">Non IT</label>
                                     </div>
@@ -195,7 +197,7 @@
     <!-- Edit Modal -->
     <div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="editModalTitle"
         aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="editModalTitle">Edit Barang Aset</h5>
@@ -209,12 +211,24 @@
                             <label>Barang Aset</label>
                             <input type="text" id="asset_item_name" name="name" class="form-control" required>
                         </div>
-                        <div class="form-group mt-3">
-                            <label>Kode</label>
-                            <input type="text" id="asset_item_category" name="code" class="form-control"
-                                required>
+                        <div class="form-group my-2">
+                            <p class="text-dark ms-2 mb-1">Pilih Kategori</p>
+                            <div class="form-check form-check-inline mx-2">
+                                <input class="form-check-input" type="radio" name="category" id="asset_category_1"
+                                    value="IT">
+                                <label class="form-check-label" for="asset_category_1">IT</label>
+                            </div>
+                            <div class="form-check form-check-inline mx-2">
+                                <input class="form-check-input" type="radio" name="category" id="asset_category_2"
+                                    value="NonIT">
+                                <label class="form-check-label" for="asset_category_2">Non IT</label>
+                            </div>
                         </div>
-                        <!-- Add other fields as needed -->
+                        <textarea name="description" hidden></textarea>
+                        <div class="form-group p-3 rounded shadow-sm bg-light ">
+                            <div id="description-editor" class="mt-2 overflow-scroll" style="max-height: 400px;">
+                            </div>
+                        </div>
                         <button type="submit" class="btn btn-primary mt-3">Update</button>
                     </form>
                 </div>
@@ -228,15 +242,39 @@
         <script src="{{ asset('plugins/editors/quill/quill.js') }}"></script>
         <script src="{{ asset('plugins/sweetalerts2/sweetalerts2.min.js') }}"></script>
         <script src="{{ asset('plugins/table/datatable/datatables.js') }}"></script>
-
+        <script type="module" src="{{ asset('plugins/editors/quill/quill.js') }}"></script>
         <script>
-            function openEditModal(id, name, category) {
+            var quill = new Quill('#description-editor', {
+                modules: {
+                    toolbar: [
+                        [{
+                            header: [1, 2, false]
+                        }],
+                        ['bold', 'italic', 'underline'],
+                        ['image', 'code-block']
+                    ]
+                },
+                placeholder: 'Masukkan deskripsi barang aset (jika ada)',
+                theme: 'snow' // or 'bubble'
+            });
+
+            function openEditModal(id, name, category, description) {
+                $('#edit-form input[name=category][value=' + category + ']').prop('checked', true)
+                quill.root.innerHTML = description;
+                $('#edit-form textarea[name=description]').val(description)
+
+                quill.on('editor-change', function(eventName, ...args) {
+                    if (eventName === 'text-change') {
+                        $('#edit-form textarea[name=description]').val(quill.root.innerHTML)
+                    }
+                });
+
                 // Populate the form fields
                 document.getElementById('asset_item_name').value = name;
-                document.getElementById('asset_item_category').value = category;
+                // document.getElementById('asset_item_category').value = category;
 
                 // Update the form action URL
-                document.getElementById('edit-form').action = '/admin/pengaturan/penerimaan/kode-akun/' + id + '/update';
+                document.getElementById('edit-form').action = '/admin/pengaturan/barang-aset/' + id;
 
                 // Show the modal
                 new bootstrap.Modal(document.getElementById('editModal')).show();
