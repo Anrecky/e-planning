@@ -540,13 +540,7 @@
                                     </div>
                                 </a>
                             </li>
-                            <li class="">
-                                <a class="ssubmenu" href="#">
-                                    <div>
-                                        <i data-feather="file"></i><span class="icon-name fw-bold">Kondisi</span>
-                                    </div>
-                                </a>
-                            </li>
+
                         </ul>
                     </li>
                     <li class="submenu">
