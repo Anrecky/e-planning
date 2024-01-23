@@ -131,10 +131,21 @@
                         <div class="mb-4 row">
                             <label for="inputCondition" class="col-sm-2 col-form-label">Kondisi</label>
                             <div class="col-sm-8">
-                                <input readonly disabled type="text" class="form-control" id="inputCondition">
-                            </div>
-                            <div class="col-sm-2">
-                                <button class="btn btn-primary btn-lg">...</button>
+                                <div class="form-check form-check-inline">
+                                    <input checked class="form-check-input" type="radio" name="asset_condition"
+                                        id="asset_category_1" value="IT">
+                                    <label class="form-check-label" for="asset_category_1">Baik</label>
+                                </div>
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="radio" name="asset_condition"
+                                        id="asset_category_2" value="NonIT">
+                                    <label class="form-check-label" for="asset_category_2">Rusak Ringan</label>
+                                </div>
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="radio" name="asset_condition"
+                                        id="asset_category_2" value="NonIT">
+                                    <label class="form-check-label" for="asset_category_2">Rusak Berat</label>
+                                </div>
                             </div>
                         </div>
                         <div class="mb-4 row">
