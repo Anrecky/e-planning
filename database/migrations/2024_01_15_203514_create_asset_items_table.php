@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('asset_items', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->string('description')->nullable();
+            $table->longText('description')->nullable();
             $table->enum('category', ['IT', 'NonIT'])->default('IT');
             $table->string('brand')->nullable();
             $table->timestamps();
