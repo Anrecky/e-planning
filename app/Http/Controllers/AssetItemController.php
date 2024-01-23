@@ -50,7 +50,7 @@ class AssetItemController extends Controller
                 AssetItem::create([
                     'name' => $name,
                     'category' => $validatedData['asset_item_category'][$index],
-                    'description' => !empty($validatedData['asset_item_description'][$index]),
+                    'description' => !empty($validatedData['asset_item_description'][$index]) ? $validatedData['asset_item_description'][$index] : null,
                 ]);
             }
         } catch (\Exception $e) {
@@ -82,7 +82,25 @@ class AssetItemController extends Controller
      */
     public function update(Request $request, AssetItem $assetItem)
     {
-        //
+        $validatedData = $this->validate($request, [
+            'name' => 'required|string|max:255',
+            'category' => [
+                'required',
+                'string',
+                Rule::in(['IT', 'NonIT'])
+            ],
+            'description' => 'nullable|string'
+        ]);
+        try {
+            $assetItem->name = $validatedData['name'];
+            $assetItem->category = $validatedData['category'];
+            $assetItem->description = $validatedData['description'];
+            $assetItem->save();
+            return redirect()->route('asset_item.index')->with('success', 'Barang aset berhasil diupdate.');
+        } catch (\Exception $e) {
+            Log::error($e);
+            return back()->with('error', $e->getMessage());
+        }
     }
 
     /**
@@ -90,6 +108,7 @@ class AssetItemController extends Controller
      */
     public function destroy(AssetItem $assetItem)
     {
-        //
+        $assetItem->delete();
+        return redirect()->back()->with('success', 'Barang aset berhasil dihapus.');
     }
 }
