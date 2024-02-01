@@ -30,7 +30,8 @@ function confirmDelete(id) {
         showCancelButton: true,
         confirmButtonColor: '#3085d6',
         cancelButtonColor: '#d33',
-        confirmButtonText: 'Ya, hapus!'
+        confirmButtonText: 'Ya, hapus!',
+        cancelButtonText:"Batalkan"
     }).then((result) => {
         if (result.isConfirmed) {
             document.getElementById('delete-form-' + id).submit();

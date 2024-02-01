@@ -37,6 +37,7 @@ Route::middleware(['auth'])->prefix('admin')->group(function () {
     Route::get('/api/withdrawal-plans/{activityId}', [WithdrawalPlanController::class, 'getWithdrawalPlans'])->name('withdrawal_plans.activity');
     Route::get('/api/account-code-receptions', [AccountCodeReceptionController::class, 'getAccountCodes'])->name('account_code_receptions.index');
     Route::get('/api/selected-account-code-reception/{accountCodeReception}', [AccountCodeReceptionController::class, 'getSelectedAccountCode'])->name('account_code_receptions.selected');
+    Route::get('/api/asset-items/{category?}', [AssetItemController::class, 'getAssetItemBySelectedCategory'])->name('asset_items.selected_category');
 
 
     Route::prefix('renstra')->group(function () {
@@ -133,7 +134,12 @@ Route::middleware(['auth'])->prefix('admin')->group(function () {
     Route::prefix('aset')->group(function () {
         // Asset
         Route::resource('rekam-aset', AssetController::class)->names([
-            'index' => 'asset.index'
+            'index' => 'asset.index',
+            'store' => 'asset.store',
+            'destroy' => 'asset.destroy',
+            'edit', 'asset.edit'
+        ])->parameters([
+            'rekam-aset' => 'asset', // Replace 'custom_param' with your desired parameter name
         ]);
     });
     Route::prefix('pembayaran')->group(function () {
