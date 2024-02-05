@@ -118,5 +118,8 @@
     "Verify Email Address": "Verifikasi Alamat Surel",
     "Web Server is Down": "Web server sedang turun",
     "Whoops!": "Aduh!",
-    "You are receiving this email because we received a password reset request for your account.": "Anda menerima surel ini karena kami menerima permintan pengaturan ulang kata sandi untuk akun anda."
+    "You are receiving this email because we received a password reset request for your account.": "Anda menerima surel ini karena kami menerima permintan pengaturan ulang kata sandi untuk akun anda.",
+    "Good": "Bagus",
+    "Slightly": "Rusak Ringan",
+    "Heavy": "Rusak Berat"
 }

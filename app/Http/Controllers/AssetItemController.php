@@ -6,6 +6,7 @@ use App\Models\AssetItem;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Validation\Rule;
+use Illuminate\Support\Facades\Validator;
 
 class AssetItemController extends Controller
 {
@@ -110,5 +111,12 @@ class AssetItemController extends Controller
     {
         $assetItem->delete();
         return redirect()->back()->with('success', 'Barang aset berhasil dihapus.');
+    }
+
+    public function getAssetItemBySelectedCategory(Request $request, $category = 'IT')
+    {
+        $assetItems = AssetItem::where('category', $category)->get();
+
+        return response()->json($assetItems);
     }
 }
