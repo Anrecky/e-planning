@@ -45,7 +45,8 @@
     <div class="row layout-top-spacing">
         <div class="col-lg-12 layout-spacing">
             <div class="statbox widget box box-shadow">
-                <div class="widget-content widget-content-area">
+                <div style="min-height:50vh;" class="widget-content widget-content-area">
+                    <div class="p-3 container">
                     @if ($errors->any())
                         <div class="alert alert-danger">
                             <ul>
@@ -69,6 +70,9 @@
                                 aria-label="Close"></button>
                         </div>
                     @endif
+                    <div class="d-flex justify-content-center justify-content-md-end">
+                        <button id="save-unit_budgets" class="btn btn-primary btn-md">Simpan Data</button>
+                    </div>
                     <div class="table-responsive my-4">
                         <table id="unit_budget-table" class="table table-bordered ">
                             <thead class="bg-light">
@@ -125,9 +129,7 @@
 
                             </tbody>
                         </table>
-                        <div class="text-end">
-                            <button id="save-unit_budgets" class="btn btn-primary btn-md">Simpan Data</button>
-                        </div>
+                        
                     </div>
 
                 </div>

@@ -69,7 +69,7 @@
                             <div class="table-responsive my-4">
                                 <div class="d-flex flex-wrap justify-content-between py-2 my-2 me-1">
                                     <div class="d-flex flex-wrap gap-1 my-2">
-                                        <button id="add-activity_btn" class="btn btn-primary shadow-sm" data-bs-toggle="modal" data-bs-target="#createModal">Rekam Verifikasi Pembayaran
+                                        <button id="add-activity_btn" class="btn btn-primary shadow-sm" data-bs-toggle="modal" data-bs-target="#createModal">Rekam Kuitansi Pembayaran
                                         </button>
                                     </div>
                                     <div class="d-flex flex-wrap gap-2 my-2">
@@ -81,14 +81,14 @@
                                 <table id="assets-table" class="table table-bordered">
                                     <thead>
                                         <tr class="text-center">
-                                            <th scope="col">Uraian Pencairan</th>
+                                            <th scope="col">Jenis Kuitansi</th>
+                                            <th scope="col">Uraian Kegiatan</th>
                                             <th scope="col">Tanggal Kegiatan</th>
                                             <th scope="col">Jumlah</th>
-                                            <th scope="col">Nama Penyedia</th>
                                             <th scope="col">Pelaksana Kegiatan</th>
-                                            <th scope="col">Verifikator</th>
-                                            <th scope="col">SPI</th>
+                                            <th scope="col">Bendahara</th>
                                             <th scope="col">PPK</th>
+                                            <th scope="col">Penyedia</th>
                                             <th scope="col">Aksi</th>
                                         </tr>
                                     </thead>
@@ -105,11 +105,21 @@
                     <div class="modal-dialog modal-lg" role="document">
                         <div class="modal-content">
                             <div class="modal-header">
-                                <h5 class="modal-title" id="createModalTitle">Rekam Data Verifikasi Pembayaran</h5>
+                                <h5 class="modal-title" id="createModalTitle">Rekam Data Kuitansi Pembayaran</h5>
                                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Tutup"></button>
                             </div>
                             <div class="modal-body">
                                 <form id="form-create">
+                                    <div class="mb-4 row">
+                                        <label for="selectTypeReceipt" class="col-sm-2 col-form-label">Jenis Kuitansi</label>
+                                        <div class="col-sm-8">
+                                            <select class="form-select" id="selectTypeReceipt">
+                                                <option selected disabled value="">Pilih Jenis Kuitansi...</option>
+                                                <option value="">Pembayaran Langsung</option>
+                                                <option value="">Pembayaran Langsung (Bendahara)</option>
+                                            </select>
+                                        </div>
+                                    </div>
                                     <div class="mb-4 row">
                                         <label for="inputDisbursementDescription" class="col-sm-2 col-form-label">Uraian Pencairan</label>
                                         <div class="col-sm-8">
@@ -131,13 +141,13 @@
                                         </div>
                                     </div>
                                     <div class="mb-4 row">
-                                        <label for="inputSupplierName" class="col-sm-2 col-form-label">Nama Penyedia</label>
+                                        <label for="inputSupplierName" class="col-sm-2 col-form-label">Pelaksana Kegiatan</label>
                                         <div class="col-sm-8">
                                             <input type="text" class="form-control" id="inputSupplierName">
                                         </div>
                                     </div>
                                     <div class="mb-4 row">
-                                        <label for="selectActivityExecutor" class="col-sm-2 col-form-label">Pelaksana Kegiatan</label>
+                                        <label for="selectActivityExecutor" class="col-sm-2 col-form-label">Bendahara</label>
                                         <div class="col-sm-8">
                                             <input readonly disabled type="text" class="form-control" id="selectActivityExecutor">
                                         </div>
@@ -146,7 +156,7 @@
                                         </div>
                                     </div>
                                     <div class="mb-4 row">
-                                        <label for="selectVerifier" class="col-sm-2 col-form-label">Verifikator</label>
+                                        <label for="selectVerifier" class="col-sm-2 col-form-label">PPK</label>
                                         <div class="col-sm-8">
                                             <input readonly disabled type="text" class="form-control" id="selectVerifier">
                                         </div>
@@ -155,16 +165,13 @@
                                         </div>
                                     </div>
                                     <div class="mb-4 row">
-                                        <label for="selectInspector" class="col-sm-2 col-form-label">SPI</label>
+                                        <label for="inputSupplierName" class="col-sm-2 col-form-label">Penyedia</label>
                                         <div class="col-sm-8">
-                                            <input readonly disabled type="text" class="form-control" id="selectInspector">
-                                        </div>
-                                        <div class="col-sm-2">
-                                            <button class="btn btn-primary btn-lg">...</button>
+                                            <input type="text" class="form-control" id="inputSupplierName">
                                         </div>
                                     </div>
                                     <div class="mb-4 row">
-                                        <label for="selectApprove" class="col-sm-2 col-form-label">PPK</label>
+                                        <label for="selectApprove" class="col-sm-2 col-form-label">Detail COA</label>
                                         <div class="col-sm-8">
                                             <input readonly disabled type="text" class="form-control" id="selectApprove">
                                         </div>

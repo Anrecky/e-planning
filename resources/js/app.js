@@ -6,12 +6,12 @@ import './import.plugins'
 
 function formatAsIDRCurrency(value) {
     if (!isNaN(value)) {
-    return new Intl.NumberFormat('id-ID', {
-        style: 'currency',
-        currency: 'IDR',
-        minimumFractionDigits: 0,
-        maximumFractionDigits: 0
-    }).format(value);
+        return new Intl.NumberFormat('id-ID', {
+            style: 'currency',
+            currency: 'IDR',
+            minimumFractionDigits: 0,
+            maximumFractionDigits: 0
+        }).format(value);
     }
     return '';
 }
@@ -41,3 +41,17 @@ function confirmDelete(id) {
 window.formatAsIDRCurrency = formatAsIDRCurrency;
 window.enforceNumericInput = enforceNumericInput;
 window.confirmDelete = confirmDelete;
+
+window.JSZip = require('jszip');
+
+require('bootstrap');
+require('datatables.net-bs4');
+require('datatables.net-buttons/js/dataTables.buttons');
+require('datatables.net-buttons/js/buttons.flash');
+require('datatables.net-buttons/js/buttons.html5');
+require('datatables.net-buttons/js/buttons.print');
+require('datatables.net-buttons/js/buttons.colVis');
+
+window.pdfMake = require('pdfmake/build/pdfmake');
+window.pdfFonts = require('pdfmake/build/vfs_fonts');
+pdfMake.vfs = pdfFonts.pdfMake.vfs;

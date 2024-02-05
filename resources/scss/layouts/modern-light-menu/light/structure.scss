@@ -2081,6 +2081,17 @@ body {
         display: block;
         opacity: 0.7;
     }
+
+    /* Dt-Buttons */
+    .dt-buttons {
+        margin-bottom: 0.4rem;
+        text-align: center;
+    }
+    .dt-button{
+        margin-left: 0.43rem;
+        margin-bottom: 0.75rem;
+    }
+
 }
 
 @media (min-width: 992px) {
