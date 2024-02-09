@@ -1,5 +1,5 @@
-<div class="table-responsive my-4">
-    <div class="d-flex flex-wrap justify-content-between py-2 my-2 me-1 px-2">
+<div class="table-responsive px-4 my-4">
+    <div class="d-flex flex-wrap justify-content-sm-between justify-content-center my-2 me-1 align-items-center">
         <div class="d-flex flex-wrap gap-1 my-2">
             <button id="addBtn" class="btn btn-primary shadow-sm">Rekam Data Aset
             </button>
@@ -25,32 +25,30 @@
         </thead>
         <tbody>
             @foreach ($assets as $asset)
-                <tr>
-                    <td>{{ $asset->assetItem->category === 'IT' ? 'IT' : 'Non IT' }}</td>
-                    <td>{{ $asset->assetItem->name }}</td>
-                    <td>{{ $asset->brand }}</td>
-                    <td>{{ $asset->year_acquisition }}</td>
-                    <td>{{ $asset->code }}</td>
-                    <td>{{ __(ucfirst($asset->condition)) }}</td>
-                    <td class="text-wrap">{{ \Str::limit($asset->description, 90) }}</td>
-                    <td class="text-center ">
-                        <button type="button" class="btn btn-sm btn-primary editBtn" data-id="{{ $asset->id }}">
-                            <i class="text-white" data-feather="edit-2"></i>
-                        </button>
+            <tr>
+                <td>{{ $asset->assetItem->category === 'IT' ? 'IT' : 'Non IT' }}</td>
+                <td>{{ $asset->assetItem->name }}</td>
+                <td>{{ $asset->brand }}</td>
+                <td>{{ $asset->year_acquisition }}</td>
+                <td>{{ $asset->code }}</td>
+                <td>{{ __(ucfirst($asset->condition)) }}</td>
+                <td class="text-wrap">{{ \Str::limit($asset->description, 90) }}</td>
+                <td class="text-center ">
+                    <button type="button" class="btn btn-sm btn-primary editBtn" data-id="{{ $asset->id }}">
+                        <i class="text-white" data-feather="edit-2"></i>
+                    </button>
 
-                        <a href="javascript:void(0);" class="btn btn-danger btn-sm" role="button"
-                            onclick="confirmDelete({{ $asset->id }});">
-                            <i class="text-white" data-feather="trash-2"></i>
-                        </a>
-                        <!-- Hidden form for delete request -->
-                        <form id="delete-form-{{ $asset->id }}" action="{{ route('asset.destroy', $asset->id) }}"
-                            method="POST" style="display: none;">
-                            @csrf
-                            @method('DELETE')
-                        </form>
+                    <a href="javascript:void(0);" class="btn btn-danger btn-sm" role="button" onclick="confirmDelete({{ $asset->id }});">
+                        <i class="text-white" data-feather="trash-2"></i>
+                    </a>
+                    <!-- Hidden form for delete request -->
+                    <form id="delete-form-{{ $asset->id }}" action="{{ route('asset.destroy', $asset->id) }}" method="POST" style="display: none;">
+                        @csrf
+                        @method('DELETE')
+                    </form>
 
-                    </td>
-                </tr>
+                </td>
+            </tr>
             @endforeach
         </tbody>
     </table>

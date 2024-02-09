@@ -145,9 +145,9 @@
                         const c1 = $('#reception-table').DataTable({
                             headerCallback: function(e, a, t, n, s) {
                                 e.getElementsByTagName("th")[0].innerHTML = `
-                    <div class="form-check form-check-primary d-block">
-                        <input class="form-check-input chk-parent" type="checkbox" id="form-check-default">
-                    </div>`
+                                <div class="form-check form-check-primary d-block">
+                                    <input class="form-check-input chk-parent" type="checkbox" id="form-check-default">
+                                </div>`
                             },
                             columnDefs: [{
                                     targets: 0,
@@ -156,9 +156,9 @@
                                     orderable: !1,
                                     render: function(e, a, t, n) {
                                         return `
-                        <div class="form-check form-check-primary d-block">
-                            <input class="form-check-input child-chk" type="checkbox" id="form-check-default">
-                        </div>`
+                                        <div class="form-check form-check-primary d-block">
+                                            <input class="form-check-input child-chk" type="checkbox" id="form-check-default">
+                                        </div>`
                                     }
                                 },
                                 {
@@ -226,7 +226,7 @@
                             const createForm = document.getElementById('form-create');
                             const btnDeleteSome = document.getElementById('btnDeleteSome');
 
-                            theadTh.forEach(th => th.classList.add('bg-info'));
+                            theadTh.forEach(th => th.classList.add('bg-primary'));
 
                             createModalEl.addEventListener('show.bs.modal', function() {
                                 const targetInputEl = document.getElementById('target')

@@ -1182,7 +1182,7 @@ select.form-control.form-custom {
   }
 }
 
-.dt-buttons .buttons-pdf{
+.dt-buttons .buttons-pdf {
   padding: 0.4375rem 1.25rem;
   text-shadow: none;
   font-size: 14px;
@@ -1200,7 +1200,7 @@ select.form-control.form-custom {
   transition: all 0.3s ease-out;
   -webkit-transition: all 0.3s ease-out;
 
-  &:hover{
+  &:hover {
     color: $dark;
     background-color: #f1f2f3;
     border-color: #d3d3d3;
@@ -1212,7 +1212,7 @@ select.form-control.form-custom {
   }
 }
 
-.dt-buttons .buttons-excel{
+.dt-buttons .buttons-excel {
   padding: 0.4375rem 1.25rem;
   text-shadow: none;
   font-size: 14px;
@@ -1230,7 +1230,7 @@ select.form-control.form-custom {
   transition: all 0.3s ease-out;
   -webkit-transition: all 0.3s ease-out;
 
-  &:hover{
+  &:hover {
     color: $dark;
     background-color: #f1f2f3;
     border-color: #d3d3d3;
@@ -4339,8 +4339,6 @@ fieldset:disabled .btn {
         margin: auto 0;
       }
     }
-
-    .media {}
 
     .action-btns {
       .action-btn {
