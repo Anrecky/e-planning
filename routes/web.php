@@ -144,6 +144,7 @@ Route::middleware(['auth'])->prefix('admin')->group(function () {
     });
     Route::prefix('pembayaran')->group(function () {
     });
+
     Route::prefix('ruh-pembayaran')->group(function () {
         Route::get('rekam-verifikasi', [PaymentVerificationController::class, 'index'])->name('payment-verification.index');
     });
