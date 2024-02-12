@@ -110,6 +110,19 @@
                     <input type="hidden" id="currentActivityId" value="">
                     <h2 class="mb-2 text-center fw-bold text-white bg-primary p-2" id="accumulatedTotalSum"></h2>
 
+                    <!-- Year Filter Section -->
+                    <div class="mb-3">
+                        <label class="form-label">Pilih Tahun di Tampilkan:</label>
+                        <select name="select_year" id="select_year" class="form-select w-25 d-inline-block">
+                            @for ($i = 2000; $i <= date('Y'); $i++)
+                                <option value="{{ $i }}" @if ($i == date('Y')) selected @endif>
+                                    {{ $i }}
+                                </option>
+                            @endfor
+                        </select>
+                    </div>
+
+
                     <!-- Month Filter Section -->
                     <div class="month-filter-wrapper mb-3">
                         <label class="form-label">Pilih Bulan di Tampilkan:</label>
@@ -206,12 +219,22 @@
                 });
             });
 
+            // Add the onchange event select_year withdrawal plans data
+            document.getElementById('select_year').addEventListener('change', function(e) {
+                let activityID = document.getElementById('currentActivityId').value;
+                const activity = getActivityData(document.querySelector(`[data-activity-id="${activityID}"]`))
+                resetModalAmounts();
+                fetchAndPopulateModal(activity);
+            })
+
             async function savingWithdrawalPlans(withdrawalPlans) {
                 try {
                     let activityId = document.getElementById('currentActivityId').value;
+                    let year = document.querySelector('select[name="select_year"]').value;
                     const response = await axios.post('/admin/penganggaran/rencana-penarikan-dana', {
                         "activityId": activityId,
-                        "withdrawalPlans": withdrawalPlans
+                        "withdrawalPlans": withdrawalPlans,
+                        "year": year
                     });
 
                     if (response.status === 200) {
@@ -250,7 +273,6 @@
                     });
                 }
             }
-
 
             function setupActivityRows() {
                 document.querySelectorAll('.activity-row').forEach(row => {
@@ -377,7 +399,8 @@
 
             async function fetchAndPopulateModal(activity) {
                 try {
-                    const response = await axios.get(`/admin/api/withdrawal-plans/${activity.id}`);
+                    const response = await axios.get(
+                        `/admin/api/withdrawal-plans/${activity.id}/${document.getElementById('select_year').value}`);
                     populateModalWithData(response.data, activity);
                 } catch (error) {
                     showErrorAlert('Kesalahan', 'Gagal memuat data penarikan dana.');
