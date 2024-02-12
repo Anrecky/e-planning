@@ -22,6 +22,7 @@ use App\Http\Controllers\AssetItemController;
 use App\Http\Controllers\PaymentVerificationController;
 use App\Http\Controllers\PaymentReceiptController;
 use App\Http\Controllers\DetailedFAReportController;
+use App\Http\Controllers\PPKController;
 
 Route::get('/', function () {
     return redirect()->route('login');
@@ -33,7 +34,7 @@ Route::middleware(['auth'])->prefix('admin')->group(function () {
     })->name('admin.dashboard');
 
     Route::get('/api/program-targets', [ProgramTargetController::class, 'getProgramTargets'])->name('program_targets.index');
-    Route::get('/api/withdrawal-plans/{activityId}', [WithdrawalPlanController::class, 'getWithdrawalPlans'])->name('withdrawal_plans.activity');
+    Route::get('/api/withdrawal-plans/{activityId}/{year?}', [WithdrawalPlanController::class, 'getWithdrawalPlans'])->name('withdrawal_plans.activity');
     Route::get('/api/account-code-receptions', [AccountCodeReceptionController::class, 'getAccountCodes'])->name('account_code_receptions.index');
     Route::get('/api/selected-account-code-reception/{accountCodeReception}', [AccountCodeReceptionController::class, 'getSelectedAccountCode'])->name('account_code_receptions.selected');
     Route::get('/api/asset-items/{category?}', [AssetItemController::class, 'getAssetItemBySelectedCategory'])->name('asset_items.selected_category');
@@ -68,10 +69,6 @@ Route::middleware(['auth'])->prefix('admin')->group(function () {
         Route::post('satuan-belanja', [ExpenditureUnitController::class, 'store'])->name('expenditure_unit.store');
         Route::patch('satuan-belanja/{expenditureUnit}/update', [ExpenditureUnitController::class, 'update'])->name('expenditure_unit.update');
         Route::delete('satuan-belanja/{expenditureUnit}/hapus', [ExpenditureUnitController::class, 'destroy'])->name('expenditure_unit.delete');
-        // Route::get('kode-akun', [AccountCodeController::class, 'index'])->name('account_code.index');
-        // Route::post('kode-akun', [AccountCodeController::class, 'store'])->name('account_code.store');
-        // Route::patch('kode-akun/{accountCode}/update', [AccountCodeController::class, 'update'])->name('account_code.update');
-        // Route::delete('kode-akun/{accountCode}/hapus', [AccountCodeController::class, 'destroy'])->name('account_code.delete');
         Route::get('sbm-sbi', [SBMSBIController::class, 'index'])->name('sbm_sbi.index');
         Route::post('sbm-sbi', [SBMSBIController::class, 'store'])->name('sbm_sbi.store');
         Route::get('pagu-lembaga', [InstitutionalBudgetController::class, 'index'])->name('ins_budget.index');
@@ -82,10 +79,9 @@ Route::middleware(['auth'])->prefix('admin')->group(function () {
         Route::post('user', [UserController::class, 'store'])->name('user.store');
         Route::patch('user/{user}/update', [UserController::class, 'update'])->name('user.update');
         Route::delete('user/{user}/hapus', [UserController::class, 'destroy'])->name('user.delete');
-        // Route::get('penerimaan/kode-akun', [AccountCodeReceptionController::class, 'index'])->name('account_code_reception.index');
-        // Route::post('penerimaan/kode-akun', [AccountCodeReceptionController::class, 'store'])->name('account_code_reception.store');
-        // Route::patch('penerimaan/kode-akun/{accountCodeReception}/update', [AccountCodeReceptionController::class, 'update'])->name('account_code_reception.update');
-        // Route::delete('penerimaan/kode-akun/{accountCodeReception}/hapus', [AccountCodeReceptionController::class, 'destroy'])->name('account_code_reception.delete');
+
+        // PPK Routes
+        Route::resource('ppk', PPKController::class);
 
         // Asset Item Routes
         Route::resource('barang-aset', AssetItemController::class)->names([

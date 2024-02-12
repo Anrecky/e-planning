@@ -241,5 +241,8 @@ return [
         'iku' => 'indikator kinerja utama',
         'iku.*' => 'indikator kinerja utama',
         'program_target.*' => 'sasaran program',
+        'ppk_name.*' => 'Nama PPK',
+        'ppk_nik.*' => 'NIK PPK',
+        'ppk_position.*' => 'Jabatan PPK'
     ],
 ];
