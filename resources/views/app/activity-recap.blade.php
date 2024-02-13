@@ -183,20 +183,21 @@
                                                 $filePath = Storage::disk(App\Supports\Disk::ActivityRecapAttachment)->path($activity->activityRecap?->attachment_path);
                                                 $fileMimeType = mime_content_type($filePath);
                                             @endphp
+                                            <div
+                                                class="d-flex flex-column flex-sm-row align-items-center justify-content-center">
+                                                {{-- "View File" Link/Button --}}
+                                                <button type="button"
+                                                    class="btn btn-primary btn-sm me-sm-2 mb-2 mb-sm-0"
+                                                    onclick="handleViewFile('{{ route('activity-recap.show-file', $activity->activityRecap) }}', '{{ $fileMimeType }}');">
+                                                    <i class="feather icon-eye"></i> Lihat File
+                                                </button>
 
-                                            {{-- "View File" Link/Button --}}
-                                            <a href="{{ route('activity-recap.show-file', $activity->activityRecap) }}"
-                                                class="btn btn-primary btn-sm"
-                                                @if ($fileMimeType == 'application/pdf') target="_blank"
-                                               @elseif ($fileMimeType == 'application/zip') download @endif>
-                                                <i class="feather icon-eye"></i> Lihat File
-                                            </a>
-
-                                            {{-- "Change File" Button --}}
-                                            <button type="button" class="btn btn-secondary btn-sm ms-2"
-                                                onclick="showFilePondInput('{{ $activity->id }}');">
-                                                <i class="feather icon-edit"></i> Ganti File
-                                            </button>
+                                                {{-- "Change File" Button --}}
+                                                <button type="button" class="btn btn-secondary btn-sm ms-2"
+                                                    onclick="showFilePondInput('{{ $activity->id }}');">
+                                                    <i class="feather icon-edit"></i> Ganti File
+                                                </button>
+                                            </div>
 
                                             {{-- Hidden FilePond Input --}}
                                             <input type="file" id="filepond-{{ $activity->id }}"
@@ -212,14 +213,14 @@
                                         <div class="d-flex flex-wrap justify-content-center gap-2">
                                             {{-- Reject Button --}}
                                             <button type="button"
-                                                class="btn-lg btn btn-danger text-center d-flex justify-content-center align-items-center gap-1 update-status"
+                                                class=" btn btn-sm btn-danger text-center d-flex justify-content-center align-items-center gap-1 update-status"
                                                 data-activity-id="{{ $activity->id }}" data-new-status="0">
                                                 <i data-feather="x-square" class="feather-upload reject"></i><span
                                                     class="icon-name">Tolak</span>
                                             </button>
                                             {{-- Accept Button --}}
                                             <button type="button"
-                                                class="btn-lg btn btn-success text-center d-flex justify-content-center align-items-center gap-1 update-status"
+                                                class="btn btn-sm btn-success text-center d-flex justify-content-center align-items-center gap-1 update-status"
                                                 data-activity-id="{{ $activity->id }}" data-new-status="1">
                                                 <i data-feather="check-square" class="feather-upload accept"></i><span
                                                     class="icon-name">Terima</span>
@@ -403,6 +404,16 @@
 
 
             });
+
+            function handleViewFile(url, mimeType) {
+                if (mimeType === 'application/pdf' || mimeType === 'image/jpeg') {
+                    // Membuka file dalam tab baru jika PDF atau gambar
+                    window.open(url, '_blank');
+                } else if (mimeType === 'application/zip') {
+                    // Mengunduh file jika zip
+                    window.location.href = url;
+                }
+            }
         </script>
     </x-slot>
     <!--  END CUSTOM SCRIPTS FILE  -->

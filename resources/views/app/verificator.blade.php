@@ -87,8 +87,8 @@
                     <div class="d-flex justify-content-center justify-content-sm-start">
                         <!-- Button trigger modal -->
                         <button type="button" class="btn btn-primary btn-md w-20 ms-4" data-bs-toggle="modal"
-                            data-bs-target="#treasurerModalCenter">
-                            Input Data Bendahara
+                            data-bs-target="#verificatorModalCenter">
+                            Input Data Verifikator
                         </button>
                     </div>
 
@@ -116,12 +116,12 @@
     </div>
 
     <!-- Create Modal -->
-    <div class="modal fade" id="treasurerModalCenter" tabindex="-1" role="dialog"
-        aria-labelledby="treasurerModalCenterTitle" aria-hidden="true">
+    <div class="modal fade" id="verificatorModalCenter" tabindex="-1" role="dialog"
+        aria-labelledby="verificatorModalCenterTitle" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered modal-l" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="treasurerModalCenterTitle">Input Data Bendahara</h5>
+                    <h5 class="modal-title" id="verificatorModalCenterTitle">Input Data Verifikator</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
                         <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24"
                             viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
@@ -171,7 +171,7 @@
         <div class="modal-dialog modal-dialog-centered modal-l" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="editModalTitle">Edit Data Bendahara</h5>
+                    <h5 class="modal-title" id="editModalTitle">Edit Data Verifikator</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
