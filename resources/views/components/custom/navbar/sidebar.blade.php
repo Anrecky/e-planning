@@ -545,9 +545,9 @@
                         </ul>
                     </li>
                     <li class="submenu">
-                        <a href="#input-pembayaran" data-bs-toggle="collapse"
-                            aria-expanded="{{ Request::is('*/input-pembayaran/*') ? 'true' : 'false' }}"
-                            class="dropdown-toggle {{ Request::is('*/input-pembayaran/*') ? 'collapsed' : '' }}">
+                        <a href="#sttpembayaran" data-bs-toggle="collapse"
+                            aria-expanded="{{ Request::is('*/ppk/*', '*/ppk') ? 'true' : 'false' }}"
+                            class="dropdown-toggle {{ Request::is('*/ppk/*', '*/ppk') ? 'collapsed' : '' }}">
                             <div>
                                 <i data-feather="folder"></i><span class="icon-name fw-bold">PEMBAYARAN</span>
                             </div>
@@ -560,24 +560,24 @@
                                 </svg>
                             </div>
                         </a>
-                        <ul class="collapse list-unstyled sub-submenu {{ Request::is('*/input-pembayaran/*') ? 'show' : '' }}"
-                            id="input-pembayaran" data-bs-parent="#pengaturan">
-                            <li class="{{ Request::routeIs('treasurer.index') ? 'active' : '' }}">
-                                <a class="ssubmenu" href="{{ route('treasurer.index') }}" aria-expanded="false">
+                        <ul class="collapse list-unstyled sub-submenu {{ Request::is('*/ppk/*', '*/ppk') ? 'show' : '' }}"
+                            id="sttpembayaran" data-bs-parent="#pengaturan">
+                            <li class="">
+                                <a class="ssubmenu" href="#" aria-expanded="false">
                                     <div>
                                         <i data-feather="file"></i><span class="icon-name fw-bold">Bendahara</span>
                                     </div>
                                 </a>
                             </li>
-                            <li class="">
-                                <a class="ssubmenu" href="#">
+                            <li class="{{ Request::routeIs('ppk.index') ? 'active' : '' }}">
+                                <a class="ssubmenu" href="{{ route('ppk.index') }}">
                                     <div>
                                         <i data-feather="file"></i><span class="icon-name fw-bold">PPK</span>
                                     </div>
                                 </a>
                             </li>
-                            <li class="{{ Request::routeIs('verificator.index') ? 'active' : '' }}">
-                                <a class="ssubmenu" href="{{ route('verificator.index') }}">
+                            <li class="">
+                                <a class="ssubmenu" href="#">
                                     <div>
                                         <i data-feather="file"></i><span class="icon-name fw-bold">Verifikator</span>
                                     </div>

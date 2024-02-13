@@ -24,6 +24,7 @@ use App\Http\Controllers\PaymentReceiptController;
 use App\Http\Controllers\DetailedFAReportController;
 use App\Http\Controllers\TreasurerController;
 use App\Http\Controllers\VerificatorController;
+use App\Http\Controllers\PPKController;
 
 Route::get('/', function () {
     return redirect()->route('login');
@@ -35,7 +36,7 @@ Route::middleware(['auth'])->prefix('admin')->group(function () {
     })->name('admin.dashboard');
 
     Route::get('/api/program-targets', [ProgramTargetController::class, 'getProgramTargets'])->name('program_targets.index');
-    Route::get('/api/withdrawal-plans/{activityId}', [WithdrawalPlanController::class, 'getWithdrawalPlans'])->name('withdrawal_plans.activity');
+    Route::get('/api/withdrawal-plans/{activityId}/{year?}', [WithdrawalPlanController::class, 'getWithdrawalPlans'])->name('withdrawal_plans.activity');
     Route::get('/api/account-code-receptions', [AccountCodeReceptionController::class, 'getAccountCodes'])->name('account_code_receptions.index');
     Route::get('/api/selected-account-code-reception/{accountCodeReception}', [AccountCodeReceptionController::class, 'getSelectedAccountCode'])->name('account_code_receptions.selected');
     Route::get('/api/asset-items/{category?}', [AssetItemController::class, 'getAssetItemBySelectedCategory'])->name('asset_items.selected_category');
@@ -80,6 +81,10 @@ Route::middleware(['auth'])->prefix('admin')->group(function () {
         Route::post('user', [UserController::class, 'store'])->name('user.store');
         Route::patch('user/{user}/update', [UserController::class, 'update'])->name('user.update');
         Route::delete('user/{user}/hapus', [UserController::class, 'destroy'])->name('user.delete');
+
+        // PPK Routes
+        Route::resource('ppk', PPKController::class);
+
         // Asset Item Routes
         Route::resource('barang-aset', AssetItemController::class)->names([
             'index' => 'asset_item.index',

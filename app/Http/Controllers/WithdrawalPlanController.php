@@ -7,6 +7,7 @@ use App\Models\Activity;
 use App\Models\WithdrawalPlan;
 use App\Enums\Month;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Log;
 
 class WithdrawalPlanController extends Controller
 {
@@ -43,9 +44,8 @@ class WithdrawalPlanController extends Controller
                 'withdrawalPlans' => 'required|array',
                 'withdrawalPlans.*.month' => 'required|integer|min:1|max:12',
                 'withdrawalPlans.*.amount_withdrawn' => 'required|numeric|min:0',
+                'year' => 'required|integer|digits:4'
             ]);
-
-            $year = Carbon::now()->year; // or use a specific year if needed
 
             foreach ($validatedData['withdrawalPlans'] as $planData) {
                 $monthEnum = Month::from($planData['month']);
@@ -54,7 +54,7 @@ class WithdrawalPlanController extends Controller
                     [
                         'activity_id' => $validatedData['activityId'],
                         'month' => $monthEnum,
-                        'year' => $year,
+                        'year' => $validatedData['year'] ?? date('Y'),
                     ],
                     [
                         'amount_withdrawn' => $planData['amount_withdrawn'],
@@ -64,6 +64,7 @@ class WithdrawalPlanController extends Controller
 
             return response()->json(['message' => 'Data penarikan dana berhasil disimpan']);
         } catch (\Exception $e) {
+            Log::error($e);
             return response()->json(['error' => $e->getMessage()], 500);
         }
     }
@@ -106,9 +107,15 @@ class WithdrawalPlanController extends Controller
      * @param int $activityId
      * @return \Illuminate\Http\JsonResponse
      */
-    public function getWithdrawalPlans($activityId)
+    public function getWithdrawalPlans($activityId, $year = null)
     {
-        $withdrawalPlans = WithdrawalPlan::where('activity_id', $activityId)->where('year', now()->year)->get();
+        // If $year is not provided, set it to the current year
+        $year = $year ?? date('Y');
+
+        $withdrawalPlans = WithdrawalPlan::where('activity_id', $activityId)
+            ->where('year', $year)
+            ->get();
+
         return response()->json($withdrawalPlans);
     }
 }
