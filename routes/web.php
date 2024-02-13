@@ -82,8 +82,16 @@ Route::middleware(['auth'])->prefix('admin')->group(function () {
         Route::patch('user/{user}/update', [UserController::class, 'update'])->name('user.update');
         Route::delete('user/{user}/hapus', [UserController::class, 'destroy'])->name('user.delete');
 
+        Route::resource('bendahara', TreasurerController::class)->names([
+            'index' => 'treasurer.index'
+        ]);
+
         // PPK Routes
         Route::resource('ppk', PPKController::class);
+
+        Route::resource('verifikator', VerificatorController::class)->names([
+            'index' => 'verificator.index'
+        ]);
 
         // Asset Item Routes
         Route::resource('barang-aset', AssetItemController::class)->names([
@@ -94,10 +102,6 @@ Route::middleware(['auth'])->prefix('admin')->group(function () {
         ])->parameters([
             'barang-aset' => 'assetItem', // Replace 'custom_param' with your desired parameter name
         ]);
-        Route::prefix('input-pembayaran')->group(function () {
-            Route::get('bendahara', [TreasurerController::class, 'index'])->name('treasurer.index');
-            Route::get('verifikator', [VerificatorController::class, 'index'])->name('verificator.index');
-        });
     });
     Route::prefix('codeAccount')->group(function () {
         Route::get('kode-akun', [AccountCodeController::class, 'index'])->name('account_code.index');

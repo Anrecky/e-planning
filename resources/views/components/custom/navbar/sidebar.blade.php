@@ -546,8 +546,8 @@
                     </li>
                     <li class="submenu">
                         <a href="#sttpembayaran" data-bs-toggle="collapse"
-                            aria-expanded="{{ Request::is('*/ppk/*', '*/ppk') ? 'true' : 'false' }}"
-                            class="dropdown-toggle {{ Request::is('*/ppk/*', '*/ppk') ? 'collapsed' : '' }}">
+                            aria-expanded="{{ Request::is('*/bendahara/*', '*/bendahara') || Request::is('*/ppk/*', '*/ppk') || Request::is('*/verifikator/*', '*/verifikator') ? 'true' : 'false' }}"
+                            class="dropdown-toggle {{ Request::is('*/bendahara/*', '*/bendahara') || Request::is('*/ppk/*', '*/ppk') || Request::is('*/verifikator/*', '*/verifikator') ? '' : 'collapsed' }}">
                             <div>
                                 <i data-feather="folder"></i><span class="icon-name fw-bold">PEMBAYARAN</span>
                             </div>
@@ -560,10 +560,10 @@
                                 </svg>
                             </div>
                         </a>
-                        <ul class="collapse list-unstyled sub-submenu {{ Request::is('*/ppk/*', '*/ppk') ? 'show' : '' }}"
+                        <ul class="collapse list-unstyled sub-submenu {{ ((Request::is('*/bendahara/*', '*/bendahara') ? 'show' : '' || Request::is('*/ppk/*', '*/ppk')) ? 'show' : '' || Request::is('*/verifikator/*', '*/verifikator')) ? 'show' : '' }}"
                             id="sttpembayaran" data-bs-parent="#pengaturan">
-                            <li class="">
-                                <a class="ssubmenu" href="#" aria-expanded="false">
+                            <li class="{{ Request::routeIs('treasurer.index') ? 'active' : '' }}">
+                                <a class="ssubmenu" href="{{ route('treasurer.index') }}" aria-expanded="false">
                                     <div>
                                         <i data-feather="file"></i><span class="icon-name fw-bold">Bendahara</span>
                                     </div>
@@ -576,8 +576,8 @@
                                     </div>
                                 </a>
                             </li>
-                            <li class="">
-                                <a class="ssubmenu" href="#">
+                            <li class="{{ Request::routeIs('verificator.index') ? 'active' : '' }}">
+                                <a class="ssubmenu" href="{{ route('verificator.index') }}">
                                     <div>
                                         <i data-feather="file"></i><span class="icon-name fw-bold">Verifikator</span>
                                     </div>
