@@ -38,21 +38,29 @@ function confirmDelete(id) {
         }
     });
 }
+function allowOnlyNumericInput(event) {
+    // Check if the input value is not numeric
+    if (isNaN(event.key)) {
+        // Prevent the default behavior of the event (i.e., typing non-numeric characters)
+        event.preventDefault();
+    }
+}
 
 window.formatAsIDRCurrency = formatAsIDRCurrency;
 window.enforceNumericInput = enforceNumericInput;
 window.confirmDelete = confirmDelete;
+window.allowOnlyNumericInput = allowOnlyNumericInput;
 
-window.JSZip = require('jszip');
+// window.JSZip = require('jszip');
 
-require('bootstrap');
-require('datatables.net-bs4');
-require('datatables.net-buttons/js/dataTables.buttons');
-require('datatables.net-buttons/js/buttons.flash');
-require('datatables.net-buttons/js/buttons.html5');
-require('datatables.net-buttons/js/buttons.print');
-require('datatables.net-buttons/js/buttons.colVis');
+// require('bootstrap');
+// require('datatables.net-bs4');
+// require('datatables.net-buttons/js/dataTables.buttons');
+// require('datatables.net-buttons/js/buttons.flash');
+// require('datatables.net-buttons/js/buttons.html5');
+// require('datatables.net-buttons/js/buttons.print');
+// require('datatables.net-buttons/js/buttons.colVis');
 
-window.pdfMake = require('pdfmake/build/pdfmake');
-window.pdfFonts = require('pdfmake/build/vfs_fonts');
-pdfMake.vfs = pdfFonts.pdfMake.vfs;
+// window.pdfMake = require('pdfmake/build/pdfmake');
+// window.pdfFonts = require('pdfmake/build/vfs_fonts');
+// pdfMake.vfs = pdfFonts.pdfMake.vfs;
