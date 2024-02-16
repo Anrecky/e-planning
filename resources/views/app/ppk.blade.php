@@ -233,20 +233,6 @@
         <script src="{{ asset('plugins-rtl/table/datatable/pdfmake/pdfmake.min.js') }}"></script>
         <script src="{{ asset('plugins-rtl/table/datatable/pdfmake/vfs_fonts.js') }}"></script>
         <script>
-            function openEditModal(id, name, category, description) {
-                $('#edit-form input[name=category][value=' + category + ']').prop('checked', true)
-
-                // Populate the form fields
-                document.getElementById('ppk_name').value = name;
-                // document.getElementById('ppk_category').value = category;
-
-                // Update the form action URL
-                document.getElementById('edit-form').action = '/admin/pengaturan/barang-aset/' + id;
-
-                // Show the modal
-                new bootstrap.Modal(document.getElementById('editModal')).show();
-            }
-
             window.addEventListener('load', function() {
                 feather.replace();
             })
