@@ -243,6 +243,9 @@ return [
         'program_target.*' => 'sasaran program',
         'ppk_name.*' => 'Nama PPK',
         'ppk_nik.*' => 'NIK PPK',
-        'ppk_position.*' => 'Jabatan PPK'
+        'ppk_position.*' => 'Jabatan PPK',
+        'treasurer_name.*' => 'Nama Bendahara',
+        'treasurer_nik.*' => 'NIK Bendahara',
+        'treasurer_position.*' => 'Jabatan Bendahara'
     ],
 ];

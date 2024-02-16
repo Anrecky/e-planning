@@ -18,13 +18,15 @@
         <link rel="stylesheet" href="{{ asset('plugins/table/datatable/datatables.css') }}">
         @vite(['resources/scss/light/plugins/table/datatable/dt-global_style.scss'])
         @vite(['resources/scss/dark/plugins/table/datatable/dt-global_style.scss'])
-        @vite(['resources/scss/light/plugins/editors/quill/quill.snow.scss'])
-        @vite(['resources/scss/dark/plugins/editors/quill/quill.snow.scss'])
 
         <style>
             td,
             th {
                 border-radius: 0px !important;
+            }
+
+            th {
+                color: white !important;
             }
 
             a.text-danger {
@@ -58,36 +60,13 @@
             <div class="statbox widget box box-shadow">
                 <div style="min-height:50vh;" class="widget-content widget-content-area">
                     <div class="p-3 container">
-                        @if ($errors->any())
-                            <div class="alert alert-danger">
-                                <ul>
-                                    @foreach ($errors->all() as $error)
-                                        <li>{{ $error }}</li>
-                                    @endforeach
-                                </ul>
-                            </div>
-                        @endif
-
-                        @if (session('success'))
-                            <div class="alert alert-success alert-dismissible fade show" role="alert">
-                                {{ session('success') }}
-                                <button type="button" class="btn-close text-white" data-bs-dismiss="alert"
-                                    aria-label="Close"><i data-feather="x-circle"></i></button>
-                            </div>
-                        @endif
-                        @if (session('error'))
-                            <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                                {{ session('error') }}
-                                <button type="button" class="btn-close text-white" data-bs-dismiss="alert"
-                                    aria-label="Close"><i data-feather="x-circle"></i></button>
-                            </div>
-                        @endif
+                        <x-custom.alerts />
                     </div>
 
                     <div class="d-flex justify-content-center justify-content-sm-start">
                         <!-- Button trigger modal -->
                         <button type="button" class="btn btn-primary btn-md w-20 ms-4" data-bs-toggle="modal"
-                            data-bs-target="#treasurerModalCenter">
+                            data-bs-target="#exampleModalCenter">
                             Input Data Bendahara
                         </button>
                     </div>
@@ -104,61 +83,105 @@
                                 </tr>
                             </thead>
                             <tbody>
+                                @foreach ($treasurers as $treasurer)
+                                    <tr>
+                                        <td>{{ $loop->iteration }}</td>
+                                        <td>
+                                            {{ $treasurer->position }}
+                                        </td>
+                                        <td>
+                                            {{ $treasurer->name }}
+                                        </td>
+                                        <td>
+                                            {{ $treasurer->nik }}
+                                        </td>
+                                        <td class="text-center">
+                                            <button type="button" class="btn btn-sm btn-primary"
+                                                data-bs-target="#editModal" data-bs-toggle="modal"
+                                                data-treasurer="{{ $treasurer }}"
+                                                data-update-url="{{ route('treasurer.update', $treasurer) }}">
+                                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
+                                                    fill="none" stroke="currentColor" stroke-width="2"
+                                                    stroke-linecap="round" stroke-linejoin="round"
+                                                    class="feather feather-edit-2">
+                                                    <path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z">
+                                                    </path>
+                                                </svg>
+                                            </button>
 
+                                            <a href="javascript:void(0);" class="btn btn-danger btn-sm" role="button"
+                                                onclick="window.confirmDelete({{ $treasurer->id }});">
+                                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
+                                                    fill="none" stroke="currentColor" stroke-width="2"
+                                                    stroke-linecap="round" stroke-linejoin="round"
+                                                    class="feather feather-trash-2">
+                                                    <polyline points="3 6 5 6 21 6"></polyline>
+                                                    <path
+                                                        d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2">
+                                                    </path>
+                                                    <line x1="10" y1="11" x2="10" y2="17">
+                                                    </line>
+                                                    <line x1="14" y1="11" x2="14" y2="17">
+                                                    </line>
+                                                </svg>
+                                            </a>
+                                            <!-- Hidden form for delete request -->
+                                            <form id="delete-form-{{ $treasurer->id }}"
+                                                action="{{ route('treasurer.destroy', $treasurer->id) }}"
+                                                method="POST" style="display: none;">
+                                                @csrf
+                                                @method('DELETE')
+                                            </form>
+                                        </td>
+                                    </tr>
+                                @endforeach
                             </tbody>
                         </table>
-
                     </div>
-
                 </div>
             </div>
         </div>
     </div>
 
     <!-- Create Modal -->
-    <div class="modal fade" id="treasurerModalCenter" tabindex="-1" role="dialog"
-        aria-labelledby="treasurerModalCenterTitle" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered modal-l" role="document">
+    <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog"
+        aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-xl" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="treasurerModalCenterTitle">Input Data Bendahara</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
-                        <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                            viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                            stroke-linecap="round" stroke-linejoin="round" class="feather feather-x">
-                            <line x1="18" y1="6" x2="6" y2="18">
-                            </line>
-                            <line x1="6" y1="6" x2="18" y2="18">
-                            </line>
-                        </svg>
-                    </button>
+                    <h5 class="modal-title" id="exampleModalCenterTitle">Input Data Bendahara</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <form id="form-create">
-                        <div class="mb-4 row align-items-center">
-                            <label for="inputtitle" class="col-sm-4 col-form-label">Jabatan</label>
-                            <div class="col-sm-8">
-                                <input type="text" class="form-control" id="inputtitle">
-                            </div>
-                        </div>
-                        <div class="mb-4 row align-items-center">
-                            <label for="inputFullName" class="col-sm-4 col-form-label">Nama
-                                Lengkap</label>
-                            <div class="col-sm-8">
-                                <input type="text" class="form-control" id="inputFullName">
-                            </div>
-                        </div>
-                        <div class="mb-4 row align-items-center">
-                            <label for="inputNumberId" class="col-sm-4 col-form-label">NIP/NIK/NIDN</label>
-                            <div class="col-sm-8">
-                                <input type="text" class="form-control" id="inputNumberId">
-                            </div>
-                        </div>
-                        <div class="d-flex justify-content-end">
-                            <button class="btn btn-primary" type="submit">
-                                <span class="icon-name">Simpan</span>
+                    <form action="{{ route('treasurer.store') }}" method="POST">
+                        @csrf
+                        <div class="form-group d-flex align-items-center my-2">
+                            <button type="button" id="add-treasurer" class="btn btn-sm btn-primary py-0 px-2">
+                                <i data-feather="plus"></i>
                             </button>
+                            <h2 class="ms-2 py-0 mb-0 h5">Bendahara</h2>
                         </div>
+
+                        <div id="treasurer-inputs" class="mt-2">
+                            <div class="input-group mb-2">
+                                <span class="input-group-text">1.</span>
+                                <input required type="text" name="treasurer_name[]" class="form-control"
+                                    placeholder="Nama Bendahara">
+                                <input required type="text" name="treasurer_nik[]" class="form-control"
+                                    placeholder="NIK Bendahara">
+                                <input required type="text" name="treasurer_position[]" class="form-control"
+                                    placeholder="Jabatan Bendahara">
+
+                                <button type="button" class="btn btn-danger remove-treasurer">
+                                    <i data-feather="trash"></i>
+                                </button>
+                            </div>
+                        </div>
+
+                        <button class="btn btn-success text-center align-items-center mt-1 mt-2 py-auto"
+                            type="submit">
+                            <i data-feather="save"></i><span class="icon-name ms-1">Simpan</span>
+                        </button>
                     </form>
                 </div>
             </div>
@@ -168,38 +191,30 @@
     <!-- Edit Modal -->
     <div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="editModalTitle"
         aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered modal-l" role="document">
+        <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="editModalTitle">Edit Data Bendahara</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <form id="edit-form" action="" method="POST">
+                    <form id="form-edit" action="" method="POST">
                         @csrf
                         @method('PATCH')
-                        <div class="mb-4 row align-items-center">
-                            <label for="inputtitle" class="col-sm-4 col-form-label">Jabatan</label>
-                            <div class="col-sm-8">
-                                <input type="text" class="form-control" id="inputtitle">
-                            </div>
+
+                        <div class="form-group mb-2">
+                            <label>Nama</label>
+                            <input required type="text" name="name" class="form-control">
                         </div>
-                        <div class="mb-4 row align-items-center">
-                            <label for="inputFullName" class="col-sm-4 col-form-label">Nama
-                                Lengkap</label>
-                            <div class="col-sm-8">
-                                <input type="text" class="form-control" id="inputFullName">
-                            </div>
+                        <div class="form-group mb-2">
+                            <label>NIP/NIK/NIDN</label>
+                            <input required type="text" name="nik" class="form-control">
                         </div>
-                        <div class="mb-4 row align-items-center">
-                            <label for="inputNumberId" class="col-sm-4 col-form-label">NIP/NIK/NIDN</label>
-                            <div class="col-sm-8">
-                                <input type="text" class="form-control" id="inputNumberId">
-                            </div>
+                        <div class="form-group mb-2">
+                            <label>Jabatan</label>
+                            <input required type="text" name="position" class="form-control">
                         </div>
-                        <button class="btn btn-primary text-center align-items-center mt-2 py-auto" type="submit">
-                            <span class="icon-name">Simpan</span>
-                        </button>
+                        <button type="submit" class="btn btn-warning btn mt-2">Update</button>
                     </form>
                 </div>
             </div>
@@ -209,10 +224,8 @@
     <!--  BEGIN CUSTOM SCRIPTS FILE  -->
     <x-slot:footerFiles>
         <script src="{{ asset('plugins/global/vendors.min.js') }}"></script>
-        <script src="{{ asset('plugins/editors/quill/quill.js') }}"></script>
         <script src="{{ asset('plugins/sweetalerts2/sweetalerts2.min.js') }}"></script>
         <script src="{{ asset('plugins/table/datatable/datatables.js') }}"></script>
-        <script type="module" src="{{ asset('plugins/editors/quill/quill.js') }}"></script>
         <script src="{{ asset('plugins-rtl/table/datatable/button-ext/dataTables.buttons.min.js') }}"></script>
         <script src="{{ asset('plugins-rtl/table/datatable/button-ext/jszip.min.js') }}"></script>
         <script src="{{ asset('plugins-rtl/table/datatable/button-ext/buttons.html5.min.js') }}"></script>
@@ -220,42 +233,6 @@
         <script src="{{ asset('plugins-rtl/table/datatable/pdfmake/pdfmake.min.js') }}"></script>
         <script src="{{ asset('plugins-rtl/table/datatable/pdfmake/vfs_fonts.js') }}"></script>
         <script>
-            var quill = new Quill('#description-editor', {
-                modules: {
-                    toolbar: [
-                        [{
-                            header: [1, 2, false]
-                        }],
-                        ['bold', 'italic', 'underline'],
-                        ['image', 'code-block']
-                    ]
-                },
-                placeholder: 'Masukkan deskripsi barang aset (jika ada)',
-                theme: 'snow' // or 'bubble'
-            });
-
-            function openEditModal(id, name, category, description) {
-                $('#edit-form input[name=category][value=' + category + ']').prop('checked', true)
-                quill.root.innerHTML = description;
-                $('#edit-form textarea[name=description]').val(description)
-
-                quill.on('editor-change', function(eventName, ...args) {
-                    if (eventName === 'text-change') {
-                        $('#edit-form textarea[name=description]').val(quill.root.innerHTML)
-                    }
-                });
-
-                // Populate the form fields
-                document.getElementById('asset_item_name').value = name;
-                // document.getElementById('asset_item_category').value = category;
-
-                // Update the form action URL
-                document.getElementById('edit-form').action = '/admin/pengaturan/barang-aset/' + id;
-
-                // Show the modal
-                new bootstrap.Modal(document.getElementById('editModal')).show();
-            }
-
             window.addEventListener('load', function() {
                 feather.replace();
             })
@@ -277,12 +254,27 @@
             }
 
             function updateNumbering() {
-                const missionInputs = document.querySelectorAll('#asset_item-inputs .input-group');
+                const missionInputs = document.querySelectorAll('#treasurer-inputs .input-group');
                 missionInputs.forEach((input, index) => {
                     input.querySelector('.input-group-text').textContent = `${index + 1}.`;
                 });
             }
+            // Function to allow only numeric input
+            function allowOnlyNumericInput(event) {
+                // Check if the input value is not numeric
+                if (isNaN(event.key)) {
+                    // Prevent the default behavior of the event (i.e., typing non-numeric characters)
+                    event.preventDefault();
+                }
+            }
             document.addEventListener('DOMContentLoaded', function() {
+                const theadTh = document.querySelectorAll('thead tr th');
+                const treasurerNikInputs = document.querySelectorAll('input[name="treasurer_nik[]"]');
+                const editModalEl = document.getElementById('editModal');
+                theadTh.forEach(th => th.classList.add('bg-primary'));
+                treasurerNikInputs.forEach(function(input) {
+                    input.addEventListener('keydown', allowOnlyNumericInput);
+                });
                 $('#zero-config').DataTable({
                     "dom": "<'dt--top-section'<'row'<'col-12 col-sm-6 d-flex justify-content-sm-start justify-content-center'l><'col-12 col-sm-6 d-flex flex-column flex-sm-row justify-content-center align-items-center justify-content-sm-end mt-sm-0 mt-3'Bf>>>" +
                         "<'table-responsive'tr>" +
@@ -336,32 +328,52 @@
                     "lengthMenu": [7, 10, 20, 50],
                     "pageLength": 10
                 });
-                const assetItemContainer = document.getElementById('asset_item-inputs');
+                const TreasurerContainer = document.getElementById('treasurer-inputs');
 
-                document.getElementById('add-asset_item').addEventListener('click', function() {
-                    const index = assetItemContainer.querySelectorAll('.input-group').length;
-                    const newInputGroup = `
-        <div class="input-group mb-2">
-            <span class="input-group-text">${index}.</span>
-            <input type="text" name="asset_item_name[]" class="form-control" style="width: 22.5% !important;flex:0 1 auto !important" placeholder="Nama barang"><div class="border p-2"><p class="text-dark ms-2 mb-1">Pilih Kategori</p><div class="form-check form-check-inline mx-2"><input checked class="form-check-input" type="radio" name="asset_item_category[${index}]" id="category-radio-${index}" value="IT"><label class="form-check-label" for="category-radio-${index}">IT</label></div><div class="form-check form-check-inline mx-2"><input class="form-check-input" type="radio" name="asset_item_category[${index}]" id="category-radio-${index}" value="NonIT"><label class="form-check-label" for="category-radio-${index}">Non IT</label></div></div>
-            <input type="text" name="asset_item_description[]" class="form-control" placeholder="Deskripsi">
-            <button type="button" class="btn btn-danger remove-asset_item">
-                <i data-feather="trash"></i>
-            </button>
-        </div>`;
-                    assetItemContainer.insertAdjacentHTML('beforeend', newInputGroup);
+                document.getElementById('add-treasurer').addEventListener('click', function() {
+                    const index = TreasurerContainer.querySelectorAll('.input-group').length;
+                    const newInputGroup = `<div class="input-group mb-2">
+                                <span class="input-group-text">${index+1}.</span>
+                                <input required type="text" name="treasurer_name[]" class="form-control" placeholder="Nama Bendahara">
+                                <input required type="text" name="treasurer_nik[]" class="form-control" placeholder="NIK Bendahara">
+                                <input required type="text" name="treasurer_position[]" class="form-control"
+                                    placeholder="Jabatan Bendahara">
+
+                                <button type="button" class="btn btn-danger remove-treasurer">
+                                    <i data-feather="trash"></i>
+                                </button>
+                            </div>`;
+                    TreasurerContainer.insertAdjacentHTML('beforeend', newInputGroup);
+                    const treasurerNikInputs = document.querySelectorAll('input[name="treasurer_nik[]"]');
+                    treasurerNikInputs.forEach(function(input) {
+                        input.addEventListener('keydown', allowOnlyNumericInput);
+                    });
                     feather.replace();
                 });
 
-                assetItemContainer.addEventListener('click', function(event) {
-                    if (event.target.classList.contains('remove-asset_item')) {
+                TreasurerContainer.addEventListener('click', function(event) {
+                    if (event.target.classList.contains('remove-treasurer')) {
                         event.target.closest('.input-group').remove();
                         updateNumbering();
                     }
                 });
 
+                $(editModalEl).on('show.bs.modal', async function(e) {
+                    let treasurer = $(e.relatedTarget).data('treasurer');
+                    let updateUrl = $(e.relatedTarget).data('updateUrl');
+                    const formEdit = $("#form-edit");
+
+                    formEdit.attr('action', updateUrl);
+
+                    formEdit.find('[name="name"]').val(treasurer.name);
+                    formEdit.find('[name="nik"]').val(treasurer.nik);
+                    formEdit.find('[name="nik"]').on('keydown', allowOnlyNumericInput);
+                    formEdit.find('[name="position"]').val(treasurer.position);
+
+                })
+
                 function updateNumbering() {
-                    const inputGroups = assetItemContainer.querySelectorAll('.input-group');
+                    const inputGroups = TreasurerContainer.querySelectorAll('.input-group');
                     inputGroups.forEach((group, index) => {
                         group.querySelector('.input-group-text').textContent = `${index + 1}.`;
                     });

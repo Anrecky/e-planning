@@ -83,7 +83,12 @@ Route::middleware(['auth'])->prefix('admin')->group(function () {
         Route::delete('user/{user}/hapus', [UserController::class, 'destroy'])->name('user.delete');
 
         Route::resource('bendahara', TreasurerController::class)->names([
-            'index' => 'treasurer.index'
+            'index' => 'treasurer.index',
+            'store' => 'treasurer.store',
+            'update' => 'treasurer.update',
+            'destroy' => 'treasurer.destroy',
+        ])->parameters([
+            'bendahara' => 'treasurer'
         ]);
 
         // PPK Routes
