@@ -226,12 +226,12 @@
         <script src="{{ asset('plugins/global/vendors.min.js') }}"></script>
         <script src="{{ asset('plugins/sweetalerts2/sweetalerts2.min.js') }}"></script>
         <script src="{{ asset('plugins/table/datatable/datatables.js') }}"></script>
-        <script src="{{ asset('plugins-rtl/table/datatable/button-ext/dataTables.buttons.min.js') }}"></script>
-        <script src="{{ asset('plugins-rtl/table/datatable/button-ext/jszip.min.js') }}"></script>
-        <script src="{{ asset('plugins-rtl/table/datatable/button-ext/buttons.html5.min.js') }}"></script>
-        <script src="{{ asset('plugins-rtl/table/datatable/button-ext/buttons.print.min.js') }}"></script>
-        <script src="{{ asset('plugins-rtl/table/datatable/pdfmake/pdfmake.min.js') }}"></script>
-        <script src="{{ asset('plugins-rtl/table/datatable/pdfmake/vfs_fonts.js') }}"></script>
+        <script src="{{ asset('plugins/table/datatable/button-ext/dataTables.buttons.min.js') }}"></script>
+        <script src="{{ asset('plugins/table/datatable/button-ext/jszip.min.js') }}"></script>
+        <script src="{{ asset('plugins/table/datatable/button-ext/buttons.html5.min.js') }}"></script>
+        <script src="{{ asset('plugins/table/datatable/button-ext/buttons.print.min.js') }}"></script>
+        <script src="{{ asset('plugins/table/datatable/pdfmake/pdfmake.min.js') }}"></script>
+        <script src="{{ asset('plugins/table/datatable/pdfmake/vfs_fonts.js') }}"></script>
         <script>
             window.addEventListener('load', function() {
                 feather.replace();
@@ -259,21 +259,16 @@
                     input.querySelector('.input-group-text').textContent = `${index + 1}.`;
                 });
             }
-            // Function to allow only numeric input
-            function allowOnlyNumericInput(event) {
-                // Check if the input value is not numeric
-                if (isNaN(event.key)) {
-                    // Prevent the default behavior of the event (i.e., typing non-numeric characters)
-                    event.preventDefault();
-                }
-            }
             document.addEventListener('DOMContentLoaded', function() {
                 const theadTh = document.querySelectorAll('thead tr th');
                 const ppkNikInputs = document.querySelectorAll('input[name="ppk_nik[]"]');
                 const editModalEl = document.getElementById('editModal');
                 theadTh.forEach(th => th.classList.add('bg-primary'));
                 ppkNikInputs.forEach(function(input) {
-                    input.addEventListener('keydown', allowOnlyNumericInput);
+                    // Restrict keyboard input
+                    $(input).on('keydown', allowOnlyNumericInput);
+                    // Handle paste events
+                    $(input).on('paste', handlePaste);
                 });
                 $('#zero-config').DataTable({
                     "dom": "<'dt--top-section'<'row'<'col-12 col-sm-6 d-flex justify-content-sm-start justify-content-center'l><'col-12 col-sm-6 d-flex flex-column flex-sm-row justify-content-center align-items-center justify-content-sm-end mt-sm-0 mt-3'Bf>>>" +
@@ -346,7 +341,10 @@
                     PPKContainer.insertAdjacentHTML('beforeend', newInputGroup);
                     const ppkNikInputs = document.querySelectorAll('input[name="ppk_nik[]"]');
                     ppkNikInputs.forEach(function(input) {
-                        input.addEventListener('keydown', allowOnlyNumericInput);
+                        // Restrict keyboard input
+                        $(input).on('keydown', allowOnlyNumericInput);
+                        // Handle paste events
+                        $(input).on('paste', handlePaste);
                     });
                     feather.replace();
                 });
@@ -367,7 +365,10 @@
 
                     formEdit.find('[name="name"]').val(ppk.name);
                     formEdit.find('[name="nik"]').val(ppk.nik);
+                    // Restrict keyboard input
                     formEdit.find('[name="nik"]').on('keydown', allowOnlyNumericInput);
+                    // Handle paste events
+                    formEdit.find('[name="nik"]').on('paste', handlePaste);
                     formEdit.find('[name="position"]').val(ppk.position);
 
                 })

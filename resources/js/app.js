@@ -38,11 +38,30 @@ function confirmDelete(id) {
         }
     });
 }
-function allowOnlyNumericInput(event) {
-    // Check if the input value is not numeric
-    if (isNaN(event.key)) {
-        // Prevent the default behavior of the event (i.e., typing non-numeric characters)
-        event.preventDefault();
+function allowOnlyNumericInput(e) {
+    // Allow: backspace, delete, tab, escape, enter and .
+    if ($.inArray(e.keyCode, [46, 8, 9, 27, 13, 110, 190]) !== -1 ||
+        // Allow: Ctrl+A,Ctrl+C,Ctrl+V, Command+A
+        ((e.keyCode == 65 || e.keyCode == 86 || e.keyCode == 67) && (e.ctrlKey === true || e.metaKey === true)) ||
+        // Allow: home, end, left, right, down, up
+        (e.keyCode >= 35 && e.keyCode <= 40)) {
+        // let it happen, don't do anything
+        return;
+    }
+    // Ensure that it is a number and stop the keypress
+    if ((e.shiftKey || (e.keyCode < 48 || e.keyCode > 57)) && (e.keyCode < 96 || e.keyCode > 105)) {
+        e.preventDefault();
+    }
+}
+// Handle paste event separately
+function handlePaste(e) {
+    // Get pasted data via clipboard API
+    let pastedData = (e.originalEvent || e).clipboardData.getData('text/plain');
+
+    // Ensure that pasted data is numeric only
+    if (!/^\d+$/.test(pastedData)) {
+        // If not numeric, prevent the paste
+        e.preventDefault();
     }
 }
 
@@ -50,6 +69,7 @@ window.formatAsIDRCurrency = formatAsIDRCurrency;
 window.enforceNumericInput = enforceNumericInput;
 window.confirmDelete = confirmDelete;
 window.allowOnlyNumericInput = allowOnlyNumericInput;
+window.handlePaste = handlePaste;
 
 // window.JSZip = require('jszip');
 
