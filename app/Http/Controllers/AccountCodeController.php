@@ -3,7 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\AccountCode;
+use App\Models\BudgetImplementation;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 
 class AccountCodeController extends Controller
 {
@@ -69,5 +72,19 @@ class AccountCodeController extends Controller
     {
         $accountCode->delete();
         return redirect()->back()->with('success', 'Kode akun berhasil dihapus.');
+    }
+
+    // Get Account Code By Activity
+    public function getAccountCodesByActivity(Request $request, $activityId)
+    {
+        try {
+            $accountCodes = AccountCode::whereHas('budgetImplementations', function ($query) use ($activityId) {
+                $query->where('activity_id', $activityId);
+            })->get();
+            return response()->json($accountCodes);
+        } catch (\Exception $e) {
+            \Log::error($e);
+            return back()->with('error', $e->getMessage());
+        }
     }
 }
