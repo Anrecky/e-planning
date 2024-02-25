@@ -19,6 +19,7 @@ use App\Http\Controllers\RuhPaymentController;
 use App\Http\Controllers\ReceptionController;
 use App\Http\Controllers\AssetController;
 use App\Http\Controllers\AssetItemController;
+use App\Http\Controllers\BudgetImplementationDetailController;
 use App\Http\Controllers\PaymentVerificationController;
 use App\Http\Controllers\PaymentReceiptController;
 use App\Http\Controllers\DetailedFAReportController;
@@ -36,7 +37,12 @@ Route::middleware(['auth'])->prefix('admin')->group(function () {
     })->name('admin.dashboard');
 
     Route::get('/api/program-targets', [ProgramTargetController::class, 'getProgramTargets'])->name('program_targets.index');
+    Route::get('/api/ppks', [PPKController::class, 'getPPKs'])->name('ppks.index');
+    Route::get('/api/treasurers', [TreasurerController::class, 'getTreasurers'])->name('treasurers.index');
     Route::get('/api/withdrawal-plans/{activityId}/{year?}', [WithdrawalPlanController::class, 'getWithdrawalPlans'])->name('withdrawal_plans.activity');
+    Route::get('/api/activity/{activityId}/account-codes', [AccountCodeController::class, 'getAccountCodesByActivity'])->name('account_codes.activity');
+    Route::get('/api/details/{activityId}/{accountCodeId}', [BudgetImplementationDetailController::class, 'getByActivityAccountCode'])->name('budget_implementation_details.activity_account_code');
+    Route::get('/api/detail/{budgetImplementationDetail}', [BudgetImplementationDetailController::class, 'show'])->name('detail.show');
     Route::get('/api/account-code-receptions', [AccountCodeReceptionController::class, 'getAccountCodes'])->name('account_code_receptions.index');
     Route::get('/api/selected-account-code-reception/{accountCodeReception}', [AccountCodeReceptionController::class, 'getSelectedAccountCode'])->name('account_code_receptions.selected');
     Route::get('/api/asset-items/{category?}', [AssetItemController::class, 'getAssetItemBySelectedCategory'])->name('asset_items.selected_category');
