@@ -9,11 +9,7 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File;
 
-use App\Models\AccountCode;
-use App\Models\ExpenditureUnit;
 use App\Models\User;
-use App\Models\ProgramTarget;
-use App\Models\WorkUnit;
 
 class DatabaseSeeder extends Seeder
 {
@@ -24,10 +20,8 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        User::create(['name' => 'Admin', 'email' => 'admin@mail.com', 'password' => Hash::make(env('ADMIN_PASS'))]);
-        $this->call([
-            RenstraSeeder::class,
-        ]);
+        // User::create(['name' => 'Admin', 'email' => 'admin@mail.com', 'password' => Hash::make(env('ADMIN_PASS'))]);
+
         // Path to your SQL file
         $sqlFilePath = database_path('seeders/eplanning.sql');
 
