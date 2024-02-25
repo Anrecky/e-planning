@@ -36,7 +36,7 @@ class BudgetImplementationDetailController extends Controller
      */
     public function show(BudgetImplementationDetail $budgetImplementationDetail)
     {
-        //
+        return response()->json($budgetImplementationDetail);
     }
 
     /**
@@ -61,5 +61,18 @@ class BudgetImplementationDetailController extends Controller
     public function destroy(BudgetImplementationDetail $budgetImplementationDetail)
     {
         //
+    }
+    // Get Account Code By Activity
+    public function getByActivityAccountCode(Request $request, $activityId, $accountCodeId)
+    {
+        try {
+            $accountCodes = BudgetImplementationDetail::whereHas('budgetImplementation', function ($query) use ($activityId, $accountCodeId) {
+                $query->where('activity_id', $activityId)->where('account_code_id', $accountCodeId);
+            })->get();
+            return response()->json($accountCodes);
+        } catch (\Exception $e) {
+            \Log::error($e);
+            return back()->with('error', $e->getMessage());
+        }
     }
 }
