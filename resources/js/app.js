@@ -65,11 +65,35 @@ function handlePaste(e) {
     }
 }
 
+// Populate Select Options
+function populateSelectOptions(selectElement, options) {
+    // Clear existing options
+    selectElement.innerHTML = '';
+
+    // Create a default option
+    const defaultOption = document.createElement('option');
+    defaultOption.setAttribute('value', '');
+    defaultOption.setAttribute('disabled', '');
+    defaultOption.setAttribute('selected', '');
+    defaultOption.textContent = 'Select an option...';
+    selectElement.appendChild(defaultOption);
+
+    // Loop through the options array and create options
+    options.forEach(option => {
+        const optionElement = document.createElement('option');
+        optionElement.setAttribute('value', option.value);
+        optionElement.textContent = option.text;
+        selectElement.appendChild(optionElement);
+    });
+}
+
+
 window.formatAsIDRCurrency = formatAsIDRCurrency;
 window.enforceNumericInput = enforceNumericInput;
 window.confirmDelete = confirmDelete;
 window.allowOnlyNumericInput = allowOnlyNumericInput;
 window.handlePaste = handlePaste;
+window.populateSelectOptions = populateSelectOptions;
 
 // window.JSZip = require('jszip');
 
