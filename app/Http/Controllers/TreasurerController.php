@@ -98,4 +98,21 @@ class TreasurerController extends Controller
         }
         return redirect()->back()->with('success', 'Data bendahara berhasil dihapus.');
     }
+    public function getTreasurers(Request $request)
+    {
+        $search = $request->input('search', '');
+        $limit = $request->input('limit', 10); // Default to 10 if not provided
+
+        $query = Treasurer::query();
+
+        if (!empty($search)) {
+            $query->where('name', 'LIKE', "%{$search}%")
+                ->orWhere('nik', 'LIKE', "%{$search}%")
+                ->orWhere('position', 'LIKE', "%{$search}%");
+        }
+
+        $treasurers = $query->limit($limit)->get(['id', 'name', 'position', 'nik']);
+
+        return response()->json($treasurers);
+    }
 }
