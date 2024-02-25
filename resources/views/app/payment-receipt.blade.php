@@ -24,10 +24,6 @@
         <link rel="stylesheet"
             href="https://cdn.jsdelivr.net/npm/select2-bootstrap-5-theme@1.3.0/dist/select2-bootstrap-5-theme.min.css" />
         <style>
-            .select2-container--open {
-                z-index: 999999 !important;
-            }
-
             #add-account_code_btn,
             #add-expenditure_detail_btn {
                 opacity: 0;
@@ -120,7 +116,7 @@
     <!-- Create Modal -->
     <div class="modal fade" id="createModal" tabindex="-1" role="dialog" aria-labelledby="createModalTitle"
         aria-hidden="true" data-bs-focus="false">
-        <div class="modal-dialog modal-xl" role="document">
+        <div class="modal-dialog modal-lg" role="document">
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="createModalTitle">Rekam Data Kuitansi Pembayaran</h5>
@@ -172,7 +168,7 @@
                                 </select>
                             </div>
                         </div>
-                        <div class="mb-4 row">
+                        <div class="mb-4 row ppkWrapper">
                             <label for="selectVerifier" class="col-sm-2 col-form-label">PPK</label>
                             <div class="col-sm-8">
                                 <select class="form-select" id="createSelectPPK">
@@ -192,13 +188,74 @@
                                 <input readonly disabled type="text" class="form-control" id="selectApprove">
                             </div>
                             <div class="col-sm-2">
-                                <button class="btn btn-primary btn-lg">...</button>
+                                <button id="COABtn" type="button" data-bs-target="#COAModal"
+                                    data-bs-toggle="modal" class="btn btn-primary btn-lg">...</button>
                             </div>
                         </div>
                         <button class="btn btn-primary text-center align-items-center mt-2 py-auto" type="submit">
                             <span class="icon-name">Simpan</span>
                         </button>
                     </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- COA Modal -->
+    <div class="modal fade" id="COAModal" tabindex="-1" role="dialog" aria-labelledby="COAModalTitle"
+        aria-hidden="true" data-bs-focus="false">
+        <div class="modal-dialog modal-dialog-xl modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="COAModalTitle">Detail COA</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Tutup"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="mb-4 row">
+                        <label for="selectActivityCode" class="col-sm-2 col-form-label">Kode Kegiatan</label>
+                        <div class="col-sm-8">
+                            <select class="form-select" id="selectActivityCode">
+                                <option selected disabled value="">Pilih Kode Kegiatan...</option>
+                                @foreach ($activities as $activity)
+                                    <option value="{{ $activity->id }}"> {{ $activity->code }} - {{ $activity->name }}
+                                    </option>
+                                @endforeach
+                            </select>
+                        </div>
+                    </div>
+                    <div class="mb-4 row">
+                        <label for="selectAccountCode" class="col-sm-2 col-form-label">Kode Akun</label>
+                        <div class="col-sm-8">
+                            <select class="form-select" id="selectAccountCode">
+                                <option selected disabled value="">Pilih Kode Akun...</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="mb-4 row">
+                        <label for="selectBudgetDetail" class="col-sm-2 col-form-label">Detail</label>
+                        <div class="col-sm-8">
+                            <select class="form-select" id="selectBudgetDetail">
+                                <option selected disabled value="">Pilih Detail...</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="mb-4 row">
+                        <label for="totalBudget" class="col-sm-2 col-form-label">Jumlah Pagu</label>
+                        <div class="col-sm-8">
+                            <input style="color:gray;" readonly disabled type="text" class="form-control"
+                                id="totalBudget">
+                        </div>
+                    </div>
+                    <div class="mb-4 row">
+                        <label for="remainingBudget" class="col-sm-2 col-form-label">Sisa Pagu</label>
+                        <div class="col-sm-8">
+                            <input style="color:gray;" readonly disabled type="text" class="form-control"
+                                id="remainingBudget">
+                        </div>
+                    </div>
+                    <button data-bs-target="#createModal" data-bs-toggle="modal"
+                        class="btn btn-primary text-center align-items-center mt-2 py-auto" type="button">
+                        <span class="icon-name">Simpan</span>
+                    </button>
                 </div>
             </div>
         </div>
@@ -231,11 +288,11 @@
                 var myModal = new bootstrap.Modal(document.getElementById('createModal'));
                 myModal.show()
 
-                // On Opened Create Modal
+                // On Shown Create Modal
                 $('#createModal').on('shown.bs.modal', function() {
                     handleSelectTypeReceipt($('#selectTypeReceipt'))
                     $('#createSelectPPK').select2({
-                        dropdownParent: $('#createModal'),
+                        dropdownParent: $('.ppkWrapper'),
                         placeholder: 'Pilih PPK',
                         theme: 'bootstrap-5',
                         ajax: {
@@ -270,13 +327,13 @@
                         }
                     });
                     $('#createSelectTreasurer').select2({
-                        dropdownParent: $('#createModal'),
-                        placeholder: 'Pilih PPK',
+                        dropdownParent: $('.treasurerWrapper'),
+                        placeholder: 'Pilih Bendahara',
                         theme: 'bootstrap-5',
                         ajax: {
                             transport: function(params, success, failure) {
                                 // Using Axios to fetch the data
-                                axios.get(`{{ route('ppks.index') }}`, {
+                                axios.get(`{{ route('treasurers.index') }}`, {
                                         params: {
                                             search: params.data.term,
                                             limit: 10
@@ -304,10 +361,112 @@
                             cache: true
                         }
                     });
+                    $("#COABtn").click();
                 }).on('hidden.bs.modal', function() {
                     $('#createSelectPPK').select2('destroy');
                     $('#createSelectTreasurer').select2('destroy');
-                })
+                });
+
+                // On Show COA Modal
+                $('#COAModal').on('shown.bs.modal', function(e) {
+                    $('#selectActivityCode').on('change', async function(selectEvent) {
+                        // Get Elements
+                        const selectAccountCode = document.getElementById('selectAccountCode');
+
+                        // Data Source
+                        const accountCodesData = await getAccountCodesByActivityID(selectEvent
+                            .currentTarget.value);
+
+                        // Convert accountCodesData to options array
+                        const accountCodesOptions = accountCodesData.map(accountCode => ({
+                            value: accountCode.id,
+                            text: accountCode.name
+                        }));
+
+                        // Populate select options
+                        populateSelectOptions(selectAccountCode, accountCodesOptions);
+
+                    });
+                    $('#selectAccountCode').on('change', async function(selectEvent) {
+                        // Get Elements
+                        const selectBudgetDetail = document.getElementById('selectBudgetDetail');
+
+                        // Get Select Activity Value
+                        const selectActivityID = document.getElementById('selectActivityCode')
+                            .value;
+
+                        // Data Source
+                        const budgetImplementationDetailsData =
+                            await getBudgetImplementationDetailsByActivityIDAndAccountCodeID(
+                                selectActivityID, selectEvent
+                                .currentTarget.value);
+
+                        // Convert budgetImplementationDetailsData to options array
+                        const budgetImplementationDetailsOptions = budgetImplementationDetailsData
+                            .map(
+                                budgetImplementation => ({
+                                    value: budgetImplementation.id,
+                                    text: budgetImplementation.name
+                                }));
+
+                        // Populate select options
+                        populateSelectOptions(selectBudgetDetail,
+                            budgetImplementationDetailsOptions);
+
+                    });
+                    $('#selectBudgetDetail').on('change', async function(selectEvent) {
+                        const detailData = await getDetail(selectEvent.currentTarget.value);
+                        $("#totalBudget").val(formatAsIDRCurrency(detailData.total))
+                    });
+                });
+
+                // Get Account Codes By Activity ID
+                async function getAccountCodesByActivityID(activityID) {
+                    // Axios POST request
+                    try {
+                        const response = await axios.get(`/admin/api/activity/${activityID}/account-codes`);
+                        return response.data;
+                    } catch (error) {
+                        Swal.fire({
+                            title: 'Gangguan!',
+                            text: 'Terjadi kesalahan. Silahkan coba sesaat lagi.',
+                            icon: 'error',
+                            confirmButtonText: 'OK'
+                        });
+                    }
+                }
+                // Get Budget Implementations By Activity ID & Account Code ID
+                async function getBudgetImplementationDetailsByActivityIDAndAccountCodeID(activityID, accountCodeID) {
+                    // Axios POST request
+                    try {
+                        const response = await axios.get(
+                            `/admin/api/details/${activityID}/${accountCodeID}`);
+                        return response.data;
+                    } catch (error) {
+                        Swal.fire({
+                            title: 'Gangguan!',
+                            text: 'Terjadi kesalahan. Silahkan coba sesaat lagi.',
+                            icon: 'error',
+                            confirmButtonText: 'OK'
+                        });
+                    }
+                }
+
+                async function getDetail(detailID) {
+                    // Axios POST request
+                    try {
+                        const response = await axios.get(
+                            `/admin/api/detail/${detailID}`);
+                        return response.data;
+                    } catch (error) {
+                        Swal.fire({
+                            title: 'Gangguan!',
+                            text: 'Terjadi kesalahan. Silahkan coba sesaat lagi.',
+                            icon: 'error',
+                            confirmButtonText: 'OK'
+                        });
+                    }
+                }
 
                 // On Change Select Type Receipt
                 $('#selectTypeReceipt').on('change', handleSelectTypeReceipt);
