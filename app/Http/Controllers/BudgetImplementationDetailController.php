@@ -66,10 +66,10 @@ class BudgetImplementationDetailController extends Controller
     public function getByActivityAccountCode(Request $request, $activityId, $accountCodeId)
     {
         try {
-            $accountCodes = BudgetImplementationDetail::whereHas('budgetImplementation', function ($query) use ($activityId, $accountCodeId) {
+            $details = BudgetImplementationDetail::whereHas('budgetImplementation', function ($query) use ($activityId, $accountCodeId) {
                 $query->where('activity_id', $activityId)->where('account_code_id', $accountCodeId);
             })->get();
-            return response()->json($accountCodes);
+            return response()->json($details);
         } catch (\Exception $e) {
             \Log::error($e);
             return back()->with('error', $e->getMessage());
