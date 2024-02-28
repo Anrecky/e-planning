@@ -366,7 +366,7 @@
                     }
                 });
 
-                let activityData = getActivityData(document.querySelector('.activity-row')); // Assuming first row as an example
+                let activityData = getActivityData(document.querySelector(`[data-activity-id="${activityID}"]`))
                 let residual = activityData.accumulatedSum - totalInputAmount;
 
                 if (residual < 0) {
