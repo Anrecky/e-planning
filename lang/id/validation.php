@@ -246,6 +246,7 @@ return [
         'ppk_position.*' => 'Jabatan PPK',
         'treasurer_name.*' => 'Nama Bendahara',
         'treasurer_nik.*' => 'NIK Bendahara',
-        'treasurer_position.*' => 'Jabatan Bendahara'
+        'treasurer_position.*' => 'Jabatan Bendahara',
+        'treasurer' => 'Bendahara'
     ],
 ];

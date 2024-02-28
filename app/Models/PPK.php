@@ -14,6 +14,13 @@ class PPK extends Model
     protected $fillable = ['name', 'nik', 'position'];
 
     /**
+     * The table associated with the model.
+     *
+     * @var string
+     */
+    protected $table = 'ppks';
+
+    /**
      * Create a new factory instance for the model.
      */
     protected static function newFactory(): Factory

@@ -48,7 +48,7 @@ class PPKController extends Controller
             return back()->with('error', $e->getMessage());
         }
 
-        return redirect()->back()->with('success', 'Berhasil menambahkan data PPK.');
+        return back()->with('success', 'Berhasil menambahkan data PPK.');
     }
 
     /**
@@ -84,7 +84,7 @@ class PPKController extends Controller
             return back()->with('error', $e->getMessage());
         }
 
-        return redirect()->back()->with('success', 'Berhasil mengupdate data PPK.');
+        return back()->with('success', 'Berhasil mengupdate data PPK.');
     }
 
     /**
@@ -97,7 +97,7 @@ class PPKController extends Controller
         } catch (\Exception $e) {
             return back()->with('error', $e->getMessage());
         }
-        return redirect()->back()->with('success', 'Data ppk berhasil dihapus.');
+        return back()->with('success', 'Data ppk berhasil dihapus.');
     }
     public function getPPKs(Request $request)
     {

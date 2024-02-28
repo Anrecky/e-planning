@@ -64,36 +64,37 @@ function handlePaste(e) {
         e.preventDefault();
     }
 }
-
 // Populate Select Options
-function populateSelectOptions(selectElement, options) {
+function populateSelectWithOptions(selectElement, options, defaultOptionTextContent = 'Pilih opsi...') {
     // Clear existing options
-    selectElement.innerHTML = '';
+    selectElement.textContent = '';
 
     // Create a default option
     const defaultOption = document.createElement('option');
-    defaultOption.setAttribute('value', '');
-    defaultOption.setAttribute('disabled', '');
-    defaultOption.setAttribute('selected', '');
-    defaultOption.textContent = 'Select an option...';
+    defaultOption.textContent = defaultOptionTextContent;
+    defaultOption.disabled = true;
+    defaultOption.selected = true;
     selectElement.appendChild(defaultOption);
 
     // Loop through the options array and create options
-    options.forEach(option => {
-        const optionElement = document.createElement('option');
-        optionElement.setAttribute('value', option.value);
-        optionElement.textContent = option.text;
-        selectElement.appendChild(optionElement);
-    });
+    if (Array.isArray(options)) {
+        options.forEach(option => {
+            const optionElement = document.createElement('option');
+            optionElement.value = option.value;
+            optionElement.textContent = option.text;
+            selectElement.appendChild(optionElement);
+        });
+    } else {
+        console.error('Options must be an array.');
+    }
 }
-
 
 window.formatAsIDRCurrency = formatAsIDRCurrency;
 window.enforceNumericInput = enforceNumericInput;
 window.confirmDelete = confirmDelete;
 window.allowOnlyNumericInput = allowOnlyNumericInput;
 window.handlePaste = handlePaste;
-window.populateSelectOptions = populateSelectOptions;
+window.populateSelectWithOptions = populateSelectWithOptions;
 
 // window.JSZip = require('jszip');
 

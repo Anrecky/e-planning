@@ -46,6 +46,8 @@ Route::middleware(['auth'])->prefix('admin')->group(function () {
     Route::get('/api/account-code-receptions', [AccountCodeReceptionController::class, 'getAccountCodes'])->name('account_code_receptions.index');
     Route::get('/api/selected-account-code-reception/{accountCodeReception}', [AccountCodeReceptionController::class, 'getSelectedAccountCode'])->name('account_code_receptions.selected');
     Route::get('/api/asset-items/{category?}', [AssetItemController::class, 'getAssetItemBySelectedCategory'])->name('asset_items.selected_category');
+    // Get Receipt Total Amount By Budget Implementation Detail ID
+    Route::get('/api/receipt/total-amount/{detail}', [PaymentReceiptController::class, 'totalAmountByBudgetImplementationDetail'])->name('receipts.total_amount');
 
 
     Route::prefix('renstra')->group(function () {
@@ -160,7 +162,12 @@ Route::middleware(['auth'])->prefix('admin')->group(function () {
     });
 
     Route::prefix('ruh-pembayaran')->group(function () {
-        Route::get('rekam-kuitansi', [PaymentReceiptController::class, 'index'])->name('payment-receipt.index');
+        Route::resource('rekam-kuitansi', PaymentReceiptController::class)->names([
+            'index' => 'payment-receipt.index',
+            'store' => 'payment-receipt.store',
+            'update' => 'payment-receipt.update',
+            'destroy' => 'payment-receipt.destroy'
+        ]);
         Route::get('rekam-verifikasi', [PaymentVerificationController::class, 'index'])->name('payment-verification.index');
     });
     Route::prefix('cetak-laporan')->group(function () {
