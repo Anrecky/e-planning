@@ -365,8 +365,8 @@
                         totalInputAmount += amount;
                     }
                 });
-
-                let activityData = getActivityData(document.querySelector(`[data-activity-id="${activityID}"]`))
+                let activityID = document.getElementById('currentActivityId').value;
+                let activityData = getActivityData(document.querySelector(`[data-activity-id="${activityID}"]`));
                 let residual = activityData.accumulatedSum - totalInputAmount;
 
                 if (residual < 0) {
