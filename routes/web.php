@@ -102,7 +102,12 @@ Route::middleware(['auth'])->prefix('admin')->group(function () {
         Route::resource('ppk', PPKController::class);
 
         Route::resource('verifikator', VerificatorController::class)->names([
-            'index' => 'verificator.index'
+            'index' => 'verificator.index',
+            'store' => 'verificator.store',
+            'update' => 'verificator.update',
+            'destroy' => 'verificator.destroy',
+        ])->parameters([
+            'verifikator' => 'verificator', // Replace 'custom_param' with your desired parameter name
         ]);
 
         // Asset Item Routes
