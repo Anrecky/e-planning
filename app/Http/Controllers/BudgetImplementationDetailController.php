@@ -36,8 +36,14 @@ class BudgetImplementationDetailController extends Controller
      */
     public function show(BudgetImplementationDetail $budgetImplementationDetail)
     {
-        return response()->json($budgetImplementationDetail);
+        return response()->json(
+            $budgetImplementationDetail->load([
+                'budgetImplementation.activity:id,name',
+                'budgetImplementation.accountCode:id,name'
+            ])
+        );
     }
+
 
     /**
      * Show the form for editing the specified resource.
