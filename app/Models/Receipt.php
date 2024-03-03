@@ -32,6 +32,6 @@ class Receipt extends Model
     }
     public function detail(): BelongsTo
     {
-        return $this->belongsTo(BudgetImplementationDetail::class);
+        return $this->belongsTo(BudgetImplementationDetail::class, 'budget_implementation_detail_id', 'id');
     }
 }
