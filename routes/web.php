@@ -49,7 +49,6 @@ Route::middleware(['auth'])->prefix('admin')->group(function () {
     // Get Receipt Total Amount By Budget Implementation Detail ID
     Route::get('/api/receipt/total-amount/{detail}', [PaymentReceiptController::class, 'totalAmountByBudgetImplementationDetail'])->name('receipts.total_amount');
 
-
     Route::prefix('renstra')->group(function () {
         Route::get('visi', [RenstraController::class, 'vision'])->name('vision.index');
         Route::patch('edit-visi', [RenstraController::class, 'updateVision'])->name('vision.update');
@@ -162,7 +161,9 @@ Route::middleware(['auth'])->prefix('admin')->group(function () {
     });
 
     Route::prefix('ruh-pembayaran')->group(function () {
-        Route::resource('rekam-kuitansi', PaymentReceiptController::class)->names([
+        Route::resource('rekam-kuitansi', PaymentReceiptController::class)->parameters([
+            'rekam-kuitansi' => 'receipt'
+        ])->names([
             'index' => 'payment-receipt.index',
             'store' => 'payment-receipt.store',
             'update' => 'payment-receipt.update',
