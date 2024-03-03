@@ -375,7 +375,6 @@
                 theadTh.forEach(th => th.classList.add('bg-primary'));
                 const editModalEl = document.getElementById('editModal');
                 let receiptEditData;
-                $(".temporary-edit").first().click()
 
                 $('#receipt-table').DataTable({
                     "dom": "<'dt--top-section'<'row'<'col-12 col-sm-6 d-flex justify-content-sm-start justify-content-center'l><'col-12 col-sm-6 d-flex flex-column flex-sm-row justify-content-center align-items-center justify-content-sm-end mt-sm-0 mt-3'Bf>>>" +
@@ -444,7 +443,7 @@
                     $('#inputAmount').on('paste', window.handlePaste);
                     handleSelectTypeReceipt($('#selectTypeReceipt'))
                     $('#createSelectPPK').select2({
-                        dropdownParent: $('.ppkWrapper'),
+                        dropdownParent: $("#form-create").find('.ppkWrapper'),
                         placeholder: 'Pilih PPK',
                         theme: 'bootstrap-5',
                         ajax: {
@@ -479,7 +478,7 @@
                         }
                     });
                     $('#createSelectTreasurer').select2({
-                        dropdownParent: $('.treasurerWrapper'),
+                        dropdownParent: $("#form-create").find('.treasurerWrapper'),
                         placeholder: 'Pilih Bendahara',
                         theme: 'bootstrap-5',
                         ajax: {
