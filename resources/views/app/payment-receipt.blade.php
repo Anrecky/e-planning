@@ -143,7 +143,7 @@
                                     <td>{{ $receipt->ppk->name }}</td>
                                     <td>{{ $receipt->provider }}</td>
                                     <td class="text-center">
-                                        <button type="button" class="btn btn-sm btn-primary"
+                                        <button type="button" class="btn btn-sm btn-primary temporary-edit"
                                             data-bs-target="#editModal" data-bs-toggle="modal"
                                             data-receipt="{{ $receipt }}"
                                             data-update-url="{{ route('payment-receipt.update', $receipt) }}">
@@ -373,15 +373,10 @@
             document.addEventListener('DOMContentLoaded', function() {
                 const theadTh = document.querySelectorAll('thead tr th');
                 theadTh.forEach(th => th.classList.add('bg-primary'));
+                const editModalEl = document.getElementById('editModal');
+                let receiptEditData;
+                $(".temporary-edit").first().click()
 
-                flatpickr(document.getElementById('basicFlatpickr'), {
-                    defaultDate: new Date(),
-                    static: true,
-                });
-
-                // Temporary used show modal
-                var myModal = new bootstrap.Modal(document.getElementById('createModal'));
-                myModal.show()
                 $('#receipt-table').DataTable({
                     "dom": "<'dt--top-section'<'row'<'col-12 col-sm-6 d-flex justify-content-sm-start justify-content-center'l><'col-12 col-sm-6 d-flex flex-column flex-sm-row justify-content-center align-items-center justify-content-sm-end mt-sm-0 mt-3'Bf>>>" +
                         "<'table-responsive'tr>" +
@@ -425,7 +420,7 @@
                         },
                         "sInfo": "Showing page _PAGE_ of _PAGES_",
                         "sSearch": '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-search"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>',
-                        "sSearchPlaceholder": "Search...",
+                        "sSearchPlaceholder": "Cari Kuitansi...",
                         "sLengthMenu": "Results :  _MENU_",
                     },
                     "drawCallback": function(settings) {
@@ -439,6 +434,10 @@
                 // On Shown Create Modal
                 $('#createModal').on('shown.bs.modal', function(modalEvent) {
                     const inputAmountEl = document.getElementById("inputAmount");
+                    flatpickr($("#form-create").find('#basicFlatpickr'), {
+                        defaultDate: new Date(),
+                        static: true,
+                    });
                     // Restrict keyboard input
                     $('#inputAmount').on('keydown', window.allowOnlyNumericInput);
                     // Handle paste events
@@ -546,17 +545,142 @@
                 }).on('hidden.bs.modal', function() {
                     $('#createSelectPPK').select2('destroy');
                     $('#createSelectTreasurer').select2('destroy');
+                    flatpickr($("#form-create").find('#basicFlatpickr')).destroy();
                 });
-                $('#COAModal').on('show.bs.modal', function() {
-                    $('#selectActivityCode').val("");
-                    $('#selectAccountCode').val("");
-                    $('#selectBudgetDetail').val("");
-                    $('#totalBudget').val("");
-                    $("#remainingBudget").val("");
+
+                // On Shown Edit Modal
+                $(editModalEl).on('shown.bs.modal', async function(e) {
+                    if (e.relatedTarget.classList.contains('temporary-edit')) {
+                        receiptEditData = $(e.relatedTarget).data('receipt');
+                    }
+                    let receipt = receiptEditData;
+                    let updateUrl = $(e.relatedTarget).data('updateUrl');
+                    const formEdit = $("#form-edit");
+
+                    formEdit.attr('action', updateUrl);
+                    formEdit.find('#selectTypeReceipt').val(receipt.type);
+                    formEdit.find('#inputDisbursementDescription').val(receipt.description);
+                    formEdit.find('#inputActivityImplementer').val(receipt.activity_implementer);
+                    formEdit.find('#inputSupplierName').val(receipt.provider);
+                    formEdit.find('#selectApproveId').val(receipt.budget_implementation_detail_id);
+                    formEdit.find('#selectApproveName').val(receipt.detail?.name);
+                    flatpickr(formEdit.find('#basicFlatpickr'), {
+                        defaultDate: receipt.activity_date,
+                        static: true,
+                    });
+                    const inputAmountEl = formEdit.find("#inputAmount");
+                    inputAmountEl.val(receipt.amount);
+                    // Restrict keyboard input
+                    inputAmountEl.on('keydown', window.allowOnlyNumericInput);
+                    // Handle paste events
+                    inputAmountEl.on('paste', window.handlePaste);
+                    handleSelectTypeReceipt($('#selectTypeReceipt'));
+                    $('#editSelectPPK').select2({
+                        dropdownParent: formEdit.find('.ppkWrapper'),
+                        placeholder: 'Pilih PPK',
+                        theme: 'bootstrap-5',
+                        ajax: {
+                            transport: function(params, success, failure) {
+                                // Using Axios to fetch the data
+                                axios.get(`{{ route('ppks.index') }}`, {
+                                        params: {
+                                            search: params.data.term,
+                                            limit: 10
+                                        }
+                                    })
+                                    .then(function(response) {
+                                        // Call the `success` function with the formatted results
+
+                                        success({
+                                            results: response.data.map(function(
+                                                item) {
+                                                return {
+                                                    id: item.id,
+                                                    text: item.nik + ' - ' +
+                                                        item
+                                                        .name
+                                                };
+                                            })
+                                        });
+                                    })
+                                    .catch(function(error) {
+                                        // Call the `failure` function in case of an error
+                                        failure(error);
+                                    });
+                            },
+                            delay: 250,
+                            cache: true
+                        }
+                    });
+
+                    // create the option and append to Select2
+                    var option = new Option(`${receipt.ppk.nik} - ${receipt.ppk.name}`, receipt.ppk.id,
+                        true,
+                        true);
+                    $('#editSelectPPK').append(option).trigger('change');
+
+                    $('#editSelectTreasurer').select2({
+                        dropdownParent: formEdit.find('.treasurerWrapper'),
+                        placeholder: 'Pilih Bendahara',
+                        theme: 'bootstrap-5',
+                        ajax: {
+                            transport: function(params, success, failure) {
+                                // Using Axios to fetch the data
+                                axios.get(`{{ route('treasurers.index') }}`, {
+                                        params: {
+                                            search: params.data.term,
+                                            limit: 10
+                                        }
+                                    })
+                                    .then(function(response) {
+                                        // Call the `success` function with the formatted results
+                                        success({
+                                            results: response.data.map(function(
+                                                item) {
+                                                return {
+                                                    id: item.id,
+                                                    text: item.nik + ' - ' +
+                                                        item
+                                                        .name
+                                                };
+                                            })
+                                        });
+                                    })
+                                    .catch(function(error) {
+                                        // Call the `failure` function in case of an error
+                                        failure(error);
+                                    });
+                            },
+                            delay: 250,
+                            cache: true
+                        }
+                    });
+
+                    // create the option and append to Select2
+                    var selectedTreasurerOption = new Option(
+                        `${receipt.treasurer?.nik ?? ''} - ${receipt.treasurer?.name ?? ''}`, receipt
+                        .treasurer?.id ?? null, true, true);
+                    $('#editSelectTreasurer').append(selectedTreasurerOption).trigger('change');
+
+                }).on('hidden.bs.modal', function() {
+                    const formEdit = $("#form-edit");
+                    flatpickr(formEdit.find('#basicFlatpickr')).destroy();
+                })
+                $('#COAModal').on('show.bs.modal', function(e) {
+                    if (e.relatedTarget.id !== 'editCOABtn') {
+                        $('#selectActivityCode').val("");
+                        $('#selectAccountCode').val("");
+                        $('#selectBudgetDetail').val("");
+                        $('#totalBudget').val("");
+                        $("#remainingBudget").val("");
+                    }
                 })
                 // On Show COA Modal
-                $('#COAModal').on('shown.bs.modal', function(e) {
+                $('#COAModal').on('shown.bs.modal', async function(e) {
+                    var isEdit = e.relatedTarget.id == 'editCOABtn';
+
                     $('#selectActivityCode').on('change', async function(selectEvent) {
+                        $('input,#selectBudgetDetail', '.modal.show .modal-body').val(null);
                         // Get Elements
                         const selectAccountCode = document.getElementById('selectAccountCode');
 
@@ -574,10 +698,13 @@
                         window.populateSelectWithOptions(selectAccountCode, accountCodesOptions,
                             'Pilih Kode Akun');
 
+
                     });
-                    $('#selectAccountCode').on('change', async function(selectEvent) {
+                    await $('#selectAccountCode').on('change', async function(selectEvent) {
+                        $('input', '.modal.show .modal-body').val(formatAsIDRCurrency(0.00));
                         // Get Elements
-                        const selectBudgetDetail = document.getElementById('selectBudgetDetail');
+                        const selectBudgetDetail = document.getElementById(
+                            'selectBudgetDetail');
 
                         // Get Select Activity Value
                         const selectActivityID = document.getElementById('selectActivityCode')
@@ -590,7 +717,8 @@
                                 .currentTarget.value);
 
                         // Convert budgetImplementationDetailsData to options array
-                        const budgetImplementationDetailsOptions = budgetImplementationDetailsData
+                        const budgetImplementationDetailsOptions =
+                            budgetImplementationDetailsData
                             .map(
                                 budgetImplementation => ({
                                     value: budgetImplementation.id,
@@ -604,13 +732,46 @@
                     });
                     $('#selectBudgetDetail').on('change', async function(selectEvent) {
                         const detailData = await getDetail(selectEvent.currentTarget.value);
-                        $("#totalBudget").val(formatAsIDRCurrency(detailData.total))
+                        $("#totalBudget").val(formatAsIDRCurrency(detailData.total));
+                        const detailTotalAmount = await getReceiptAmountByDetailId(detailData
+                            .id);
+                        const remainingBudget = detailData.total - detailTotalAmount;
+                        $("#remainingBudget").val(formatAsIDRCurrency(remainingBudget));
                     });
+                    if (isEdit) {
+                        $(".modal.show #cancelCOA").attr('data-bs-target', '#editModal');
+                        $(".modal.show #saveCOA").attr('data-bs-target', '#editModal');
+                        const {
+                            budget_implementation: {
+                                activity,
+                                account_code
+                            }
+                        } = await getDetail(receiptEditData.budget_implementation_detail_id);
+                        await $('#selectActivityCode').val(activity.id).change();
+                        setTimeout(() => {
+                            $('#selectAccountCode').val(account_code.id).change();
+                        }, 100);
+                        setTimeout(() => {
+                            $('#selectBudgetDetail').val(receiptEditData
+                                .budget_implementation_detail_id).change();
+                        }, 150);
+                    } else {
+                        $(".modal.show #cancelCOA").attr('data-bs-target', '#createModal');
+                        $(".modal.show #saveCOA").attr('data-bs-target', '#createModal');
+                    }
                     $("#saveCOA").on('click', function() {
                         const selectApproveNameEl = document.getElementById("selectApproveName");
                         const selectApproveIdEl = document.getElementById("selectApproveId");
                         // Get the select element
                         const selectDetail = document.getElementById('selectBudgetDetail');
+                        if (isEdit) {
+                            receiptEditData.budget_implementation_detail_id = selectDetail.value;
+                            if (receiptEditData.detail) {
+                                receiptEditData.detail.name = selectDetail.options[selectDetail
+                                    .selectedIndex].textContent;
+                            }
+                        }
+
                         selectApproveIdEl.value = selectDetail.value;
                         selectApproveNameEl.value = selectDetail.options[selectDetail
                             .selectedIndex].textContent;
@@ -670,12 +831,13 @@
                 async function getReceiptAmountByDetailId(detailID) {
                     // Axios POST request
                     try {
-                        const response = await.get(`/admin/api/receipt/total-amount/${detailID}`);
-                        return detailTotalAmount;
+                        const response = await axios.get(`/admin/api/receipt/total-amount/${detailID}`);
+                        return response.data
+                        // return response.data;
                     } catch (error) {
                         Swal.fire({
                             title: 'Gangguan!',
-                            text: 'Terjadi kesalahan. Silahkan coba sesaat lagi.',
+                            text: `Terjadi kesalahan. Silahkan coba sesaat lagi. ${error}`,
                             icon: 'error',
                             confirmButtonText: 'OK'
                         });
