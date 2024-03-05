@@ -62,4 +62,21 @@ class VerificatorController extends Controller
         }
         return redirect()->back()->with('success', 'Data bendahara berhasil dihapus.');
     }
+    public function getVerificators(Request $request)
+    {
+        $search = $request->input('search', '');
+        $limit = $request->input('limit', 10); // Default to 10 if not provided
+
+        $query = Verificator::query();
+
+        if (!empty($search)) {
+            $query->where('name', 'LIKE', "%{$search}%")
+                ->orWhere('nik', 'LIKE', "%{$search}%")
+                ->orWhere('position', 'LIKE', "%{$search}%");
+        }
+
+        $verificators = $query->limit($limit)->get(['id', 'name', 'position', 'nik']);
+
+        return response()->json($verificators);
+    }
 }
