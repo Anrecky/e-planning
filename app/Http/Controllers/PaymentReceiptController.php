@@ -46,7 +46,7 @@ class PaymentReceiptController extends Controller
             $receipt->amount = $validatedData['amount'];
             $receipt->provider = $validatedData['provider'];
             $receipt->ppk_id = $validatedData['ppk'];
-            $receipt->treasurer_id = $validatedData['treasurer'] ?? null; // Use null if type is 'direct'
+            $receipt->treasurer_id = $validatedData['type'] === 'direct' ? null : $validatedData['treasurer'];
             $receipt->budget_implementation_detail_id = $validatedData['detail'];
             $receipt->save();
 
@@ -77,7 +77,7 @@ class PaymentReceiptController extends Controller
             $receipt->amount = $validatedData['amount'];
             $receipt->provider = $validatedData['provider'];
             $receipt->ppk_id = $validatedData['ppk'];
-            $receipt->treasurer_id = $validatedData['treasurer'] ?? null; // Use null if type is 'direct'
+            $receipt->treasurer_id = $validatedData['type'] === 'direct' ? null : $validatedData['treasurer'];
             $receipt->budget_implementation_detail_id = $validatedData['detail'];
             $receipt->save();
             return back()->with('success', 'Data pembayaran kuitansi berhasil diupdate.');
