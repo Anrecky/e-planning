@@ -39,6 +39,7 @@ Route::middleware(['auth'])->prefix('admin')->group(function () {
     Route::get('/api/program-targets', [ProgramTargetController::class, 'getProgramTargets'])->name('program_targets.index');
     Route::get('/api/ppks', [PPKController::class, 'getPPKs'])->name('ppks.index');
     Route::get('/api/treasurers', [TreasurerController::class, 'getTreasurers'])->name('treasurers.index');
+    Route::get('/api/verificators', [VerificatorController::class, 'getVerificators'])->name('verificators.index');
     Route::get('/api/withdrawal-plans/{activityId}/{year?}', [WithdrawalPlanController::class, 'getWithdrawalPlans'])->name('withdrawal_plans.activity');
     Route::get('/api/activity/{activityId}/account-codes', [AccountCodeController::class, 'getAccountCodesByActivity'])->name('account_codes.activity');
     Route::get('/api/details/{activityId}/{accountCodeId}', [BudgetImplementationDetailController::class, 'getByActivityAccountCode'])->name('budget_implementation_details.activity_account_code');
@@ -174,7 +175,14 @@ Route::middleware(['auth'])->prefix('admin')->group(function () {
             'update' => 'payment-receipt.update',
             'destroy' => 'payment-receipt.destroy'
         ]);
-        Route::get('rekam-verifikasi', [PaymentVerificationController::class, 'index'])->name('payment-verification.index');
+        Route::resource('rekam-verifikasi', PaymentVerificationController::class)->parameters([
+            'rekam-verifikasi' => 'payment_verification'
+        ])->names([
+            'index' => 'payment-verification.index',
+            'store' => 'payment-verification.store',
+            'update' => 'payment-verification.update',
+            'destroy' => 'payment-verification.destroy'
+        ]);
     });
     Route::prefix('cetak-laporan')->group(function () {
         Route::get('laporan-fa-detail', [DetailedFAReportController::class, 'index'])->name('detailed-FA-report.index');
