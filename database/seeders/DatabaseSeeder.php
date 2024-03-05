@@ -10,6 +10,8 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File;
 
 use App\Models\User;
+use App\Models\PPK;
+use App\Models\Verificator;
 
 class DatabaseSeeder extends Seeder
 {
@@ -37,11 +39,8 @@ class DatabaseSeeder extends Seeder
         } else {
             $this->command->error('SQL file not found.');
         }
-        // if (env('APP_ENV') === 'local') {
-        //     ProgramTarget::factory(100)->create();
-        //     WorkUnit::factory(100)->create();
-        //     ExpenditureUnit::factory(100)->create();
-        //     AccountCode::factory(100)->create();
-        // }
+        // for testing
+        // PPK::factory(123)->create();
+        // Verificator::factory(456)->create();
     }
 }
