@@ -118,7 +118,7 @@
     <!-- Create Modal -->
     <div class="modal fade" id="treasurerModalCenter" tabindex="-1" role="dialog"
         aria-labelledby="treasurerModalCenterTitle" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered modal-l" role="document">
+        <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="treasurerModalCenterTitle">Input Data Bendahara</h5>

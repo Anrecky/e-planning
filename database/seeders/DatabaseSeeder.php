@@ -24,12 +24,19 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        User::create(['name' => 'Admin', 'email' => 'admin@mail.com', 'password' => Hash::make(env('ADMIN_PASS'))]);
-        $this->call([
-            RenstraSeeder::class,
-        ]);
+
         // Path to your SQL file
-        $sqlFilePath = database_path('seeders/eplanning.sql');
+        $sqlFilePath = database_path('seeders/e-planning.sql');
+        $this->call([
+            // RenstraSeeder::class,
+            RolesSeeder::class,
+        ]);
+        // User::create([
+        //     'name' => 'Admin2',
+        //     'email' => 'admin2@mail.com',
+        //     'password' => Hash::make(env('ADMIN_PASS')),
+        //     'identity_number' => '001'
+        // ])->assignRole('admin');
 
         // Check if the file exists
         if (File::exists($sqlFilePath)) {

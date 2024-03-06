@@ -25,6 +25,7 @@ use App\Http\Controllers\DetailedFAReportController;
 use App\Http\Controllers\TreasurerController;
 use App\Http\Controllers\VerificatorController;
 use App\Http\Controllers\PPKController;
+use App\Http\Controllers\MyProfileController;
 
 Route::get('/', function () {
     return redirect()->route('login');
@@ -35,12 +36,19 @@ Route::middleware(['auth'])->prefix('admin')->group(function () {
         return view('app.dashboard', ['title' => 'Dasbor']);
     })->name('admin.dashboard');
 
+    // Di file routes/web.php
+
+// Mendefinisikan route resource dengan penyesuaian nama
+Route::resource('profile', 'App\Http\Controllers\MyProfileController')->names([
+    'index' => 'my-profile.index',
+]);
+
+
     Route::get('/api/program-targets', [ProgramTargetController::class, 'getProgramTargets'])->name('program_targets.index');
     Route::get('/api/withdrawal-plans/{activityId}/{year?}', [WithdrawalPlanController::class, 'getWithdrawalPlans'])->name('withdrawal_plans.activity');
     Route::get('/api/account-code-receptions', [AccountCodeReceptionController::class, 'getAccountCodes'])->name('account_code_receptions.index');
     Route::get('/api/selected-account-code-reception/{accountCodeReception}', [AccountCodeReceptionController::class, 'getSelectedAccountCode'])->name('account_code_receptions.selected');
     Route::get('/api/asset-items/{category?}', [AssetItemController::class, 'getAssetItemBySelectedCategory'])->name('asset_items.selected_category');
-
 
     Route::prefix('renstra')->group(function () {
         Route::get('visi', [RenstraController::class, 'vision'])->name('vision.index');
