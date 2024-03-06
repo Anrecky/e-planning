@@ -1,10 +1,12 @@
 @if ($errors->any())
-    <div class="alert alert-danger">
+    <div class="alert alert-danger flex justify-content-between">
         <ul>
             @foreach ($errors->all() as $error)
                 <li>{{ $error }}</li>
             @endforeach
         </ul>
+        <button type="button" class="btn-close text-white" data-bs-dismiss="alert" aria-label="Close"><i
+                data-feather="x-circle"></i></button>
     </div>
 @endif
 

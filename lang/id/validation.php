@@ -243,6 +243,14 @@ return [
         'program_target.*' => 'sasaran program',
         'ppk_name.*' => 'Nama PPK',
         'ppk_nik.*' => 'NIK PPK',
-        'ppk_position.*' => 'Jabatan PPK'
+        'ppk_position.*' => 'Jabatan PPK',
+        'treasurer_name.*' => 'Nama Bendahara',
+        'treasurer_nik.*' => 'NIK Bendahara',
+        'treasurer_position.*' => 'Jabatan Bendahara',
+        'treasurer' => 'Bendahara',
+        'activity_implementer_name' => 'Nama Pelaksana Kegiatan',
+        'activity_implementer_nip' => 'NIP/NIK/NIPDN Pelaksana Kegiatan',
+        'spi_name' => 'Nama Pemeriksa',
+        'spi_nip' => 'NIP/NIK/NIPDN Pemeriksa',
     ],
 ];

@@ -18,10 +18,12 @@
         <link rel="stylesheet" href="{{ asset('plugins/table/datatable/datatables.css') }}">
         @vite(['resources/scss/light/plugins/table/datatable/dt-global_style.scss'])
         @vite(['resources/scss/dark/plugins/table/datatable/dt-global_style.scss'])
-        @vite(['resources/scss/light/plugins/editors/quill/quill.snow.scss'])
-        @vite(['resources/scss/dark/plugins/editors/quill/quill.snow.scss'])
 
         <style>
+            th {
+                color: white !important;
+            }
+
             td,
             th {
                 border-radius: 0px !important;
@@ -55,73 +57,87 @@
 
     <div class="row layout-top-spacing">
         <div class="col-lg-12 layout-spacing">
-            <div class="statbox widget box box-shadow">
-                <div style="min-height:50vh;" class="widget-content widget-content-area">
-                    <div class="p-3 container">
-                        @if ($errors->any())
-                            <div class="alert alert-danger">
-                                <ul>
-                                    @foreach ($errors->all() as $error)
-                                        <li>{{ $error }}</li>
-                                    @endforeach
-                                </ul>
-                            </div>
-                        @endif
-
-                        @if (session('success'))
-                            <div class="alert alert-success alert-dismissible fade show" role="alert">
-                                {{ session('success') }}
-                                <button type="button" class="btn-close text-white" data-bs-dismiss="alert"
-                                    aria-label="Close"><i data-feather="x-circle"></i></button>
-                            </div>
-                        @endif
-                        @if (session('error'))
-                            <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                                {{ session('error') }}
-                                <button type="button" class="btn-close text-white" data-bs-dismiss="alert"
-                                    aria-label="Close"><i data-feather="x-circle"></i></button>
-                            </div>
-                        @endif
-                    </div>
-
-                    <div class="d-flex justify-content-center justify-content-sm-start">
-                        <!-- Button trigger modal -->
-                        <button type="button" class="btn btn-primary btn-md w-20 ms-4" data-bs-toggle="modal"
-                            data-bs-target="#verificatorModalCenter">
-                            Input Data Verifikator
-                        </button>
-                    </div>
-
-                    <div class="table-responsive px-4">
-                        <table id="zero-config" class="table table-bordered">
-                            <thead class="bg-primary text-white">
+            <x-custom.statbox>
+                <x-custom.alerts />
+                <div class="d-flex justify-content-center justify-content-sm-start mt-4">
+                    <!-- Button trigger modal -->
+                    <button type="button" class="btn btn-primary btn-md w-20 ms-4" data-bs-toggle="modal"
+                        data-bs-target="#createModal">
+                        Input Data Verifikator
+                    </button>
+                </div>
+                <div class="table-responsive px-4">
+                    <table id="zero-config" class="table table-bordered">
+                        <thead class="bg-primary text-white">
+                            <tr>
+                                <th scope="col" style="width:40px;">No.</th>
+                                <th scope="col">Jabatan</th>
+                                <th scope="col">Nama Lengkap</th>
+                                <th scope="col">NIP/NIK/NIDN</th>
+                                <th scope="col" class="text-center">Aksi</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach ($verificators as $verificator)
                                 <tr>
-                                    <th scope="col" style="width:40px;">No.</th>
-                                    <th scope="col">Jabatan</th>
-                                    <th scope="col">Nama Lengkap</th>
-                                    <th scope="col">NIP/NIK/NIDN</th>
-                                    <th scope="col" class="text-center">Aksi</th>
+                                    <td>{{ $loop->iteration }}</td>
+                                    <td>{{ $verificator->position }}</td>
+                                    <td>{{ $verificator->name }}</td>
+                                    <td>{{ $verificator->nik }}</td>
+                                    <td class="text-center">
+                                        <button type="button" class="btn btn-sm btn-primary"
+                                            data-bs-target="#editModal" data-bs-toggle="modal"
+                                            data-verificator="{{ $verificator }}"
+                                            data-update-url="{{ route('verificator.update', $verificator) }}">
+                                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
+                                                stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                                stroke-linejoin="round" class="feather feather-edit-2">
+                                                <path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z">
+                                                </path>
+                                            </svg>
+                                        </button>
+
+                                        <a href="javascript:void(0);" class="btn btn-danger btn-sm" role="button"
+                                            onclick="window.confirmDelete({{ $verificator->id }});">
+                                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
+                                                stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                                stroke-linejoin="round" class="feather feather-trash-2">
+                                                <polyline points="3 6 5 6 21 6"></polyline>
+                                                <path
+                                                    d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2">
+                                                </path>
+                                                <line x1="10" y1="11" x2="10" y2="17">
+                                                </line>
+                                                <line x1="14" y1="11" x2="14" y2="17">
+                                                </line>
+                                            </svg>
+                                        </a>
+                                        <!-- Hidden form for delete request -->
+                                        <form id="delete-form-{{ $verificator->id }}"
+                                            action="{{ route('verificator.destroy', $verificator->id) }}"
+                                            method="POST" style="display: none;">
+                                            @csrf
+                                            @method('DELETE')
+                                        </form>
+                                    </td>
                                 </tr>
-                            </thead>
-                            <tbody>
-
-                            </tbody>
-                        </table>
-
-                    </div>
+                            @endforeach
+                        </tbody>
+                    </table>
 
                 </div>
-            </div>
+            </x-custom.statbox>
+
         </div>
     </div>
 
     <!-- Create Modal -->
-    <div class="modal fade" id="verificatorModalCenter" tabindex="-1" role="dialog"
-        aria-labelledby="verificatorModalCenterTitle" aria-hidden="true">
+    <div class="modal fade" id="createModal" tabindex="-1" role="dialog" aria-labelledby="createModalTitle"
+        aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered modal-l" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="verificatorModalCenterTitle">Input Data Verifikator</h5>
+                    <h5 class="modal-title" id="createModalTitle">Input Data Verifikator</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
                         <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24"
                             viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
@@ -134,24 +150,25 @@
                     </button>
                 </div>
                 <div class="modal-body">
-                    <form id="form-create">
+                    <form id="form-create" action="{{ route('verificator.store') }}" method="POST">
+                        @csrf
                         <div class="mb-4 row align-items-center">
                             <label for="inputtitle" class="col-sm-4 col-form-label">Jabatan</label>
                             <div class="col-sm-8">
-                                <input type="text" class="form-control" id="inputtitle">
+                                <input type="text" class="form-control" name="position" id="inputtitle">
                             </div>
                         </div>
                         <div class="mb-4 row align-items-center">
                             <label for="inputFullName" class="col-sm-4 col-form-label">Nama
                                 Lengkap</label>
                             <div class="col-sm-8">
-                                <input type="text" class="form-control" id="inputFullName">
+                                <input type="text" name="name" class="form-control" id="inputFullName">
                             </div>
                         </div>
                         <div class="mb-4 row align-items-center">
                             <label for="inputNumberId" class="col-sm-4 col-form-label">NIP/NIK/NIDN</label>
                             <div class="col-sm-8">
-                                <input type="text" class="form-control" id="inputNumberId">
+                                <input type="text" name="nik" class="form-control" id="inputNumberId">
                             </div>
                         </div>
                         <div class="d-flex justify-content-end">
@@ -175,30 +192,30 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <form id="edit-form" action="" method="POST">
+                    <form id="form-edit" action="" method="POST">
                         @csrf
                         @method('PATCH')
                         <div class="mb-4 row align-items-center">
                             <label for="inputtitle" class="col-sm-4 col-form-label">Jabatan</label>
                             <div class="col-sm-8">
-                                <input type="text" class="form-control" id="inputtitle">
+                                <input type="text" name="position" class="form-control" id="inputtitle">
                             </div>
                         </div>
                         <div class="mb-4 row align-items-center">
                             <label for="inputFullName" class="col-sm-4 col-form-label">Nama
                                 Lengkap</label>
                             <div class="col-sm-8">
-                                <input type="text" class="form-control" id="inputFullName">
+                                <input type="text" name="name" class="form-control" id="inputFullName">
                             </div>
                         </div>
                         <div class="mb-4 row align-items-center">
                             <label for="inputNumberId" class="col-sm-4 col-form-label">NIP/NIK/NIDN</label>
                             <div class="col-sm-8">
-                                <input type="text" class="form-control" id="inputNumberId">
+                                <input type="text" name="nik" class="form-control" id="inputNumberId">
                             </div>
                         </div>
-                        <button class="btn btn-primary text-center align-items-center mt-2 py-auto" type="submit">
-                            <span class="icon-name">Simpan</span>
+                        <button class="btn btn-warning text-center align-items-center mt-2 py-auto" type="submit">
+                            <span class="icon-name">Edit</span>
                         </button>
                     </form>
                 </div>
@@ -209,10 +226,8 @@
     <!--  BEGIN CUSTOM SCRIPTS FILE  -->
     <x-slot:footerFiles>
         <script src="{{ asset('plugins/global/vendors.min.js') }}"></script>
-        <script src="{{ asset('plugins/editors/quill/quill.js') }}"></script>
         <script src="{{ asset('plugins/sweetalerts2/sweetalerts2.min.js') }}"></script>
         <script src="{{ asset('plugins/table/datatable/datatables.js') }}"></script>
-        <script type="module" src="{{ asset('plugins/editors/quill/quill.js') }}"></script>
         <script src="{{ asset('plugins-rtl/table/datatable/button-ext/dataTables.buttons.min.js') }}"></script>
         <script src="{{ asset('plugins-rtl/table/datatable/button-ext/jszip.min.js') }}"></script>
         <script src="{{ asset('plugins-rtl/table/datatable/button-ext/buttons.html5.min.js') }}"></script>
@@ -220,69 +235,25 @@
         <script src="{{ asset('plugins-rtl/table/datatable/pdfmake/pdfmake.min.js') }}"></script>
         <script src="{{ asset('plugins-rtl/table/datatable/pdfmake/vfs_fonts.js') }}"></script>
         <script>
-            var quill = new Quill('#description-editor', {
-                modules: {
-                    toolbar: [
-                        [{
-                            header: [1, 2, false]
-                        }],
-                        ['bold', 'italic', 'underline'],
-                        ['image', 'code-block']
-                    ]
-                },
-                placeholder: 'Masukkan deskripsi barang aset (jika ada)',
-                theme: 'snow' // or 'bubble'
-            });
-
-            function openEditModal(id, name, category, description) {
-                $('#edit-form input[name=category][value=' + category + ']').prop('checked', true)
-                quill.root.innerHTML = description;
-                $('#edit-form textarea[name=description]').val(description)
-
-                quill.on('editor-change', function(eventName, ...args) {
-                    if (eventName === 'text-change') {
-                        $('#edit-form textarea[name=description]').val(quill.root.innerHTML)
-                    }
-                });
-
-                // Populate the form fields
-                document.getElementById('asset_item_name').value = name;
-                // document.getElementById('asset_item_category').value = category;
-
-                // Update the form action URL
-                document.getElementById('edit-form').action = '/admin/pengaturan/barang-aset/' + id;
-
-                // Show the modal
-                new bootstrap.Modal(document.getElementById('editModal')).show();
-            }
-
-            window.addEventListener('load', function() {
-                feather.replace();
-            })
-
-            function confirmDelete(id) {
-                Swal.fire({
-                    title: 'Anda yakin ingin hapus?',
-                    text: "Data tidak dapat dikembalikan!",
-                    icon: 'warning',
-                    showCancelButton: true,
-                    confirmButtonColor: '#3085d6',
-                    cancelButtonColor: '#d33',
-                    confirmButtonText: 'Ya, hapus!'
-                }).then((result) => {
-                    if (result.isConfirmed) {
-                        document.getElementById('delete-form-' + id).submit();
-                    }
-                });
-            }
-
-            function updateNumbering() {
-                const missionInputs = document.querySelectorAll('#asset_item-inputs .input-group');
-                missionInputs.forEach((input, index) => {
-                    input.querySelector('.input-group-text').textContent = `${index + 1}.`;
-                });
-            }
             document.addEventListener('DOMContentLoaded', function() {
+                const theadTh = document.querySelectorAll('thead tr th');
+                theadTh.forEach(th => th.classList.add('bg-primary'));
+                feather.replace();
+                const nikInputs = document.querySelectorAll('input[name="nik"]');;
+                nikInputs.forEach(function(input) {
+                    // Restrict keyboard input
+                    $(input).on('keydown', allowOnlyNumericInput);
+                    // Handle paste events
+                    $(input).on('paste', handlePaste);
+                });
+                $('#editModal').on('shown.bs.modal', function(e) {
+                    const verificator = $(e.relatedTarget).data('verificator');
+                    $(e.currentTarget).find('input[name="name"]').val(verificator.name);
+                    $(e.currentTarget).find('input[name="position"]').val(verificator.position);
+                    $(e.currentTarget).find('input[name="nik"]').val(verificator.nik);
+                    let updateUrl = $(e.relatedTarget).data('updateUrl');
+                    $("#form-edit").attr('action', updateUrl);
+                });
                 $('#zero-config').DataTable({
                     "dom": "<'dt--top-section'<'row'<'col-12 col-sm-6 d-flex justify-content-sm-start justify-content-center'l><'col-12 col-sm-6 d-flex flex-column flex-sm-row justify-content-center align-items-center justify-content-sm-end mt-sm-0 mt-3'Bf>>>" +
                         "<'table-responsive'tr>" +
@@ -336,36 +307,6 @@
                     "lengthMenu": [7, 10, 20, 50],
                     "pageLength": 10
                 });
-                const assetItemContainer = document.getElementById('asset_item-inputs');
-
-                document.getElementById('add-asset_item').addEventListener('click', function() {
-                    const index = assetItemContainer.querySelectorAll('.input-group').length;
-                    const newInputGroup = `
-        <div class="input-group mb-2">
-            <span class="input-group-text">${index}.</span>
-            <input type="text" name="asset_item_name[]" class="form-control" style="width: 22.5% !important;flex:0 1 auto !important" placeholder="Nama barang"><div class="border p-2"><p class="text-dark ms-2 mb-1">Pilih Kategori</p><div class="form-check form-check-inline mx-2"><input checked class="form-check-input" type="radio" name="asset_item_category[${index}]" id="category-radio-${index}" value="IT"><label class="form-check-label" for="category-radio-${index}">IT</label></div><div class="form-check form-check-inline mx-2"><input class="form-check-input" type="radio" name="asset_item_category[${index}]" id="category-radio-${index}" value="NonIT"><label class="form-check-label" for="category-radio-${index}">Non IT</label></div></div>
-            <input type="text" name="asset_item_description[]" class="form-control" placeholder="Deskripsi">
-            <button type="button" class="btn btn-danger remove-asset_item">
-                <i data-feather="trash"></i>
-            </button>
-        </div>`;
-                    assetItemContainer.insertAdjacentHTML('beforeend', newInputGroup);
-                    feather.replace();
-                });
-
-                assetItemContainer.addEventListener('click', function(event) {
-                    if (event.target.classList.contains('remove-asset_item')) {
-                        event.target.closest('.input-group').remove();
-                        updateNumbering();
-                    }
-                });
-
-                function updateNumbering() {
-                    const inputGroups = assetItemContainer.querySelectorAll('.input-group');
-                    inputGroups.forEach((group, index) => {
-                        group.querySelector('.input-group-text').textContent = `${index + 1}.`;
-                    });
-                }
             });
         </script>
     </x-slot>
