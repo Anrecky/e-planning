@@ -73,14 +73,14 @@
             @endhasanyrole
 
             @hasanyrole('admin|operator|asset_manager')
-                <li class="menu {{ Request::routeIs('asset.index') ? 'active' : '' }}">
+                {{-- <li class="menu {{ Request::routeIs('asset.index') ? 'active' : '' }}">
                     <a href="{{ route('asset.index') }}" aria-expanded="{{ Request::is('*/aset/*') ? 'true' : 'false' }}"
                         class="dropdown-toggle {{ Request::is('*/aset/*') ? 'collapsed' : '' }}">
                         <div>
                             <span class="fw-bold">ASET</span>
                         </div>
                     </a>
-                </li>
+                </li> --}}
             @endhasanyrole
 
             @hasanyrole('admin|operator')
@@ -262,7 +262,7 @@
                                 class="dropdown-toggle">
                                 <div class="">
                                     <i data-feather="folder"></i>
-                                    <span class="icon-name fw-bold">USULAN DIPA AWAL</span>
+                                    <span class="icon-name fw-bold">USULAN DIPA AWAL AWAL</span>
                                 </div>
                             </a>
                         </li>
