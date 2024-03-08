@@ -21,6 +21,7 @@ return new class extends Migration
             $table->date('dob')->nullable();
             $table->string('address')->nullable();
             $table->string('phone')->nullable();
+            $table->string('profile_picture')->nullable();
         });
     }
 

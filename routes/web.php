@@ -39,11 +39,11 @@ Route::middleware(['auth'])->prefix('admin')->group(function () {
 
     // Di file routes/web.php
 
-// Mendefinisikan route resource dengan penyesuaian nama
-Route::resource('profile', 'App\Http\Controllers\MyProfileController')->names([
-    'index' => 'my-profile.index',
-]);
-
+    // Mendefinisikan route resource dengan penyesuaian nama
+    Route::resource('profile', MyProfileController::class)->names([
+        'index' => 'my-profile.index',
+        'update' => 'my-profile.update',
+    ]);
 
     Route::get('/api/program-targets', [ProgramTargetController::class, 'getProgramTargets'])->name('program_targets.index');
     Route::get('/api/ppks', [PPKController::class, 'getPPKs'])->name('ppks.index');

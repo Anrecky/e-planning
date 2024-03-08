@@ -235,7 +235,8 @@
         window.Laravel = {
             csrfToken: "{{ csrf_token() }}",
             routes: {
-                budgetImplementationStore: "{{ route('budget_implementation.store') }}"
+                budgetImplementationStore: "{{ route('budget_implementation.store') }}",
+                userStore: "{{ route('user.store') }}"
             }
             // Add other variables here
         };

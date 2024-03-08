@@ -1,14 +1,18 @@
 @if ($errors->any())
-    <div class="alert alert-danger flex justify-content-between">
-        <ul>
+    <div class="alert alert-danger d-flex justify-content-between align-items-start" style="position: relative;">
+        <div>
             @foreach ($errors->all() as $error)
-                <li>{{ $error }}</li>
+                <div>{{ $error }}</div>
             @endforeach
-        </ul>
-        <button type="button" class="btn-close text-white" data-bs-dismiss="alert" aria-label="Close"><i
-                data-feather="x-circle"></i></button>
+        </div>
+        <button type="button" class="btn-close text-white" style="position: absolute; top: 0; right: 0;"
+            data-bs-dismiss="alert" aria-label="Close">
+            <i data-feather="x-circle"></i>
+        </button>
     </div>
 @endif
+
+
 
 @if (session('success'))
     <div class="alert alert-success alert-dismissible fade show" role="alert">

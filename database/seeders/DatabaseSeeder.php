@@ -42,5 +42,10 @@ class DatabaseSeeder extends Seeder
         // for testing
         // PPK::factory(123)->create();
         // Verificator::factory(456)->create();
+        // $this->call([
+        //     RolesSeeder::class,
+        //     PermissionsSeeder::class, // Tambahkan baris ini
+        //     SetupRolePermissionSeeder::class,
+        // ]);
     }
 }
