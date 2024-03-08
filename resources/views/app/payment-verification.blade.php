@@ -428,8 +428,6 @@
                         static: true,
                     });
                 });
-                // temporary open edit modal
-                $(".temporary-edit").eq(1).click()
                 $('#payment_verification-table').DataTable({
                     "dom": "<'dt--top-section'<'row'<'col-12 col-sm-6 d-flex justify-content-sm-start justify-content-center'l><'col-12 col-sm-6 d-flex flex-column flex-sm-row justify-content-center align-items-center justify-content-sm-end mt-sm-0 mt-3'Bf>>>" +
                         "<'table-responsive'tr>" +
