@@ -47,7 +47,7 @@
                     <div class="mb-4 row">
                         <label for="inputAmount" class="col-sm-2 col-form-label">Jumlah</label>
                         <div class="col-sm-8">
-                            <input type="number" name="amount" class="form-control" id="inputAmount">
+                            <input type="text" name="amount" class="form-control mask-number" id="inputAmount">
                         </div>
                     </div>
                     <div class="mb-4 row treasurerWrapper ">

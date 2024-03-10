@@ -154,7 +154,31 @@
                                                 </path>
                                             </svg>
                                         </button>
-
+                                        <!-- Default dropstart button -->
+                                        <div class="btn-group dropstart">
+                                            <button type="button" class="btn btn-success btn-sm dropdown-toggle"
+                                                data-bs-toggle="dropdown" aria-expanded="false">
+                                                <svg xmlns="http://www.w3.org/2000/svg"
+                                                    viewBox="0 0 512 512"><!--!Font Awesome Free 6.5.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.-->
+                                                    <path
+                                                        d="M128 0C92.7 0 64 28.7 64 64v96h64V64H354.7L384 93.3V160h64V93.3c0-17-6.7-33.3-18.7-45.3L400 18.7C388 6.7 371.7 0 354.7 0H128zM384 352v32 64H128V384 368 352H384zm64 32h32c17.7 0 32-14.3 32-32V256c0-35.3-28.7-64-64-64H64c-35.3 0-64 28.7-64 64v96c0 17.7 14.3 32 32 32H64v64c0 35.3 28.7 64 64 64H384c35.3 0 64-28.7 64-64V384zM432 248a24 24 0 1 1 0 48 24 24 0 1 1 0-48z" />
+                                                </svg>
+                                            </button>
+                                            <ul class="dropdown-menu">
+                                                <li>
+                                                    <a class="dropdown-item" target="_blank"
+                                                        href="{{ route('payment-receipt.print-kwitansi', $receipt) }}">
+                                                        Kwitansi
+                                                    </a>
+                                                </li>
+                                                <li>
+                                                    <a class="dropdown-item" target="_blank"
+                                                        href="{{ route('payment-receipt.print-ticket', $receipt) }}">
+                                                        Tiket
+                                                    </a>
+                                                </li>
+                                            </ul>
+                                        </div>
                                         <a href="javascript:void(0);" class="btn btn-danger btn-sm" role="button"
                                             onclick="window.confirmDelete({{ $receipt->id }});">
                                             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
@@ -235,7 +259,7 @@
                         <div class="mb-4 row">
                             <label for="inputAmount" class="col-sm-2 col-form-label">Jumlah</label>
                             <div class="col-sm-8">
-                                <input type="number" name="amount" class="form-control" id="inputAmount">
+                                <input type="text" name="amount" class="form-control" id="inputAmount">
                             </div>
                         </div>
                         <div class="mb-4 row treasurerWrapper ">
@@ -365,6 +389,8 @@
         <script src="{{ asset('plugins-rtl/table/datatable/pdfmake/vfs_fonts.js') }}"></script>
         <!-- Select2 JS -->
         <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+        <script src="{{ asset('plugins-rtl/input-mask/jquery.inputmask.bundle.min.js') }}"></script>
+        {{-- <script src="{{ asset('plugins-rtl/input-mask/input-mask.js') }}"></script> --}}
         <script>
             window.addEventListener('load', function() {
                 feather.replace();
@@ -430,6 +456,15 @@
                     "pageLength": 10
                 });
 
+                $('#inputAmount').inputmask({
+                    alias: 'numeric',
+                    groupSeparator: '.',
+                    autoGroup: true,
+                    digits: 0,
+                    prefix: 'Rp ',
+                    placeholder: '0'
+                });
+
                 // On Shown Create Modal
                 $('#createModal').on('shown.bs.modal', function(modalEvent) {
                     const inputAmountEl = document.getElementById("inputAmount");
@@ -441,6 +476,13 @@
                     $('#inputAmount').on('keydown', window.allowOnlyNumericInput);
                     // Handle paste events
                     $('#inputAmount').on('paste', window.handlePaste);
+
+                    // $('#inputAmount').on('keyup', function() {
+                    //     console.log('up')
+                    //     $(this).val(format_number($(this).val()))
+                    // })
+
+
                     handleSelectTypeReceipt($('#selectTypeReceipt'))
                     $('#createSelectPPK').select2({
                         dropdownParent: $("#form-create").find('.ppkWrapper'),
@@ -568,11 +610,23 @@
                         static: true,
                     });
                     const inputAmountEl = formEdit.find("#inputAmount");
-                    inputAmountEl.val(receipt.amount);
+                    inputAmountEl.val(parseInt(receipt.amount));
                     // Restrict keyboard input
                     inputAmountEl.on('keydown', window.allowOnlyNumericInput);
                     // Handle paste events
                     inputAmountEl.on('paste', window.handlePaste);
+
+                    formEdit.find('#inputAmount').inputmask({
+                        alias: 'numeric',
+                        groupSeparator: '.',
+                        autoGroup: true,
+                        digits: 0,
+                        prefix: 'Rp ',
+                        placeholder: '0'
+                    });
+                    // inputAmountEl.trigger('keydown', () => {
+                    console.log('trigger')
+                    // })
                     handleSelectTypeReceipt($('#selectTypeReceipt'));
                     $('#editSelectPPK').select2({
                         dropdownParent: formEdit.find('.ppkWrapper'),

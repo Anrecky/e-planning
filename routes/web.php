@@ -184,6 +184,8 @@ Route::middleware(['auth'])->prefix('admin')->group(function () {
             'update' => 'payment-receipt.update',
             'destroy' => 'payment-receipt.destroy'
         ]);
+        Route::get('rekam-kuitansi/print-kwitansi/{receipt}', [PaymentReceiptController::class, 'print_kwitansi'])->name('payment-receipt.print-kwitansi');
+        Route::get('rekam-kuitansi/print-tiket/{receipt}', [PaymentReceiptController::class, 'print_ticket'])->name('payment-receipt.print-ticket');
         Route::resource('rekam-verifikasi', PaymentVerificationController::class)->parameters([
             'rekam-verifikasi' => 'payment_verification'
         ])->names([
