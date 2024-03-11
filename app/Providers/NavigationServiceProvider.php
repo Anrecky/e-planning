@@ -100,11 +100,11 @@ class NavigationServiceProvider extends ServiceProvider
                                 ->add('Penerimaan', route('account_code_reception.index'))
                         )
                         ->add(
-                            'Pembayaran',
+                            'PIC Pembayaran',
                             url('#'),
                             fn (Section $section) => $section
                                 ->add('Bendahara', url('#'))
-                                ->add('PPK', url('#'))
+                                ->add('PPK', route('ppk.index'))
                                 ->add('Verifikator', url('#'))
                         )
                         ->add('SBM dan SBI', route('sbm_sbi.index'))
