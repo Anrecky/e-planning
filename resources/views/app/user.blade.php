@@ -151,91 +151,9 @@
             </div>
         </div>
     </div>
-
-    <!-- Create Modal -->
-    <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog"
-        aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalCenterTitle">Input User</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
-                        <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                            viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                            stroke-linecap="round" stroke-linejoin="round" class="feather feather-x">
-                            <line x1="18" y1="6" x2="6" y2="18">
-                            </line>
-                            <line x1="6" y1="6" x2="18" y2="18">
-                            </line>
-                        </svg>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <form id="form-create" action="{{ route('user.store') }}" method="POST" novalidate>
-                        @csrf
-                        <div id="user-inputs" class="mt-2">
-                            <div class="mb-4 row align-items-center">
-                                <label for="selectTypeRole" class="col-sm-4 col-form-label">Pilih Role</label>
-                                <div class="col-sm-8">
-                                    <select class="form-select @error('user_role') is-invalid @enderror"
-                                        id="selectTypeRole" name="user_role" required>
-                                        <option selected disabled value="">Pilih Jenis Role...</option>
-                                        @foreach ($formattedRoles as $role)
-                                            <option value="{{ $role['name'] }}"
-                                                {{ old('user_role') == $role['name'] ? 'selected' : '' }}>
-                                                {{ $role['formatted_name'] }}</option>
-                                        @endforeach
-                                    </select>
-                                    @error('user_role')
-                                        <div class="invalid-feedback">{{ $message }}</div>
-                                    @enderror
-                                </div>
-                            </div>
-                            <div class="mb-4 row align-items-center">
-                                <label for="inputFullName" class="col-sm-4 col-form-label">Nama Lengkap</label>
-                                <div class="col-sm-8">
-                                    <input type="text"
-                                        class="form-control @error('user_name') is-invalid @enderror"
-                                        id="inputFullName" name="user_name" value="{{ old('user_name') }}" required>
-                                    @error('user_name')
-                                        <div class="invalid-feedback">{{ $message }}</div>
-                                    @enderror
-                                </div>
-                            </div>
-                            <div class="mb-4 row align-items-center">
-                                <label for="inputNumberId" class="col-sm-4 col-form-label">NIP/NIK/NIDN</label>
-                                <div class="col-sm-8">
-                                    <input type="text"
-                                        class="form-control @error('identity_number') is-invalid @enderror"
-                                        id="inputNumberId" name="identity_number"
-                                        value="{{ old('identity_number') }}" required>
-                                    @error('identity_number')
-                                        <div class="invalid-feedback">{{ $message }}</div>
-                                    @enderror
-                                </div>
-                            </div>
-                            <div class="mb-4 row align-items-center">
-                                <label for="inputEmail" class="col-sm-4 col-form-label">Email</label>
-                                <div class="col-sm-8">
-                                    <input type="email"
-                                        class="form-control @error('user_email') is-invalid @enderror" id="inputEmail"
-                                        name="user_email" value="{{ old('user_email') }}" required>
-                                    @error('user_email')
-                                        <div class="invalid-feedback">{{ $message }}</div>
-                                    @enderror
-                                </div>
-                            </div>
-                            <div class="d-flex justify-content-end">
-                                <button id="submitButton" class="btn btn-primary" type="submit">
-                                    <span class="icon-name">Simpan</span>
-                                </button>
-                            </div>
-                        </div>
-                    </form>
-                </div>
-            </div>
-        </div>
-    </div>
+    <x-modal modalId="exampleModalCenter" modalTitle="Create User">
+        <x-user.create-form :formattedRoles="$formattedRoles" />
+    </x-modal>
 
     <!-- Edit Modal -->
     <div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="editModalTitle"

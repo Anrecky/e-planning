@@ -71,6 +71,11 @@
     <!-- END GLOBAL MANDATORY STYLES -->
 
     <style>
+        .menu,
+        .submenu>.dropdown-toggle>div>span {
+            text-wrap: wrap !important;
+        }
+
         a.dropdown-toggle.collapsed::after,
         a.dropdown-toggle.collapsed::before {
             display: none !important;
@@ -164,7 +169,6 @@
             <!--  BEGIN SIDEBAR  -->
             <x-custom.navbar.sidebar />
             <!--  END SIDEBAR  -->
-
             <!--  BEGIN CONTENT AREA  -->
             <div id="content" class="main-content {{ Request::routeIs('blank') ? 'ms-0 mt-0' : '' }}">
 
