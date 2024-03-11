@@ -31,7 +31,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::middleware('auth')->group(function () {
+Route::middleware(['auth', 'web'])->group(function () {
     Route::get('/verificators', [VerificatorController::class, 'getVerificators'])->name('verificators.index');
     Route::get('/program-targets', [ProgramTargetController::class, 'getProgramTargets'])->name('program_targets.index');
     Route::get('/ppks', [PPKController::class, 'getPPKs'])->name('ppks.index');
