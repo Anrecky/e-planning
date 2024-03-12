@@ -6,9 +6,9 @@
             <select class="form-select @error('user_role') is-invalid @enderror" id="selectTypeRole" name="user_role"
                 required>
                 <option selected disabled value="">Pilih Jenis Role...</option>
-                @foreach ($formattedRoles as $role)
-                    <option value="{{ $role['name'] }}" {{ old('user_role') == $role['name'] ? 'selected' : '' }}>
-                        {{ $role['formatted_name'] }}</option>
+                @foreach ($roles as $role)
+                    <option value="{{ $role->name }}" {{ old('user_role') == $role->name ? 'selected' : '' }}>
+                        {{ $role->name }}</option>
                 @endforeach
             </select>
             @error('user_role')
@@ -22,6 +22,16 @@
             <input type="text" class="form-control @error('user_name') is-invalid @enderror" id="inputFullName"
                 name="user_name" value="{{ old('user_name') }}" required>
             @error('user_name')
+                <div class="invalid-feedback">{{ $message }}</div>
+            @enderror
+        </div>
+    </div>
+    <div class="mb-4 row align-items-center">
+        <label for="inputPosition" class="col-sm-4 col-form-label">Jabatan</label>
+        <div class="col-sm-8">
+            <input type="text" class="form-control @error('position') is-invalid @enderror" id="inputPosition"
+                name="position" value="{{ old('position') }}" required>
+            @error('position')
                 <div class="invalid-feedback">{{ $message }}</div>
             @enderror
         </div>
