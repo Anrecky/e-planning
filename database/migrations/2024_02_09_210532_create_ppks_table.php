@@ -16,6 +16,16 @@ return new class extends Migration
             $table->string('position');
             $table->string('name');
             $table->string('nik');
+            $table->unsignedBigInteger('user_account')->nullable();
+            $table->foreign('user_account')
+                ->references('id')
+                ->on('users')
+                ->onDelete('cascade');
+            $table->unsignedBigInteger('staff_account')->nullable();
+            $table->foreign('staff_account')
+                    ->references('id')
+                    ->on('users')
+                    ->onDelete('cascade');
             $table->timestamps();
         });
     }

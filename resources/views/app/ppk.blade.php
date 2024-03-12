@@ -18,6 +18,9 @@
         <link rel="stylesheet" href="{{ asset('plugins/table/datatable/datatables.css') }}">
         @vite(['resources/scss/light/plugins/table/datatable/dt-global_style.scss'])
         @vite(['resources/scss/dark/plugins/table/datatable/dt-global_style.scss'])
+        <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+        <link rel="stylesheet"
+            href="https://cdn.jsdelivr.net/npm/select2-bootstrap-5-theme@1.3.0/dist/select2-bootstrap-5-theme.min.css" />
 
         <style>
             td,
@@ -79,6 +82,8 @@
                                     <th scope="col">Jabatan</th>
                                     <th scope="col">Nama Lengkap</th>
                                     <th scope="col">NIP/NIK/NIDN</th>
+                                    <th scope="col">Akun PPK</th>
+                                    <th scope="col">Akun Staf</th>
                                     <th scope="col" class="text-center">Aksi</th>
                                 </tr>
                             </thead>
@@ -94,6 +99,16 @@
                                         </td>
                                         <td>
                                             {{ $ppk->nik }}
+                                        </td>
+                                        <td>
+                                            {!! $ppk->user_account
+                                                ? $ppk->user->name . '<br>' . $ppk->user->identity_number . '<br>' . $ppk->user->email
+                                                : '' !!}
+                                        </td>
+                                        <td>
+                                            {!! $ppk->staff_account
+                                                ? $ppk->staff->name . '<br>' . $ppk->staff->identity_number . '<br>' . $ppk->staff->email
+                                                : '' !!}
                                         </td>
                                         <td class="text-center">
                                             <button type="button" class="btn btn-sm btn-primary"
@@ -162,7 +177,7 @@
                             <h2 class="ms-2 py-0 mb-0 h5">PPK</h2>
                         </div>
 
-                        <div id="ppk-inputs" class="mt-2">
+                        <div id="ppk-inputs" class="mt-2 ppk-inputs">
                             <div class="input-group mb-2">
                                 <span class="input-group-text">1.</span>
                                 <input required type="text" name="ppk_name[]" class="form-control"
@@ -171,7 +186,11 @@
                                     placeholder="NIK PPK">
                                 <input required type="text" name="ppk_position[]" class="form-control"
                                     placeholder="Jabatan PPK">
-
+                                <select required name="ppk_user_account[]" class=" createSelectUsers form-control">
+                                </select>
+                                <select required name="ppk_staff_account[]"
+                                    class=" createSelectStaffUsers form-control">
+                                </select>
                                 <button type="button" class="btn btn-danger remove-ppk">
                                     <i data-feather="trash"></i>
                                 </button>
@@ -201,7 +220,6 @@
                     <form id="form-edit" action="" method="POST">
                         @csrf
                         @method('PATCH')
-
                         <div class="form-group mb-2">
                             <label>Nama</label>
                             <input required type="text" name="name" class="form-control">
@@ -213,6 +231,18 @@
                         <div class="form-group mb-2">
                             <label>Jabatan</label>
                             <input required type="text" name="position" class="form-control">
+                        </div>
+                        <div class="form-group mb-2 w-100">
+                            <label>Akun PPK</label>
+                            <select required name="user_account" style="width: 100%"
+                                class="w-100 createSelectUsersEdit form-control">
+                            </select>
+                        </div>
+                        <div class="form-group mb-2">
+                            <label>Akun Staff</label>
+                            <select required name="staff_account"
+                                style="width: 100%"class=" createSelectStaffUsersEdit form-control">
+                            </select>
                         </div>
                         <button type="submit" class="btn btn-warning btn mt-2">Update</button>
                     </form>
@@ -232,10 +262,88 @@
         <script src="{{ asset('plugins/table/datatable/button-ext/buttons.print.min.js') }}"></script>
         <script src="{{ asset('plugins/table/datatable/pdfmake/pdfmake.min.js') }}"></script>
         <script src="{{ asset('plugins/table/datatable/pdfmake/vfs_fonts.js') }}"></script>
+        <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+
         <script>
             window.addEventListener('load', function() {
                 feather.replace();
             })
+
+
+            function renderSelect2() {
+                $('.createSelectUsers').select2({
+                    dropdownParent: $("#exampleModalCenter"),
+                    placeholder: 'Pilih Akun PPK',
+                    theme: 'bootstrap-5',
+                    ajax: {
+                        transport: function(params, success, failure) {
+                            // Using Axios to fetch the data
+                            axios.get(`{{ route('users.index') }}`, {
+                                    params: {
+                                        search: params.data.term,
+                                        limit: 10
+                                    }
+                                })
+                                .then(function(response) {
+                                    // Call the `success` function with the formatted results
+                                    success({
+                                        results: response.data.map(function(item) {
+                                            return {
+                                                id: item.id,
+                                                text: item.name + ' - ' +
+                                                    item
+                                                    .identity_number
+                                            };
+                                        })
+                                    });
+                                })
+                                .catch(function(error) {
+                                    // Call the `failure` function in case of an error
+                                    failure(error);
+                                });
+                        },
+                        delay: 250,
+                        cache: true
+                    }
+                });
+
+                $('.createSelectStaffUsers').select2({
+                    dropdownParent: $("#exampleModalCenter"),
+                    placeholder: 'Pilih Akun Staff',
+                    theme: 'bootstrap-5',
+                    ajax: {
+                        transport: function(params, success, failure) {
+                            // Using Axios to fetch the data
+                            axios.get(`{{ route('users.index') }}`, {
+                                    params: {
+                                        search: params.data.term,
+                                        limit: 10
+                                    }
+                                })
+                                .then(function(response) {
+                                    // Call the `success` function with the formatted results
+                                    success({
+                                        results: response.data.map(function(item) {
+                                            return {
+                                                id: item.id,
+                                                text: item.name + ' - ' +
+                                                    item
+                                                    .identity_number
+                                            };
+                                        })
+                                    });
+                                })
+                                .catch(function(error) {
+                                    // Call the `failure` function in case of an error
+                                    failure(error);
+                                });
+                        },
+                        delay: 250,
+                        cache: true
+                    }
+                });
+            }
+            renderSelect2();
 
             function confirmDelete(id) {
                 Swal.fire({
@@ -333,7 +441,8 @@
                                 <input required type="text" name="ppk_nik[]" class="form-control" placeholder="NIK PPK">
                                 <input required type="text" name="ppk_position[]" class="form-control"
                                     placeholder="Jabatan PPK">
-
+                                <select required name="ppk_staff" class=" createSelectUsers form-control">
+                                </select>
                                 <button type="button" class="btn btn-danger remove-ppk">
                                     <i data-feather="trash"></i>
                                 </button>
@@ -347,6 +456,8 @@
                         $(input).on('paste', handlePaste);
                     });
                     feather.replace();
+                    renderSelect2();
+
                 });
 
                 PPKContainer.addEventListener('click', function(event) {
@@ -370,7 +481,96 @@
                     // Handle paste events
                     formEdit.find('[name="nik"]').on('paste', handlePaste);
                     formEdit.find('[name="position"]').val(ppk.position);
+                    $('.createSelectUsersEdit').select2({
+                        dropdownParent: $("#editModal"),
+                        placeholder: 'Pilih Akun PPK',
+                        theme: 'bootstrap-5',
+                        ajax: {
+                            transport: function(params, success, failure) {
+                                // Using Axios to fetch the data
+                                axios.get(`{{ route('users.index') }}`, {
+                                        params: {
+                                            search: params.data.term,
+                                            limit: 10
+                                        }
+                                    })
+                                    .then(function(response) {
+                                        // Call the `success` function with the formatted results
+                                        success({
+                                            results: response.data.map(function(
+                                                item) {
+                                                return {
+                                                    id: item.id,
+                                                    text: item.name +
+                                                        ' - ' +
+                                                        item
+                                                        .identity_number
+                                                };
+                                            })
+                                        });
+                                    })
+                                    .catch(function(error) {
+                                        // Call the `failure` function in case of an error
+                                        failure(error);
+                                    });
+                            },
+                            delay: 250,
+                            cache: true
+                        }
+                    });
 
+                    $('.createSelectStaffUsersEdit').select2({
+                        dropdownParent: $("#editModal"),
+                        placeholder: 'Pilih Akun Staff',
+                        theme: 'bootstrap-5',
+                        ajax: {
+                            transport: function(params, success, failure) {
+                                // Using Axios to fetch the data
+                                axios.get(`{{ route('users.index') }}`, {
+                                        params: {
+                                            search: params.data.term,
+                                            limit: 10
+                                        }
+                                    })
+                                    .then(function(response) {
+                                        // Call the `success` function with the formatted results
+                                        success({
+                                            results: response.data.map(function(
+                                                item) {
+                                                return {
+                                                    id: item.id,
+                                                    text: item.name +
+                                                        ' - ' +
+                                                        item
+                                                        .identity_number
+                                                };
+                                            })
+                                        });
+                                    })
+                                    .catch(function(error) {
+                                        // Call the `failure` function in case of an error
+                                        failure(error);
+                                    });
+                            },
+                            delay: 250,
+                            cache: true
+                        }
+                    });
+                    if (ppk.user_account) {
+                        formEdit.find('[name="user_account"]').append('<option value=' + ppk.user_account +
+                            '>' + ppk.user.name + ' - ' + ppk.user.identity_number + '</option>');
+                        formEdit.find('[name="user_account"]').val(ppk.user_account).trigger('change');
+                    } else {
+                        formEdit.find('[name="user_account"]').val('').trigger('change');
+                    }
+                    if (ppk.staff_account) {
+                        formEdit.find('[name="staff_account"]').append('<option value=' + ppk
+                            .staff_account +
+                            '>' + ppk.staff.name + ' - ' + ppk.staff.identity_number + '</option>');
+                        formEdit.find('[name="staff_account"]').val(ppk.staff_account).trigger('change');
+                    } else {
+                        formEdit.find('[name="staff_account"]').val('').trigger('change');
+                    }
                 })
 
                 function updateNumbering() {

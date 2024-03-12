@@ -30,4 +30,9 @@ class PaymentVerification extends Model
     {
         return $this->belongsTo(Verificator::class);
     }
+
+    public function user(): BelongsTo
+    {
+        return $this->belongsTo(User::class, 'verification_user')->select('id', 'name', 'identity_number');
+    }
 }

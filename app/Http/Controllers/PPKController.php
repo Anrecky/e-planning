@@ -13,7 +13,7 @@ class PPKController extends Controller
     public function index()
     {
         $title = 'PPK';
-        $ppks = PPK::all();
+        $ppks = PPK::with(['user','staff'])->get();
         return view('app.ppk', compact('title', 'ppks'));
     }
 
@@ -34,6 +34,8 @@ class PPKController extends Controller
             'ppk_name.*' => 'required|string|max:255',
             'ppk_nik.*' => 'required|integer',
             'ppk_position.*' => 'required|string|max:255',
+            'ppk_user_account.*' => 'required|integer',
+            'ppk_staff_account.*' => 'required|integer',
         ]);
 
         try {
@@ -42,6 +44,8 @@ class PPKController extends Controller
                     'name' => $name,
                     'nik' => $validatedData['ppk_nik'][$index],
                     'position' => $validatedData['ppk_position'][$index],
+                    'user_account' => $validatedData['ppk_user_account'][$index],
+                    'staff_account' => $validatedData['ppk_staff_account'][$index],
                 ]);
             }
         } catch (\Exception $e) {
@@ -75,6 +79,8 @@ class PPKController extends Controller
         $validatedData = $this->validate($request, [
             'name' => 'required|string|max:255',
             'nik' => 'required|integer',
+            'user_account' => 'required|integer',
+            'staff_account' => 'required|integer',
             'position' => 'required|string|max:255',
         ]);
 

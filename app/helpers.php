@@ -175,3 +175,25 @@ if (!function_exists('terbilang')) {
         }
     }
 }
+
+
+if (!function_exists('status_receipt')) {
+    function status_receipt($var)
+    {
+        if ($var == "draft") {
+            return "<span class='badge badge-light-secondary'>Draft</span>";
+        } elseif ($var == "wait-verificator") {
+            return "<span class='badge badge-light-warning'>Menunggu Verifikator</span>";
+        } elseif ($var == "wait-ppk") {
+            return "<span class='badge badge-light-primary'>Menunggu PPK</span>";
+        }elseif ($var == "reject-verificator") {
+            return "<span class='badge badge-light-danger'>Tolak Verifikator</span>";
+        }elseif ($var == "reject-ppk") {
+            return "<span class='badge badge-light-danger'>Tolak PPK</span>";
+        }elseif ($var == "accept") {
+            return "<span class='badge badge-light-success'>Selesai</span>";
+        }else
+        return "-";
+    }
+}
+

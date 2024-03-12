@@ -18,6 +18,8 @@ class Role extends SpatieRole
             'revenue_treasurer' => 'Bendahara Penerimaan',
             'asset_manager' => 'Pengelola Aset',
             'ppk_staff' => 'Staf PPK',
+            'ppk' => 'PPK',
+
         ];
 
         return $roles[$this->name] ?? $this->name;

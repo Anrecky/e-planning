@@ -17,9 +17,12 @@ return new class extends Migration
         Schema::create('receipts', function (Blueprint $table) {
             $table->id();
             $table->enum('type', ['direct', 'treasurer'])->default('direct');
+            $table->enum('status', ['draft', 'wait-verificator', 'wait-ppk', 'reject-verificator', 'reject-ppk', 'accept'])->default('draft');
             $table->text('description')->nullable();
             $table->decimal('amount', 15, 2)->default(0);
             $table->date('activity_date')->nullable();
+            $table->string('berkas')->nullable();
+            $table->string('reference_number')->nullable();
             $table->string('activity_implementer')->nullable();
             $table->foreignId('ppk_id')
                 ->constrained('ppks')
@@ -30,9 +33,15 @@ return new class extends Migration
                 ->constrained()
                 ->onUpdate('cascade')
                 ->onDelete('cascade');
-            $table->string('provider')->nullable();
+            $table->string('provider');
+            $table->string('provider_organization')->nullable();
             $table->foreignIdFor(BudgetImplementationDetail::class)
                 ->constrained()
+                ->onUpdate('cascade')
+                ->onDelete('cascade');
+            $table->foreignId('user_entry')
+                ->nullable()
+                ->constrained('users')
                 ->onUpdate('cascade')
                 ->onDelete('cascade');
             $table->timestamps();

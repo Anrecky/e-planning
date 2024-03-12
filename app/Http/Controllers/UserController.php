@@ -40,6 +40,7 @@ class UserController extends Controller
             'revenue_treasurer' => 'Bendahara Penerimaan',
             'asset_manager' => 'Pengelola Aset',
             'ppk_staff' => 'Staf PPK',
+            'ppk' => 'PPK',
         ];
 
         return $roles[$roleName] ?? $roleName;
@@ -117,5 +118,22 @@ class UserController extends Controller
     {
         $user->delete();
         return redirect()->back()->with('success', 'User berhasil dihapus.');
+    }
+
+    public function getUsers(Request $request)
+    {
+        $search = $request->input('search', '');
+        $limit = $request->input('limit', 10); // Default to 10 if not provided
+
+        $query = User::query();
+
+        if (!empty($search)) {
+            $query->where('name', 'LIKE', "%{$search}%")
+                ->orWhere('identity_number', 'LIKE', "%{$search}%");
+        }
+
+        $ppks = $query->limit($limit)->get(['id', 'name', 'identity_number']);
+
+        return response()->json($ppks);
     }
 }

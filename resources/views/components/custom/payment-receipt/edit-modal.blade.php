@@ -67,9 +67,17 @@
                         </div>
                     </div>
                     <div class="mb-4 row">
-                        <label for="inputSupplierName" class="col-sm-2 col-form-label">Penyedia</label>
+                        <label for="inputSupplierName" class="col-sm-2 col-form-label">Penyedia PIC</label>
                         <div class="col-sm-8">
                             <input type="text" name="provider" class="form-control" id="inputSupplierName">
+                        </div>
+                    </div>
+                    <div class="mb-4 row">
+                        <label for="inputSupplierOrganizationName" class="col-sm-2 col-form-label">Penyedia
+                            Badan</label>
+                        <div class="col-sm-8">
+                            <input type="text" name="provider_organization" class="form-control"
+                                id="inputSupplierOrganizationName">
                         </div>
                     </div>
                     <div class="mb-4 row">

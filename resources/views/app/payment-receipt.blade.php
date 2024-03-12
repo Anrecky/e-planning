@@ -121,6 +121,7 @@
                         <thead>
                             <tr class="text-center">
                                 <th scope="col">Jenis Kuitansi</th>
+                                <th scope="col">Status</th>
                                 <th scope="col">Uraian Kegiatan</th>
                                 <th scope="col">Tanggal Kegiatan</th>
                                 <th scope="col">Jumlah</th>
@@ -135,14 +136,20 @@
                             @foreach ($receipts as $receipt)
                                 <tr>
                                     <td>{{ ucfirst(__($receipt->type)) }}</td>
+                                    <td>{!! status_receipt($receipt->status) !!}</td>
                                     <td>{{ $receipt->description }}</td>
                                     <td>{{ $receipt->activity_date }}</td>
                                     <td>Rp {{ number_format($receipt->amount, 0, ',', '.') }}</td>
                                     <td>{{ $receipt->activity_implementer ?? '-' }}</td>
                                     <td>{{ $receipt->treasurer->name ?? '-' }}</td>
                                     <td>{{ $receipt->ppk->name }}</td>
-                                    <td>{{ $receipt->provider }}</td>
+                                    <td>{{ $receipt->provider }} {{ $receipt->provider_organization }}</td>
                                     <td class="text-center">
+                                        <a class="btn-group btn btn-sm btn-primary temporary-edit"
+                                            href="{{ route('payment-receipt.detail', $receipt) }}">
+                                            <i data-feather="eye"></i>
+                                        </a>
+
                                         <button type="button" class="btn btn-sm btn-primary temporary-edit"
                                             data-bs-target="#editModal" data-bs-toggle="modal"
                                             data-receipt="{{ $receipt }}"
@@ -154,31 +161,7 @@
                                                 </path>
                                             </svg>
                                         </button>
-                                        <!-- Default dropstart button -->
-                                        <div class="btn-group dropstart">
-                                            <button type="button" class="btn btn-success btn-sm dropdown-toggle"
-                                                data-bs-toggle="dropdown" aria-expanded="false">
-                                                <svg xmlns="http://www.w3.org/2000/svg"
-                                                    viewBox="0 0 512 512"><!--!Font Awesome Free 6.5.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.-->
-                                                    <path
-                                                        d="M128 0C92.7 0 64 28.7 64 64v96h64V64H354.7L384 93.3V160h64V93.3c0-17-6.7-33.3-18.7-45.3L400 18.7C388 6.7 371.7 0 354.7 0H128zM384 352v32 64H128V384 368 352H384zm64 32h32c17.7 0 32-14.3 32-32V256c0-35.3-28.7-64-64-64H64c-35.3 0-64 28.7-64 64v96c0 17.7 14.3 32 32 32H64v64c0 35.3 28.7 64 64 64H384c35.3 0 64-28.7 64-64V384zM432 248a24 24 0 1 1 0 48 24 24 0 1 1 0-48z" />
-                                                </svg>
-                                            </button>
-                                            <ul class="dropdown-menu">
-                                                <li>
-                                                    <a class="dropdown-item" target="_blank"
-                                                        href="{{ route('payment-receipt.print-kwitansi', $receipt) }}">
-                                                        Kwitansi
-                                                    </a>
-                                                </li>
-                                                <li>
-                                                    <a class="dropdown-item" target="_blank"
-                                                        href="{{ route('payment-receipt.print-ticket', $receipt) }}">
-                                                        Tiket
-                                                    </a>
-                                                </li>
-                                            </ul>
-                                        </div>
+
                                         <a href="javascript:void(0);" class="btn btn-danger btn-sm" role="button"
                                             onclick="window.confirmDelete({{ $receipt->id }});">
                                             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
@@ -279,9 +262,17 @@
                             </div>
                         </div>
                         <div class="mb-4 row">
-                            <label for="inputSupplierName" class="col-sm-2 col-form-label">Penyedia</label>
+                            <label for="inputSupplierName" class="col-sm-2 col-form-label">Penyedia PIC</label>
                             <div class="col-sm-8">
                                 <input type="text" name="provider" class="form-control" id="inputSupplierName">
+                            </div>
+                        </div>
+                        <div class="mb-4 row">
+                            <label for="inputSupplierOrganizationName" class="col-sm-2 col-form-label">Penyedia
+                                Badan</label>
+                            <div class="col-sm-8">
+                                <input type="text" name="provider_organization" class="form-control"
+                                    id="inputSupplierOrganizationName">
                             </div>
                         </div>
                         <div class="mb-4 row">
@@ -603,6 +594,7 @@
                     formEdit.find('#inputDisbursementDescription').val(receipt.description);
                     formEdit.find('#inputActivityImplementer').val(receipt.activity_implementer);
                     formEdit.find('#inputSupplierName').val(receipt.provider);
+                    formEdit.find('#inputSupplierOrganizationName').val(receipt.provider_organization);
                     formEdit.find('#selectApproveId').val(receipt.budget_implementation_detail_id);
                     formEdit.find('#selectApproveName').val(receipt.detail?.name);
                     flatpickr(formEdit.find('#basicFlatpickr'), {

@@ -107,7 +107,8 @@ function checkbox($number, $desc, $span = 'ADA')
                                 FORMULIR VERIFIKASI</h4>
                         </td>
                         <td>
-                            <p style="margin-left: 10px !important">Nomor : <br><br>Tanggal : <br><br> <span
+                            <p style="margin-left: 10px !important">Nomor :
+                                {{ $receipt->reference_number }}<br><br>Tanggal : <br><br> <span
                                     style="font-style: italic;">(diisi
                                     verifikator)</span></p>
                         </td>
@@ -244,13 +245,14 @@ function checkbox($number, $desc, $span = 'ADA')
                 <br>
                 <br>
                 <br>
-                {{ $receipt->activity_implementer }}
+                {{ $receipt->ppk->staff->name }}
             </td>
             <td class="text-top">
-                NAMA KEGIATAN DI POK :<br><br><br>
-                <br>
+                NAMA KEGIATAN DI POK : <br>
+                {{ $receipt->detail->budgetImplementation->activity->name ?? '-' }}<br><br>
                 <br>KODE KEGIATAN / MAX :
                 <br>
+                {{ $receipt->detail->budgetImplementation->activity->code ?? '-' }} /
 
             </td>
         </tr>
@@ -303,7 +305,7 @@ function checkbox($number, $desc, $span = 'ADA')
                             <br>
                             {{ $receipt->ppk->name }}
                             <hr>
-                            NIP.
+                            NIP. {{ $receipt->ppk->nik }}
 
                         </td>
 

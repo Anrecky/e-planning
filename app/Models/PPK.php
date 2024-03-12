@@ -11,7 +11,7 @@ class PPK extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['name', 'nik', 'position'];
+    protected $fillable = ['name', 'nik', 'position','user_account','staff_account'];
 
     /**
      * The table associated with the model.
@@ -26,5 +26,14 @@ class PPK extends Model
     protected static function newFactory(): Factory
     {
         return PPKFactory::new();
+    }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'user_account')->select('id', 'name', 'identity_number', 'email');;
+    }
+    public function staff()
+    {
+        return $this->belongsTo(User::class, 'staff_account')->select('id', 'name', 'identity_number', 'email');;
     }
 }

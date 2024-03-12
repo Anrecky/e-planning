@@ -20,6 +20,7 @@ class RolesSeeder extends Seeder
         $roleRevenueTreasurer = Role::create(['name' => 'revenue_treasurer', 'guard_name' => 'web']);
         $roleAssetManager = Role::create(['name' => 'asset_manager', 'guard_name' => 'web']);
         $rolePPKStaff = Role::create(['name' => 'ppk_staff', 'guard_name' => 'web']);
+        $rolePPK = Role::create(['name' => 'ppk', 'guard_name' => 'web']);
     }
 
 }
