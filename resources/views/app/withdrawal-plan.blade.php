@@ -400,7 +400,7 @@
             async function fetchAndPopulateModal(activity) {
                 try {
                     const response = await axios.get(
-                        `/admin/api/withdrawal-plans/${activity.id}/${document.getElementById('select_year').value}`);
+                        `/api/withdrawal-plans/${activity.id}/${document.getElementById('select_year').value}`);
                     populateModalWithData(response.data, activity);
                 } catch (error) {
                     showErrorAlert('Kesalahan', 'Gagal memuat data penarikan dana.');

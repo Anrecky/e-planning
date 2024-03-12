@@ -127,7 +127,7 @@
                             </svg> <span>Profile</span>
                         </a>
                     </div>
-                    <div class="dropdown-item">
+                    {{-- <div class="dropdown-item">
                         <a href="app-mailbox.html">
                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
                                 viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
@@ -138,8 +138,8 @@
                                 </path>
                             </svg> <span>Inbox</span>
                         </a>
-                    </div>
-                    <div class="dropdown-item">
+                    </div> --}}
+                    {{-- <div class="dropdown-item">
                         <a href="auth-boxed-lockscreen.html">
                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
                                 viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
@@ -149,7 +149,7 @@
                                 <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
                             </svg> <span>Lock Screen</span>
                         </a>
-                    </div>
+                    </div> --}}
                     <div class="dropdown-item">
                         <!-- Logout Button or Link -->
                         <a href="javascript:void(0);" onclick="document.getElementById('logout-form').submit();">

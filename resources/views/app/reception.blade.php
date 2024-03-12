@@ -326,7 +326,7 @@
                     });
 
                     const res = await axios.get(
-                        `/admin/api/selected-account-code-reception/${reception.account_code_reception_id}`
+                        `/api/selected-account-code-reception/${reception.account_code_reception_id}`
                     )
                     const selectedAccountCode = res.data;
                     var option = new Option(selectedAccountCode.code, selectedAccountCode.id,

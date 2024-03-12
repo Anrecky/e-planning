@@ -45,21 +45,6 @@ Route::middleware(['auth'])->prefix('admin')->group(function () {
         'update' => 'my-profile.update',
     ]);
 
-    Route::get('/api/program-targets', [ProgramTargetController::class, 'getProgramTargets'])->name('program_targets.index');
-    Route::get('/api/ppks', [PPKController::class, 'getPPKs'])->name('ppks.index');
-    Route::get('/api/users', [UserController::class, 'getUsers'])->name('users.index');
-    Route::get('/api/treasurers', [TreasurerController::class, 'getTreasurers'])->name('treasurers.index');
-    Route::get('/api/verificators', [VerificatorController::class, 'getVerificators'])->name('verificators.index');
-    Route::get('/api/withdrawal-plans/{activityId}/{year?}', [WithdrawalPlanController::class, 'getWithdrawalPlans'])->name('withdrawal_plans.activity');
-    Route::get('/api/activity/{activityId}/account-codes', [AccountCodeController::class, 'getAccountCodesByActivity'])->name('account_codes.activity');
-    Route::get('/api/details/{activityId}/{accountCodeId}', [BudgetImplementationDetailController::class, 'getByActivityAccountCode'])->name('budget_implementation_details.activity_account_code');
-    Route::get('/api/detail/{budgetImplementationDetail}', [BudgetImplementationDetailController::class, 'show'])->name('detail.show');
-    Route::get('/api/account-code-receptions', [AccountCodeReceptionController::class, 'getAccountCodes'])->name('account_code_receptions.index');
-    Route::get('/api/selected-account-code-reception/{accountCodeReception}', [AccountCodeReceptionController::class, 'getSelectedAccountCode'])->name('account_code_receptions.selected');
-    Route::get('/api/asset-items/{category?}', [AssetItemController::class, 'getAssetItemBySelectedCategory'])->name('asset_items.selected_category');
-    // Get Receipt Total Amount By Budget Implementation Detail ID
-    Route::get('/api/receipt/total-amount/{detail}', [PaymentReceiptController::class, 'totalAmountByBudgetImplementationDetail'])->name('receipts.total_amount');
-
     Route::prefix('renstra')->group(function () {
         Route::get('visi', [RenstraController::class, 'vision'])->name('vision.index');
         Route::patch('edit-visi', [RenstraController::class, 'updateVision'])->name('vision.update');
