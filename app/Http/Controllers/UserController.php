@@ -17,72 +17,43 @@ class UserController extends Controller
     {
         $title = "Kelola User";
         $users = User::all();
-        $roles = Role::all(); // Menambahkan ini untuk mendapatkan semua role
-
-        // Ubah setiap role menjadi array dengan nama yang sudah diformat
-        $formattedRoles = $roles->map(function ($role) {
-            return [
-                'name' => $role->name,
-                'formatted_name' => $this->formatRoleName($role->name), // Memanggil fungsi helper untuk mendapatkan nama yang diformat
-            ];
-        });
+        $roles = Role::all();
 
         // Kirim data role ke view bersamaan dengan data users dan title
-        return view('app.user', compact('users', 'title', 'roles', 'formattedRoles'));
-    }
-
-    // Fungsi helper untuk memformat nama role
-    protected function formatRoleName($roleName)
-    {
-        $roles = [
-            'admin' => 'Admin',
-            'operator' => 'Operator',
-            'revenue_treasurer' => 'Bendahara Penerimaan',
-            'asset_manager' => 'Pengelola Aset',
-            'ppk_staff' => 'Staf PPK',
-            'ppk' => 'PPK',
-        ];
-
-        return $roles[$roleName] ?? $roleName;
+        return view('app.user', compact('users', 'title', 'roles'));
     }
 
     public function store(Request $request)
     {
-        $validator = Validator::make($request->all(), [
+        $validatedData = $this->validate($request, [
             'user_name' => 'required|max:255',
-            'identity_number' => 'required|numeric|unique:users,identity_number|digits_between:10,18',
+            'identity_number' => 'nullable|numeric|unique:users,identity_number',
             'user_email' => 'required|email|unique:users,email',
-            'user_role' => 'required', // Pastikan role ada di database
+            'user_role' => 'required',
+            'position' => 'nullable|string'
         ]);
 
-        if ($validator->fails()) {
-            if ($request->ajax()) {
-                return response()->json(['errors' => $validator->errors()], 422);
-            }
-            return redirect()->back()->withErrors($validator)->withInput();
+        try {
+            // Generate password acak
+            $randomPassword = Str::random(10);
+
+            $user = User::create([
+                'name' => $validatedData['user_name'],
+                'identity_number' => $validatedData['identity_number'],
+                'email' => $validatedData['user_email'],
+                'password' => Hash::make($randomPassword),
+                'position' => $validatedData['position']
+            ]);
+
+            // Menetapkan role ke pengguna
+            $user->assignRole($validatedData['user_role']);
+
+            // Kirim email dengan password yang digenerate
+            Mail::to($user->email)->send(new UserRegistered($user, $randomPassword));
+        } catch (\Exception $e) {
+            return back()->with('error', $e->getMessage());
         }
-
-        // Generate password acak
-        $randomPassword = Str::random(10);
-
-        $user = User::create([
-            'name' => $request->user_name,
-            'identity_number' => $request->identity_number,
-            'email' => $request->user_email,
-            'password' => Hash::make($randomPassword),
-        ]);
-
-        // Menetapkan role ke pengguna
-        $user->assignRole($request->user_role);
-
-        // Kirim email dengan password yang digenerate
-        Mail::to($user->email)->send(new UserRegistered($user, $randomPassword));
-
-        if ($request->ajax()) {
-            return response()->json(['success' => 'User berhasil ditambahkan!'], 200);
-        }
-
-        return redirect()->route('user.index')->with('success', 'Users created successfully.');
+        return back()->with('success', 'Data user berhasil ditambahkan.');
     }
 
     public function update(Request $request, User $user)
