@@ -11,6 +11,7 @@ use App\Http\Controllers\PaymentReceiptController;
 use App\Http\Controllers\PPKController;
 use App\Http\Controllers\ProgramTargetController;
 use App\Http\Controllers\TreasurerController;
+use App\Http\Controllers\UserController;
 use App\Http\Controllers\VerificatorController;
 use App\Http\Controllers\WithdrawalPlanController;
 use Illuminate\Http\Request;
@@ -45,4 +46,6 @@ Route::middleware(['auth', 'web'])->group(function () {
     Route::get('/asset-items/{category?}', [AssetItemController::class, 'getAssetItemBySelectedCategory'])->name('asset_items.selected_category');
     // Get Receipt Total Amount By Budget Implementation Detail ID
     Route::get('/receipt/total-amount/{detail}', [PaymentReceiptController::class, 'totalAmountByBudgetImplementationDetail'])->name('receipts.total_amount');
+
+    Route::get('/users', [UserController::class, 'getUsers'])->name('users.index');
 });
