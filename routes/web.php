@@ -37,8 +37,6 @@ Route::middleware(['auth'])->prefix('admin')->group(function () {
         return view('app.dashboard', ['title' => 'Dasbor']);
     })->name('admin.dashboard');
 
-    // Di file routes/web.php
-
     // Mendefinisikan route resource dengan penyesuaian nama
     Route::resource('profile', MyProfileController::class)->names([
         'index' => 'my-profile.index',
