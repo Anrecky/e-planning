@@ -42,7 +42,23 @@ class DatabaseSeeder extends Seeder
         // for testing
         // PPK::factory(123)->create();
         // Verificator::factory(456)->create();
+
         $this->call([RolesAndPermissionsSeeder::class]);
         $this->call([DumyUserSeeder::class]);
+        User::where('name', 'Admin')->first()->assignRole('SUPER ADMIN PERENCANAAN');
+        $roles = [
+            "PPK",
+            "SPI",
+            "STAF PPK",
+            "SUPER ADMIN PERENCANAAN",
+            "ADMIN FAKULTAS/UNIT",
+            "KPA (REKTOR)",
+            "BENDAHARA",
+            "Pelaksana Kegiatan",
+        ];
+
+        User::factory(250)->create()->each(function ($user) use ($roles) {
+            $user->assignRole($roles[array_rand($roles)]);
+        });
     }
 }
