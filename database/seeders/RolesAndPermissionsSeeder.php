@@ -13,16 +13,7 @@ class RolesAndPermissionsSeeder extends Seeder
      */
     public function run(): void
     {
-        $roles = [
-            'PPK',
-            'SPI',
-            'STAF PPK',
-            'SUPER ADMIN PERENCANAN',
-            'ADMIN FAKULTAS/UNIT',
-            'KPA (REKTOR)',
-            'BENDAHARA',
-            'Pelaksana Kegiatan',
-        ];
+        $roles = ['PPK', 'SPI', 'STAF PPK', 'SUPER ADMIN PERENCANAAN', 'ADMIN FAKULTAS/UNIT', 'KPA (REKTOR)', 'BENDAHARA', 'Pelaksana Kegiatan'];
 
         // Loop through the roles and create them
         foreach ($roles as $roleName) {
