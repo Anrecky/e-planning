@@ -171,10 +171,11 @@ Route::middleware(['auth'])->prefix('admin')->group(function () {
             'destroy' => 'payment-receipt.destroy',
         ]);
         Route::get('rekam-kuitansi/print-kwitansi/{receipt}', [PaymentReceiptController::class, 'print_kwitansi'])->name('payment-receipt.print-kwitansi');
-        Route::get('rekam-kuitansi/print-tiket/{receipt}', [PaymentReceiptController::class, 'print_ticket'])->name('payment-receipt.print-ticket');
+        Route::get('rekam-kuitansi/print-tiket/{receipt}/{verif?}', [PaymentReceiptController::class, 'print_ticket'])->name('payment-receipt.print-ticket');
         Route::post('rekam-kuitansi/upload/{receipt}', [PaymentReceiptController::class, 'upload'])->name('payment-receipt.upload');
         Route::post('rekam-kuitansi/submit/{receipt}', [PaymentReceiptController::class, 'submit'])->name('payment-receipt.submit');
         Route::post('rekam-kuitansi/ppk-action/{receipt}', [PaymentReceiptController::class, 'ppk_action'])->name('payment-receipt.ppk-action');
+        Route::post('rekam-kuitansi/spi-action/{receipt}', [PaymentReceiptController::class, 'spi_action'])->name('payment-receipt.spi-action');
         Route::post('kuitansi/verification/{receipt}', [PaymentReceiptController::class, 'verification'])->name('payment-receipt.verification');
         Route::get('kuitansi/detail/{receipt}', [PaymentReceiptController::class, 'detail'])->name('payment-receipt.detail');
         Route::get('kuitansi/', [PaymentReceiptController::class, 'list'])->name('payment-receipt.list');

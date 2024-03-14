@@ -828,7 +828,7 @@
                 async function getAccountCodesByActivityID(activityID) {
                     // Axios POST request
                     try {
-                        const response = await axios.get(`/api/activity/${activityID}/account-codes`);
+                        const response = await axios.get(`/admin/api/activity/${activityID}/account-codes`);
                         return response.data;
                     } catch (error) {
                         Swal.fire({
@@ -844,7 +844,7 @@
                     // Axios POST request
                     try {
                         const response = await axios.get(
-                            `/api/details/${activityID}/${accountCodeID}`);
+                            `/admin/api/details/${activityID}/${accountCodeID}`);
                         return response.data;
                     } catch (error) {
                         Swal.fire({
@@ -860,7 +860,7 @@
                     // Axios POST request
                     try {
                         const response = await axios.get(
-                            `/api/detail/${detailID}`);
+                            `/admin/api/detail/${detailID}`);
                         return response.data;
                     } catch (error) {
                         Swal.fire({
@@ -876,7 +876,7 @@
                 async function getReceiptAmountByDetailId(detailID) {
                     // Axios POST request
                     try {
-                        const response = await axios.get(`/api/receipt/total-amount/${detailID}`);
+                        const response = await axios.get(`/admin/api/receipt/total-amount/${detailID}`);
                         return response.data
                         // return response.data;
                     } catch (error) {

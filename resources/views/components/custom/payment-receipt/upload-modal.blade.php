@@ -2,7 +2,7 @@
 
 <button type="button" class="btn btn-sm btn-primary temporary-edit mb-2 mt-2" data-bs-target="#uploadModal"
     data-bs-toggle="modal" data-update-url="{{ route('payment-receipt.upload', $receipt) }}">
-    <i data-feather="upload"></i> Upload Berkas / Ganti Berkas
+    <i data-feather="upload"></i> {{ $receipt->berkas ? 'Ganti Berkas' : 'Upload Berkas' }}
 </button>
 
 <div class="modal fade" id="uploadModal" tabindex="-1" role="dialog" aria-labelledby="uploadModalTitle" aria-hidden="true"

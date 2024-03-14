@@ -35,20 +35,21 @@ class PaymentReceiptController extends Controller
         $treasurers = Treasurer::all();
         $activities = Activity::all();
         $receipts = Receipt::select('receipts.*')->with(['ppk', 'treasurer', 'detail'])->join('ppks', 'receipts.ppk_id', 'ppks.id');
-        $role = Auth::User()->roles[0]->name;
-        // dd($role);
-        if ($role == 'ppk') {
+        if (Auth::user()->hasRole('PPK')) {
             $receipts = $receipts->whereIn('status', ['wait-ppk', 'reject-ppk', 'accept'])->where('ppks.user_account', '=', Auth::user()->id);
         }
-        if ($role == 'ppk_staff') {
+        if (Auth::user()->hasRole('SPI')) {
+            $receipts = $receipts->whereIn('status', ['wait-spi', 'reject-spi', 'wait-ppk', 'reject-ppk', 'accept']);
+        }
+        if (Auth::user()->hasRole('STAF PPK')) {
             $receipts = $receipts->whereIn('status', ['wait-verificator', 'reject-verificator', 'wait-ppk', 'reject-ppk', 'accept'])->whereHas('ppk', function ($query) {
                 $query->where('staff_account', Auth::user()->id);
             });
         }
         $receipts = $receipts->get();
-        // dd(Auth::user()->id, $receipts);
         return view('app.payment-receipt-list', compact('title', 'ppks', 'treasurers', 'activities', 'receipts'));
     }
+
     public function detail(Receipt $receipt)
     {
         $title = 'Detail Kuitansi';
@@ -169,7 +170,7 @@ class PaymentReceiptController extends Controller
                 ->sum('amount');
             return response()->json($totalAmounts);
         } catch (\Exception $e) {
-            \Log::error($e);
+            Log::error($e);
             return back()->with('error', $e->getMessage());
         }
     }
@@ -211,7 +212,10 @@ class PaymentReceiptController extends Controller
             if ($receipt->user_entry != Auth::user()->id) {
                 return response()->json(['error' => true,  'message' => "Anda tidak memiliki izin untuk mengunggah file untuk tanda terima ini."], 400);
             }
-            if (!in_array($receipt->status, ['draft', 'reject-verificator', 'reject-ppk'])) {
+            if (empty($receipt->berkas)) {
+                return response()->json(['error' => true,  'message' => "Berkas belum diunggah!!."], 400);
+            }
+            if (!in_array($receipt->status, ['draft', 'reject-verificator', 'reject-ppk', 'reject-spi'])) {
                 return response()->json(['error' => true,  'message' => "Anda tidak memiliki hak pada tahap ini"], 400);
             }
             if (empty($receipt->reference_number)) {
@@ -245,7 +249,6 @@ class PaymentReceiptController extends Controller
     {
         try {
             $receipt->load('ppk');
-            // dd($receipt->status);
             if (!(in_array($receipt->status, ['wait-ppk', 'reject-ppk', 'accept'])) ||  $receipt->ppk->user_account != Auth::user()->id) {
                 return response()->json(['error' => true,  'message' => 'Anda tidak berhak melalukan aksi ini'], 500);
             }
@@ -273,22 +276,74 @@ class PaymentReceiptController extends Controller
             return response()->json(['error' => true, 'message' => $e->getMessage()], 500);
         }
     }
+    public function spi_action(Request $request, Receipt $receipt)
+    {
+        try {
+            $receipt->load('ppk');
+            if (!(in_array($receipt->status, ['wait-spi', 'reject-spi'])) || !(Auth::user()->hasRole('SPI'))) {
+                return response()->json(['error' => true,  'message' => 'Anda tidak berhak melalukan aksi ini'], 500);
+            }
+
+            $log = new ReceiptLog;
+
+            if ($request->res == 'Y') {
+                $receipt->status = 'wait-ppk';
+                $log->activity = "spi-approv";
+                $log->description = "Melakukan Approv";
+            } else {
+                $receipt->status = 'reject-spi';
+                $log->activity = "spi-reject";
+                if (!empty($request->description)) $log->description = "Melakukan Penolakan dengan alasan " . $request->description;
+                else $log->description = "Melakukan Penolakan";
+            }
+            $receipt->save();
+
+            $log->receipt_id = $receipt->id;
+            $log->user_id = Auth::user()->id;
+            $log->save();
+            return response()->json(['error' => false,  'message' => $request->res], 200);
+        } catch (\Exception $e) {
+            Log::error($e);
+            return response()->json(['error' => true, 'message' => $e->getMessage()], 500);
+        }
+    }
 
     public function verification(Request $request, Receipt $receipt)
     {
         $validatedData = $request->validate([
             'verification_description' => 'nullable|string',
-            'verification_date' => 'nullable|date',
+            // 'verification_date' => 'nullable|date',
             'receipt' => 'nullable|numeric',
             'verification_result' => 'nullable|string',
-            'verification_file_upload' => 'required|file|max:20480', // Max file size: 10 MB
         ]);
 
         try {
-            $payment_verification = new PaymentVerification();
+
+            $items = [
+                '2' => ['a', 'b', 'c', 'd', 'e'],
+                '3' => ['a', 'b', 'c', 'd', 'e'],
+                '4' => ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j'],
+            ];
+            $tmp = $request->toArray();
+            $result = [];
+            foreach ($items as $key_i => $item) {
+                foreach ($item as  $i) {
+                    $result['item_' . $key_i . '_' . $i] = !empty($tmp['item_' . $key_i . '_' . $i]) ? 'Y' : null;
+                }
+            }
+            // dd($result);
+            // dd($request->toArray());
+            if ($request->idVerification) {
+                $payment_verification = PaymentVerification::findOrFail($request->idVerification);
+            } else {
+                // dd('new');
+                $payment_verification = new PaymentVerification();
+            }
             $payment_verification->receipt_id = $validatedData['receipt'];
+            $payment_verification->items = json_encode($result);
             $payment_verification->description = $validatedData['verification_description'];
-            $payment_verification->date = $validatedData['verification_date'];
+            // dd(auth()->user()->hasRole('admin'));
+            // $payment_verification->date = $validatedData['verification_date'];
             $payment_verification->result = $validatedData['verification_result'];
             $payment_verification->file = 'null';
             $payment_verification->verification_user = Auth::user()->id;
@@ -302,7 +357,7 @@ class PaymentReceiptController extends Controller
             if ($payment_verification->result == 'Y') {
                 $log->activity = "verificator-approv";
                 $log->description = "Melakukan Verifikasi dengan hasil Lengkap";
-                $receipt->status = "wait-ppk";
+                $receipt->status = "wait-spi";
             } else
             if ($payment_verification->result == 'N') {
                 $log->activity = "verificator-reject";
@@ -314,7 +369,7 @@ class PaymentReceiptController extends Controller
             $log->receipt_id = $receipt->id;
             $log->user_id = Auth::user()->id;
             $log->save();
-            return response()->json(['error' => false,  'message' => 'File upload failed'], 200);
+            return response()->json(['error' => false,  'message' => 'Success'], 200);
         } catch (\Exception $e) {
             Log::error($e);
             return response()->json(['error' => true, 'message' => $e->getMessage()], 500);
@@ -334,7 +389,7 @@ class PaymentReceiptController extends Controller
             return back()->with('error', $e->getMessage());
         }
     }
-    public function print_ticket(Request $request, Receipt $receipt)
+    public function print_ticket(Request $request, Receipt $receipt, PaymentVerification $verif)
     {
         try {
             $receipt = $receipt->with(['ppk', 'treasurer', 'detail'])->findOrFail($receipt->id);
@@ -343,12 +398,16 @@ class PaymentReceiptController extends Controller
             $receipt->detail->budgetImplementation->load('activity', 'accountCode');
 
             $dompdf = new PDF();
-            $pdf = PDF::loadView('components.custom.payment-receipt.print-ticket', compact('receipt'));
+            if ($verif->id) {
+                $verifData = $verif;
+                $pdf = PDF::loadView('components.custom.payment-receipt.print-verification', compact('receipt', 'verifData'));
+            } else
+                $pdf = PDF::loadView('components.custom.payment-receipt.print-ticket', compact('receipt'));
             $pdf->setPaper('A4', 'portrait');
             return $pdf->stream('invoice.pdf');
         } catch (\Exception $e) {
             Log::error($e);
-            return back()->with('error', $e->getMessage());
+            // return back()->with('error', $e->getMessage());
         }
     }
     public function print2(Request $request, Receipt $receipt)

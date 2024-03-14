@@ -96,8 +96,9 @@
                     </table>
                 </div>
             </div>
+            <br>
             <div class="section">
-                <h2 class="title">KWITANSI / BUKTI PEMBAYARAN</h2>
+                {{-- <h2 class="title">KWITANSI / BUKTI PEMBAYARAN</h2> --}}
                 <table class="fullwidth text-top">
                     <tr>
                         <td style="width: 200px">Sudah Terima Dari</td>
@@ -112,7 +113,7 @@
                     <tr>
                         <td>Terbilang</td>
                         <td>:</td>
-                        <td>{{ ucwords(terbilang($receipt->amount)) }}</td>
+                        <td>{{ ucwords(terbilang($receipt->amount)) }} Rupiah</td>
                     </tr>
                     <tr>
                         <td>Untuk Pembayaran</td>
@@ -147,7 +148,7 @@
                         <td>{{ $receipt->provider }}</td>
                     </tr>
                     <tr>
-                        <td>NIP. {{ $receipt->ppk->name }}</td>
+                        <td>NIP. {{ $receipt->ppk->nik }}</td>
                         <td></td>
                         <td>{{ $receipt->provider_organization ?? '' }}</td>
                     </tr>

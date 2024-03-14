@@ -1,29 +1,25 @@
 <?php
 
 
-if (! function_exists('layoutConfig')) {
-    function layoutConfig() {
+if (!function_exists('layoutConfig')) {
+    function layoutConfig()
+    {
 
         if (Request::is('modern-light-menu/*')) {
 
             $__getConfiguration = Config::get('app-config.layout.vlm');
-
         } else if (Request::is('modern-dark-menu/*')) {
 
             $__getConfiguration = Config::get('app-config.layout.vdm');
-
         } else if (Request::is('collapsible-menu/*')) {
 
             $__getConfiguration = Config::get('app-config.layout.cm');
-
         } else if (Request::is('horizontal-light-menu/*')) {
 
             $__getConfiguration = Config::get('app-config.layout.hlm');
-
         } else if (Request::is('horizontal-dark-menu/*')) {
 
             $__getConfiguration = Config::get('app-config.layout.hlm');
-
         }
 
         // RTL
@@ -31,23 +27,18 @@ if (! function_exists('layoutConfig')) {
         else if (Request::is('rtl/modern-light-menu/*')) {
 
             $__getConfiguration = Config::get('app-config.layout.vlm-rtl');
-
         } else if (Request::is('rtl/modern-dark-menu/*')) {
 
             $__getConfiguration = Config::get('app-config.layout.vdm-rtl');
-
         } else if (Request::is('rtl/collapsible-menu/*')) {
 
             $__getConfiguration = Config::get('app-config.layout.cm-rtl');
-
         } else if (Request::is('rtl/horizontal-light-menu/*')) {
 
             $__getConfiguration = Config::get('app-config.layout.hlm-rtl');
-
         } else if (Request::is('rtl/horizontal-dark-menu/*')) {
 
             $__getConfiguration = Config::get('app-config.layout.hdm-rtl');
-
         }
 
 
@@ -57,7 +48,6 @@ if (! function_exists('layoutConfig')) {
         else if (Request::is('login')) {
 
             $__getConfiguration = Config::get('app-config.layout.vlm');
-
         } else {
             $__getConfiguration = Config::get('barebone-config.layout.bb');
         }
@@ -68,28 +58,24 @@ if (! function_exists('layoutConfig')) {
 
 
 if (!function_exists('getRouterValue')) {
-    function getRouterValue() {
+    function getRouterValue()
+    {
 
         if (Request::is('modern-light-menu/*')) {
 
             $__getRoutingValue = '/modern-light-menu';
-
         } else if (Request::is('modern-dark-menu/*')) {
 
             $__getRoutingValue = '/modern-dark-menu';
-
         } else if (Request::is('collapsible-menu/*')) {
 
             $__getRoutingValue = '/collapsible-menu';
-
         } else if (Request::is('horizontal-light-menu/*')) {
 
             $__getRoutingValue = '/horizontal-light-menu';
-
         } else if (Request::is('horizontal-dark-menu/*')) {
 
             $__getRoutingValue = '/horizontal-dark-menu';
-
         }
 
         // RTL
@@ -97,23 +83,18 @@ if (!function_exists('getRouterValue')) {
         else if (Request::is('rtl/modern-light-menu/*')) {
 
             $__getRoutingValue = '/rtl/modern-light-menu';
-
         } else if (Request::is('rtl/modern-dark-menu/*')) {
 
             $__getRoutingValue = '/rtl/modern-dark-menu';
-
         } else if (Request::is('rtl/collapsible-menu/*')) {
 
             $__getRoutingValue = '/rtl/collapsible-menu';
-
         } else if (Request::is('rtl/horizontal-light-menu/*')) {
 
             $__getRoutingValue = '/rtl/horizontal-light-menu';
-
         } else if (Request::is('rtl/horizontal-dark-menu/*')) {
 
             $__getRoutingValue = '/rtl/horizontal-dark-menu';
-
         }
 
         // Login
@@ -121,7 +102,6 @@ if (!function_exists('getRouterValue')) {
         else if (Request::is('login')) {
 
             $__getRoutingValue = '/modern-light-menu';
-
         } else {
             $__getRoutingValue = '';
         }
@@ -186,14 +166,17 @@ if (!function_exists('status_receipt')) {
             return "<span class='badge badge-light-warning'>Menunggu Verifikator</span>";
         } elseif ($var == "wait-ppk") {
             return "<span class='badge badge-light-primary'>Menunggu PPK</span>";
-        }elseif ($var == "reject-verificator") {
+        } elseif ($var == "wait-spi") {
+            return "<span class='badge badge-light-primary'>Menunggu SPI</span>";
+        } elseif ($var == "reject-verificator") {
             return "<span class='badge badge-light-danger'>Tolak Verifikator</span>";
-        }elseif ($var == "reject-ppk") {
+        } elseif ($var == "reject-ppk") {
             return "<span class='badge badge-light-danger'>Tolak PPK</span>";
-        }elseif ($var == "accept") {
+        } elseif ($var == "reject-spi") {
+            return "<span class='badge badge-light-danger'>Tolak SPI</span>";
+        } elseif ($var == "accept") {
             return "<span class='badge badge-light-success'>Selesai</span>";
-        }else
-        return "-";
+        } else
+            return "-";
     }
 }
-

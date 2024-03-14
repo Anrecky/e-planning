@@ -4,13 +4,19 @@
 <?php
 $imageSrc = 'logo.png';
 
-function checkbox($number, $desc, $span = 'ADA')
+function checkbox($number, $desc, $span = 'ADA', $res = false)
 {
+    if ($res == 'Y') {
+        $checked = 'checked';
+    } else {
+        $checked = '';
+    }
     return "<tr class='no-border'>
-                                    <td class='no-border'>$number.</td>
+                                    <td class='no-border' style='width: 10px'>$number.</td>
                                     <td class='no-border'>$desc</td>
-                                    <td class='no-border'><div class='box'></div></td>
-                                    <td class='no-border'>$span </td>
+                                    <td class='no-border' style='width: 10px'>
+                                        <input style='vertical-align: top ;  transform: scale(1.5); margin-top:  -5px !important ; padding-top: -10px  !important ;height: 15px !important' type='checkbox' ' . $checked . '>
+                                        </td>
                                 </tr>";
 }
 ?>
@@ -25,7 +31,7 @@ function checkbox($number, $desc, $span = 'ADA')
     body {
         margin: 3px 10px 3px 5px;
         padding: 3px 3px 3px 3px;
-        font-size: 14px;
+        font-size: 11px;
         font-family: Arial, Helvetica, sans-serif;
     }
 
@@ -40,6 +46,7 @@ function checkbox($number, $desc, $span = 'ADA')
 
     table {
         margin: 10px;
+        margin-top: 2px;
         padding: 3px;
         border-collapse: collapse;
         border: 1px solid #070707;
@@ -91,6 +98,13 @@ function checkbox($number, $desc, $span = 'ADA')
         vertical-align: top;
     }
 </style>
+@php
+    if (!empty($verifData->items)) {
+        $items = json_decode($verifData->items);
+    }
+    // echo 'd';
+    // dd($items);
+@endphp
 
 <body>
     <table style="width: 100%">
@@ -116,15 +130,15 @@ function checkbox($number, $desc, $span = 'ADA')
                 </table>
             </th>
         </tr>
-        <tr class="text-center">
+        {{-- <tr class="text-center">
             <td colspan="3" class="text-center">
                 <b> MOHON DI ISI DENGAN HURUF KAPITAL</b>
             </td>
-        </tr>
+        </tr> --}}
         <tr class="text-center">
             <td colspan="3" class="">
                 <b>1. Jenis Pencairan </b>
-                <table style="width: 100%" class="no-border">
+                <table style="width: 100% ; margin-top :0" class="no-border">
                     <tr>
                         <td>Nama Pencairan</td>
                         <td>:</td>
@@ -157,16 +171,18 @@ function checkbox($number, $desc, $span = 'ADA')
                     <tr class="">
                         <td style="width : 50%">
                             <table class="no-border" style="width: 90%">
-                                {!! checkbox('a', 'SPBy/Kwitansi LS') !!}
-                                {!! checkbox('b', 'NOTA / INVOICE') !!}
-                                {!! checkbox('c', 'NMR, TGL, TANDATANGAN DAN <br>CAP PADA DOKUMEN') !!}
+
+
+                                {!! checkbox('a', 'SPBy/Kwitansi LS', '', $items->item_2_a) !!}
+                                {!! checkbox('b', 'NOTA / INVOICE DGN NMR, TGL, TTD DAN CAP ', '', $items->item_2_b) !!}
+                                {{-- {!! checkbox('c', 'NMR, TGL, TANDATANGAN DAN <br>CAP PADA DOKUMEN') !!} --}}
                             </table>
                         </td>
                         <td style="width : 50%">
                             <table class="no-border" style="width: 90%">
-                                {!! checkbox('d', 'FOTOCOPY NPWP (SUPLIER BARU)') !!}
-                                {!! checkbox('e', 'FOTOCOPY BUKU REKENING<br> (SUPLIER BARU)') !!}
-                                {!! checkbox('f', 'DOKUMENTASI') !!}
+                                {!! checkbox('c', 'FOTOCOPY NPWP (SUPLIER BARU)', '', $items->item_2_c) !!}
+                                {!! checkbox('d', 'FOTOCOPY BUKU REKENING<br> (SUPLIER BARU)', '', $items->item_2_d) !!}
+                                {!! checkbox('e', 'DOKUMENTASI', '', $items->item_2_e) !!}
                             </table>
                         </td>
                     </tr>
@@ -181,15 +197,15 @@ function checkbox($number, $desc, $span = 'ADA')
                     <tr class="">
                         <td style="width : 50%">
                             <table class="no-border" style="width: 90%">
-                                {!! checkbox('a', 'DAFTAR HONOR') !!}
-                                {!! checkbox('b', 'SK') !!}
-                                {!! checkbox('c', 'RUNDOWN ACARA (PENCAIRAN <br> HONOR NARASUMBER)', 'LENGKAP') !!}
+                                {!! checkbox('a', 'DAFTAR HONOR', '', $items->item_3_a) !!}
+                                {!! checkbox('b', 'SK', '', $items->item_3_b) !!}
+                                {!! checkbox('c', 'RUNDOWN ACARA (PENCAIRAN <br> HONOR NARASUMBER)', '', $items->item_3_c) !!}
                             </table>
                         </td>
                         <td style="width : 50%">
                             <table class="no-border" style="width: 90%">
-                                {!! checkbox('d', 'SURAT TUGAS NARASUMBER') !!}
-                                {!! checkbox('e', 'DOKUMENTASI') !!}
+                                {!! checkbox('d', 'SURAT TUGAS NARASUMBER', '', $items->item_3_d) !!}
+                                {!! checkbox('e', 'DOKUMENTASI', '', $items->item_3_e) !!}
                             </table>
                         </td>
                     </tr>
@@ -204,20 +220,20 @@ function checkbox($number, $desc, $span = 'ADA')
                     <tr class="">
                         <td style="width : 50%">
                             <table class="no-border" style="width: 90%">
-                                {!! checkbox('a', 'SURAT TUGAS') !!}
-                                {!! checkbox('b', 'SPD') !!}
-                                {!! checkbox('c', 'KWITANSI LS') !!}
-                                {!! checkbox('d', 'DAFTAR RAMPUNG') !!}
-                                {!! checkbox('e', 'INVOICE HOTEL') !!}
+                                {!! checkbox('a', 'SURAT TUGAS', '', $items->item_4_a) !!}
+                                {!! checkbox('b', 'SPD', '', $items->item_4_b) !!}
+                                {!! checkbox('c', 'KWITANSI LS', '', $items->item_4_c) !!}
+                                {!! checkbox('d', 'DAFTAR RAMPUNG', '', $items->item_4_d) !!}
+                                {!! checkbox('e', 'INVOICE HOTEL', '', $items->item_4_e) !!}
                             </table>
                         </td>
                         <td style="width : 50%">
                             <table class="no-border" style="width: 90%">
-                                {!! checkbox('f', 'TIKET PP') !!}
-                                {!! checkbox('g', 'DAFTAR RILL') !!}
-                                {!! checkbox('h', 'UNDANGAN / MEMO') !!}
-                                {!! checkbox('i', 'LAPORAN PERJALANAN DINAS') !!}
-                                {!! checkbox('j', 'DOKUMENTASI') !!}
+                                {!! checkbox('f', 'TIKET PP', '', $items->item_4_f) !!}
+                                {!! checkbox('g', 'DAFTAR RILL', '', $items->item_4_g) !!}
+                                {!! checkbox('h', 'UNDANGAN / MEMO', '', $items->item_4_h) !!}
+                                {!! checkbox('i', 'LAPORAN PERJALANAN DINAS', '', $items->item_4_i) !!}
+                                {!! checkbox('j', 'DOKUMENTASI', '', $items->item_4_j) !!}
                             </table>
                         </td>
                     </tr>
@@ -266,13 +282,21 @@ function checkbox($number, $desc, $span = 'ADA')
                         <td colspan="3"> TGL PEMERIKSAAN :</td>
                     </tr>
                     <tr>
-                        <td>HASIL PEMERIKSAAN :</td>
-                        <td>
-                            <div class="box"></div>
+                        <td style="width: 130px">HASIL PEMERIKSAAN :</td>
+                        <td style="width: 30px">
+                            <input
+                                style='vertical-align: top ;  transform: scale(1.5); margin-top:  -5px !important ; padding-top: -10px  !important ;height: 15px !important'
+                                type='checkbox' {{ $verifData->result == 'Y' ? 'checked' : '' }}>
+
+                            {{-- <div class="box"></div> --}}
                         </td>
                         <td>Lengkap</td>
-                        <td>
-                            <div class="box"></div>
+                        <td style="width: 30px">
+                            <input
+                                style='vertical-align: top ;  transform: scale(1.5); margin-top:  -5px !important ; padding-top: -10px  !important ;height: 15px !important'
+                                type='checkbox' {{ $verifData->result == 'N' ? 'checked' : '' }}>
+
+                            {{-- <div class="box"></div> --}}
                         </td>
                         <td>Tidak Lengkap</td>
                     </tr>

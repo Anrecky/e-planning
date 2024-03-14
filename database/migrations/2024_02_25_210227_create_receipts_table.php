@@ -17,7 +17,14 @@ return new class extends Migration
         Schema::create('receipts', function (Blueprint $table) {
             $table->id();
             $table->enum('type', ['direct', 'treasurer'])->default('direct');
-            $table->enum('status', ['draft', 'wait-verificator', 'wait-ppk', 'reject-verificator', 'reject-ppk', 'accept'])->default('draft');
+            $table->enum('status', [
+                'draft',
+                'wait-verificator', 'reject-verificator',
+                'wait-ppk', 'reject-ppk',
+                'wait-spi', 'reject-spi',
+                'wait-treasurer', 'reject-treasurer',
+                'accept'
+            ])->default('draft');
             $table->text('description')->nullable();
             $table->decimal('amount', 15, 2)->default(0);
             $table->date('activity_date')->nullable();

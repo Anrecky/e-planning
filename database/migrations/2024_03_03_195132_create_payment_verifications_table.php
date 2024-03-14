@@ -14,7 +14,7 @@ return new class extends Migration
     {
         Schema::create('payment_verifications', function (Blueprint $table) {
             $table->id();
-            $table->text('description');
+            $table->text('description')->nullable();
             // $table->date('activity_date')->nullable();
             // $table->decimal('amount', 15, 2)->default(0);
             // $table->string('provider');
@@ -31,7 +31,8 @@ return new class extends Migration
             //     ->onUpdate('cascade')
             //     ->onDelete('cascade');
             $table->string('result');
-            $table->date('date');
+            $table->json('items');
+            $table->date('date')->nullable();
             $table->string('file');
 
             $table->foreignId('verification_user')

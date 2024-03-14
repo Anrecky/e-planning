@@ -82,15 +82,28 @@
                     font-style: italic !important;
                 }
 
-                td:first-child,
-                /* td:nth-child(3),
-                td:nth-child(4) {
-                    text-align: center;
-                } */
+                td {
+                    text-align: left;
+                }
             }
 
             .flatpickr-wrapper {
                 width: 100%;
+            }
+
+            .checklist .cl-box {
+                height: 25px;
+                width: 25px
+            }
+
+            .checklist hr {
+                border: 3px solid rgb(50, 51, 53);
+                border-radius: 5px;
+            }
+
+            .checklist .form-check-input {
+                /* background-color: blue; */
+                /* border-color: blue */
             }
         </style>
         <!--  END CUSTOM STYLE FILE  -->
@@ -116,7 +129,8 @@
                         <div class="col-xl-12 col-md-12 col-sm-12 col-12">
                             <h4 class="float-start"> Detail
                                 Kwitansi {!! status_receipt($receipt->status) !!}</h4>
-                            @if ($receipt->status == 'wait-verificator' && $receipt->ppk->staff->id == Auth::user()->id)
+                            @if (in_array($receipt->status, ['wait-verificator', 'reject-verificator', 'wait-ppk']) &&
+                                    $receipt->ppk->staff->id == Auth::user()->id)
                                 <div class="float-end p-2">
                                     <x-custom.payment-receipt.verification-modal :receipt="$receipt" />
                                 </div>
@@ -126,7 +140,12 @@
                                     <x-custom.payment-receipt.ppk-modal :receipt="$receipt" />
                                 </div>
                             @endif
-                            @if (in_array($receipt->status, ['draft', 'reject-verificator', 'reject-ppk']) &&
+                            @if (in_array($receipt->status, ['wait-spi', 'reject-spi']) && Auth::user()->hasRole('SPI'))
+                                <div class="float-end p-2">
+                                    <x-custom.payment-receipt.spi-modal :receipt="$receipt" />
+                                </div>
+                            @endif
+                            @if (in_array($receipt->status, ['draft', 'reject-verificator', 'reject-ppk', 'reject-spi']) &&
                                     $receipt->user_entry == Auth::user()->id)
                                 <div class="float-end p-2">
                                     <x-custom.payment-receipt.submit-modal :receipt="$receipt" />
@@ -357,10 +376,7 @@
 
                             <div class="tab-pane fade" id="pills-document" role="tabpanel"
                                 aria-labelledby="pills-icon-tab" tabindex="0">
-                                @if (Auth::user()->id == $receipt->user_entry &&
-                                        in_array($receipt->status, ['draft', 'reject-verificator', 'reject-ppk']))
-                                    <x-custom.payment-receipt.upload-modal :receipt="$receipt" />
-                                @endif
+
                                 <div class="table-responsive">
                                     <table class="table table-bordered">
                                         <tbody>
@@ -394,29 +410,44 @@
                                                 </td>
                                                 <td class="text-center">
                                                     @if ($receipt->berkas)
-                                                        <a
+                                                        <a target="_blank"
                                                             href="{{ url('storage/berkas_receipt/' . $receipt->berkas) }}">
                                                             <span class="badge badge-light-success">Download</span>
                                                         </a>
                                                     @else
                                                         <span class="badge badge-light-danger">Tidak ada berkas</span>
                                                     @endif
+
+                                                    @if (Auth::user()->id == $receipt->user_entry &&
+                                                            in_array($receipt->status, ['draft', 'reject-verificator', 'reject-ppk', 'reject-spi']))
+                                                        <br>
+                                                        <x-custom.payment-receipt.upload-modal :receipt="$receipt" />
+                                                    @endif
                                                 </td>
                                             </tr>
                                             @foreach ($receipt->verification as $verif)
                                                 <tr>
                                                     <td>
-                                                        Hasil Verifikasi {{ $verif->date }}
+                                                        Hasil Verifikasi {{ $verif->created_at }}
                                                     </td>
-                                                    <td class="text-center">
-                                                        @if ($receipt->berkas)
+                                                    <td class="">
+                                                        {{-- @if ($receipt->berkas)
                                                             <a target="_blank"
-                                                                href="{{ url('storage/berkas_receipt/' . $receipt->berkas) }}">
+                                                                href="{{ url('storage/berkas_receipt/' . $verif->berkas) }}">
                                                                 <span class="badge badge-light-success">Download</span>
                                                             </a>
                                                         @else
                                                             <span class="badge badge-light-danger">Tidak ada
                                                                 berkas</span>
+                                                        @endif --}}
+                                                        <a
+                                                            href="{{ route('payment-receipt.print-ticket', [$receipt, $verif]) }}">
+                                                            <span class="badge badge-light-success">Download</span>
+                                                        </a>
+                                                        @if (Auth::user()->id == $verif->verification_user &&
+                                                                in_array($receipt->status, ['reject-verificator', 'wait-verificator', 'wait-spi']))
+                                                            <x-custom.payment-receipt.verification-modal
+                                                                :receipt="$receipt" :dataVerif="$verif" :btnText="'edit'" />
                                                         @endif
                                                     </td>
                                                 </tr>

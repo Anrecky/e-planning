@@ -57,21 +57,28 @@ class NavigationServiceProvider extends ServiceProvider
                     'Pembayaran',
                     url('#'),
                     fn (Section $section) => $section
+                        // ->add(
+                        //     'Ruh Pembayaran',
+                        //     url('#'),
+                        //     fn (Section $section) => $section
+                        //         ->add('Rekam Kuitansi', route('payment-receipt.index'))
+                        //         ->add('Rekam Verifikasi', route('payment-verification.index'))
+                        // )
                         ->add(
-                            'Ruh Pembayaran',
-                            url('#'),
-                            fn (Section $section) => $section
-                                ->add('Rekam Kuitansi', route('payment-receipt.index'))
-                                ->add('Rekam Verifikasi', route('payment-verification.index'))
+                            'Rekam Kuitansi',
+                            route('payment-receipt.list')
+                        )->add(
+                            'Daftar Kuitansi',
+                            route('payment-receipt.list')
                         )
-                        ->add(
-                            'Cetak',
-                            url('#'),
-                            fn (Section $section) => $section
-                                ->add('Cetak Kuitansi', url('#'))
-                                ->add('Cetak Verifikasi', url('#'))
-                        )
-                        ->add('Catat/Upload', url('#'))
+                    // ->add(
+                    //     'Cetak',
+                    //     url('#'),
+                    //     fn (Section $section) => $section
+                    //         ->add('Cetak Kuitansi', url('#'))
+                    //         ->add('Cetak Verifikasi', url('#'))
+                    // )
+                    // ->add('Catat/Upload', url('#'))
                 )
                 ->add(
                     'Pelaporan',
