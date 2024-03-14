@@ -60,7 +60,7 @@ jobs:
         run: php artisan db:seed
         env:
           DB_PORT: ${{ job.services.mysql.ports['3306'] }}
-      - name: Test with phpunit
-        run: vendor/bin/phpunit
+      - name: Test with pest
+        run: vendor/bin/pest
         env:
           DB_PORT: ${{ job.services.mysql.ports['3306'] }}
