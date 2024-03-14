@@ -24,9 +24,16 @@ class RolesAndPermissionsSeeder extends Seeder
             'BENDAHARA',
             'Pelaksana Kegiatan'
         ];
+        $permissions = [];
+        $actions = ['create', 'see', 'update', 'delete'];
+        $entities = ['user', 'work_unit'];
 
-        // Define permissions
-        $permissions = ['create user'];
+        foreach ($entities as $entity) {
+            foreach ($actions as $action) {
+                $permissions[] = $action . ' ' . $entity;
+            }
+        }
+
 
         // Create permissions
         foreach ($permissions as $permissionName) {
