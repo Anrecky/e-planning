@@ -3,35 +3,51 @@
 namespace Tests\Feature;
 
 use App\Models\User;
+use App\Models\WorkUnit;
+use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\Auth;
 use Tests\TestCase;
 
 class UserTest extends TestCase
 {
+    use RefreshDatabase;
+
     /**
-     * A basic feature test example.
+     * Test store function in UserController.
+     *
+     * @return void
      */
-    public function test_unauthenticated_cant_see_manage_user_page(): void
+    public function testAuthUserWithCanCreateUserPermissionStoreUser()
     {
-        $response = $this->get(route('user.index'));
+        // Run migrations and seeders
+        $this->artisan('migrate:fresh --seed');
 
-        $response->assertStatus(302);
-    }
-
-    public function testAuthUserCanSeeManageUserPage()
-    {
-        // Create a test user
-        $user = User::factory()->create();
-
-        // Authenticate the user
+        // Create a user and authenticate
+        $user = User::factory()->create()->assignRole('SUPER ADMIN PERENCANAAN');
         $this->actingAs($user);
 
-        // Make a request to the route that displays the manage user page
-        $response = $this->get(route('user.index'));
+        // Mocking a request with necessary data
+        $requestData = [
+            'user_name' => 'John Doe',
+            'user_email' => 'john@example.com',
+            'user_role' => 'SUPER ADMIN PERENCANAAN',
+            // Add identity_number to make 'position' and 'work_unit' required
+            'identity_number' => '123456789',
+            'position' => 'Some Position',
+            'work_unit' => WorkUnit::factory()->create()->id,
+        ];
 
-        // Assert that the response is successful (status code 200)
-        $response->assertStatus(200);
+        // Sending a POST request to the controller's store method
+        $response = $this->post(route('user.store'), $requestData);
 
-        // Optionally, you can also assert that the response contains specific text or elements to ensure that the correct page is displayed
-        $response->assertSee('Kelola User');
+        // Asserting that the request was successful
+        $response->assertStatus(302); // Assuming a successful redirect
+        $response->assertSessionHas('success', 'Data user berhasil ditambahkan.');
+
+        // Asserting that the user was created in the database
+        $this->assertDatabaseHas('users', [
+            'name' => $requestData['user_name'],
+            'email' => $requestData['user_email'],
+        ]);
     }
 }
