@@ -56,6 +56,10 @@ jobs:
         run: php artisan migrate -v
         env:
           DB_PORT: ${{ job.services.mysql.ports['3306'] }}
+      - name: Run Seeder
+        run: php artisan db:seed
+        env:
+          DB_PORT: ${{ job.services.mysql.ports['3306'] }}
       - name: Test with phpunit
         run: vendor/bin/phpunit --coverage-text
         env:
