@@ -2,10 +2,12 @@
 
 namespace Tests\Feature;
 
+use App\Models\Role;
 use App\Models\User;
 use App\Models\WorkUnit;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Auth;
+use Spatie\Permission\Models\Permission;
 use Tests\TestCase;
 
 class UserTest extends TestCase
@@ -21,7 +23,35 @@ class UserTest extends TestCase
     {
         // Run migrations and seeders
         $this->artisan('migrate:fresh --seed');
+        // Define roles
+        $roles = [
+            'PPK',
+            'SPI',
+            'STAF PPK',
+            'SUPER ADMIN PERENCANAAN',
+            'ADMIN FAKULTAS/UNIT',
+            'KPA (REKTOR)',
+            'BENDAHARA',
+            'Pelaksana Kegiatan'
+        ];
 
+        // Define permissions
+        $permissions = ['create user'];
+
+        // Create permissions
+        foreach ($permissions as $permissionName) {
+            Permission::create(['name' => $permissionName]);
+        }
+
+        // Loop through the roles and create them
+        foreach ($roles as $roleName) {
+            $role = Role::create(['name' => $roleName]);
+
+            // Assign "can create user" permission to SUPER ADMIN PERENCANAAN role
+            if ($roleName === 'SUPER ADMIN PERENCANAAN') {
+                $role->givePermissionTo('create user');
+            }
+        }
         // Create a user and authenticate
         $user = User::factory()->create()->assignRole('SUPER ADMIN PERENCANAAN');
         $this->actingAs($user);
