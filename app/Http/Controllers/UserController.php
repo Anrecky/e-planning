@@ -2,22 +2,22 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
+use App\Mail\UserRegistered;
+use App\Models\Employee;
 use App\Models\User;
-use Illuminate\Support\Facades\Validator;
-use Spatie\Permission\Models\Role;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Str;
-use App\Mail\UserRegistered;
+use Spatie\Permission\Models\Role;
 
 class UserController extends Controller
 {
     public function index()
     {
-        $title = "Kelola User";
-        $users = User::all();
-        $roles = Role::all();
+        $title = 'Kelola User';
+        $users = User::notAdmin()->get();
+        $roles = Role::whereNot('name', 'SUPER ADMIN PERENCANAAN')->get();
 
         // Kirim data role ke view bersamaan dengan data users dan title
         return view('app.user', compact('users', 'title', 'roles'));
@@ -27,10 +27,11 @@ class UserController extends Controller
     {
         $validatedData = $this->validate($request, [
             'user_name' => 'required|max:255',
-            'identity_number' => 'nullable|numeric|unique:users,identity_number',
+            'identity_number' => 'nullable|numeric',
             'user_email' => 'required|email|unique:users,email',
-            'user_role' => 'required',
-            'position' => 'nullable|string'
+            'user_role' => 'required|exists:roles,name',
+            'position' => 'required_if:identity_number|string',
+            'work_unit' => 'required_if:identity_number|integer',
         ]);
 
         try {
@@ -39,20 +40,32 @@ class UserController extends Controller
 
             $user = User::create([
                 'name' => $validatedData['user_name'],
-                'identity_number' => $validatedData['identity_number'],
                 'email' => $validatedData['user_email'],
                 'password' => Hash::make($randomPassword),
-                'position' => $validatedData['position']
+                'position' => $validatedData['position'],
+            ]);
+
+            $employee = new Employee([
+                'id' => $validatedData['identity_number'],
+                'position' => $validatedData['position'],
+                'work_unit_id' => $validatedData,
             ]);
 
             // Menetapkan role ke pengguna
             $user->assignRole($validatedData['user_role']);
+            $user->employee()->updateOrCreate(
+                ['id' => $validatedData['identity_number'], 'user_id' => $user->id],
+                ['position' => $validatedData['position'], 'work_unit_id' => 1]
+            );
+
+            $user->save();
 
             // Kirim email dengan password yang digenerate
-            Mail::to($user->email)->send(new UserRegistered($user, $randomPassword));
+            // Mail::to($user->email)->send(new UserRegistered($user, $randomPassword));
         } catch (\Exception $e) {
             return back()->with('error', $e->getMessage());
         }
+
         return back()->with('success', 'Data user berhasil ditambahkan.');
     }
 
@@ -60,16 +73,16 @@ class UserController extends Controller
     {
         $validatedData = $request->validate([
             'name' => 'required|max:255',
-            'email' => 'required|email|unique:users,email,' . $user->id,
+            'email' => 'required|email|unique:users,email,'.$user->id,
             'password' => [
                 'nullable',
                 'min:8',
-                'regex:/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*(_|[^\w])).+$/'
+                'regex:/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*(_|[^\w])).+$/',
             ],
         ]);
 
         // Hanya enkripsi dan update password jika field password diisi
-        if (!empty($request->password)) {
+        if (! empty($request->password)) {
             $validatedData['password'] = bcrypt($request->password);
         } else {
             unset($validatedData['password']); // Jangan update password jika tidak diisi
@@ -88,6 +101,7 @@ class UserController extends Controller
     public function destroy(User $user)
     {
         $user->delete();
+
         return redirect()->back()->with('success', 'User berhasil dihapus.');
     }
 
@@ -98,7 +112,7 @@ class UserController extends Controller
 
         $query = User::query();
 
-        if (!empty($search)) {
+        if (! empty($search)) {
             $query->where('name', 'LIKE', "%{$search}%")
                 ->orWhere('identity_number', 'LIKE', "%{$search}%");
         }
