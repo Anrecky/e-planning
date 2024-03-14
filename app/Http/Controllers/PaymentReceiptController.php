@@ -23,7 +23,13 @@ class PaymentReceiptController extends Controller
         $ppks = PPK::all();
         $treasurers = Treasurer::all();
         $activities = Activity::all();
-        $receipts = Receipt::with(['ppk', 'treasurer', 'detail'])->get();
+        $receipts = Receipt::with(['ppk', 'treasurer', 'detail']);
+        if (!Auth::user()->hasRole(['SUPER ADMIN PERENCANAN'])) {
+            $receipts =  $receipts->where('user_entry', '-', Auth::user()->id);
+        } else {
+            // $receipts = $receipts->where('user_entry', '-', Auth::user()->id);
+        }
+        $receipts = $receipts->get();
 
         return view('app.payment-receipt', compact('title', 'ppks', 'treasurers', 'activities', 'receipts'));
     }
