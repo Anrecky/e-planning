@@ -2,17 +2,15 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\AccountCode;
+use App\Models\Activity;
 use App\Models\BudgetImplementation;
 use App\Models\BudgetImplementationDetail;
-use App\Models\AccountCode;
 use App\Models\ExpenditureUnit;
-use App\Models\Activity;
+use App\Services\BudgetImplementationInputArrayService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Validator;
-use App\Services\BudgetImplementationInputArrayService;
-use Illuminate\Support\Str;
-
 
 class BudgetImplementationController extends Controller
 {
@@ -28,7 +26,7 @@ class BudgetImplementationController extends Controller
      */
     public function index()
     {
-        $title = "DIPA";
+        $title = 'DIPA';
 
         $totalSum = BudgetImplementationDetail::sum('total');
 
@@ -40,7 +38,6 @@ class BudgetImplementationController extends Controller
 
         return view('app.budget-implementation', compact('title', 'groupedBI', 'accountCodes', 'expenditureUnits', 'totalSum'));
     }
-
 
     /**
      * Show the form for creating a new resource.
@@ -79,7 +76,8 @@ class BudgetImplementationController extends Controller
         try {
             return response()->json($this->budgetService->process($validator->validated()['dipa']));
         } catch (\Exception $e) {
-            Log::error('Error in store function: ' . $e->getMessage());
+            Log::error('Error in store function: '.$e->getMessage());
+
             return response()->json(['error' => $e->getMessage()], 500);
         }
 
@@ -118,6 +116,7 @@ class BudgetImplementationController extends Controller
                         ['name' => $validatedData['name']]
                     );
                     $budgetImplementation->activity()->associate($activity)->save();
+
                     return back()->with(['success' => 'Berhasil memperbarui data detail']);
                     break;
 
@@ -125,6 +124,7 @@ class BudgetImplementationController extends Controller
                     $budgetImplementation = BudgetImplementation::findOrFail($validatedData['id']);
                     $accountCode = AccountCode::firstWhere('code', $validatedData['code']);
                     $budgetImplementation->accountCode()->associate($accountCode)->save();
+
                     return back()->with(['success' => 'Berhasil memperbarui data dipa']);
                     break;
 
@@ -139,6 +139,7 @@ class BudgetImplementationController extends Controller
                     $budgetImplementationDetail->total = $validatedData['total'];
                     $budgetImplementationDetail->expenditureUnit()->associate($expenditureUnit);
                     $budgetImplementationDetail->save();
+
                     return back()->with(['success' => 'Berhasil memperbarui data detail']);
                     break;
 
@@ -147,9 +148,11 @@ class BudgetImplementationController extends Controller
             }
         } catch (\Throwable $th) {
             Log::error($th);
+
             return back();
         }
     }
+
     private function convertToDecimal($value)
     {
         // Remove the currency symbol, non-breaking spaces (\u{A0} or &nbsp;), and any regular spaces
@@ -162,10 +165,8 @@ class BudgetImplementationController extends Controller
         $number = str_replace(',', '.', $number);
 
         // Convert to float and format to two decimal places
-        return number_format((float)$number, 2, '.', '');
+        return number_format((float) $number, 2, '.', '');
     }
-
-
 
     /**
      * Remove the specified resource from storage.
@@ -175,9 +176,11 @@ class BudgetImplementationController extends Controller
         if ($type === 'detail') {
             try {
                 BudgetImplementationDetail::find($id)->delete();
+
                 return response()->json(['success' => 'true', 'message' => 'Berhasil menghapus data detail dipa.'], 200);
             } catch (\Throwable $th) {
                 Log::error($th);
+
                 return response()->json(['error' => 'true', 'message' => $th]);
             }
         }
@@ -187,7 +190,7 @@ class BudgetImplementationController extends Controller
                 $budgetImplementation = BudgetImplementation::find($id);
 
                 // Check if the record exists
-                if (!$budgetImplementation) {
+                if (! $budgetImplementation) {
                     return response()->json(['error' => 'true', 'message' => 'Budget Implementation not found.'], 404);
                 }
 
@@ -197,15 +200,18 @@ class BudgetImplementationController extends Controller
                 return response()->json(['success' => 'true', 'message' => 'Berhasil menghapus data dipa.'], 200);
             } catch (\Throwable $th) {
                 Log::error($th);
+
                 return response()->json(['error' => 'true', 'message' => $th->getMessage()], 500);
             }
         }
 
         try {
             BudgetImplementation::find($id)->delete();
+
             return response()->json(['success' => 'true', 'message' => 'Berhasil menghapus data dipa.'], 200);
         } catch (\Throwable $th) {
             Log::error($th);
+
             return response()->json(['error' => 'true', 'message' => $th]);
         }
     }

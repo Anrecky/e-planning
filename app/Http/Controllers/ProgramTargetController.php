@@ -13,6 +13,7 @@ class ProgramTargetController extends Controller
     public function index()
     {
         $programTargets = ProgramTarget::all();
+
         return view('app.program-target', ['title' => 'Sasaran Program', 'programTargets' => $programTargets]);
     }
 
@@ -71,7 +72,6 @@ class ProgramTargetController extends Controller
         return redirect()->route('program_target.index')->with('success', 'Sasaran Program berhasil diupdate.');
     }
 
-
     /**
      * Remove the specified resource from storage.
      */
@@ -84,7 +84,6 @@ class ProgramTargetController extends Controller
         return redirect()->back()->with('success', 'Sasaran Program berhasil dihapus.');
     }
 
-
     public function getProgramTargets(Request $request)
     {
         $search = $request->input('search', '');
@@ -92,7 +91,7 @@ class ProgramTargetController extends Controller
 
         $query = ProgramTarget::query();
 
-        if (!empty($search)) {
+        if (! empty($search)) {
             $query->where('name', 'LIKE', "%{$search}%");
         }
 

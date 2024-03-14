@@ -11,8 +11,10 @@ class VerificatorController extends Controller
     {
         $title = 'Verifikator';
         $verificators = Verificator::all();
+
         return view('app.verificator', compact('title', 'verificators'));
     }
+
     public function store(Request $request)
     {
         $validatedData = $this->validate($request, [
@@ -33,6 +35,7 @@ class VerificatorController extends Controller
 
         return redirect()->back()->with('success', 'Berhasil menambahkan data Bendahara.');
     }
+
     public function update(Request $request, Verificator $verificator)
     {
         $validatedData = $this->validate($request, [
@@ -60,8 +63,10 @@ class VerificatorController extends Controller
         } catch (\Exception $e) {
             return back()->with('error', $e->getMessage());
         }
+
         return redirect()->back()->with('success', 'Data bendahara berhasil dihapus.');
     }
+
     public function getVerificators(Request $request)
     {
         $search = $request->input('search', '');
@@ -69,7 +74,7 @@ class VerificatorController extends Controller
 
         $query = Verificator::query();
 
-        if (!empty($search)) {
+        if (! empty($search)) {
             $query->where('name', 'LIKE', "%{$search}%")
                 ->orWhere('nik', 'LIKE', "%{$search}%")
                 ->orWhere('position', 'LIKE', "%{$search}%");

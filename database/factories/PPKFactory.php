@@ -15,7 +15,6 @@ class PPKFactory extends Factory
      *
      * @var class-string<\Illuminate\Database\Eloquent\Model>
      */
-
     protected $model = PPK::class;
 
     /**
@@ -28,7 +27,7 @@ class PPKFactory extends Factory
         return [
             'position' => fake()->jobTitle(),
             'name' => fake()->domainWord(),
-            'nik' => fake()->nik()
+            'nik' => fake()->nik(),
         ];
     }
 }

@@ -19,7 +19,7 @@ class TreasurerFactory extends Factory
         return [
             'position' => fake()->jobTitle(),
             'name' => fake()->domainWord(),
-            'nik' => fake()->nik()
+            'nik' => fake()->nik(),
         ];
     }
 }

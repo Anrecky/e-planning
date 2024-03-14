@@ -12,8 +12,9 @@ class InstitutionalBudgetController extends Controller
      */
     public function index()
     {
-        $title = "Pagu Lembaga";
+        $title = 'Pagu Lembaga';
         $institutionalBudget = InstitutionalBudget::first();
+
         return view('app.institutional-budget', compact('title', 'institutionalBudget'));
     }
 
@@ -28,7 +29,7 @@ class InstitutionalBudgetController extends Controller
 
         // Validate the request
         $validatedData = $request->validate([
-            'ins_budget_id' => 'nullable|exists:institutional_budgets,id'
+            'ins_budget_id' => 'nullable|exists:institutional_budgets,id',
         ]);
 
         // Find or create the InstitutionalBudget record
@@ -45,10 +46,6 @@ class InstitutionalBudgetController extends Controller
 
         return redirect()->back()->with('success', $message);
     }
-
-
-
-
 
     /**
      * Update the specified resource in storage.

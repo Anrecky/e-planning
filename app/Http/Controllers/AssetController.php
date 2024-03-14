@@ -15,6 +15,7 @@ class AssetController extends Controller
     {
         $title = 'Aset';
         $assets = Asset::with('assetItem:id,category,name')->get();
+
         return view('app.assets', compact('title', 'assets'));
     }
 
@@ -38,9 +39,8 @@ class AssetController extends Controller
             'year_acquisition' => 'required|digits:4|integer|min:1998|max:2036',
             'code' => 'unique:App\Models\Asset,code|string|required',
             'condition' => 'string|required|in:good,slightly,heavy',
-            'description' => 'nullable|string'
+            'description' => 'nullable|string',
         ]);
-
 
         try {
             // Create a new Asset
@@ -50,11 +50,13 @@ class AssetController extends Controller
                 'year_acquisition' => $validatedData['year_acquisition'],
                 'code' => $validatedData['code'],
                 'condition' => $validatedData['condition'],
-                'description' => $validatedData['description'] ?? ''
+                'description' => $validatedData['description'] ?? '',
             ]);
+
             return redirect()->back()->with('success', 'Berhasil menambahkan aset.');
         } catch (\Exception $e) {
             Log::error($e);
+
             return back()->with('error', $e->getMessage());
         }
     }
@@ -76,6 +78,7 @@ class AssetController extends Controller
             return response()->json($asset->load('assetItem:id,category'));
         } catch (\Exception $e) {
             Log::error($e);
+
             return back()->with('error', $e->getMessage());
         }
     }
@@ -89,9 +92,9 @@ class AssetController extends Controller
             'asset_item' => 'required|integer|exists:asset_items,id',
             'brand' => 'nullable|string',
             'year_acquisition' => 'required|digits:4|integer|min:1998|max:2036',
-            'code' => "unique:App\Models\Asset,code," . $asset->id . ",code|string|required",
+            'code' => "unique:App\Models\Asset,code,".$asset->id.',code|string|required',
             'condition' => 'string|required|in:good,slightly,heavy',
-            'description' => 'sometimes|nullable|string'
+            'description' => 'sometimes|nullable|string',
         ]);
 
         try {
@@ -102,12 +105,13 @@ class AssetController extends Controller
             $asset->description = $validatedData['description'];
             $asset->assetItem()->associate($validatedData['asset_item']);
             $asset->save();
+
             return back()->with('success', 'Data aset berhasil diupdate.');
         } catch (\Exception $e) {
             Log::error($e);
+
             return back()->with('error', $e->getMessage());
         }
-
 
         // $asset->fill($validatedData);
 
@@ -119,6 +123,7 @@ class AssetController extends Controller
     public function destroy(Asset $asset)
     {
         $asset->delete();
+
         return redirect()->back()->with('success', 'Aset berhasil dihapus.');
     }
 }

@@ -39,11 +39,10 @@ class BudgetImplementationDetailController extends Controller
         return response()->json(
             $budgetImplementationDetail->load([
                 'budgetImplementation.activity:id,name',
-                'budgetImplementation.accountCode:id,name'
+                'budgetImplementation.accountCode:id,name',
             ])
         );
     }
-
 
     /**
      * Show the form for editing the specified resource.
@@ -68,6 +67,7 @@ class BudgetImplementationDetailController extends Controller
     {
         //
     }
+
     // Get Account Code By Activity
     public function getByActivityAccountCode(Request $request, $activityId, $accountCodeId)
     {
@@ -75,9 +75,11 @@ class BudgetImplementationDetailController extends Controller
             $details = BudgetImplementationDetail::whereHas('budgetImplementation', function ($query) use ($activityId, $accountCodeId) {
                 $query->where('activity_id', $activityId)->where('account_code_id', $accountCodeId);
             })->get();
+
             return response()->json($details);
         } catch (\Exception $e) {
             \Log::error($e);
+
             return back()->with('error', $e->getMessage());
         }
     }

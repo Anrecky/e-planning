@@ -13,7 +13,6 @@ class baseLayout extends Component
      */
     public $scrollspy;
 
-
     /**
      * Create a new component instance.
      *

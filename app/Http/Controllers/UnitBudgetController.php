@@ -16,6 +16,7 @@ class UnitBudgetController extends Controller
         $title = 'Pagu Unit';
         $workUnits = WorkUnit::with('unitBudgets')->get();
         $unitBudgets = UnitBudget::with('workUnit')->get();
+
         return view('app.unit-budget', compact('title', 'workUnits', 'unitBudgets'));
     }
 

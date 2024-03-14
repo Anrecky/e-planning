@@ -9,7 +9,9 @@ use Illuminate\View\Component;
 class Modal extends Component
 {
     public $modalId;
+
     public $modalTitle;
+
     public $size;
 
     public function __construct($modalId, $modalTitle, $size = null)

@@ -6,15 +6,13 @@ use Illuminate\View\Component;
 
 class styleVerticalMenu extends Component
 {
-
     /**
      * The title.
      *
      * @var string
      */
     public $classes;
-    
-    
+
     /**
      * Create a new component instance.
      *

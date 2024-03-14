@@ -15,7 +15,6 @@ class TreasurerController extends Controller
         return view('app.treasurer', compact('title', 'treasurers'));
     }
 
-
     /**
      * Show the form for creating a new resource.
      */
@@ -96,8 +95,10 @@ class TreasurerController extends Controller
         } catch (\Exception $e) {
             return back()->with('error', $e->getMessage());
         }
+
         return redirect()->back()->with('success', 'Data bendahara berhasil dihapus.');
     }
+
     public function getTreasurers(Request $request)
     {
         $search = $request->input('search', '');
@@ -105,7 +106,7 @@ class TreasurerController extends Controller
 
         $query = Treasurer::query();
 
-        if (!empty($search)) {
+        if (! empty($search)) {
             $query->where('name', 'LIKE', "%{$search}%")
                 ->orWhere('nik', 'LIKE', "%{$search}%")
                 ->orWhere('position', 'LIKE', "%{$search}%");

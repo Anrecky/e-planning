@@ -15,6 +15,7 @@ class PerformanceIndicatorController extends Controller
     {
         $programTargetsHasPerformanceIndicators = ProgramTarget::has('performanceIndicators')->with('performanceIndicators')->paginate();
         $title = 'Sasaran Program';
+
         return view('app.performance-indicator', compact('title', 'programTargetsHasPerformanceIndicators'));
     }
 
@@ -57,7 +58,6 @@ class PerformanceIndicatorController extends Controller
         return redirect()->route('performance_indicator.index')->with('success', 'Indikator kinerja berhasil disimpan.');
     }
 
-
     /**
      * Update the specified resource in storage.
      */
@@ -76,7 +76,6 @@ class PerformanceIndicatorController extends Controller
         // Redirect with a success message
         return redirect()->route('performance_indicator.index')->with('success', 'Indikator kinerja berhasil diperbarui.');
     }
-
 
     /**
      * Remove the specified resource from storage.

@@ -1,26 +1,20 @@
 <?php
 
-return array(
-    'layout' => array(
+return [
+    'layout' => [
 
         /**
-         * 
          * BAREBONE CONFIG
-         * 
+         *
          * NOTE: Please Do not make any changes in LTR or RTL
-         * 
          */
-
-        'bb' => array(
+        'bb' => [
             'layout-id' => 'barebone-structure-menu',
             'name' => 'Barebone Structure',
             'boxed' => true,
             'rtl' => false,
-            'alt-menu' => false
-        ),
-        
-        
-    ),
-);
+            'alt-menu' => false,
+        ],
 
-
+    ],
+];

@@ -13,7 +13,8 @@ class PPKController extends Controller
     public function index()
     {
         $title = 'PPK';
-        $ppks = PPK::with(['user','staff'])->get();
+        $ppks = PPK::with(['user', 'staff'])->get();
+
         return view('app.ppk', compact('title', 'ppks'));
     }
 
@@ -103,8 +104,10 @@ class PPKController extends Controller
         } catch (\Exception $e) {
             return back()->with('error', $e->getMessage());
         }
+
         return back()->with('success', 'Data ppk berhasil dihapus.');
     }
+
     public function getPPKs(Request $request)
     {
         $search = $request->input('search', '');
@@ -112,7 +115,7 @@ class PPKController extends Controller
 
         $query = PPK::query();
 
-        if (!empty($search)) {
+        if (! empty($search)) {
             $query->where('name', 'LIKE', "%{$search}%")
                 ->orWhere('nik', 'LIKE', "%{$search}%")
                 ->orWhere('position', 'LIKE', "%{$search}%");

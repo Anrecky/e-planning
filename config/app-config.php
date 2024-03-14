@@ -1,113 +1,102 @@
 <?php
 
-return array(
-    'layout' => array(
+return [
+    'layout' => [
         /**
-         * 
          * APP CONFIG
-         * 
+         *
          * NOTE: Please Do not make any changes in LTR or RTL
-         * 
          */
-        
+
         // LTR
 
-        'vlm' => array(
+        'vlm' => [
             'layout-id' => 'vertical-light-menu',
             'name' => 'Vertical Light Menu',
             'boxed' => true,
             // 'theme' => 'dark',
             // 'dark' => true,
             'rtl' => false,
-            'alt-menu' => false
-        ),
+            'alt-menu' => false,
+        ],
 
-        'vdm' => array(
+        'vdm' => [
             'layout-id' => 'vertical-dark-menu',
             'name' => 'Vertical Dark Menu',
             'boxed' => true,
             // 'theme' => 'dark',
             'rtl' => false,
-            'alt-menu' => false
-        ),
+            'alt-menu' => false,
+        ],
 
-        'cm' => array(
+        'cm' => [
             'layout-id' => 'collapsible-menu',
             'name' => 'Collapsible Menu',
             'boxed' => true,
             // 'theme' => 'dark',
             'rtl' => false,
-            'alt-menu' => true
-        ),
+            'alt-menu' => true,
+        ],
 
-        'hlm' => array(
+        'hlm' => [
             'layout-id' => 'horizontal-light-menu',
             'name' => 'Horizontal Light Menu',
             'boxed' => true,
             // 'theme' => 'dark',
             // 'dark' => true,
             'rtl' => false,
-            'alt-menu' => false
-        ),
-
-
+            'alt-menu' => false,
+        ],
 
         // RTL
 
-
-
-        'vlm-rtl' => array(
+        'vlm-rtl' => [
             'layout-id' => 'vertical-light-menu',
             'name' => 'Vertical Light Menu',
             'boxed' => true,
             // 'theme' => 'dark',
             // 'dark' => true,
             'rtl' => true,
-            'alt-menu' => false
-        ),
+            'alt-menu' => false,
+        ],
 
-        'vdm-rtl' => array(
+        'vdm-rtl' => [
             'layout-id' => 'vertical-dark-menu',
             'name' => 'Vertical Dark Menu',
             'boxed' => true,
             // 'theme' => 'dark',
             'rtl' => true,
-            'alt-menu' => false
-        ),
+            'alt-menu' => false,
+        ],
 
-        'cm-rtl' => array(
+        'cm-rtl' => [
             'layout-id' => 'collapsible-menu',
             'name' => 'Collapsible Menu',
             'boxed' => true,
             // 'theme' => 'dark',
             'rtl' => true,
-            'alt-menu' => true
-        ),
+            'alt-menu' => true,
+        ],
 
-        'hlm-rtl' => array(
+        'hlm-rtl' => [
             'layout-id' => 'horizontal-light-menu',
             'name' => 'Horizontal Light Menu',
             'boxed' => true,
             // 'theme' => 'dark',
             // 'dark' => true,
             'rtl' => true,
-            'alt-menu' => false
-        ),
+            'alt-menu' => false,
+        ],
 
-        'hdm-rtl' => array(
+        'hdm-rtl' => [
             'layout-id' => 'horizontal-dark-menu',
             'name' => 'Horizontal Dark Menu',
             'boxed' => true,
             // 'theme' => 'dark',
             // 'dark' => true,
             'rtl' => true,
-            'alt-menu' => false
-        ),
+            'alt-menu' => false,
+        ],
 
-
-        
-        
-    ),
-);
-
-
+    ],
+];

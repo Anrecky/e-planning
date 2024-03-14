@@ -2,15 +2,16 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\WorkUnit;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
-use App\Models\WorkUnit;
 
 class MyProfileController extends Controller
 {
-    public function index(){
+    public function index()
+    {
         $title = 'Profil Pengguna';
         $user = Auth::user()->load('roles'); // Eager load roles
         $workUnits = WorkUnit::all();
@@ -25,7 +26,7 @@ class MyProfileController extends Controller
         // Validasi input
         $validator = Validator::make($request->all(), [
             'name' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255|unique:users,email,' . $user->id,
+            'email' => 'required|string|email|max:255|unique:users,email,'.$user->id,
             'identity_number' => 'required|numeric|unique:users,identity_number|digits_between:10,18',
             // 'photo' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048', // Max 2MB
             'work_unit_id' => 'nullable|string|max:255',

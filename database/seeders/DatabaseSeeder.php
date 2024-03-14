@@ -4,14 +4,13 @@ namespace Database\Seeders;
 
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 
+use App\Models\PPK;
+use App\Models\User;
+use App\Models\Verificator;
 use Illuminate\Database\Seeder;
-use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File;
-
-use App\Models\User;
-use App\Models\PPK;
-use App\Models\Verificator;
+use Illuminate\Support\Facades\Hash;
 
 class DatabaseSeeder extends Seeder
 {
@@ -47,14 +46,14 @@ class DatabaseSeeder extends Seeder
         $this->call([DumyUserSeeder::class]);
         User::where('name', 'Admin')->first()->assignRole('SUPER ADMIN PERENCANAAN');
         $roles = [
-            "PPK",
-            "SPI",
-            "STAF PPK",
-            "SUPER ADMIN PERENCANAAN",
-            "ADMIN FAKULTAS/UNIT",
-            "KPA (REKTOR)",
-            "BENDAHARA",
-            "Pelaksana Kegiatan",
+            'PPK',
+            'SPI',
+            'STAF PPK',
+            'SUPER ADMIN PERENCANAAN',
+            'ADMIN FAKULTAS/UNIT',
+            'KPA (REKTOR)',
+            'BENDAHARA',
+            'Pelaksana Kegiatan',
         ];
 
         User::factory(250)->create()->each(function ($user) use ($roles) {

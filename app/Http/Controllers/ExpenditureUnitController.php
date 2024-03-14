@@ -14,6 +14,7 @@ class ExpenditureUnitController extends Controller
     {
         $title = 'Satuan Belanja';
         $expenditureUnits = ExpenditureUnit::all();
+
         return view('app.expenditure-unit', compact('title', 'expenditureUnits'));
     }
 
@@ -42,6 +43,7 @@ class ExpenditureUnitController extends Controller
 
         return redirect()->back()->with('success', 'Berhasil menambahkan satuan belanja.');
     }
+
     /**
      * Update the specified resource in storage.
      */
@@ -66,6 +68,7 @@ class ExpenditureUnitController extends Controller
     public function destroy(ExpenditureUnit $expenditureUnit)
     {
         $expenditureUnit->delete();
+
         return redirect()->back()->with('success', 'Satuan belanja berhasil dihapus.');
     }
 }

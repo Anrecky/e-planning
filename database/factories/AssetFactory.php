@@ -18,12 +18,12 @@ class AssetFactory extends Factory
     public function definition(): array
     {
         return [
-            "asset_item_id" => AssetItem::all()->random()->id,
-            "brand" => $this->faker->optional()->domainWord(),
-            "year_acquisition" => $this->faker->numberBetween(2000, 2035),
-            "code" => $this->faker->unique()->numerify('code-####'),
-            "condition" => $this->faker->randomElement(['good', 'slightly', 'heavy']),
-            "description" => $this->faker->paragraph(10)
+            'asset_item_id' => AssetItem::all()->random()->id,
+            'brand' => $this->faker->optional()->domainWord(),
+            'year_acquisition' => $this->faker->numberBetween(2000, 2035),
+            'code' => $this->faker->unique()->numerify('code-####'),
+            'condition' => $this->faker->randomElement(['good', 'slightly', 'heavy']),
+            'description' => $this->faker->paragraph(10),
         ];
     }
 }

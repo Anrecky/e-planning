@@ -3,10 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\AccountCode;
-use App\Models\BudgetImplementation;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Log;
 
 class AccountCodeController extends Controller
 {
@@ -17,6 +14,7 @@ class AccountCodeController extends Controller
     {
         $title = 'Kode Akun';
         $accountCodes = AccountCode::all();
+
         return view('app.account-code', compact('title', 'accountCodes'));
     }
 
@@ -46,7 +44,6 @@ class AccountCodeController extends Controller
         return redirect()->back()->with('success', 'Berhasil menambahkan kode akun.');
     }
 
-
     /**
      * Update the specified resource in storage.
      */
@@ -71,6 +68,7 @@ class AccountCodeController extends Controller
     public function destroy(AccountCode $accountCode)
     {
         $accountCode->delete();
+
         return redirect()->back()->with('success', 'Kode akun berhasil dihapus.');
     }
 
@@ -81,9 +79,11 @@ class AccountCodeController extends Controller
             $accountCodes = AccountCode::whereHas('budgetImplementations', function ($query) use ($activityId) {
                 $query->where('activity_id', $activityId);
             })->get();
+
             return response()->json($accountCodes);
         } catch (\Exception $e) {
             \Log::error($e);
+
             return back()->with('error', $e->getMessage());
         }
     }

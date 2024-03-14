@@ -2,7 +2,6 @@
 
 namespace App\Providers;
 
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\ServiceProvider;
 use Spatie\Navigation\Navigation;
 use Spatie\Navigation\Section;
@@ -119,6 +118,7 @@ class NavigationServiceProvider extends ServiceProvider
                 );
         });
     }
+
     /**
      * Bootstrap services.
      */

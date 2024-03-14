@@ -10,8 +10,10 @@ class RenstraController extends Controller
     public function vision()
     {
         $renstra = Renstra::first();
+
         return view('app.vision', ['title' => 'VISI', 'renstra' => $renstra]);
     }
+
     public function updateVision(Request $request)
     {
         $validated = $request->validate([
@@ -21,17 +23,21 @@ class RenstraController extends Controller
         $renstra = Renstra::first();
         $renstra->vision = $validated['vision'];
         $renstra->save();
+
         return redirect()->route('vision.index')->with('success', 'Visi berhasil diperbarui.');
     }
+
     public function mission()
     {
         $renstra = Renstra::first();
+
         return view('app.mission', ['title' => 'Misi', 'renstra' => $renstra]);
     }
+
     public function storeMission(Request $request)
     {
         $validatedData = $request->validate([
-            'mission.*' => 'required|string|max:255' // Validate each mission input
+            'mission.*' => 'required|string|max:255', // Validate each mission input
         ]);
 
         $renstra = Renstra::first();
@@ -68,12 +74,14 @@ class RenstraController extends Controller
     public function iku()
     {
         $renstra = Renstra::first();
+
         return view('app.iku', ['title' => 'Indikator Kinerja Utama', 'renstra' => $renstra]);
     }
+
     public function storeIku(Request $request)
     {
         $validatedData = $request->validate([
-            'iku.*' => 'required|string|max:255' // Validate each iku input
+            'iku.*' => 'required|string|max:255', // Validate each iku input
         ]);
 
         $renstra = Renstra::first();

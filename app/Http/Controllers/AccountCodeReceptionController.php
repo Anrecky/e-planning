@@ -14,6 +14,7 @@ class AccountCodeReceptionController extends Controller
     {
         $title = 'Kode Akun';
         $accountCodeReceptions = AccountCodeReception::all();
+
         return view('app.account-code-reception', compact('title', 'accountCodeReceptions'));
     }
 
@@ -91,6 +92,7 @@ class AccountCodeReceptionController extends Controller
     public function destroy(AccountCodeReception $accountCodeReception)
     {
         $accountCodeReception->delete();
+
         return redirect()->back()->with('success', 'Kode akun berhasil dihapus.');
     }
 
@@ -101,7 +103,7 @@ class AccountCodeReceptionController extends Controller
 
         $query = AccountCodeReception::query();
 
-        if (!empty($search)) {
+        if (! empty($search)) {
             $query->where('name', 'LIKE', "%{$search}%")->orWhere('code', 'LIKE', "%{$search}%");
         }
 

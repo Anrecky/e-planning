@@ -6,7 +6,6 @@ use App\Models\AssetItem;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Validation\Rule;
-use Illuminate\Support\Facades\Validator;
 
 class AssetItemController extends Controller
 {
@@ -41,7 +40,7 @@ class AssetItemController extends Controller
                 'array',
             ],
             'asset_item_category.*' => Rule::in(['IT', 'NonIT']),
-            'asset_item_description.*' => 'nullable|string|max:255'
+            'asset_item_description.*' => 'nullable|string|max:255',
         ]);
 
         try {
@@ -51,11 +50,12 @@ class AssetItemController extends Controller
                 AssetItem::create([
                     'name' => $name,
                     'category' => $validatedData['asset_item_category'][$index],
-                    'description' => !empty($validatedData['asset_item_description'][$index]) ? $validatedData['asset_item_description'][$index] : null,
+                    'description' => ! empty($validatedData['asset_item_description'][$index]) ? $validatedData['asset_item_description'][$index] : null,
                 ]);
             }
         } catch (\Exception $e) {
             Log::error($e);
+
             return back()->with('error', $e->getMessage());
         }
 
@@ -88,18 +88,20 @@ class AssetItemController extends Controller
             'category' => [
                 'required',
                 'string',
-                Rule::in(['IT', 'NonIT'])
+                Rule::in(['IT', 'NonIT']),
             ],
-            'description' => 'nullable|string'
+            'description' => 'nullable|string',
         ]);
         try {
             $assetItem->name = $validatedData['name'];
             $assetItem->category = $validatedData['category'];
             $assetItem->description = $validatedData['description'];
             $assetItem->save();
+
             return redirect()->route('asset_item.index')->with('success', 'Barang aset berhasil diupdate.');
         } catch (\Exception $e) {
             Log::error($e);
+
             return back()->with('error', $e->getMessage());
         }
     }
@@ -110,6 +112,7 @@ class AssetItemController extends Controller
     public function destroy(AssetItem $assetItem)
     {
         $assetItem->delete();
+
         return redirect()->back()->with('success', 'Barang aset berhasil dihapus.');
     }
 

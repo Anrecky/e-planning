@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Models\PaymentVerification;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
-use App\Models\PPK;
 
 class PaymentVerificationController extends Controller
 {
@@ -16,6 +15,7 @@ class PaymentVerificationController extends Controller
 
         return view('app.payment-verification', compact('title', 'payment_verifications'));
     }
+
     public function store(Request $request)
     {
         $validatedData = $request->validate([
@@ -28,7 +28,7 @@ class PaymentVerificationController extends Controller
             'activity_implementer_name' => 'required|string',
             'spi_nip' => 'required|numeric',
             'spi_name' => 'required|string',
-            'verificator' => 'required|exists:verificators,id'
+            'verificator' => 'required|exists:verificators,id',
         ]);
 
         try {
@@ -48,9 +48,11 @@ class PaymentVerificationController extends Controller
             return back()->with('success', 'Data pembayaran verifikasi berhasil dibuat.');
         } catch (\Exception $e) {
             Log::error($e);
+
             return back()->with('error', $e->getMessage());
         }
     }
+
     public function update(Request $request, PaymentVerification $payment_verification)
     {
         try {
@@ -64,7 +66,7 @@ class PaymentVerificationController extends Controller
                 'activity_implementer_name' => 'required|string',
                 'spi_nip' => 'required|numeric',
                 'spi_name' => 'required|string',
-                'verificator' => 'required|exists:verificators,id'
+                'verificator' => 'required|exists:verificators,id',
             ]);
             $payment_verification->description = $validatedData['description'];
             $payment_verification->implementer_name = $validatedData['activity_implementer_name'];
@@ -77,16 +79,20 @@ class PaymentVerificationController extends Controller
             $payment_verification->auditor_nip = $validatedData['spi_nip'];
             $payment_verification->verificator_id = $validatedData['verificator'];
             $payment_verification->save();
+
             return back()->with('success', 'Data pembayaran kuitansi berhasil diupdate.');
         } catch (\Exception $e) {
             Log::error($e);
+
             return back()->with('error', $e->getMessage());
         }
     }
+
     public function destroy(PaymentVerification $payment_verification)
     {
         try {
             $payment_verification->delete();
+
             return redirect()->back()->with('success', 'Data pembayaran verifikasi berhasil dihapus.');
         } catch (\Exception $e) {
             return back()->with('error', $e->getMessage());

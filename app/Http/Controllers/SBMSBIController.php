@@ -15,6 +15,7 @@ class SBMSBIController extends Controller
     {
         $sbmsbi = SBMSBI::first();
         $title = 'SBM dan SBI';
+
         return view('app.sbm-sbi', compact('sbmsbi', 'title'));
     }
 
@@ -27,7 +28,7 @@ class SBMSBIController extends Controller
         $request->validate([
             'sbm' => 'required|file|mimes:jpg,jpeg,png,pdf,xlsx,xls,doc,docx,csv|max:21048', // adjust mime types and max size as needed
             'sbi' => 'required|file|mimes:jpg,jpeg,png,pdf,xlsx,xls,doc,docx,csv|max:21048',
-            'sbmsbi_id' => 'nullable|exists:sbmsbis,id' // Check if the ID exists in the SBMSBI table only if it's not null
+            'sbmsbi_id' => 'nullable|exists:sbmsbis,id', // Check if the ID exists in the SBMSBI table only if it's not null
 
         ]);
 

@@ -1,6 +1,5 @@
 <?php
 
-
 if (!function_exists('layoutConfig')) {
     function layoutConfig()
     {
@@ -24,7 +23,7 @@ if (!function_exists('layoutConfig')) {
 
         // RTL
 
-        else if (Request::is('rtl/modern-light-menu/*')) {
+        elseif (Request::is('rtl/modern-light-menu/*')) {
 
             $__getConfiguration = Config::get('app-config.layout.vlm-rtl');
         } else if (Request::is('rtl/modern-dark-menu/*')) {
@@ -41,11 +40,9 @@ if (!function_exists('layoutConfig')) {
             $__getConfiguration = Config::get('app-config.layout.hdm-rtl');
         }
 
-
-
         // Login
 
-        else if (Request::is('login')) {
+        elseif (Request::is('login')) {
 
             $__getConfiguration = Config::get('app-config.layout.vlm');
         } else {
@@ -80,7 +77,7 @@ if (!function_exists('getRouterValue')) {
 
         // RTL
 
-        else if (Request::is('rtl/modern-light-menu/*')) {
+        elseif (Request::is('rtl/modern-light-menu/*')) {
 
             $__getRoutingValue = '/rtl/modern-light-menu';
         } else if (Request::is('rtl/modern-dark-menu/*')) {
@@ -99,18 +96,16 @@ if (!function_exists('getRouterValue')) {
 
         // Login
 
-        else if (Request::is('login')) {
+        elseif (Request::is('login')) {
 
             $__getRoutingValue = '/modern-light-menu';
         } else {
             $__getRoutingValue = '';
         }
 
-
         return $__getRoutingValue;
     }
 }
-
 
 if (!function_exists('terbilang')) {
     function terbilang($number)
@@ -127,7 +122,7 @@ if (!function_exists('terbilang')) {
             'delapan',
             'sembilan',
             'sepuluh',
-            'sebelas'
+            'sebelas',
         ];
 
         if ($number < 12) {
@@ -156,15 +151,14 @@ if (!function_exists('terbilang')) {
     }
 }
 
-
 if (!function_exists('status_receipt')) {
     function status_receipt($var)
     {
-        if ($var == "draft") {
+        if ($var == 'draft') {
             return "<span class='badge badge-light-secondary'>Draft</span>";
-        } elseif ($var == "wait-verificator") {
+        } elseif ($var == 'wait-verificator') {
             return "<span class='badge badge-light-warning'>Menunggu Verifikator</span>";
-        } elseif ($var == "wait-ppk") {
+        } elseif ($var == 'wait-ppk') {
             return "<span class='badge badge-light-primary'>Menunggu PPK</span>";
         } elseif ($var == "wait-spi") {
             return "<span class='badge badge-light-primary'>Menunggu SPI</span>";

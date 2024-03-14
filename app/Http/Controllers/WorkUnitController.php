@@ -14,6 +14,7 @@ class WorkUnitController extends Controller
     {
         $title = 'Unit Kerja';
         $workUnits = WorkUnit::all();
+
         return view('app.work-unit', compact('title', 'workUnits'));
     }
 
@@ -40,7 +41,6 @@ class WorkUnitController extends Controller
         return redirect()->back()->with('success', 'Berhasil menambahkan unit kerja.');
     }
 
-
     /**
      * Update the specified resource in storage.
      */
@@ -58,12 +58,14 @@ class WorkUnitController extends Controller
         // Redirect back with a success message
         return redirect()->route('work_unit.index')->with('success', 'Unit Kerja berhasil diupdate.');
     }
+
     /**
      * Remove the specified resource from storage.
      */
     public function destroy(WorkUnit $workUnit)
     {
         $workUnit->delete();
+
         return redirect()->back()->with('success', 'Unit kerja berhasil dihapus.');
     }
 }

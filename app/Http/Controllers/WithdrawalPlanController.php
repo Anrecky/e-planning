@@ -2,11 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
+use App\Enums\Month;
 use App\Models\Activity;
 use App\Models\WithdrawalPlan;
-use App\Enums\Month;
-use Carbon\Carbon;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 
 class WithdrawalPlanController extends Controller
@@ -23,7 +22,6 @@ class WithdrawalPlanController extends Controller
         return view('app.withdrawal-plan', compact('title', 'activities', 'months'));
     }
 
-
     /**
      * Show the form for creating a new resource.
      */
@@ -35,7 +33,6 @@ class WithdrawalPlanController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-
     public function store(Request $request)
     {
         try {
@@ -44,7 +41,7 @@ class WithdrawalPlanController extends Controller
                 'withdrawalPlans' => 'required|array',
                 'withdrawalPlans.*.month' => 'required|integer|min:1|max:12',
                 'withdrawalPlans.*.amount_withdrawn' => 'required|numeric|min:0',
-                'year' => 'required|integer|digits:4'
+                'year' => 'required|integer|digits:4',
             ]);
 
             foreach ($validatedData['withdrawalPlans'] as $planData) {
@@ -65,6 +62,7 @@ class WithdrawalPlanController extends Controller
             return response()->json(['message' => 'Data penarikan dana berhasil disimpan']);
         } catch (\Exception $e) {
             Log::error($e);
+
             return response()->json(['error' => $e->getMessage()], 500);
         }
     }
@@ -104,7 +102,7 @@ class WithdrawalPlanController extends Controller
     /**
      * Get withdrawal plans for a specific activity.
      *
-     * @param int $activityId
+     * @param  int  $activityId
      * @return \Illuminate\Http\JsonResponse
      */
     public function getWithdrawalPlans($activityId, $year = null)

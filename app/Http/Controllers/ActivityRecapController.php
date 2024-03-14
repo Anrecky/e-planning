@@ -4,10 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Models\Activity;
 use App\Models\ActivityRecap;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Storage;
 use App\Supports\Disk;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Response;
+use Illuminate\Support\Facades\Storage;
 
 class ActivityRecapController extends Controller
 {
@@ -16,18 +16,16 @@ class ActivityRecapController extends Controller
      */
     public function index()
     {
-        $title = "Rekap Kegiatan dan Upload Data Dukung";
+        $title = 'Rekap Kegiatan dan Upload Data Dukung';
         // Load ActivityRecap data with each Activity
         $activities = Activity::with('activityRecap')->sortedByCode()->get();
 
         return view('app.activity-recap', compact('title', 'activities'));
     }
 
-
     /**
      * Store a newly created resource in storage.
      */
-
     public function store(Request $request)
     {
         $activityIDs = $request->input('activityIDs', []);
@@ -50,7 +48,7 @@ class ActivityRecapController extends Controller
                         Storage::disk(Disk::ActivityRecapAttachment)->size($filename) == $file->getSize();
                 });
 
-                if (!$existingFile) {
+                if (! $existingFile) {
                     if ($activityRecap->attachment_path) {
                         Storage::disk(Disk::ActivityRecapAttachment)->delete($activityRecap->attachment_path);
                     }
@@ -65,7 +63,6 @@ class ActivityRecapController extends Controller
 
         return response()->json(['message' => 'Activity recaps processed successfully.']);
     }
-
 
     /**
      * Update the specified resource in storage.
@@ -83,7 +80,6 @@ class ActivityRecapController extends Controller
         //
     }
 
-
     public function showFile(ActivityRecap $activityRecap)
     {
         // $this->authorize('view', $activityRecap); // Optional: check if user is authorized to view
@@ -93,9 +89,10 @@ class ActivityRecapController extends Controller
         $fileMimeType = mime_content_type($filePath);
 
         return Response::file($filePath, [
-            'Content-Type' => $fileMimeType
+            'Content-Type' => $fileMimeType,
         ]);
     }
+
     // In your ActivityRecapController
     public function updateStatus(Request $request)
     {

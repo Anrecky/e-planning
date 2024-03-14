@@ -20,7 +20,7 @@ class AssetItemFactory extends Factory
             'name' => $this->faker->domainWord(),
             'description' => $this->faker->optional()->paragraph(),
             'category' => $this->faker->randomElement(['IT', 'NonIT']),
-            'brand' => $this->faker->optional()->company()
+            'brand' => $this->faker->optional()->company(),
         ];
     }
 }
