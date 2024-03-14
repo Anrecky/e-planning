@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Mail\UserRegistered;
 use App\Models\Employee;
 use App\Models\User;
+use App\Models\WorkUnit;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
@@ -17,10 +18,11 @@ class UserController extends Controller
     {
         $title = 'Kelola User';
         $users = User::notAdmin()->get();
-        $roles = Role::whereNot('name', 'SUPER ADMIN PERENCANAAN')->get();
+        $roles = Role::all();
+        $work_units = WorkUnit::all();
 
         // Kirim data role ke view bersamaan dengan data users dan title
-        return view('app.user', compact('users', 'title', 'roles'));
+        return view('app.user', compact('users', 'title', 'roles', 'work_units'));
     }
 
     public function store(Request $request)
@@ -30,50 +32,43 @@ class UserController extends Controller
             'identity_number' => 'nullable|numeric',
             'user_email' => 'required|email|unique:users,email',
             'user_role' => 'required|exists:roles,name',
-            'position' => 'required_if:identity_number|string',
-            'work_unit' => 'required_if:identity_number|integer',
+            'position' => 'string|required_if:identity_number,true',
+            'work_unit' => 'integer|required_if:identity_number,true',
         ]);
 
         try {
-            // Generate password acak
             $randomPassword = Str::random(10);
 
             $user = User::create([
                 'name' => $validatedData['user_name'],
                 'email' => $validatedData['user_email'],
                 'password' => Hash::make($randomPassword),
-                'position' => $validatedData['position'],
             ]);
-
-            $employee = new Employee([
-                'id' => $validatedData['identity_number'],
-                'position' => $validatedData['position'],
-                'work_unit_id' => $validatedData,
-            ]);
-
-            // Menetapkan role ke pengguna
+            if (!empty($validatedData['identity_number']) && empty($validatedData['position'] && empty($validatedData['work_unit']))) {
+                $employee = new Employee([
+                    'id' => $validatedData['identity_number'],
+                    'position' => $validatedData['position'],
+                    'work_unit_id' => $validatedData['work_unit'],
+                ]);
+                $user->employee()->save($employee);
+            }
             $user->assignRole($validatedData['user_role']);
-            $user->employee()->updateOrCreate(
-                ['id' => $validatedData['identity_number'], 'user_id' => $user->id],
-                ['position' => $validatedData['position'], 'work_unit_id' => 1]
-            );
 
             $user->save();
 
             // Kirim email dengan password yang digenerate
             // Mail::to($user->email)->send(new UserRegistered($user, $randomPassword));
+            return back()->with('success', 'Data user berhasil ditambahkan.');
         } catch (\Exception $e) {
             return back()->with('error', $e->getMessage());
         }
-
-        return back()->with('success', 'Data user berhasil ditambahkan.');
     }
 
     public function update(Request $request, User $user)
     {
         $validatedData = $request->validate([
             'name' => 'required|max:255',
-            'email' => 'required|email|unique:users,email,'.$user->id,
+            'email' => 'required|email|unique:users,email,' . $user->id,
             'password' => [
                 'nullable',
                 'min:8',
@@ -82,7 +77,7 @@ class UserController extends Controller
         ]);
 
         // Hanya enkripsi dan update password jika field password diisi
-        if (! empty($request->password)) {
+        if (!empty($request->password)) {
             $validatedData['password'] = bcrypt($request->password);
         } else {
             unset($validatedData['password']); // Jangan update password jika tidak diisi
@@ -112,7 +107,7 @@ class UserController extends Controller
 
         $query = User::query();
 
-        if (! empty($search)) {
+        if (!empty($search)) {
             $query->where('name', 'LIKE', "%{$search}%")
                 ->orWhere('identity_number', 'LIKE', "%{$search}%");
         }

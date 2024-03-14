@@ -77,7 +77,7 @@ Route::middleware(['auth'])->prefix('admin')->group(function () {
         Route::get('pagu-unit', [UnitBudgetController::class, 'index'])->name('unit_budget.index');
         Route::post('pagu-unit', [UnitBudgetController::class, 'store'])->name('unit_budget.store');
         Route::get('kelola-user', [UserController::class, 'index'])->name('user.index');
-        Route::post('user', [UserController::class, 'store'])->name('user.store');
+        Route::post('user', [UserController::class, 'store'])->name('user.store')->middleware('can:create user');
         Route::patch('user/{user}/update', [UserController::class, 'update'])->name('user.update');
         Route::delete('user/{user}/hapus', [UserController::class, 'destroy'])->name('user.delete');
 
