@@ -15,6 +15,7 @@ class ActivityRecap extends Model
     {
         return $this->belongsTo(Activity::class, 'activity_id');
     }
+
     public static function sortedByActivityCode()
     {
         return self::query()

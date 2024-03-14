@@ -15,10 +15,12 @@ class BudgetImplementation extends Model
     {
         return $this->belongsTo(Activity::class, 'activity_id');
     }
+
     public function accountCode()
     {
         return $this->belongsTo(AccountCode::class);
     }
+
     public function details()
     {
         return $this->hasMany(BudgetImplementationDetail::class);
@@ -34,6 +36,7 @@ class BudgetImplementation extends Model
     {
         return $query->where('revision', 0);
     }
+
     /**
      * Scope a query to group data by activity code.
      *
@@ -45,6 +48,7 @@ class BudgetImplementation extends Model
         return $query->join('activities', 'activities.id', '=', 'budget_implementations.activity_id')
             ->groupBy('activities.code');
     }
+
     /**
      * Scope a query to group data by account code.
      *
@@ -56,6 +60,7 @@ class BudgetImplementation extends Model
         return $query->join('account_codes', 'account_codes.id', '=', 'budget_implementations.account_code_id')
             ->groupBy('account_codes.code');
     }
+
     /**
      * Calculate the total sum of 'total' from details for this budget implementation.
      */

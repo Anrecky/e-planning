@@ -13,7 +13,7 @@ class PerformanceIndicator extends Model
 
     public function getValueAsPercentageAttribute()
     {
-        return $this->value * 100 . '%';
+        return $this->value * 100 .'%';
     }
 
     public function setValueAttribute($value)

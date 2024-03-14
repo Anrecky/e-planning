@@ -8,7 +8,9 @@ use Illuminate\Database\Eloquent\Model;
 class Renstra extends Model
 {
     use HasFactory;
+
     protected $fillable = ['vision', 'mission', 'iku', 'capaian'];
+
     protected $casts = [
         'mission' => 'array',
         'iku' => 'array',

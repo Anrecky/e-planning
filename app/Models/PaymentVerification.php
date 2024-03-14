@@ -20,12 +20,14 @@ class PaymentVerification extends Model
         'auditor_name',
         'auditor_nip',
         'ppk_id',
-        'verificator_id'
+        'verificator_id',
     ];
+
     public function ppk(): BelongsTo
     {
         return $this->belongsTo(PPK::class);
     }
+
     public function verificator(): BelongsTo
     {
         return $this->belongsTo(Verificator::class);

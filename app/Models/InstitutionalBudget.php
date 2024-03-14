@@ -8,5 +8,6 @@ use Illuminate\Database\Eloquent\Model;
 class InstitutionalBudget extends Model
 {
     use HasFactory;
+
     protected $fillable = ['pagu'];
 }

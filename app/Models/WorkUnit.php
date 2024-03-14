@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class WorkUnit extends Model
 {
     use HasFactory;
+
     protected $fillable = ['name', 'code'];
 
     public function unitBudgets()

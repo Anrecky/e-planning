@@ -2,9 +2,9 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Builder;
 
 class AccountCode extends Model
 {
@@ -19,6 +19,7 @@ class AccountCode extends Model
     {
         $query->where('code', $code);
     }
+
     public function calculateTotalSum()
     {
         return $this->budgetImplementations->sum(function ($budgetImplementation) {

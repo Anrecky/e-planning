@@ -31,10 +31,12 @@ class Receipt extends Model
     {
         return $this->belongsTo(PPK::class);
     }
+
     public function treasurer(): BelongsTo
     {
         return $this->belongsTo(Treasurer::class);
     }
+
     public function detail(): BelongsTo
     {
         return $this->belongsTo(BudgetImplementationDetail::class, 'budget_implementation_detail_id', 'id');

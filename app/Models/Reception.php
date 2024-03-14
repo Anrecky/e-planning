@@ -10,7 +10,7 @@ class Reception extends Model
     use HasFactory;
 
     protected $casts = [
-        'type' => 'array'
+        'type' => 'array',
     ];
 
     public function accountCodeReception()

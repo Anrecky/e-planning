@@ -2,9 +2,9 @@
 
 namespace App\Models;
 
+use App\Enums\Month;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use App\Enums\Month;
 
 class WithdrawalPlan extends Model
 {
@@ -22,6 +22,7 @@ class WithdrawalPlan extends Model
         'amount_withdrawn',
         'notes',
     ];
+
     /**
      * The activity that the withdrawal plan is associated with.
      */
@@ -32,8 +33,6 @@ class WithdrawalPlan extends Model
 
     /**
      * Get the month as a Month enum instance.
-     *
-     * @return Month
      */
     public function getMonthAttribute($value): Month
     {
@@ -42,8 +41,6 @@ class WithdrawalPlan extends Model
 
     /**
      * Set the month using a Month enum instance.
-     *
-     * @param Month $value
      */
     public function setMonthAttribute(Month $value): void
     {
@@ -53,8 +50,8 @@ class WithdrawalPlan extends Model
     /**
      * Calculate the total sum of amount withdrawn for an activity in a specific year.
      *
-     * @param int $activityId
-     * @param int $year
+     * @param  int  $activityId
+     * @param  int  $year
      * @return float
      */
     public static function calculateTotalWithdrawnForActivity($activityId, $year)

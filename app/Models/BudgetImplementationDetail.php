@@ -15,6 +15,7 @@ class BudgetImplementationDetail extends Model
     {
         return $this->belongsTo(ExpenditureUnit::class);
     }
+
     public function budgetImplementation()
     {
         return $this->belongsTo(BudgetImplementation::class);

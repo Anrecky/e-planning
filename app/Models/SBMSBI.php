@@ -8,6 +8,8 @@ use Illuminate\Database\Eloquent\Model;
 class SBMSBI extends Model
 {
     use HasFactory;
+
     protected $fillable = ['sbm_path', 'sbi_path'];
+
     protected $table = 'sbmsbis';
 }
