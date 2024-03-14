@@ -47,7 +47,7 @@ class DatabaseSeeder extends Seeder
 
         $this->call([RolesAndPermissionsSeeder::class]);
         $this->call([DumyUserSeeder::class]);
-        User::where('name', 'Admin')->first()->assignRole('SUPER ADMIN PERENCANAAN');
+        // User::where('name', 'Admin')->first()->assignRole('SUPER ADMIN PERENCANAAN');
         $roles = [
             'PPK',
             'SPI',
