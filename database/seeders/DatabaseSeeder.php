@@ -43,5 +43,6 @@ class DatabaseSeeder extends Seeder
         // PPK::factory(123)->create();
         // Verificator::factory(456)->create();
         $this->call([RolesAndPermissionsSeeder::class]);
+        $this->call([DumyUserSeeder::class]);
     }
 }
