@@ -47,5 +47,5 @@ Route::middleware(['auth', 'web'])->group(function () {
     // Get Receipt Total Amount By Budget Implementation Detail ID
     Route::get('/receipt/total-amount/{detail}', [PaymentReceiptController::class, 'totalAmountByBudgetImplementationDetail'])->name('receipts.total_amount');
 
-    Route::get('/users', [UserController::class, 'getUsers'])->name('users.index');
+    Route::get('/search-user', [UserController::class, 'getUsers'])->name('search-user');
 });

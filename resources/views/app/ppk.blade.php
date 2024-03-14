@@ -278,7 +278,7 @@
                     ajax: {
                         transport: function(params, success, failure) {
                             // Using Axios to fetch the data
-                            axios.get(`{{ route('users.index') }}`, {
+                            axios.get(`{{ url('api/search-user') }}`, {
                                     params: {
                                         search: params.data.term,
                                         limit: 10
@@ -314,7 +314,7 @@
                     ajax: {
                         transport: function(params, success, failure) {
                             // Using Axios to fetch the data
-                            axios.get(`{{ route('users.index') }}`, {
+                            axios.get(`{{ url('api/search-user') }}`, {
                                     params: {
                                         search: params.data.term,
                                         limit: 10
@@ -488,7 +488,7 @@
                         ajax: {
                             transport: function(params, success, failure) {
                                 // Using Axios to fetch the data
-                                axios.get(`{{ route('users.index') }}`, {
+                                axios.get(`{{ url('api/search-user') }}`, {
                                         params: {
                                             search: params.data.term,
                                             limit: 10
@@ -526,7 +526,7 @@
                         ajax: {
                             transport: function(params, success, failure) {
                                 // Using Axios to fetch the data
-                                axios.get(`{{ route('users.index') }}`, {
+                                axios.get(`{{ url('api/search-user') }}`, {
                                         params: {
                                             search: params.data.term,
                                             limit: 10
