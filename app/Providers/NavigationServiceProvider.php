@@ -66,7 +66,7 @@ class NavigationServiceProvider extends ServiceProvider
                         // )
                         ->add(
                             'Rekam Kuitansi',
-                            route('payment-receipt.list')
+                            route('payment-receipt.index')
                         )->add(
                             'Daftar Kuitansi',
                             route('payment-receipt.list')
