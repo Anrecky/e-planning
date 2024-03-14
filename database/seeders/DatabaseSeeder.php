@@ -23,23 +23,23 @@ class DatabaseSeeder extends Seeder
     {
         // User::create(['name' => 'Admin', 'email' => 'admin@mail.com', 'password' => Hash::make(env('ADMIN_PASS'))]);
 
-        // if (config('app.env') !== 'testing') {
-        //     // Path to your SQL file
-        //     $sqlFilePath = database_path('seeders/eplanning.sql');
+        if (config('app.env') == 'local') {
+            // Path to your SQL file
+            $sqlFilePath = database_path('seeders/eplanning.sql');
 
-        //     // Check if the file exists
-        //     if (File::exists($sqlFilePath)) {
-        //         // Read the SQL file
-        //         $sql = File::get($sqlFilePath);
+            // Check if the file exists
+            if (File::exists($sqlFilePath)) {
+                // Read the SQL file
+                $sql = File::get($sqlFilePath);
 
-        //         // Execute the SQL queries
-        //         DB::unprepared($sql);
+                // Execute the SQL queries
+                DB::unprepared($sql);
 
-        //         $this->command->info('SQL file seeded successfully.');
-        //     } else {
-        //         $this->command->error('SQL file not found.');
-        //     }
-        // }
+                $this->command->info('SQL file seeded successfully.');
+            } else {
+                $this->command->error('SQL file not found.');
+            }
+        }
 
         // for testing
         // PPK::factory(123)->create();
