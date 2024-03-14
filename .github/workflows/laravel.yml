@@ -1,6 +1,6 @@
 # GitHub Action for Laravel with MySQL
 name: Testing Laravel with MySQL
-on: [push, pull_request]
+on: [push]
 jobs:
   laravel:
     name: Laravel (PHP ${{ matrix.php-versions }})
