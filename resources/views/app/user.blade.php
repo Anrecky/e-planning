@@ -131,7 +131,7 @@
         </div>
     </div>
     <x-modal modalId="createModal" modalTitle="Tambahkan User" size="lg">
-        <x-user.create-form :roles="$roles" />
+        <x-user.create-form :workUnits="$work_units" :roles="$roles" />
     </x-modal>
     <x-modal modalId="editModal" modalTitle="Edit User">
         <x-user.edit-form :roles="$roles" />
