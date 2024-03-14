@@ -11,12 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('verificators', function (Blueprint $table) {
-            $table->id();
-            $table->string('position');
-            $table->string('name');
-            $table->string('nik');
-            $table->timestamps();
+        Schema::table('users', function (Blueprint $table) {
+            $table->date('dob')->nullable();
+            $table->string('address')->nullable();
+            $table->string('phone')->nullable();
+            $table->string('profile_picture')->nullable();
         });
     }
 
@@ -25,6 +24,8 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('verificators');
+        Schema::table('users', function (Blueprint $table) {
+            //
+        });
     }
 };

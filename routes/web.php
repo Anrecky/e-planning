@@ -3,30 +3,28 @@
 use App\Http\Controllers\AccountCodeController;
 use App\Http\Controllers\AccountCodeReceptionController;
 use App\Http\Controllers\ActivityRecapController;
-use App\Http\Controllers\AssetCategoryController;
-use App\Http\Controllers\BudgetImplementationController;
-use App\Http\Controllers\PerformanceIndicatorController;
-use App\Http\Controllers\ProgramTargetController;
-use App\Http\Controllers\RenstraController;
-use App\Http\Controllers\WorkUnitController;
-use App\Http\Controllers\ExpenditureUnitController;
-use App\Http\Controllers\InstitutionalBudgetController;
-use App\Http\Controllers\SBMSBIController;
-use App\Http\Controllers\UnitBudgetController;
-use App\Http\Controllers\UserController;
-use App\Http\Controllers\WithdrawalPlanController;
-use App\Http\Controllers\RuhPaymentController;
-use App\Http\Controllers\ReceptionController;
 use App\Http\Controllers\AssetController;
 use App\Http\Controllers\AssetItemController;
-use App\Http\Controllers\BudgetImplementationDetailController;
-use App\Http\Controllers\PaymentVerificationController;
-use App\Http\Controllers\PaymentReceiptController;
+use App\Http\Controllers\BudgetImplementationController;
 use App\Http\Controllers\DetailedFAReportController;
-use App\Http\Controllers\TreasurerController;
-use App\Http\Controllers\VerificatorController;
-use App\Http\Controllers\PPKController;
+use App\Http\Controllers\ExpenditureUnitController;
+use App\Http\Controllers\InstitutionalBudgetController;
 use App\Http\Controllers\MyProfileController;
+use App\Http\Controllers\PaymentReceiptController;
+use App\Http\Controllers\PaymentVerificationController;
+use App\Http\Controllers\PerformanceIndicatorController;
+use App\Http\Controllers\PPKController;
+use App\Http\Controllers\ProgramTargetController;
+use App\Http\Controllers\ReceptionController;
+use App\Http\Controllers\RenstraController;
+use App\Http\Controllers\RuhPaymentController;
+use App\Http\Controllers\SBMSBIController;
+use App\Http\Controllers\TreasurerController;
+use App\Http\Controllers\UnitBudgetController;
+use App\Http\Controllers\UserController;
+use App\Http\Controllers\VerificatorController;
+use App\Http\Controllers\WithdrawalPlanController;
+use App\Http\Controllers\WorkUnitController;
 
 Route::get('/', function () {
     return redirect()->route('login');
@@ -89,7 +87,7 @@ Route::middleware(['auth'])->prefix('admin')->group(function () {
             'update' => 'treasurer.update',
             'destroy' => 'treasurer.destroy',
         ])->parameters([
-            'bendahara' => 'treasurer'
+            'bendahara' => 'treasurer',
         ]);
 
         // PPK Routes
@@ -109,7 +107,7 @@ Route::middleware(['auth'])->prefix('admin')->group(function () {
             'index' => 'asset_item.index',
             'store' => 'asset_item.store',
             'update' => 'asset_item.update',
-            'destroy' => 'asset_item.destroy'
+            'destroy' => 'asset_item.destroy',
         ])->parameters([
             'barang-aset' => 'assetItem', // Replace 'custom_param' with your desired parameter name
         ]);
@@ -153,7 +151,7 @@ Route::middleware(['auth'])->prefix('admin')->group(function () {
             'index' => 'asset.index',
             'store' => 'asset.store',
             'destroy' => 'asset.destroy',
-            'edit', 'asset.edit'
+            'edit', 'asset.edit',
         ])->parameters([
             'rekam-aset' => 'asset', // Replace 'custom_param' with your desired parameter name
         ]);
@@ -161,7 +159,7 @@ Route::middleware(['auth'])->prefix('admin')->group(function () {
 
     Route::prefix('ruh-pembayaran')->group(function () {
         Route::resource('rekam-kuitansi', PaymentReceiptController::class)->parameters([
-            'rekam-kuitansi' => 'receipt'
+            'rekam-kuitansi' => 'receipt',
         ])->names([
             'index' => 'payment-receipt.index',
             'store' => 'payment-receipt.store',
@@ -179,12 +177,12 @@ Route::middleware(['auth'])->prefix('admin')->group(function () {
         Route::get('kuitansi/', [PaymentReceiptController::class, 'list'])->name('payment-receipt.list');
 
         Route::resource('rekam-verifikasi', PaymentVerificationController::class)->parameters([
-            'rekam-verifikasi' => 'payment_verification'
+            'rekam-verifikasi' => 'payment_verification',
         ])->names([
             'index' => 'payment-verification.index',
             'store' => 'payment-verification.store',
             'update' => 'payment-verification.update',
-            'destroy' => 'payment-verification.destroy'
+            'destroy' => 'payment-verification.destroy',
         ]);
     });
     Route::prefix('cetak-laporan')->group(function () {

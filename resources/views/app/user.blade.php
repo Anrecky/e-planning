@@ -130,7 +130,7 @@
             </x-custom.statbox>
         </div>
     </div>
-    <x-modal modalId="createModal" modalTitle="Tambahkan User">
+    <x-modal modalId="createModal" modalTitle="Tambahkan User" size="lg">
         <x-user.create-form :roles="$roles" />
     </x-modal>
     <x-modal modalId="editModal" modalTitle="Edit User">
@@ -156,49 +156,6 @@
         </form>
     </x-modal> --}}
 
-    <!-- Edit Modal -->
-    {{-- <div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="editModalTitle"
-        aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="editModalTitle">Edit User</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <form id="edit-form" action="" method="POST">
-                        @csrf
-                        @method('PATCH')
-                        <div class="form-group mt-3">
-                            <label>Nama Lengkap</label>
-                            <input type="text" id="user_name" name="name" class="form-control" required>
-                        </div>
-                        <div class="form-group mt-3">
-                            <label>Email</label>
-                            <input type="text" id="user_email" name="email" class="form-control" readonly>
-                        </div>
-                        <div class="form-group mt-3">
-                            <label for="password">Password Baru? (opsional)</label>
-                            <div class="input-group">
-                                <input type="password" id="password" name="password"
-                                    class="form-control @error('password') is-invalid @enderror"
-                                    placeholder="Password Baru" value="{{ old('password') }}">
-                                @error('password')
-                                    <div class="invalid-feedback">{{ $message }}</div>
-                                @enderror
-                            </div>
-                        </div>
-                        <!-- Add other fields as needed -->
-                        <div class="d-flex justify-content-end mt-3">
-                            <button class="btn btn-primary" type="submit">
-                                <span class="icon-name">Update</span>
-                            </button>
-                        </div>
-                    </form>
-                </div>
-            </div>
-        </div>
-    </div> --}}
 
     <!--  BEGIN CUSTOM SCRIPTS FILE  -->
     <x-slot:footerFiles>

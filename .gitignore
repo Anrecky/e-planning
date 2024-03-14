@@ -17,3 +17,6 @@ yarn-error.log
 *.DS_Store
 *.sql
 composer.lock
+/docker
+docker/*
+.env.testing
