@@ -59,8 +59,10 @@ class DatabaseSeeder extends Seeder
             'Pelaksana Kegiatan',
         ];
 
-        User::factory(250)->create()->each(function ($user) use ($roles) {
-            $user->assignRole($roles[array_rand($roles)]);
-        });
+        if (env('APP_ENV') === 'local') {
+            User::factory(250)->create()->each(function ($user) use ($roles) {
+                $user->assignRole($roles[array_rand($roles)]);
+            });
+        }
     }
 }
