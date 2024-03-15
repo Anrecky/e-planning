@@ -25,15 +25,16 @@ class RolesAndPermissionsSeeder extends Seeder
             'Pelaksana Kegiatan'
         ];
         $permissions = [];
-        $actions = ['create', 'see', 'update', 'delete'];
-        $entities = ['user', 'work_unit'];
+        $entities_actions = ['create', 'see', 'update', 'delete'];
+        $main_menu_actions = ['view', 'approval'];
+        $entities = ['user'];
+        $main_menu = ['payments', 'reporting', 'budgeting', 'administration', 'planning'];
 
         foreach ($entities as $entity) {
-            foreach ($actions as $action) {
+            foreach ($entities_actions as $action) {
                 $permissions[] = $action . ' ' . $entity;
             }
         }
-
 
         // Create permissions
         foreach ($permissions as $permissionName) {
