@@ -254,7 +254,7 @@
                             </div>
                         </div>
                         <div class="mb-4 row ppkWrapper">
-                            <label for="selectVerifier" class="col-sm-2 col-form-label">PPK</label>
+                            <label for="createSelectPPK" class="col-sm-2 col-form-label">PPK</label>
                             <div class="col-sm-8">
                                 <select class="form-select" name="ppk" id="createSelectPPK">
                                     <option selected disabled value="">Pilih PPK...</option>
@@ -482,7 +482,7 @@
                         ajax: {
                             transport: function(params, success, failure) {
                                 // Using Axios to fetch the data
-                                axios.get(`{{ route('ppks.index') }}`, {
+                                axios.get(`/api/search-employee/ppk`, {
                                         params: {
                                             search: params.data.term,
                                             limit: 10
@@ -494,9 +494,9 @@
                                             results: response.data.map(function(item) {
                                                 return {
                                                     id: item.id,
-                                                    text: item.nik + ' - ' +
+                                                    text: item.name + ' - ' +
                                                         item
-                                                        .name
+                                                        .identity_number
                                                 };
                                             })
                                         });
@@ -517,7 +517,7 @@
                         ajax: {
                             transport: function(params, success, failure) {
                                 // Using Axios to fetch the data
-                                axios.get(`{{ route('treasurers.index') }}`, {
+                                axios.get(`{{ route('search.employee', 'treasurer') }}`, {
                                         params: {
                                             search: params.data.term,
                                             limit: 10
@@ -529,9 +529,9 @@
                                             results: response.data.map(function(item) {
                                                 return {
                                                     id: item.id,
-                                                    text: item.nik + ' - ' +
+                                                    text: item.name + ' - ' +
                                                         item
-                                                        .name
+                                                        .identity_number
                                                 };
                                             })
                                         });
@@ -627,7 +627,7 @@
                         ajax: {
                             transport: function(params, success, failure) {
                                 // Using Axios to fetch the data
-                                axios.get(`{{ route('ppks.index') }}`, {
+                                axios.get(`{{ route('search.employee', 'ppk') }}`, {
                                         params: {
                                             search: params.data.term,
                                             limit: 10
@@ -641,9 +641,10 @@
                                                 item) {
                                                 return {
                                                     id: item.id,
-                                                    text: item.nik + ' - ' +
+                                                    text: item.name +
+                                                        ' - ' +
                                                         item
-                                                        .name
+                                                        .identity_number
                                                 };
                                             })
                                         });
@@ -671,7 +672,7 @@
                         ajax: {
                             transport: function(params, success, failure) {
                                 // Using Axios to fetch the data
-                                axios.get(`{{ route('treasurers.index') }}`, {
+                                axios.get(`{{ route('search.employee', 'treasurer') }}`, {
                                         params: {
                                             search: params.data.term,
                                             limit: 10
@@ -684,9 +685,10 @@
                                                 item) {
                                                 return {
                                                     id: item.id,
-                                                    text: item.nik + ' - ' +
+                                                    text: item.name +
+                                                        ' - ' +
                                                         item
-                                                        .name
+                                                        .identity_number
                                                 };
                                             })
                                         });

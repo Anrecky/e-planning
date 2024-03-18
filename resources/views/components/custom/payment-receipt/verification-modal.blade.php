@@ -40,8 +40,8 @@
                                             </label>
                                             <div class="col-sm-8">
                                                 <input class="form-control" type="date" name="verification_date"
-                                                    {{ Auth::user()->hasRole('SUPER ADMIN PERENCANAN') ? '' : 'readonly' }}
-                                                    value="{{ Auth::user()->hasRole('SUPER ADMIN PERENCANAN') ? $receipt->date ?? date('Y-m-d') : date('Y-m-d') }}"
+                                                    {{ Auth::user()->hasRole('SUPER ADMIN PERENCANAAN') ? '' : 'readonly' }}
+                                                    value="{{ Auth::user()->hasRole('SUPER ADMIN PERENCANAAN') ? $receipt->date ?? date('Y-m-d') : date('Y-m-d') }}"
                                                     id="verification_date"></input>
                                             </div>
                                         </div>

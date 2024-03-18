@@ -31,14 +31,20 @@ return new class extends Migration
             $table->string('activity_implementer')->nullable();
             $table->unsignedBigInteger('ppk_id');
             $table->unsignedBigInteger('treasurer_id')->nullable();
+            $table->unsignedBigInteger('spi_id')->nullable();
             $table->foreign('ppk_id')
                 ->references('id')
-                ->on('employees')
+                ->on('users')
                 ->onUpdate('cascade')
                 ->onDelete('cascade');
             $table->foreign('treasurer_id')
                 ->references('id')
-                ->on('employees')
+                ->on('users')
+                ->onUpdate('cascade')
+                ->onDelete('cascade');
+            $table->foreign('spi_id')
+                ->references('id')
+                ->on('users')
                 ->onUpdate('cascade')
                 ->onDelete('cascade');
             $table->string('provider');

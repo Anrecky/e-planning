@@ -130,12 +130,12 @@
                             <h4 class="float-start"> Detail
                                 Kwitansi {!! status_receipt($receipt->status) !!}</h4>
                             @if (in_array($receipt->status, ['wait-verificator', 'reject-verificator', 'wait-ppk']) &&
-                                    $receipt->ppk->staff->id == Auth::user()->id)
+                                    $receipt->ppk->employee_staff->staff_id == Auth::user()->id)
                                 <div class="float-end p-2">
                                     <x-custom.payment-receipt.verification-modal :receipt="$receipt" />
                                 </div>
                             @endif
-                            @if (in_array($receipt->status, ['wait-ppk', 'reject-ppk', 'accept']) && $receipt->ppk->user->id == Auth::user()->id)
+                            @if (in_array($receipt->status, ['wait-ppk', 'reject-ppk', 'accept']) && $receipt->ppk->id == Auth::user()->id)
                                 <div class="float-end p-2">
                                     <x-custom.payment-receipt.ppk-modal :receipt="$receipt" />
                                 </div>
@@ -276,8 +276,12 @@
                                             Bendahara</label>
                                         <div class="col-sm-8">
                                             <p class="form-control">
-                                                {{ $receipt->treasurer?->name }} /
-                                                {{ $receipt->treasurer?->nik }}
+                                                @if ($receipt->treasurer)
+                                                    {{ $receipt->treasurer?->name }} /
+                                                    {{ $receipt->treasurer?->nik }}
+                                                @else
+                                                    -
+                                                @endif
                                             </p>
                                         </div>
                                     </div>
@@ -288,8 +292,8 @@
                                             PPK</label>
                                         <div class="col-sm-8">
                                             <p class="form-control">
-                                                {{ $receipt->ppk->user->name }} /
-                                                {{ $receipt->ppk->user->identity_number }}
+                                                {{ $receipt->ppk->name }} /
+                                                {{ $receipt->ppk->employee_staff->id }}
                                             </p>
                                         </div>
                                     </div>
@@ -300,8 +304,14 @@
                                             Verifikator </label>
                                         <div class="col-sm-8">
                                             <p class="form-control">
-                                                {{ $receipt->ppk->staff->name }}
-                                                {{ $receipt->ppk->staff->identity_number }}
+                                                @if ($receipt->verification->last())
+                                                    {{ $receipt->verification->last()->user->name }} /
+                                                    {{ $receipt->verification->last()->user->identity_number }} (
+                                                    {{ $receipt->verification->last()->date }})
+                                                @else
+                                                    {{ $receipt->ppk->employee_staff->staff->name }} ( Belum
+                                                    Diverifikasi)
+                                                @endif
                                             </p>
                                         </div>
                                     </div>
@@ -389,7 +399,8 @@
                                                     Kwitansi
                                                 </td>
                                                 <td class="text-center">
-                                                    <a href="{{ route('payment-receipt.print-kwitansi', $receipt) }}">
+                                                    <a target="_blank"
+                                                        href="{{ route('payment-receipt.print-kwitansi', $receipt) }}">
                                                         <span class="badge badge-light-success">Download</span>
                                                     </a>
                                                 </td>
@@ -399,7 +410,8 @@
                                                     Tiket
                                                 </td>
                                                 <td class="text-center">
-                                                    <a href="{{ route('payment-receipt.print-ticket', $receipt) }}">
+                                                    <a target="_blank"
+                                                        href="{{ route('payment-receipt.print-ticket', $receipt) }}">
                                                         <span class="badge badge-light-success">Download</span>
                                                     </a>
                                                 </td>
@@ -431,16 +443,7 @@
                                                         Hasil Verifikasi {{ $verif->created_at }}
                                                     </td>
                                                     <td class="">
-                                                        {{-- @if ($receipt->berkas)
-                                                            <a target="_blank"
-                                                                href="{{ url('storage/berkas_receipt/' . $verif->berkas) }}">
-                                                                <span class="badge badge-light-success">Download</span>
-                                                            </a>
-                                                        @else
-                                                            <span class="badge badge-light-danger">Tidak ada
-                                                                berkas</span>
-                                                        @endif --}}
-                                                        <a
+                                                        <a target="_blank"
                                                             href="{{ route('payment-receipt.print-ticket', [$receipt, $verif]) }}">
                                                             <span class="badge badge-light-success">Download</span>
                                                         </a>

@@ -29,12 +29,12 @@ class Receipt extends Model
 
     public function ppk(): BelongsTo
     {
-        return $this->belongsTo(PPK::class);
+        return $this->belongsTo(User::class, 'ppk_id', 'id')->with('employee_staff');
     }
 
     public function treasurer(): BelongsTo
     {
-        return $this->belongsTo(Treasurer::class);
+        return $this->belongsTo(User::class, 'treasurer_id', 'id');
     }
 
     public function detail(): BelongsTo
