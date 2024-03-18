@@ -36,6 +36,16 @@
         </div>
     </div>
     <div class="mb-4 row align-items-center">
+        <label for="letter_reference" class="col-sm-4 col-form-labe">Referensi Nomor Surat</label>
+        <div class="col-sm-8">
+            <input type="text" class="form-control @error('letter_reference') is-invalid @enderror"
+                id="letter_reference" name="letter_reference" value="{{ old('letter_reference') }}">
+            @error('letter_reference')
+                <div class="invalid-feedback">{{ $message }}</div>
+            @enderror
+        </div>
+    </div>
+    <div class="mb-4 row align-items-center">
         <label for="inputPosition" class="col-sm-4 col-form-label">Jabatan</label>
         <div class="col-sm-8">
             <input type="text" class="form-control @error('position') is-invalid @enderror" id="inputPosition"
@@ -52,7 +62,8 @@
                 name="identity_type" required>
                 <option selected disabled value="">Jenis Identitas </option>
                 @foreach ($identityTypes as $identity_type)
-                    <option value="{{ $identity_type }}" {{ old('identity_type') == $identity_type ? 'selected' : '' }}>
+                    <option value="{{ $identity_type }}"
+                        {{ old('identity_type') == $identity_type ? 'selected' : '' }}>
                         {{ strtoupper($identity_type) }}</option>
                 @endforeach
             </select>

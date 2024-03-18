@@ -25,6 +25,16 @@
         </div>
     </div>
     <div class="mb-4 row align-items-center">
+        <label for="letter_reference" class="col-sm-3 col-form-labe">Referensi Nomor Surat</label>
+        <div class="col-sm-8">
+            <input type="text" class="form-control @error('letter_reference') is-invalid @enderror"
+                id="letter_reference" name="letter_reference" value="{{ old('letter_reference') }}">
+            @error('letter_reference')
+                <div class="invalid-feedback">{{ $message }}</div>
+            @enderror
+        </div>
+    </div>
+    <div class="mb-4 row align-items-center">
         <label for="inputFullName" class="col-sm-3 col-form-label">Nama Lengkap</label>
         <div class="col-sm-8">
             <input type="text" class="form-control @error('user_name') is-invalid @enderror" id="inputFullName"
