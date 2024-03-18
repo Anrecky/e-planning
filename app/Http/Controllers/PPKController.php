@@ -107,22 +107,4 @@ class PPKController extends Controller
 
         return back()->with('success', 'Data ppk berhasil dihapus.');
     }
-
-    public function getPPKs(Request $request)
-    {
-        $search = $request->input('search', '');
-        $limit = $request->input('limit', 10); // Default to 10 if not provided
-
-        $query = PPK::query();
-
-        if (! empty($search)) {
-            $query->where('name', 'LIKE', "%{$search}%")
-                ->orWhere('nik', 'LIKE', "%{$search}%")
-                ->orWhere('position', 'LIKE', "%{$search}%");
-        }
-
-        $ppks = $query->limit($limit)->get(['id', 'name', 'position', 'nik']);
-
-        return response()->json($ppks);
-    }
 }
