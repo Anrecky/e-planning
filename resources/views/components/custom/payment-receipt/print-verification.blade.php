@@ -31,7 +31,7 @@ function checkbox($number, $desc, $span = 'ADA', $res = false)
     body {
         margin: 3px 10px 3px 5px;
         padding: 3px 3px 3px 3px;
-        font-size: 11px;
+        font-size: 13px;
         font-family: Arial, Helvetica, sans-serif;
     }
 
@@ -114,17 +114,20 @@ function checkbox($number, $desc, $span = 'ADA', $res = false)
                     <tr>
                         <td style="width: 150px"><img style="width: 150px" src="{{ $imageSrc }}" alt="auth-img"></td>
                         <td class="text-center">
-                            <h4>KEMENTRIAN AGAMA RI <br>
-                                INSTITUT AGAMA ISLAM NEGERI <br>
-                                SYAIKH ABDURRAHMAN SIDDIK <br>
-                                BANGKA BELITUNG <br> <br>
+                            <h4><span style="font-size: 14">KEMENTRIAN AGAMA RI <br>
+                                    INSTITUT AGAMA ISLAM NEGERI <br>
+                                    SYAIKH ABDURRAHMAN SIDDIK <br>
+                                    BANGKA BELITUNG <br> </span><br>
                                 FORMULIR VERIFIKASI</h4>
                         </td>
                         <td>
                             <p style="margin-left: 10px !important">Nomor :
-                                {{ $receipt->reference_number }}<br><br>Tanggal : <br><br> <span
-                                    style="font-style: italic;">(diisi
-                                    verifikator)</span></p>
+                                {{ $receipt->reference_number }}<br><br>Tanggal :
+                                {{ \Carbon\Carbon::parse($verifData->date)->translatedFormat('j F Y') }}
+                                <br><br>
+                                <span style="font-style: italic;">(diisi
+                                    verifikator)</span>
+                            </p>
                         </td>
                     </tr>
                 </table>
@@ -248,7 +251,8 @@ function checkbox($number, $desc, $span = 'ADA', $res = false)
         </tr>
         <tr>
             <td class="text-top" style="width: 35%">
-                SAYA MENYATAKAN BAHWA FORM DIISI DENGAN SEBENARNYA <br>PELAKSANA KEGIATAN<br>TANGGAL<br>
+                SAYA MENYATAKAN BAHWA FORM DIISI<br>DENGAN SEBENARNYA PELAKSANA KEGIATAN<br>
+                <br>
                 <br>
                 <br>
                 <br>
@@ -261,7 +265,8 @@ function checkbox($number, $desc, $span = 'ADA', $res = false)
                 <br>
                 <br>
                 <br>
-                {{ $receipt->ppk->staff->name }}
+                {{ $verifData->user->name }}<br>
+                {{ strtoupper($verifData->user->identity_type) }}. {{ strtoupper($verifData->user->identity_number) }}
             </td>
             <td class="text-top">
                 NAMA KEGIATAN DI POK : <br>
@@ -279,7 +284,8 @@ function checkbox($number, $desc, $span = 'ADA', $res = false)
                         <td colspan="3"> <span style="font-style: italic;">*)Diisi oleh verifikator</span></td>
                     </tr>
                     <tr>
-                        <td colspan="3"> TGL PEMERIKSAAN :</td>
+                        <td colspan="3"> TGL PEMERIKSAAN :
+                            {{ \Carbon\Carbon::parse($verifData->date)->translatedFormat('j F Y') }}</td>
                     </tr>
                     <tr>
                         <td style="width: 130px">HASIL PEMERIKSAAN :</td>
@@ -315,8 +321,11 @@ function checkbox($number, $desc, $span = 'ADA', $res = false)
                             <br>
                             <br>
                             <br>
+                            {!! $receipt->spi?->name ?? '<br>' !!}
                             <hr>
-                            NIP.
+                            {{ strtoupper($receipt->spi?->employee->identity_type ?? '') }}.
+                            {!! strtoupper($receipt->spi?->employee->id) ?? '<br>' !!}
+
                         </td>
                         <td>
                         </td>
@@ -327,9 +336,16 @@ function checkbox($number, $desc, $span = 'ADA', $res = false)
                             <br>
                             <br>
                             <br>
-                            {{ $receipt->ppk->name }}
-                            <hr>
-                            NIP. {{ $receipt->ppk->nik }}
+                            <br>
+                            @if ($receipt->status == 'accept')
+                                {{ $receipt->ppk->name }}
+                                <hr>
+                                {{ strtoupper($receipt->ppk->employee->identity_type ?? '') }}.
+                                {{ strtoupper($receipt->ppk->employee->id) }}
+                            @else
+                                <br>
+                                <hr><br>
+                            @endif
 
                         </td>
 

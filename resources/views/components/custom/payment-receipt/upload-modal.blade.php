@@ -1,7 +1,7 @@
 @props(['receipt'])
 
 <button type="button" class="btn btn-sm btn-primary temporary-edit mb-2 mt-2" data-bs-target="#uploadModal"
-    data-bs-toggle="modal" data-update-url="{{ route('payment-receipt.upload', $receipt) }}">
+    data-bs-toggle="modal">
     <i data-feather="upload"></i> {{ $receipt->berkas ? 'Ganti Berkas' : 'Upload Berkas' }}
 </button>
 
@@ -14,7 +14,7 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Tutup"></button>
             </div>
             <div class="modal-body">
-                <form id="form-upload" action="{{ route('payment-receipt.upload', $receipt) }}" method="POST"
+                <form id="form-upload" action="{{ route('receipt-action.upload-berkas', $receipt) }}" method="POST"
                     enctype="multipart/form-data">
                     @csrf
                     @method('POST')

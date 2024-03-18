@@ -105,6 +105,17 @@
                 /* background-color: blue; */
                 /* border-color: blue */
             }
+
+            .c-modal-bg {
+                /* position: fixed; */
+                /* top: 0; */
+                /* left: 0; */
+                /* z-index: 1040; */
+                /* width: 100vw; */
+                /* height: 100vh; */
+                /* background-color: rgba(0, 0, 0, 0.4); */
+                /* backdrop-filter: blur(15px); */
+            }
         </style>
         <!--  END CUSTOM STYLE FILE  -->
     </x-slot>
@@ -133,6 +144,11 @@
                                     $receipt->ppk->employee_staff->staff_id == Auth::user()->id)
                                 <div class="float-end p-2">
                                     <x-custom.payment-receipt.verification-modal :receipt="$receipt" />
+                                </div>
+                            @endif
+                            @if ($receipt->status == 'accept' && $receipt->ppk->employee_staff->staff_id == Auth::user()->id)
+                                <div class="float-end p-2">
+                                    <x-custom.payment-receipt.app-money-modal :receipt="$receipt" />
                                 </div>
                             @endif
                             @if (in_array($receipt->status, ['wait-ppk', 'reject-ppk', 'accept']) && $receipt->ppk->id == Auth::user()->id)
@@ -405,17 +421,19 @@
                                                     </a>
                                                 </td>
                                             </tr>
-                                            <tr>
-                                                <td>
-                                                    Tiket
-                                                </td>
-                                                <td class="text-center">
-                                                    <a target="_blank"
-                                                        href="{{ route('payment-receipt.print-ticket', $receipt) }}">
-                                                        <span class="badge badge-light-success">Download</span>
-                                                    </a>
-                                                </td>
-                                            </tr>
+                                            @if ($receipt->ppk->employee_staff->staff_id == Auth::user()->id)
+                                                <tr>
+                                                    <td>
+                                                        Draft Form Verifikasi
+                                                    </td>
+                                                    <td class="text-center">
+                                                        <a target="_blank"
+                                                            href="{{ route('payment-receipt.print-ticket', $receipt) }}">
+                                                            <span class="badge badge-light-success">Download</span>
+                                                        </a>
+                                                    </td>
+                                                </tr>
+                                            @endif
                                             <tr>
                                                 <td>
                                                     Berkas
@@ -442,8 +460,8 @@
                                                     <td>
                                                         Hasil Verifikasi {{ $verif->created_at }}
                                                     </td>
-                                                    <td class="">
-                                                        <a target="_blank"
+                                                    <td class="text-center">
+                                                        <a target="_blank" style=""
                                                             href="{{ route('payment-receipt.print-ticket', [$receipt, $verif]) }}">
                                                             <span class="badge badge-light-success">Download</span>
                                                         </a>

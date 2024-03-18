@@ -13,6 +13,7 @@ class Receipt extends Model
 
     protected $fillable = [
         'type',
+        'perjadin',
         'status',
         'user_entry',
         'berkas',
@@ -34,9 +35,12 @@ class Receipt extends Model
 
     public function treasurer(): BelongsTo
     {
-        return $this->belongsTo(User::class, 'treasurer_id', 'id');
+        return $this->belongsTo(User::class, 'treasurer_id', 'id')->with('employee');
     }
-
+    public function spi(): BelongsTo
+    {
+        return $this->belongsTo(User::class, 'spi_id', 'id')->with('employee');
+    }
     public function detail(): BelongsTo
     {
         return $this->belongsTo(BudgetImplementationDetail::class, 'budget_implementation_detail_id', 'id');

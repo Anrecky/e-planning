@@ -148,7 +148,8 @@
                         <td>{{ $receipt->provider }}</td>
                     </tr>
                     <tr>
-                        <td>NIP. {{ $receipt->ppk->nik }}</td>
+                        <td>{{ strtoupper($receipt->ppk->employee_staff->identity_type) }}.
+                            {{ $receipt->ppk->employee_staff->id }}</td>
                         <td></td>
                         <td>{{ $receipt->provider_organization ?? '' }}</td>
                     </tr>

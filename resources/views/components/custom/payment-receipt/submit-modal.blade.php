@@ -53,7 +53,7 @@
                         }
                     });
                     $.ajax({
-                        url: '{{ route('payment-receipt.submit', $receipt) }}',
+                        url: '{{ route('receipt-action.ajukan', $receipt) }}',
                         type: 'POST',
                         headers: {
                             'X-CSRF-TOKEN': '{{ csrf_token() }}'

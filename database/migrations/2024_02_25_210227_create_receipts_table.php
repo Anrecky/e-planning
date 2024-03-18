@@ -15,6 +15,7 @@ return new class extends Migration
         Schema::create('receipts', function (Blueprint $table) {
             $table->id();
             $table->enum('type', ['direct', 'treasurer'])->default('direct');
+            $table->enum('perjadin', ['N', 'Y'])->default('N');
             $table->enum('status', [
                 'draft',
                 'wait-verificator', 'reject-verificator',
@@ -23,6 +24,7 @@ return new class extends Migration
                 'wait-treasurer', 'reject-treasurer',
                 'accept'
             ])->default('draft');
+            $table->enum('status_money_app', ['N', 'Y'])->default('N');
             $table->text('description')->nullable();
             $table->decimal('amount', 15, 2)->default(0);
             $table->date('activity_date')->nullable();

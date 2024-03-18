@@ -1,5 +1,5 @@
-<div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="editModalTitle" aria-hidden="true"
-    data-bs-focus="false">
+<div class="modal fade c-modal-bg" id="editModal" tabindex="-1" role="dialog" aria-labelledby="editModalTitle"
+    aria-hidden="true" data-bs-focus="false">
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -17,6 +17,16 @@
                                 <option selected disabled value="">Pilih Jenis Kuitansi...</option>
                                 <option value="direct">Pembayaran Langsung</option>
                                 <option value="treasurer">Pembayaran Langsung (Bendahara)</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="mb-4 row">
+                        <label for="selectPerjadinReceipt" class="col-sm-2 col-form-label">Perjalanan Dinas</label>
+                        <div class="col-sm-8">
+                            <select name="perjadin" class="form-select" id="selectPerjadinReceipt">
+                                <option selected disabled value="">Pilih ...</option>
+                                <option value="Y">Perjalanan Dinas</option>
+                                <option value="N">Non Perjalanan Dinas</option>
                             </select>
                         </div>
                     </div>

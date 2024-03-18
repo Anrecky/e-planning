@@ -42,7 +42,7 @@
                         }
                     });
                     $.ajax({
-                        url: '{{ route('payment-receipt.spi-action', $receipt) }}',
+                        url: '{{ route('receipt-action.spi', $receipt) }}',
                         type: 'POST',
                         headers: {
                             'X-CSRF-TOKEN': '{{ csrf_token() }}'

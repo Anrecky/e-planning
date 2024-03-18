@@ -6,12 +6,11 @@
     }
 @endphp
 <button type="button" class="btn btn-sm btn-primary temporary-edit mb-2 mt-2"
-    data-bs-target="#verificationModal{{ $dataVerif->id ?? '' }}" data-bs-toggle="modal"
-    data-update-url="{{ route('payment-receipt.verification', $receipt) }}">
+    data-bs-target="#verificationModal{{ $dataVerif->id ?? '' }}" data-bs-toggle="modal">
     <i data-feather="file-text"></i> Form Verifikasi
 </button>
 
-<div class="modal fade" id="verificationModal{{ $dataVerif->id ?? '' }}" tabindex="-1" role="dialog"
+<div class="modal fade c-modal-bg" id="verificationModal{{ $dataVerif->id ?? '' }}" tabindex="-1" role="dialog"
     aria-labelledby="verificationModalTitle" aria-hidden="true" data-bs-focus="false">
     <div class="modal-dialog modal-fullscreen" role="document">
         <div class="modal-content">
@@ -23,7 +22,7 @@
             </div>
             <div class="modal-body">
                 <form id="form-verification-{{ $receipt->id }}-{{ $dataVerif->id ?? '' }}"
-                    action="{{ route('payment-receipt.verification', $receipt) }}" method="POST"
+                    action="{{ route('receipt-action.verification', $receipt) }}" method="POST"
                     enctype="multipart/form-data">
                     @csrf
                     @method('POST')

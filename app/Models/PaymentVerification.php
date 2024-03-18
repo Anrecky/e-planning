@@ -35,6 +35,6 @@ class PaymentVerification extends Model
 
     public function user(): BelongsTo
     {
-        return $this->belongsTo(User::class, 'verification_user')->select('users.id', 'name', 'employees.id as identity_number')->leftJoin('employees', 'employees.user_id', 'users.id');
+        return $this->belongsTo(User::class, 'verification_user')->select('users.id', 'name', 'employees.id as identity_number', 'identity_type')->leftJoin('employees', 'employees.user_id', 'users.id');
     }
 }

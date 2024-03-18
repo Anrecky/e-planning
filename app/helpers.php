@@ -174,3 +174,25 @@ if (!function_exists('status_receipt')) {
             return "-";
     }
 }
+if (!function_exists('status_app_keuangan')) {
+    function status_app_keuangan($var)
+    {
+        if ($var == "N") {
+            return "<span class='badge badge-light-danger'>Belum Entry</span>";
+        } elseif ($var == "Y") {
+            return "<span class='badge badge-light-success'>Selesai</span>";
+        } else
+            return "-";
+    }
+}
+if (!function_exists('dompdf_checkbox_blank')) {
+    function dompdf_checkbox_blank($number, $desc, $span = 'ADA')
+    {
+        return "<tr class='no-border'>
+                                    <td class='no-border' style='width: 10px'>$number.</td>
+                                    <td class='no-border'>$desc</td>
+                                    <td class='no-border'><div class='box'></div></td>
+                                    <td class='no-border'>$span </td>
+     </tr>";
+    }
+}

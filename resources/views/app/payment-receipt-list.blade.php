@@ -110,6 +110,7 @@
                             <tr class="text-center">
                                 <th scope="col">Jenis Kuitansi</th>
                                 <th scope="col">Status</th>
+                                <th scope="col">App Keuangan</th>
                                 <th scope="col">Uraian Kegiatan</th>
                                 <th scope="col">Tanggal Kegiatan</th>
                                 <th scope="col">Jumlah</th>
@@ -125,6 +126,7 @@
                                 <tr>
                                     <td>{{ ucfirst(__($receipt->type)) }}</td>
                                     <td>{!! status_receipt($receipt->status) !!}</td>
+                                    <td>{!! $receipt->status == 'accept' ? status_app_keuangan($receipt->status_money_app) : '' !!}</td>
                                     <td>{{ $receipt->description }}</td>
                                     <td>{{ $receipt->activity_date }}</td>
                                     <td>Rp {{ number_format($receipt->amount, 0, ',', '.') }}</td>
@@ -137,22 +139,7 @@
                                             href="{{ route('payment-receipt.detail', $receipt) }}">
                                             <i data-feather="eye"></i>
                                         </a>
-                                        <!-- Default dropstart button -->
                                         <div class="btn-group dropstart">
-                                            {{-- <button type="button" class="btn btn-sm btn-primary temporary-edit"
-                                                data-bs-target="#verificationModal" data-bs-toggle="modal"
-                                                data-receipt="{{ $receipt }}"
-                                                data-update-url="{{ route('payment-receipt.verification', $receipt) }}">
-                                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
-                                                    fill="none" stroke="currentColor" stroke-width="2"
-                                                    stroke-linecap="round" stroke-linejoin="round"
-                                                    class="feather feather-edit-2">
-                                                    <path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z">
-                                                    </path>
-                                                </svg>
-                                            </button>
-
-                                        </div> --}}
                                     </td>
                                 </tr>
                             @endforeach

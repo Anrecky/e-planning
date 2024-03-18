@@ -216,6 +216,17 @@
                             </div>
                         </div>
                         <div class="mb-4 row">
+                            <label for="selectPerjadinReceipt" class="col-sm-2 col-form-label">Perjalanan
+                                Dinas</label>
+                            <div class="col-sm-8">
+                                <select name="perjadin" class="form-select" id="selectPerjadinReceipt">
+                                    <option selected disabled value="">Pilih ...</option>
+                                    <option value="Y">Perjalanan Dinas</option>
+                                    <option value="N">Non Perjalanan Dinas</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="mb-4 row">
                             <label for="inputDisbursementDescription" class="col-sm-2 col-form-label">Uraian
                                 Pencairan</label>
                             <div class="col-sm-8">
@@ -597,6 +608,7 @@
                     formEdit.find('#inputSupplierOrganizationName').val(receipt.provider_organization);
                     formEdit.find('#selectApproveId').val(receipt.budget_implementation_detail_id);
                     formEdit.find('#selectApproveName').val(receipt.detail?.name);
+                    formEdit.find('#selectPerjadinReceipt').val(receipt.perjadin);
                     flatpickr(formEdit.find('#basicFlatpickr'), {
                         defaultDate: receipt.activity_date,
                         static: true,

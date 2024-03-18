@@ -4,15 +4,6 @@
 <?php
 $imageSrc = 'logo.png';
 
-function checkbox($number, $desc, $span = 'ADA')
-{
-    return "<tr class='no-border'>
-                                    <td class='no-border'>$number.</td>
-                                    <td class='no-border'>$desc</td>
-                                    <td class='no-border'><div class='box'></div></td>
-                                    <td class='no-border'>$span </td>
-                                </tr>";
-}
 ?>
 
 <head>
@@ -25,7 +16,7 @@ function checkbox($number, $desc, $span = 'ADA')
     body {
         margin: 3px 10px 3px 5px;
         padding: 3px 3px 3px 3px;
-        font-size: 14px;
+        font-size: 13px;
         font-family: Arial, Helvetica, sans-serif;
     }
 
@@ -40,6 +31,7 @@ function checkbox($number, $desc, $span = 'ADA')
 
     table {
         margin: 10px;
+        margin-top: 2px;
         padding: 3px;
         border-collapse: collapse;
         border: 1px solid #070707;
@@ -49,7 +41,7 @@ function checkbox($number, $desc, $span = 'ADA')
     th,
     td {
         border: 1px solid #070707;
-        padding: 5px;
+        padding: 4px;
         text-align: left;
     }
 
@@ -83,7 +75,7 @@ function checkbox($number, $desc, $span = 'ADA')
 
     .box {
         width: 40px;
-        height: 20px;
+        height: 15px;
         border: 1px solid black;
     }
 
@@ -91,6 +83,11 @@ function checkbox($number, $desc, $span = 'ADA')
         vertical-align: top;
     }
 </style>
+@php
+
+    // echo 'd';
+    // dd($items);
+@endphp
 
 <body>
     <table style="width: 100%">
@@ -108,23 +105,25 @@ function checkbox($number, $desc, $span = 'ADA')
                         </td>
                         <td>
                             <p style="margin-left: 10px !important">Nomor :
-                                {{ $receipt->reference_number }}<br><br>Tanggal : <br><br> <span
-                                    style="font-style: italic;">(diisi
-                                    verifikator)</span></p>
+                                {{ $receipt->reference_number }}<br><br>Tanggal :
+                                <br><br>
+                                <span style="font-style: italic;">(diisi
+                                    verifikator)</span>
+                            </p>
                         </td>
                     </tr>
                 </table>
             </th>
         </tr>
-        <tr class="text-center">
+        {{-- <tr class="text-center">
             <td colspan="3" class="text-center">
                 <b> MOHON DI ISI DENGAN HURUF KAPITAL</b>
             </td>
-        </tr>
+        </tr> --}}
         <tr class="text-center">
             <td colspan="3" class="">
                 <b>1. Jenis Pencairan </b>
-                <table style="width: 100%" class="no-border">
+                <table style="width: 100% ; margin-top :0" class="no-border">
                     <tr>
                         <td>Nama Pencairan</td>
                         <td>:</td>
@@ -157,16 +156,18 @@ function checkbox($number, $desc, $span = 'ADA')
                     <tr class="">
                         <td style="width : 50%">
                             <table class="no-border" style="width: 90%">
-                                {!! checkbox('a', 'SPBy/Kwitansi LS') !!}
-                                {!! checkbox('b', 'NOTA / INVOICE') !!}
-                                {!! checkbox('c', 'NMR, TGL, TANDATANGAN DAN <br>CAP PADA DOKUMEN') !!}
+
+
+                                {!! dompdf_checkbox_blank('a', 'SPBy/Kwitansi LS') !!}
+                                {!! dompdf_checkbox_blank('b', 'NOTA / INVOICE DGN NMR, TGL, TTD DAN CAP ') !!}
+                                {{-- {!! dompdf_checkbox_blank('c', 'NMR, TGL, TANDATANGAN DAN <br>CAP PADA DOKUMEN') !!} --}}
                             </table>
                         </td>
                         <td style="width : 50%">
                             <table class="no-border" style="width: 90%">
-                                {!! checkbox('d', 'FOTOCOPY NPWP (SUPLIER BARU)') !!}
-                                {!! checkbox('e', 'FOTOCOPY BUKU REKENING<br> (SUPLIER BARU)') !!}
-                                {!! checkbox('f', 'DOKUMENTASI') !!}
+                                {!! dompdf_checkbox_blank('c', 'FOTOCOPY NPWP (SUPLIER BARU)') !!}
+                                {!! dompdf_checkbox_blank('d', 'FOTOCOPY BUKU REKENING<br> (SUPLIER BARU)') !!}
+                                {!! dompdf_checkbox_blank('e', 'DOKUMENTASI') !!}
                             </table>
                         </td>
                     </tr>
@@ -181,15 +182,15 @@ function checkbox($number, $desc, $span = 'ADA')
                     <tr class="">
                         <td style="width : 50%">
                             <table class="no-border" style="width: 90%">
-                                {!! checkbox('a', 'DAFTAR HONOR') !!}
-                                {!! checkbox('b', 'SK') !!}
-                                {!! checkbox('c', 'RUNDOWN ACARA (PENCAIRAN <br> HONOR NARASUMBER)', 'LENGKAP') !!}
+                                {!! dompdf_checkbox_blank('a', 'DAFTAR HONOR') !!}
+                                {!! dompdf_checkbox_blank('b', 'SK') !!}
+                                {!! dompdf_checkbox_blank('c', 'RUNDOWN ACARA (PENCAIRAN <br> HONOR NARASUMBER)') !!}
                             </table>
                         </td>
                         <td style="width : 50%">
                             <table class="no-border" style="width: 90%">
-                                {!! checkbox('d', 'SURAT TUGAS NARASUMBER') !!}
-                                {!! checkbox('e', 'DOKUMENTASI') !!}
+                                {!! dompdf_checkbox_blank('d', 'SURAT TUGAS NARASUMBER') !!}
+                                {!! dompdf_checkbox_blank('e', 'DOKUMENTASI') !!}
                             </table>
                         </td>
                     </tr>
@@ -204,20 +205,20 @@ function checkbox($number, $desc, $span = 'ADA')
                     <tr class="">
                         <td style="width : 50%">
                             <table class="no-border" style="width: 90%">
-                                {!! checkbox('a', 'SURAT TUGAS') !!}
-                                {!! checkbox('b', 'SPD') !!}
-                                {!! checkbox('c', 'KWITANSI LS') !!}
-                                {!! checkbox('d', 'DAFTAR RAMPUNG') !!}
-                                {!! checkbox('e', 'INVOICE HOTEL') !!}
+                                {!! dompdf_checkbox_blank('a', 'SURAT TUGAS') !!}
+                                {!! dompdf_checkbox_blank('b', 'SPD') !!}
+                                {!! dompdf_checkbox_blank('c', 'KWITANSI LS') !!}
+                                {!! dompdf_checkbox_blank('d', 'DAFTAR RAMPUNG') !!}
+                                {!! dompdf_checkbox_blank('e', 'INVOICE HOTEL') !!}
                             </table>
                         </td>
                         <td style="width : 50%">
                             <table class="no-border" style="width: 90%">
-                                {!! checkbox('f', 'TIKET PP') !!}
-                                {!! checkbox('g', 'DAFTAR RILL') !!}
-                                {!! checkbox('h', 'UNDANGAN / MEMO') !!}
-                                {!! checkbox('i', 'LAPORAN PERJALANAN DINAS') !!}
-                                {!! checkbox('j', 'DOKUMENTASI') !!}
+                                {!! dompdf_checkbox_blank('f', 'TIKET PP') !!}
+                                {!! dompdf_checkbox_blank('g', 'DAFTAR RILL') !!}
+                                {!! dompdf_checkbox_blank('h', 'UNDANGAN / MEMO') !!}
+                                {!! dompdf_checkbox_blank('i', 'LAPORAN PERJALANAN DINAS') !!}
+                                {!! dompdf_checkbox_blank('j', 'DOKUMENTASI') !!}
                             </table>
                         </td>
                     </tr>
@@ -232,7 +233,8 @@ function checkbox($number, $desc, $span = 'ADA')
         </tr>
         <tr>
             <td class="text-top" style="width: 35%">
-                SAYA MENYATAKAN BAHWA FORM DIISI DENGAN SEBENARNYA <br>PELAKSANA KEGIATAN<br>TANGGAL<br>
+                SAYA MENYATAKAN BAHWA FORM DIISI<br>DENGAN SEBENARNYA PELAKSANA KEGIATAN<br>
+                <br>
                 <br>
                 <br>
                 <br>
@@ -245,7 +247,7 @@ function checkbox($number, $desc, $span = 'ADA')
                 <br>
                 <br>
                 <br>
-                {{ $receipt->ppk->staff->name }}
+                {{-- {{ $receipt->ppk->employee_staff->name }}<br> --}}
             </td>
             <td class="text-top">
                 NAMA KEGIATAN DI POK : <br>
@@ -263,16 +265,20 @@ function checkbox($number, $desc, $span = 'ADA')
                         <td colspan="3"> <span style="font-style: italic;">*)Diisi oleh verifikator</span></td>
                     </tr>
                     <tr>
-                        <td colspan="3"> TGL PEMERIKSAAN :</td>
+                        <td colspan="3"> TGL PEMERIKSAAN :
+                        </td>
                     </tr>
                     <tr>
-                        <td>HASIL PEMERIKSAAN :</td>
-                        <td>
-                            <div class="box"></div>
+                        <td style="width: 130px">HASIL PEMERIKSAAN :</td>
+                        <td style="width: 30px">
+                            <div class='box'></div>
+
                         </td>
                         <td>Lengkap</td>
-                        <td>
-                            <div class="box"></div>
+                        <td style="width: 30px">
+                            <div class='box'></div>
+
+                            {{-- <div class="box"></div> --}}
                         </td>
                         <td>Tidak Lengkap</td>
                     </tr>
@@ -292,7 +298,6 @@ function checkbox($number, $desc, $span = 'ADA')
                             <br>
                             <br>
                             <hr>
-                            NIP.
                         </td>
                         <td>
                         </td>
@@ -303,9 +308,11 @@ function checkbox($number, $desc, $span = 'ADA')
                             <br>
                             <br>
                             <br>
+                            <br>
                             {{ $receipt->ppk->name }}
                             <hr>
-                            NIP. {{ $receipt->ppk->nik }}
+                            {{ strtoupper($receipt->ppk->employee->identity_type ?? '') }}.
+                            {{ strtoupper($receipt->ppk->employee->id) }}
 
                         </td>
 
