@@ -18,6 +18,9 @@
         <link rel="stylesheet" href="{{ asset('plugins/table/datatable/datatables.css') }}">
         @vite(['resources/scss/light/plugins/table/datatable/dt-global_style.scss'])
         @vite(['resources/scss/dark/plugins/table/datatable/dt-global_style.scss'])
+        <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+        <link rel="stylesheet"
+            href="https://cdn.jsdelivr.net/npm/select2-bootstrap-5-theme@1.3.0/dist/select2-bootstrap-5-theme.min.css" />
 
         <style>
             .input-group .toggle-password {
@@ -131,10 +134,10 @@
         </div>
     </div>
     <x-modal modalId="createModal" modalTitle="Tambahkan User" size="lg">
-        <x-user.create-form :workUnits="$work_units" :roles="$roles" />
+        <x-user.create-form :workUnits="$work_units" :identityTypes="$identity_types" :roles="$roles" />
     </x-modal>
     <x-modal modalId="editModal" modalTitle="Edit User">
-        <x-user.edit-form :roles="$roles" />
+        <x-user.edit-form :workUnits="$work_units" :identityTypes="$identity_types" :roles="$roles" />
     </x-modal>
     <!-- TODO: Finish Change Password -->
     {{-- <x-modal modalId="changePasswordModal" modalTitle="Ganti Password">
@@ -163,6 +166,7 @@
         <script src="{{ asset('plugins/editors/quill/quill.js') }}"></script>
         <script src="{{ asset('plugins/sweetalerts2/sweetalerts2.min.js') }}"></script>
         <script src="{{ asset('plugins/table/datatable/datatables.js') }}"></script>
+        <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 
         <script>
             window.addEventListener('load', function() {
@@ -201,16 +205,119 @@
                     "lengthMenu": [7, 10, 20, 50],
                     "pageLength": 10
                 });
+                $("#createModal").on('shown.bs.modal', async function(e) {
+                    const formCreate = $("#form-create");
+                    formCreate.find('#selectTypeRole').on('change', function() {
+                        if (formCreate.find('#selectTypeRole').val() == 'PPK') {
+                            formCreate.find('#createSelectStaff').prop('disabled', false)
+                        } else {
+                            formCreate.find('#createSelectStaff')
+                                .val('', '')
+                                .trigger('change')
+                                .prop('disabled', true)
+
+                        }
+                    })
+                })
                 $("#editModal").on('shown.bs.modal', async function(e) {
                     let updateUrl = $(e.relatedTarget).data('updateUrl');
                     const formEdit = $("#form-edit");
                     const user = $(e.relatedTarget).data('user');
                     formEdit.attr('action', updateUrl);
-                    formEdit.find('#selectTypeRole').val(user.roles[0].name ?? null);
+                    formEdit.find('#selectTypeRole').val(user.roles[0].name ?? null).trigger('change');
                     formEdit.find('input[name="user_name"]').val(user.name);
-                    formEdit.find('input[name="position"]').val(user.position);
-                    formEdit.find('input[name="identity_number"]').val(user.identity_number);
-                    formEdit.find('input[name="user_email"]').val(user.email);
+                    formEdit.find('input[name="position"]').val(user.employee_staff?.position);
+                    formEdit.find('input[name="identity_number"]').val(user.employee_staff?.id);
+                    formEdit.find('#selectWorkUnit').val(user.employee_staff?.work_unit_id ?? null);
+                    formEdit.find('input[name="email"]').val(user.email);
+                    formEdit.find('#selectIdentityType').val(user.employee_staff?.identity_type);
+                    if (user.roles[0].name == 'PPK') {
+                        var selectedTreasurerOption = new Option(
+                            `${user.employee_staff?.staff?.name ?? ''} `,
+                            user.employee_staff?.staff_id ?? null, true, true);
+                        formEdit.find('#editSelectStaff').append(selectedTreasurerOption).trigger('change');
+                    }
+                    formEdit.find('#editSelectStaff').select2({
+                        dropdownParent: formEdit.find('.staffWrapper'),
+                        placeholder: 'Pilih PPK',
+                        theme: 'bootstrap-5',
+                        ajax: {
+                            transport: function(params, success, failure) {
+                                axios.get(`{{ route('search.employee', 'staff') }}`, {
+                                        params: {
+                                            search: params.data.term,
+                                            limit: 10
+                                        }
+                                    })
+                                    .then(function(response) {
+                                        success({
+                                            results: response.data.map(function(
+                                                item) {
+                                                return {
+                                                    id: item
+                                                        .id,
+                                                    text: item.name +
+                                                        ' - ' +
+                                                        item
+                                                        .identity_number
+                                                };
+                                            })
+                                        });
+                                    })
+                                    .catch(function(error) {
+                                        failure(error);
+                                    });
+                            },
+                            delay: 250,
+                            cache: true
+                        }
+                    });
+                    formEdit.find('#selectTypeRole').on('change', function() {
+                        if (formEdit.find('#selectTypeRole').val() == 'PPK') {
+                            formEdit.find('#editSelectStaff').prop('disabled', false)
+                        } else {
+                            formEdit.find('#editSelectStaff')
+                                .val('', '')
+                                .trigger('change')
+                                .prop('disabled', true)
+
+                        }
+                    }).trigger('change')
+
+                });
+
+                $('#createSelectStaff').select2({
+                    dropdownParent: $("#form-create").find('.staffWrapper'),
+                    placeholder: 'Pilih PPK',
+                    theme: 'bootstrap-5',
+                    ajax: {
+                        transport: function(params, success, failure) {
+                            axios.get(`{{ route('search.employee', 'staff') }}`, {
+                                    params: {
+                                        search: params.data.term,
+                                        limit: 10
+                                    }
+                                })
+                                .then(function(response) {
+                                    success({
+                                        results: response.data.map(function(item) {
+                                            return {
+                                                id: item.id,
+                                                text: item.name + ' - ' +
+                                                    item
+                                                    .identity_number
+                                            };
+                                        })
+                                    });
+                                })
+                                .catch(function(error) {
+                                    // Call the `failure` function in case of an error
+                                    failure(error);
+                                });
+                        },
+                        delay: 250,
+                        cache: true
+                    }
                 });
             });
         </script>

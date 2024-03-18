@@ -18,9 +18,15 @@ return new class extends Migration
             $table->string('position');
             $table->foreignIdFor(WorkUnit::class)->onDelete('restrict');
             $table->foreignIdFor(User::class)->onDelete('cascade');
+            $table->enum('identity_type', ['nip', 'nik', 'nidn'])->default('nik');
+            $table->unsignedBigInteger('staff_id')->unsigned()->nullable();
+            $table->foreign('staff_id')
+                ->on('users')
+                ->references('id')
+                ->onUpdate('cascade')
+                ->onDelete('cascade');
             $table->timestamps();
             $table->unique('user_id');
-            $table->unique(['user_id', 'id']);
         });
     }
 

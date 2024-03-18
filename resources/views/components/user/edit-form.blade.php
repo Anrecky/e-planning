@@ -27,12 +27,36 @@
             @enderror
         </div>
     </div>
+    <div class="mb-4 row align-items-center staffWrapper">
+        <label for="selectVerifier" class="col-sm-4 col-form-label">Staff</label>
+        <div class="col-sm-8">
+            <select class="form-select" style=" width: 100% !important" name="staff_id" id="editSelectStaff">
+                <option selected disabled value="">Pilih Staff...</option>
+            </select>
+        </div>
+    </div>
     <div class="mb-4 row align-items-center">
         <label for="inputPosition" class="col-sm-4 col-form-label">Jabatan</label>
         <div class="col-sm-8">
             <input type="text" class="form-control @error('position') is-invalid @enderror" id="inputPosition"
                 name="position" value="{{ old('position') }}" required>
             @error('position')
+                <div class="invalid-feedback">{{ $message }}</div>
+            @enderror
+        </div>
+    </div>
+    <div class="mb-4 row align-items-center">
+        <label for="inputNumberId" class="col-sm-4 col-form-label">Jenis Identitas</label>
+        <div class="col-sm-8">
+            <select class="form-select @error('identity_type') is-invalid @enderror" id="selectIdentityType"
+                name="identity_type" required>
+                <option selected disabled value="">Jenis Identitas </option>
+                @foreach ($identityTypes as $identity_type)
+                    <option value="{{ $identity_type }}" {{ old('identity_type') == $identity_type ? 'selected' : '' }}>
+                        {{ strtoupper($identity_type) }}</option>
+                @endforeach
+            </select>
+            @error('identity_type')
                 <div class="invalid-feedback">{{ $message }}</div>
             @enderror
         </div>
@@ -48,11 +72,27 @@
         </div>
     </div>
     <div class="mb-4 row align-items-center">
+        <label for="inputNumberId" class="col-sm-4 col-form-label">Unit Kerja</label>
+        <div class="col-sm-8">
+            <select class="form-select @error('work_unit') is-invalid @enderror" id="selectWorkUnit" name="work_unit"
+                required>
+                <option selected disabled value="">Pilih Unit Kerja...</option>
+                @foreach ($workUnits as $work_unit)
+                    <option value="{{ $work_unit->id }}" {{ old('work_unit') == $work_unit->name ? 'selected' : '' }}>
+                        {{ $work_unit->name }}</option>
+                @endforeach
+            </select>
+            @error('work_unit')
+                <div class="invalid-feedback">{{ $message }}</div>
+            @enderror
+        </div>
+    </div>
+    <div class="mb-4 row align-items-center">
         <label for="inputEmail" class="col-sm-4 col-form-label">Email</label>
         <div class="col-sm-8">
-            <input type="email" class="form-control @error('user_email') is-invalid @enderror" id="inputEmail"
-                name="user_email" value="{{ old('user_email') }}" required>
-            @error('user_email')
+            <input type="email" class="form-control @error('email') is-invalid @enderror" id="inputEmail"
+                name="email" value="{{ old('email') }}" required>
+            @error('email')
                 <div class="invalid-feedback">{{ $message }}</div>
             @enderror
         </div>

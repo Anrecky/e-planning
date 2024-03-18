@@ -27,6 +27,8 @@ class User extends Authenticatable
         'dob',
         'address',
         'phone',
+        'identity_number',
+        'identity_type',
     ];
 
     /**
@@ -58,5 +60,9 @@ class User extends Authenticatable
     public function employee(): HasOne
     {
         return $this->hasOne(Employee::class);
+    }
+    public function employee_staff(): HasOne
+    {
+        return $this->hasOne(Employee::class)->with('staff');
     }
 }

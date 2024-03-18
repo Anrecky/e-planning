@@ -16,6 +16,14 @@
             @enderror
         </div>
     </div>
+    <div class="mb-4 row align-items-center staffWrapper">
+        <label for="selectVerifier" class="col-sm-3 col-form-label">Staff</label>
+        <div class="col-sm-8">
+            <select class="form-select" style=" width: 100% !important" name="staff_id" id="createSelectStaff">
+                <option selected disabled value="">Pilih Staff...</option>
+            </select>
+        </div>
+    </div>
     <div class="mb-4 row align-items-center">
         <label for="inputFullName" class="col-sm-3 col-form-label">Nama Lengkap</label>
         <div class="col-sm-8">
@@ -38,7 +46,24 @@
         </div>
     </div>
     <div class="mb-4 row align-items-center">
-        <label for="inputNumberId" class="col-sm-3 col-form-label">NIP/NIK/NIDN</label>
+        <label for="inputNumberId" class="col-sm-3 col-form-label">Jenis Identitas</label>
+        <div class="col-sm-8">
+            <select class="form-select @error('identity_type') is-invalid @enderror" id="selectIdentityType"
+                name="identity_type" required>
+                <option selected disabled value="">Jenis Identitas </option>
+                @foreach ($identityTypes as $identity_type)
+                    <option value="{{ $identity_type }}"
+                        {{ old('identity_type') == $identity_type ? 'selected' : '' }}>
+                        {{ strtoupper($identity_type) }}</option>
+                @endforeach
+            </select>
+            @error('identity_type')
+                <div class="invalid-feedback">{{ $message }}</div>
+            @enderror
+        </div>
+    </div>
+    <div class="mb-4 row align-items-center">
+        <label for="inputNumberId" class="col-sm-3 col-form-label">Nomor Identitas</label>
         <div class="col-sm-8">
             <input type="text" class="form-control @error('identity_number') is-invalid @enderror" id="inputNumberId"
                 name="identity_number" value="{{ old('identity_number') }}" required>
@@ -63,12 +88,13 @@
             @enderror
         </div>
     </div>
+
     <div class="mb-4 row align-items-center">
         <label for="inputEmail" class="col-sm-3 col-form-label">Email</label>
         <div class="col-sm-8">
-            <input type="email" class="form-control @error('user_email') is-invalid @enderror" id="inputEmail"
-                name="user_email" value="{{ old('user_email') }}" required>
-            @error('user_email')
+            <input type="email" class="form-control @error('email') is-invalid @enderror" id="inputEmail"
+                name="email" value="{{ old('email') }}" required>
+            @error('email')
                 <div class="invalid-feedback">{{ $message }}</div>
             @enderror
         </div>
