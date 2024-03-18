@@ -64,10 +64,10 @@ class NavigationServiceProvider extends ServiceProvider
                         //         ->add('Rekam Verifikasi', route('payment-verification.index'))
                         // )
                         ->add(
-                            'Rekam Kuitansi',
+                            'Rekam Pembayaran',
                             route('payment-receipt.index')
                         )->add(
-                            'Daftar Kuitansi',
+                            'Usulan Pembayaran',
                             route('payment-receipt.list')
                         )
                     // ->add(
