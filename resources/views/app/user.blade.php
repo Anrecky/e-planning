@@ -210,11 +210,14 @@
                     formCreate.find('#selectTypeRole').on('change', function() {
                         if (formCreate.find('#selectTypeRole').val() == 'PPK') {
                             formCreate.find('#createSelectStaff').prop('disabled', false)
+                            formCreate.find('#letter_reference').prop('disabled', false)
                         } else {
                             formCreate.find('#createSelectStaff')
                                 .val('', '')
                                 .trigger('change')
                                 .prop('disabled', true)
+                            formCreate.find('#letter_reference').prop('disabled', true)
+
 
                         }
                     })
@@ -231,11 +234,15 @@
                     formEdit.find('#selectWorkUnit').val(user.employee_staff?.work_unit_id ?? null);
                     formEdit.find('input[name="email"]').val(user.email);
                     formEdit.find('#selectIdentityType').val(user.employee_staff?.identity_type);
+                    formEdit.find('input[name="letter_reference"]').val(user.letter_reference);
                     if (user.roles[0].name == 'PPK') {
                         var selectedTreasurerOption = new Option(
                             `${user.employee_staff?.staff?.name ?? ''} `,
                             user.employee_staff?.staff_id ?? null, true, true);
                         formEdit.find('#editSelectStaff').append(selectedTreasurerOption).trigger('change');
+
+                    } else {
+                        formEdit.find('#letter_reference').prop('disabled', true)
                     }
                     formEdit.find('#editSelectStaff').select2({
                         dropdownParent: formEdit.find('.staffWrapper'),
@@ -275,7 +282,9 @@
                     formEdit.find('#selectTypeRole').on('change', function() {
                         if (formEdit.find('#selectTypeRole').val() == 'PPK') {
                             formEdit.find('#editSelectStaff').prop('disabled', false)
+                            formEdit.find('input[name="letter_reference"]').prop('disabled', false)
                         } else {
+                            formEdit.find('input[name="letter_reference"]').prop('disabled', true)
                             formEdit.find('#editSelectStaff')
                                 .val('', '')
                                 .trigger('change')

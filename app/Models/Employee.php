@@ -17,6 +17,7 @@ class Employee extends Model
         'work_unit_id',
         'user_id',
         'staff_id',
+        'letter_reference',
     ];
 
     public function user(): HasOne

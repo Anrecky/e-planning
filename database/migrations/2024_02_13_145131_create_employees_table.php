@@ -16,6 +16,7 @@ return new class extends Migration
         Schema::create('employees', function (Blueprint $table) {
             $table->unsignedBigInteger('id')->primary();
             $table->string('position');
+            $table->string('letter_reference')->nullable();
             $table->foreignIdFor(WorkUnit::class)->onDelete('restrict');
             $table->foreignIdFor(User::class)->onDelete('cascade');
             $table->enum('identity_type', ['nip', 'nik', 'nidn'])->default('nik');

@@ -37,6 +37,7 @@ class UserController extends Controller
             'position' => 'string|required_if:identity_number,true',
             'work_unit' => 'integer|required_if:identity_number,true',
             'staff_id' => 'integer',
+            'letter_reference' => 'string',
         ]);
         try {
             $randomPassword = Str::random(10);
@@ -52,6 +53,7 @@ class UserController extends Controller
                     'position' => $validatedData['position'],
                     'identity_type' => $validatedData['identity_type'],
                     'work_unit_id' => $validatedData['work_unit'],
+                    'letter_reference' => $validatedData['letter_reference'],
                 ]);
                 if ($validatedData['user_role'] == 'PPK') {
                     $employee->staff_id = $validatedData['staff_id'];
@@ -83,6 +85,7 @@ class UserController extends Controller
             'position' => 'string|required_if:identity_number,true',
             'work_unit' => 'integer|required_if:identity_number,true',
             'staff_id' => 'integer',
+            'letter_reference' => 'string',
         ]);
         // Hanya enkripsi dan update password jika field password diisi
         if (!empty($request->password)) {
@@ -101,6 +104,7 @@ class UserController extends Controller
                     'position' => $validatedData['position'],
                     'identity_type' => $validatedData['identity_type'],
                     'work_unit_id' => $validatedData['work_unit'] ?? null,
+                    'letter_reference' => $validatedData['letter_reference'] ?? null,
                 ]);
                 if ($validatedData['user_role'] == 'PPK') {
                     $employee->staff_id = $validatedData['staff_id'] ?? null;
@@ -116,6 +120,7 @@ class UserController extends Controller
             $employee->id = $validatedData['identity_number'];
             $employee->position = $validatedData['position'];
             $employee->work_unit_id = $validatedData['work_unit'];
+            $employee->letter_reference = $validatedData['letter_reference'];
             $employee->identity_type = $validatedData['identity_type'];
             $employee->save();
         }
