@@ -85,6 +85,7 @@
                                 <tr>
                                     <th scope="col" style="width:40px;">No.</th>
                                     <th scope="col">IKU</th>
+                                    <th scope="col">Misi</th>
                                     <th scope="col" class="text-center">Aksi</th>
                                 </tr>
                             </thead>
@@ -131,6 +132,23 @@
                 <div class="modal-body">
                     <form action="{{ route('iku.store') }}" method="POST">
                         @csrf
+
+                        <div class="mb-4 row align-items-center">
+                            <div class="col-sm-12">
+                                <select class="form-select @error('misi') is-invalid @enderror" id="selectTypeRole"
+                                    name="misi" required>
+                                    <option selected disabled value="">Pilih Misi...</option>
+                                    {{-- @foreach ($roles as $role)
+                                        <option value="{{ $role->name }}"
+                                            {{ old('user_role') == $role->name ? 'selected' : '' }}>
+                                            {{ $role->name }}</option>
+                                    @endforeach --}}
+                                </select>
+                                @error('misi')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                            </div>
+                        </div>
 
                         <div class="form-group d-flex align-items-center">
                             <button type="button" id="add-iku" class="btn btn-sm btn-primary py-0 px-2">
