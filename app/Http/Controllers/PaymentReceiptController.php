@@ -12,8 +12,9 @@ use App\Models\Treasurer;
 use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Auth;
+
 use PDF;
 
 class PaymentReceiptController extends Controller
@@ -114,14 +115,13 @@ class PaymentReceiptController extends Controller
             $log = new ReceiptLog;
             $log->receipt_id = $receipt->id;
             $log->user_id = $receipt->user_entry;
-            $log->activity = 'entry-receipt';
-            $log->description = 'Melalukan Entri Kuitansi';
+            $log->activity = "entry-receipt";
+            $log->description = "Melalukan Entri Kuitansi";
             $log->save();
 
             return back()->with('success', 'Data penerimaan berhasil dibuat.');
         } catch (\Exception $e) {
             Log::error($e);
-
             return back()->with('error', $e->getMessage());
         }
     }
@@ -163,18 +163,15 @@ class PaymentReceiptController extends Controller
             $log = new ReceiptLog;
             $log->receipt_id = $receipt->id;
             $log->user_id = $receipt->user_entry;
-            $log->activity = 'update-receipt';
-            $log->description = 'Melalukan Update Data Kuitansi';
+            $log->activity = "update-receipt";
+            $log->description = "Melalukan Update Data Kuitansi";
             $log->save();
-
             return back()->with('success', 'Data pembayaran kuitansi berhasil diupdate.');
         } catch (\Exception $e) {
             Log::error($e);
-
             return back()->with('error', $e->getMessage());
         }
     }
-
     public function destroy(Receipt $receipt)
     {
         try {
@@ -182,17 +179,14 @@ class PaymentReceiptController extends Controller
         } catch (\Exception $e) {
             return back()->with('error', $e->getMessage());
         }
-
         return redirect()->back()->with('success', 'Data bendahara berhasil dihapus.');
     }
-
     public function totalAmountByBudgetImplementationDetail(Request $request, $detail)
     {
         try {
             $totalAmounts = Receipt::select('id', 'amount')
                 ->where('budget_implementation_detail_id', $detail)
                 ->sum('amount');
-
             return response()->json($totalAmounts);
         } catch (\Exception $e) {
             Log::error($e);
@@ -210,11 +204,9 @@ class PaymentReceiptController extends Controller
             $dompdf = new PDF();
             $pdf = PDF::loadView('components.custom.payment-receipt.print-kwitansi-ls', compact('receipt'));
             $pdf->setPaper('A4', 'portrait');
-
             return $pdf->stream('invoice.pdf');
         } catch (\Exception $e) {
             Log::error($e);
-
             return back()->with('error', $e->getMessage());
         }
     }
@@ -244,7 +236,6 @@ class PaymentReceiptController extends Controller
             // return back()->with('error', $e->getMessage());
         }
     }
-
     public function print2(Request $request, Receipt $receipt)
     {
         try {
@@ -289,7 +280,6 @@ class PaymentReceiptController extends Controller
             return Response::make($output, 200, $headers);
         } catch (\Exception $e) {
             Log::error($e);
-
             return back()->with('error', $e->getMessage());
         }
     }
