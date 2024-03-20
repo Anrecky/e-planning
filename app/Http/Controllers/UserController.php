@@ -17,7 +17,7 @@ class UserController extends Controller
     public function index()
     {
         $title = 'Kelola User';
-        $users = User::with('employee_staff')->notAdmin()->get();
+        $users = User::notAdmin()->get();
         $roles = Role::all();
         $work_units = WorkUnit::all();
         $identity_types = ['nik', 'nip', 'nidn'];
@@ -30,13 +30,13 @@ class UserController extends Controller
     {
         $validatedData = $this->validate($request, [
             'user_name' => 'required|max:255',
-            'identity_number' => 'nullable|numeric',
+            'identity_number' => 'nullable|integer',
             'identity_type' => 'nullable|string',
             'email' => 'required|email|unique:users,email',
             'user_role' => 'required|exists:roles,name',
             'position' => 'string|required_if:identity_number,true',
             'work_unit' => 'integer|required_if:identity_number,true',
-            'staff_id' => 'integer',
+            'head_id' => 'sometimes|integer|required_if:identity_number,true|exists:employees,id',
             'letter_reference' => 'string',
         ]);
         try {
@@ -47,7 +47,7 @@ class UserController extends Controller
                 'email' => $validatedData['email'],
                 'password' => Hash::make($randomPassword),
             ]);
-            if (!empty($validatedData['identity_number']) && empty($validatedData['position'] && empty($validatedData['work_unit']))) {
+            if (!empty($validatedData['identity_number']) && !empty($validatedData['position'] && !empty($validatedData['work_unit']))) {
                 $employee = new Employee([
                     'id' => $validatedData['identity_number'],
                     'position' => $validatedData['position'],
@@ -56,9 +56,9 @@ class UserController extends Controller
                     'letter_reference' => $validatedData['letter_reference'],
                 ]);
                 if ($validatedData['user_role'] == 'PPK') {
-                    $employee->staff_id = $validatedData['staff_id'];
+                    $employee->head_id = $validatedData['head_id'];
                 } else {
-                    $employee->staff_id = null;
+                    $employee->head_id = null;
                 }
                 $user->employee()->save($employee);
             }
@@ -84,7 +84,7 @@ class UserController extends Controller
             'user_role' => 'required|exists:roles,name',
             'position' => 'string|required_if:identity_number,true',
             'work_unit' => 'integer|required_if:identity_number,true',
-            'staff_id' => 'integer',
+            'head_id' => 'integer',
             'letter_reference' => 'string',
         ]);
         // Hanya enkripsi dan update password jika field password diisi
@@ -107,15 +107,15 @@ class UserController extends Controller
                     'letter_reference' => $validatedData['letter_reference'] ?? null,
                 ]);
                 if ($validatedData['user_role'] == 'PPK') {
-                    $employee->staff_id = $validatedData['staff_id'] ?? null;
+                    $employee->head_id = $validatedData['head_id'] ?? null;
                 }
                 $user->employee()->save($employee);
             }
         } else {
             if ($validatedData['user_role'] == 'PPK') {
-                $employee->staff_id = $validatedData['staff_id'] ?? NULL;
+                $employee->head_id = $validatedData['head_id'] ?? null;
             } else {
-                $employee->staff_id = null;
+                $employee->head_id = null;
             }
             $employee->id = $validatedData['identity_number'];
             $employee->position = $validatedData['position'];
