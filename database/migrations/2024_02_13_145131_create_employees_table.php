@@ -14,18 +14,17 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('employees', function (Blueprint $table) {
-            $table->unsignedBigInteger('id')->primary();
+            $table->id();
             $table->string('position');
             $table->string('letter_reference')->nullable();
             $table->foreignIdFor(WorkUnit::class)->onDelete('restrict');
             $table->foreignIdFor(User::class)->onDelete('cascade');
             $table->enum('identity_type', ['nip', 'nik', 'nidn'])->default('nik');
-            $table->unsignedBigInteger('staff_id')->unsigned()->nullable();
-            $table->foreign('staff_id')
-                ->on('users')
+            $table->unsignedBigInteger('head_id')->nullable();
+            $table->foreign('head_id')
                 ->references('id')
-                ->onUpdate('cascade')
-                ->onDelete('cascade');
+                ->on('employees')
+                ->onDelete('set null');
             $table->timestamps();
             $table->unique('user_id');
         });
