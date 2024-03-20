@@ -5,15 +5,15 @@ namespace Database\Seeders;
 use Illuminate\Database\Seeder;
 use Spatie\Permission\Models\Permission;
 use Spatie\Permission\Models\Role;
+use Illuminate\Support\Str;
 
 class RolesAndPermissionsSeeder extends Seeder
 {
-    /**
-     * Run the database seeds.
-     */
     public function run(): void
     {
-        // Define roles
+        // Reset cached roles and permissions
+        app()[\Spatie\Permission\PermissionRegistrar::class]->forgetCachedPermissions();
+
         $roles = [
             'PPK',
             'SPI',
@@ -24,31 +24,43 @@ class RolesAndPermissionsSeeder extends Seeder
             'BENDAHARA',
             'Pelaksana Kegiatan'
         ];
-        $permissions = [];
-        $entities_actions = ['create', 'see', 'update', 'delete'];
-        $main_menu_actions = ['view', 'approval'];
-        $entities = ['user'];
-        $main_menu = ['payments', 'reporting', 'budgeting', 'administration', 'planning'];
 
-        foreach ($entities as $entity) {
-            foreach ($entities_actions as $action) {
-                $permissions[] = $action . ' ' . $entity;
-            }
-        }
+        $models = [
+            'AccountCode', 'AccountCodeReception', 'Activity', 'ActivityRecap',
+            'Asset', 'AssetItem', 'BudgetImplementation', 'BudgetImplementationDetail',
+            'Employee', 'ExpenditureUnit', 'InstitutionalBudget', 'PaymentVerification',
+            'PerformanceIndicator', 'ProgramTarget', 'PPK', 'Receipt', 'ReceiptLog',
+            'Reception', 'Renstra', 'Role', 'Treasurer', 'UnitBudget',
+            'User', 'Verificator', 'WithdrawalPlan', 'WorkUnit'
+        ];
 
-        // Create permissions
-        foreach ($permissions as $permissionName) {
-            Permission::create(['name' => $permissionName]);
-        }
+        $actions = ['create', 'edit', 'delete'];
 
-        // Loop through the roles and create them
-        foreach ($roles as $roleName) {
-            $role = Role::create(['name' => $roleName]);
+        // Generate permissions for all models except 'SBMSBI'
+        $permissions = collect($actions)->flatMap(function ($action) use ($models) {
+            return collect($models)->map(function ($model) use ($action) {
+                return [
+                    'name' => $action . ' ' . strtolower(Str::snake($model, ' ')),
+                    'guard_name' => 'web',
+                ];
+            });
+        });
 
-            // Assign "can create user" permission to SUPER ADMIN PERENCANAAN role
-            if ($roleName === 'SUPER ADMIN PERENCANAAN') {
-                $role->givePermissionTo('create user');
-            }
+        // Add 'upload' permission for 'SBM&SBI' model
+        $permissions->push([
+            'name' => 'upload SBM&SBI',
+            'guard_name' => 'web',
+        ]);
+        $permissions->push([
+            'name' => 'view SBM&SBI',
+            'guard_name' => 'web',
+        ]);
+
+        Permission::insert($permissions->toArray());
+
+        // Create roles
+        foreach ($roles as $role) {
+            Role::create(['name' => $role]);
         }
     }
 }
