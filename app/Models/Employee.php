@@ -4,8 +4,8 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class Employee extends Model
 {
@@ -13,10 +13,10 @@ class Employee extends Model
 
     protected $fillable = [
         'id',
-        'position',
         'work_unit_id',
         'user_id',
-        'staff_id',
+        'head_id',
+        'position',
         'letter_reference',
     ];
 
@@ -25,13 +25,13 @@ class Employee extends Model
         return $this->hasOne(User::class);
     }
 
-    public function workUnit()
+    public function workUnit(): BelongsTo
     {
         return $this->belongsTo(WorkUnit::class);
     }
 
-    public function staff(): BelongsTo
+    public function headOf(): BelongsTo
     {
-        return $this->belongsTo(User::class, 'staff_id', 'id');
+        return $this->belongsTo(Employee::class, 'head_id', 'id');
     }
 }
