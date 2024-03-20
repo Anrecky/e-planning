@@ -25,6 +25,11 @@ class Employee extends Model
         return $this->hasOne(User::class);
     }
 
+    public function workUnit()
+    {
+        return $this->belongsTo(WorkUnit::class);
+    }
+
     public function staff(): BelongsTo
     {
         return $this->belongsTo(User::class, 'staff_id', 'id');
