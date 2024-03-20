@@ -17,9 +17,9 @@
         </div>
     </div>
     <div class="mb-4 row align-items-center staffWrapper">
-        <label for="selectVerifier" class="col-sm-3 col-form-label">Staff</label>
+        <label for="selectVerifier" class="col-sm-3 col-form-label">Atasan (opsional)</label>
         <div class="col-sm-8">
-            <select class="form-select" style=" width: 100% !important" name="staff_id" id="createSelectStaff">
+            <select class="form-select" style=" width: 100% !important" name="head_id" id="createSelectStaff">
                 <option selected disabled value="">Pilih Staff...</option>
             </select>
         </div>
