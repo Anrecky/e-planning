@@ -44,7 +44,7 @@ class PaymentReceiptController extends Controller
         // $ppks = PPK::all();
         // $treasurers = Treasurer::all();
         $activities = Activity::all();
-        $receipts = Receipt::select('receipts.*')->selectRaw(' users.name as name_ppk, employees.id as identity_number_ppk,employees.user_id as user_id_ppk, employees.staff_id as staff_id_ppk')->with(['ppk', 'treasurer', 'detail'])
+        $receipts = Receipt::select('receipts.*')->selectRaw('users.name as name_ppk, employees.id as identity_number_ppk,employees.user_id as user_id_ppk, employees.head_id as head_id_ppk')->with(['ppk', 'treasurer', 'detail'])
             ->join('users', 'receipts.ppk_id', 'users.id')
             ->join('employees', 'employees.user_id', 'users.id');
         if (Auth::user()->hasRole('PPK')) {
@@ -56,7 +56,7 @@ class PaymentReceiptController extends Controller
         }
         if (Auth::user()->hasRole('STAF PPK')) {
             $receipts = $receipts->whereIn('status', ['wait-verificator', 'reject-verificator', 'wait-ppk', 'reject-ppk', 'accept'])
-                ->where('employees.staff_id',  Auth::user()->id);
+                ->where('employees.head_id',  Auth::user()->employee()->id);
         }
         $receipts = $receipts->get();
         // dd($receipts);
