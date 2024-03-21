@@ -12,6 +12,7 @@ class NavigationServiceProvider extends ServiceProvider
     {
         $this->app->resolving(Navigation::class, function (Navigation $navigation): Navigation {
             return $navigation
+                ->add('Dasbor', route('admin.dashboard'))
                 ->add('Penerimaan', route('reception.index'))
                 ->add(
                     'Perencanaan',
@@ -49,8 +50,8 @@ class NavigationServiceProvider extends ServiceProvider
                     fn (Section $section) => $section
                         ->add('Usulan Dipa', route('budget_implementation.index'))
                         ->add('Revisi Dipa', url('#'))
-                        ->add('Rencana Penarikan Dana', url('withdrawal_plan.index'))
-                        ->add('Rekap Kegiatan dan Upload Data Dukung', url('activity_recap.index'))
+                        ->add('Rencana Penarikan Dana', route('withdrawal_plan.index'))
+                        ->add('Rekap Kegiatan dan Upload Data Dukung', route('activity_recap.index'))
                 )
                 ->add(
                     'Pembayaran',
