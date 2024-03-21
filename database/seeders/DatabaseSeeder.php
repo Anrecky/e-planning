@@ -55,36 +55,19 @@ class DatabaseSeeder extends Seeder
 
         $this->call([RolesAndPermissionsSeeder::class]);
         $this->call([DumyUserSeeder::class]);
-        $roles = [
-            'PPK',
-            'SPI',
-            'STAF PPK',
-            'SUPER ADMIN PERENCANAAN',
-            'ADMIN FAKULTAS/UNIT',
-            'KPA (REKTOR)',
-            'BENDAHARA',
-            'Pelaksana Kegiatan',
-        ];
 
         if (env('APP_ENV') === 'local') {
             // for testing
             // PPK::factory(123)->create();
             // Verificator::factory(456)->create();
-            User::factory(250)->create()->each(function ($user) use ($roles) {
-                $user->assignRole($roles[array_rand($roles)]);
-            });
+            User::factory(250)->create();
             $fakultas1User = User::factory()->create([
+                'id' => 999,
                 'name' => 'fakultas 1',
                 'email' => 'fakultas1@mail.com',
-                'password' => 'password'
-            ]);
-            $f1e = new Employee([
-                'id' => '123456789',
-                'position' => 'Staff Admin Fakultas 1',
-                'work_unit_id' => 3,
+                'password' => Hash::make('password')
             ]);
             $fakultas1User->assignRole('ADMIN FAKULTAS/UNIT');
-            $fakultas1User->employee()->save($f1e);
         }
         User::where('name', 'Admin')->first()->assignRole('SUPER ADMIN PERENCANAAN');
     }
