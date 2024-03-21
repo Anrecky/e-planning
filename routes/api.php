@@ -19,6 +19,9 @@ Route::middleware(['auth', 'web'])->group(function () {
     Route::get('/verificators', [VerificatorController::class, 'getVerificators'])->name('verificators.index');
     Route::get('/program-targets', [ProgramTargetController::class, 'getProgramTargets'])->name('program_targets.index');
     Route::get('/employees/heads', [EmployeeController::class, 'getHeads'])->name('employees.heads');
+    Route::get('/employees/ppk', [EmployeeController::class, 'searchPPK'])->name('employees.search.ppk');
+    Route::get('/employees/treasurer', [EmployeeController::class, 'searchTreasurer'])->name('employees.search.treasurer');
+    Route::get('/employees/pelaksana', [EmployeeController::class, 'searchPelaksana'])->name('employees.search.pelaksana');
     Route::get('/withdrawal-plans/{activityId}/{year?}', [WithdrawalPlanController::class, 'getWithdrawalPlans'])->name('withdrawal_plans.activity');
     Route::get('/activity/{activityId}/account-codes', [AccountCodeController::class, 'getAccountCodesByActivity'])->name('account_codes.activity');
     Route::get('/details/{activityId}/{accountCodeId}', [BudgetImplementationDetailController::class, 'getByActivityAccountCode'])->name('budget_implementation_details.activity_account_code');

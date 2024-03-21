@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Employee;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
+use App\Models\Role;
 
 class EmployeeController extends Controller
 {
@@ -72,20 +73,72 @@ class EmployeeController extends Controller
 
             $query = Employee::query()
                 ->join('users', 'employees.user_id', '=', 'users.id')
-                ->limit($limit)
-                // ->where('id', '!=', auth()->user()->employee->id)
-            ;
+                ->limit($limit);
 
             if (!empty($search)) {
                 $query->where('employees.id', 'LIKE', "%{$search}%");
                 $query->orWhere('users.name', 'LIKE', "%{$search}%");
             }
-
             $heads = $query->get(['employees.id', 'users.name']);
             return response()->json($heads);
         } catch (\Exception $e) {
             Log::error($e->getMessage());
             return back()->with('error', 'Gagal menarik data pegawai');
         }
+    }
+
+    public function searchPPK(Request $request)
+    {
+        try {;
+            $res = $this->search($request->input('search', ''), $request->input('limit', 10), 'PPK');
+            return response()->json($res);
+        } catch (\Exception $e) {
+            Log::error($e->getMessage());
+            return back()->with('error', 'Gagal menarik data pegawai');
+        }
+    }
+    public function searchTreasurer(Request $request)
+    {
+        try {;
+            $res = $this->search($request->input('search', ''), $request->input('limit', 10), 'BENDAHARA');
+            return response()->json($res);
+        } catch (\Exception $e) {
+            Log::error($e->getMessage());
+            return back()->with('error', 'Gagal menarik data pegawai');
+        }
+    }
+    public function searchPelaksana(Request $request)
+    {
+        try {;
+            $res = $this->search($request->input('search', ''), $request->input('limit', 10), false);
+            return response()->json($res);
+        } catch (\Exception $e) {
+            Log::error($e->getMessage());
+            return back()->with('error', 'Gagal menarik data pegawai');
+        }
+    }
+    private function search($search, $limit, $role = false)
+    {
+        $query = Employee::with('user')->select('employees.id', 'users.name')
+            ->join('users', 'employees.user_id', 'users.id')->limit($limit);
+        if (!empty($search)) {
+            $query->where('employees.id', 'LIKE', "%{$search}%")
+                ->orWhereHas('user', function ($q) use ($search) {
+                    $q->where('name', 'LIKE', "%{$search}%");
+                });
+        }
+
+        if (!empty($role)) {
+            $ppkRole = Role::where('name', $role)->first();
+            if ($ppkRole) {
+                $query->whereHas('user', function ($q) use ($ppkRole) {
+                    $q->whereHas('roles', function ($r) use ($ppkRole) {
+                        $r->where('role_id', $ppkRole->id);
+                    });
+                });
+            }
+        }
+
+        return $query->get(['employees.id', 'users.name']);
     }
 }

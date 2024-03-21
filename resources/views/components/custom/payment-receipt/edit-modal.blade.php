@@ -38,12 +38,12 @@
                                 id="inputDisbursementDescription">
                         </div>
                     </div>
-                    <div class="mb-4 row">
-                        <label for="inputActivityImplementer" class="col-sm-2 col-form-label">Pelaksana
-                            Kegiatan</label>
+                    <div class="mb-4 row pelaksanaWrapper ">
+                        <label for="selectActivityExecutor" class="col-sm-2 col-form-label">Pelaksana Kegiatan</label>
                         <div class="col-sm-8">
-                            <input type="text" class="form-control" name="activity_implementer"
-                                id="inputActivityImplementer">
+                            <select class="form-select" name="activity_implementer" id="editSelectPelaksana">
+                                <option selected disabled value="">Pilih Pelaksana...</option>
+                            </select>
                         </div>
                     </div>
                     <div class="mb-4 row">

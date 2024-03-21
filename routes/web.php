@@ -180,6 +180,7 @@ Route::middleware(['auth'])->prefix('admin')->group(function () {
             Route::post('verification', 'verification')->name('verification');
             Route::post('spi', 'spi')->name('spi');
             Route::post('ppk', 'ppk')->name('ppk');
+            Route::post('treasurer', 'treasurer')->name('treasurer');
             // Route::post('ppk', [ReceptionController::class, 'ppk'])->name('ppk');
         });
 

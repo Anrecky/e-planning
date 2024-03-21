@@ -239,7 +239,8 @@ $imageSrc = 'logo.png';
                 <br>
                 <br>
                 <br>
-                {{ $receipt->activity_implementer }}
+                {{ $receipt->pelaksana->user->name }}<br>
+                {{ strtoupper($receipt->pelaksana->identity_type) . '. ' . $receipt->pelaksana->id }}
             </td>
             <td class="text-top" style="width: 35%">
                 VERIFIKATOR<br>STAF PEJABAT PEMBUAT KOMITMEN<br>TANGGAL<br>
@@ -247,7 +248,9 @@ $imageSrc = 'logo.png';
                 <br>
                 <br>
                 <br>
-                {{-- {{ $receipt->ppk->employee_staff->name }}<br> --}}
+                {{ Auth::user()->name }}<br>
+                {{ strtoupper(Auth::user()->employee->identity_type) . '. ' . Auth::user()->employee->id }}
+
             </td>
             <td class="text-top">
                 NAMA KEGIATAN DI POK : <br>
@@ -309,10 +312,10 @@ $imageSrc = 'logo.png';
                             <br>
                             <br>
                             <br>
-                            {{ $receipt->ppk->name }}
+                            {{ $receipt->ppk->user->name }}
                             <hr>
-                            {{ strtoupper($receipt->ppk->employee->identity_type ?? '') }}.
-                            {{ strtoupper($receipt->ppk->employee->id) }}
+                            {{ strtoupper($receipt->ppk->identity_type ?? '') }}.
+                            {{ strtoupper($receipt->ppk->id) }}
 
                         </td>
 

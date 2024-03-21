@@ -136,43 +136,74 @@
                         <td>Pejabat Pembuat Komitmen,
                         </td>
                         <td></td>
-                        <td>Penerima Uang,</td>
+                        <td>{{ $receipt->type == 'direct' ? 'Penerima Uang,' : 'Bendahara Pengeluaran' }}
+                        </td>
                     </tr>
                     <tr>
                         <td style="height: 90px"></td>
 
                     </tr>
                     <tr>
-                        <td>{{ $receipt->ppk->name }}</td>
+                        <td>{{ $receipt->ppk->user->name }}</td>
                         <td></td>
-                        <td>{{ $receipt->provider }}</td>
+                        <td>{{ $receipt->type == 'direct' ? $receipt->provider : $receipt->treasurer->user->name }}</td>
                     </tr>
                     <tr>
-                        <td>{{ strtoupper($receipt->ppk->employee_staff->identity_type) }}.
-                            {{ $receipt->ppk->employee_staff->id }}</td>
+                        <td>{{ strtoupper($receipt->ppk->identity_type) }}.
+                            {{ $receipt->ppk->id }}</td>
                         <td></td>
-                        <td>{{ $receipt->provider_organization ?? '' }}</td>
+                        <td>{{ $receipt->type == 'direct' ? $receipt->provider_organization ?? '' : strtoupper($receipt->treasurer->identity_type) . '. ' . $receipt->treasurer->id }}
+                        </td>
                     </tr>
                 </table>
             </div>
             <hr>
-            <table class="text-top fullwidth">
-                <tr>
-                    <td style="width: 100%">Barang/pekerjaan telah diterima/diselesaikan dengan baik dan lengkap</td>
-                </tr>
-                <tr>
-                    <td>Pejabat yang bertanggung jawab,</td>
-                </tr>
-                <tr>
-                    <td style="height: 90px"></td>
-                </tr>
-                <tr>
-                    <td>{{ $receipt->activity_implementer }}</td>
-                </tr>
-                <tr>
-                    <td>NIP. </td>
-                </tr>
-            </table>
+            @if ($receipt->type == 'treasurer')
+                <table class="text-top fullwidth">
+                    <tr>
+                        <td style="width: 50%">Penerima Uang
+                        </td>
+                        <td style="width: 50%">Barang/pekerjaan telah diterima/diselesaikan dengan baik dan lengkap</td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td>Pejabat yang bertanggung jawab,</td>
+
+                    </tr>
+                    <tr>
+                        <td style="height: 90px"></td>
+                        <td style="height: 90px"></td>
+                    </tr>
+                    <tr>
+                        <td>{{ $receipt->provider }}</td>
+                        <td>{{ $receipt->pelaksana->user->name }}</td>
+                    </tr>
+                    <tr>
+                        <td>{{ $receipt->provider_organization ?? '' }}</td>
+                        <td>{{ strtoupper($receipt->pelaksana->identity_type) }}.
+                            {{ strtoupper($receipt->pelaksana->id) }}</td>
+                    </tr>
+                </table>
+            @else
+                <table class="text-top fullwidth">
+                    <tr>
+                        <td style="width: 50%">Barang/pekerjaan telah diterima/diselesaikan dengan baik dan lengkap</td>
+                    </tr>
+                    <tr>
+                        <td>Pejabat yang bertanggung jawab,</td>
+                    </tr>
+                    <tr>
+                        <td style="height: 90px"></td>
+                    </tr>
+                    <tr>
+                        <td>{{ $receipt->pelaksana->user->name }}</td>
+                    </tr>
+                    <tr>
+                        <td>{{ strtoupper($receipt->pelaksana->identity_type) }}.
+                            {{ strtoupper($receipt->pelaksana->id) }}</td>
+                    </tr>
+                </table>
+            @endif
         </div>
 
     </div>

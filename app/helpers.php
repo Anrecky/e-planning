@@ -162,12 +162,16 @@ if (!function_exists('status_receipt')) {
             return "<span class='badge badge-light-primary'>Menunggu PPK</span>";
         } elseif ($var == "wait-spi") {
             return "<span class='badge badge-light-primary'>Menunggu SPI</span>";
+        } elseif ($var == "wait-treasurer") {
+            return "<span class='badge badge-light-primary'>Menunggu Bendahara</span>";
         } elseif ($var == "reject-verificator") {
             return "<span class='badge badge-light-danger'>Tolak Verifikator</span>";
         } elseif ($var == "reject-ppk") {
             return "<span class='badge badge-light-danger'>Tolak PPK</span>";
         } elseif ($var == "reject-spi") {
             return "<span class='badge badge-light-danger'>Tolak SPI</span>";
+        } elseif ($var == "reject-treasurer") {
+            return "<span class='badge badge-light-danger'>Tolak Bendahara</span>";
         } elseif ($var == "accept") {
             return "<span class='badge badge-light-success'>Selesai</span>";
         } else
@@ -194,5 +198,23 @@ if (!function_exists('dompdf_checkbox_blank')) {
                                     <td class='no-border'><div class='box'></div></td>
                                     <td class='no-border'>$span </td>
      </tr>";
+    }
+}
+
+if (!function_exists('dompdf_checkbox')) {
+    function dompdf_checkbox($number, $desc, $span = 'ADA', $res = false)
+    {
+        if ($res == 'Y') {
+            $checked = 'checked';
+        } else {
+            $checked = '';
+        }
+        return "<tr class='no-border'>
+                                    <td class='no-border' style='width: 10px'>$number.</td>
+                                    <td class='no-border'>$desc</td>
+                                    <td class='no-border' style='width: 10px'>
+                                        <input style='vertical-align: top ;  transform: scale(1.5); margin-top:  -5px !important ; padding-top: -10px  !important ;height: 15px !important' type='checkbox' ' . $checked . '>
+                                        </td>
+                                </tr>";
     }
 }

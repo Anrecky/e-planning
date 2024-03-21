@@ -142,7 +142,7 @@
                                     <td>Rp {{ number_format($receipt->amount, 0, ',', '.') }}</td>
                                     <td>{{ $receipt->activity_implementer ?? '-' }}</td>
                                     <td>{{ $receipt->treasurer->name ?? '-' }}</td>
-                                    <td>{{ $receipt->ppk->name }}</td>
+                                    <td>{{ $receipt->ppk?->user->name }}</td>
                                     <td>{{ $receipt->provider }} {{ $receipt->provider_organization }}</td>
                                     <td class="text-center">
                                         <a class="btn-group btn btn-sm btn-primary temporary-edit"
@@ -234,12 +234,13 @@
                                     id="inputDisbursementDescription">
                             </div>
                         </div>
-                        <div class="mb-4 row">
-                            <label for="inputActivityImplementer" class="col-sm-2 col-form-label">Pelaksana
+                        <div class="mb-4 row pelaksanaWrapper ">
+                            <label for="selectActivityExecutor" class="col-sm-2 col-form-label">Pelaksana
                                 Kegiatan</label>
                             <div class="col-sm-8">
-                                <input type="text" class="form-control" name="activity_implementer"
-                                    id="inputActivityImplementer">
+                                <select class="form-select" name="activity_implementer" id="createSelectPelaksana">
+                                    <option selected disabled value="">Pilih Pelaksana...</option>
+                                </select>
                             </div>
                         </div>
                         <div class="mb-4 row">
@@ -493,7 +494,7 @@
                         ajax: {
                             transport: function(params, success, failure) {
                                 // Using Axios to fetch the data
-                                axios.get(`/api/search-employee/ppk`, {
+                                axios.get(`{{ route('employees.search.ppk') }}`, {
                                         params: {
                                             search: params.data.term,
                                             limit: 10
@@ -507,7 +508,42 @@
                                                     id: item.id,
                                                     text: item.name + ' - ' +
                                                         item
-                                                        .identity_number
+                                                        .id
+                                                };
+                                            })
+                                        });
+                                    })
+                                    .catch(function(error) {
+                                        // Call the `failure` function in case of an error
+                                        failure(error);
+                                    });
+                            },
+                            delay: 250,
+                            cache: true
+                        }
+                    });
+                    $('#createSelectPelaksana').select2({
+                        dropdownParent: $("#form-create").find('.pelaksanaWrapper'),
+                        placeholder: 'Pilih Pelaksana',
+                        theme: 'bootstrap-5',
+                        ajax: {
+                            transport: function(params, success, failure) {
+                                // Using Axios to fetch the data
+                                axios.get(`{{ route('employees.search.pelaksana') }}`, {
+                                        params: {
+                                            search: params.data.term,
+                                            limit: 10
+                                        }
+                                    })
+                                    .then(function(response) {
+                                        // Call the `success` function with the formatted results
+                                        success({
+                                            results: response.data.map(function(item) {
+                                                return {
+                                                    id: item.id,
+                                                    text: item.name + ' - ' +
+                                                        item
+                                                        .id
                                                 };
                                             })
                                         });
@@ -528,7 +564,7 @@
                         ajax: {
                             transport: function(params, success, failure) {
                                 // Using Axios to fetch the data
-                                axios.get(`{{ route('search.employee', 'treasurer') }}`, {
+                                axios.get(`{{ route('employees.search.treasurer') }}`, {
                                         params: {
                                             search: params.data.term,
                                             limit: 10
@@ -542,7 +578,7 @@
                                                     id: item.id,
                                                     text: item.name + ' - ' +
                                                         item
-                                                        .identity_number
+                                                        .id
                                                 };
                                             })
                                         });
@@ -639,7 +675,7 @@
                         ajax: {
                             transport: function(params, success, failure) {
                                 // Using Axios to fetch the data
-                                axios.get(`{{ route('search.employee', 'ppk') }}`, {
+                                axios.get(`{{ route('employees.search.ppk') }}`, {
                                         params: {
                                             search: params.data.term,
                                             limit: 10
@@ -656,7 +692,7 @@
                                                     text: item.name +
                                                         ' - ' +
                                                         item
-                                                        .identity_number
+                                                        .id
                                                 };
                                             })
                                         });
@@ -672,7 +708,7 @@
                     });
 
                     // create the option and append to Select2
-                    var option = new Option(`${receipt.ppk.nik} - ${receipt.ppk.name}`, receipt.ppk.id,
+                    var option = new Option(`${receipt.ppk.id} `, receipt.ppk.id,
                         true,
                         true);
                     $('#editSelectPPK').append(option).trigger('change');
@@ -684,7 +720,7 @@
                         ajax: {
                             transport: function(params, success, failure) {
                                 // Using Axios to fetch the data
-                                axios.get(`{{ route('search.employee', 'treasurer') }}`, {
+                                axios.get(`{{ route('employees.search.treasurer') }}`, {
                                         params: {
                                             search: params.data.term,
                                             limit: 10
@@ -700,7 +736,7 @@
                                                     text: item.name +
                                                         ' - ' +
                                                         item
-                                                        .identity_number
+                                                        .id
                                                 };
                                             })
                                         });
@@ -717,9 +753,54 @@
 
                     // create the option and append to Select2
                     var selectedTreasurerOption = new Option(
-                        `${receipt.treasurer?.nik ?? ''} - ${receipt.treasurer?.name ?? ''}`, receipt
+                        `${receipt.treasurer?.id ?? ''} `,
+                        receipt
                         .treasurer?.id ?? null, true, true);
                     $('#editSelectTreasurer').append(selectedTreasurerOption).trigger('change');
+
+                    $('#editSelectPelaksana').select2({
+                        dropdownParent: formEdit.find('.pelaksanaWrapper'),
+                        placeholder: 'Pilih Pelaksana',
+                        theme: 'bootstrap-5',
+                        ajax: {
+                            transport: function(params, success, failure) {
+                                // Using Axios to fetch the data
+                                axios.get(`{{ route('employees.search.pelaksana') }}`, {
+                                        params: {
+                                            search: params.data.term,
+                                            limit: 10
+                                        }
+                                    })
+                                    .then(function(response) {
+                                        // Call the `success` function with the formatted results
+                                        success({
+                                            results: response.data.map(function(
+                                                item) {
+                                                return {
+                                                    id: item.id,
+                                                    text: item.name +
+                                                        ' - ' +
+                                                        item
+                                                        .id
+                                                };
+                                            })
+                                        });
+                                    })
+                                    .catch(function(error) {
+                                        // Call the `failure` function in case of an error
+                                        failure(error);
+                                    });
+                            },
+                            delay: 250,
+                            cache: true
+                        }
+                    });
+                    var option = new Option(`${receipt.activity_implementer} `, receipt
+                        .activity_implementer,
+                        true,
+                        true);
+                    $('#editSelectPelaksana').append(option).trigger('change');
+
 
                 }).on('hidden.bs.modal', function() {
                     const formEdit = $("#form-edit");

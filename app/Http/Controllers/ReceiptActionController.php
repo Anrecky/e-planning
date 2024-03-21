@@ -98,7 +98,49 @@ class ReceiptActionController extends Controller
         try {
             $receipt->load('ppk');
             // dd($receipt);
-            if (!(in_array($receipt->status, ['wait-ppk', 'reject-ppk', 'accept'])) || $receipt->ppk->id != Auth::user()->id) {
+            if (!(in_array($receipt->status, ['wait-ppk', 'reject-ppk', 'accept'])) || $receipt->ppk_id != Auth::user()->employee->id) {
+                return response()->json(['error' => true,  'message' => 'Anda tidak berhak melalukan aksi ini'], 500);
+            }
+
+            $log = new ReceiptLog;
+
+            if ($request->res == 'Y') {
+                if ($receipt->type == 'direct')
+                    $receipt->status = 'accept';
+                else if ($receipt->type == 'treasurer')
+                    $receipt->status = 'wait-treasurer';
+
+                $log->activity = 'ppk-approv';
+                $log->description = 'Melakukan Approv';
+            } else {
+                $receipt->status = 'reject-ppk';
+                $log->activity = 'ppk-reject';
+                if (!empty($request->description)) {
+                    $log->description = 'Melakukan Penolakan dengan alasan ' . $request->description;
+                } else {
+                    $log->description = 'Melakukan Penolakan';
+                }
+            }
+            $receipt->save();
+
+            $log->receipt_id = $receipt->id;
+            $log->user_id = Auth::user()->id;
+            $log->save();
+
+            return response()->json(['error' => false,  'message' => $request->res], 200);
+        } catch (\Exception $e) {
+            Log::error($e);
+
+            return response()->json(['error' => true, 'message' => $e->getMessage()], 500);
+        }
+    }
+
+    public function treasurer(Request $request, Receipt $receipt)
+    {
+        try {
+            $receipt->load('treasurer');
+            // dd($receipt);
+            if (!(in_array($receipt->status, ['wait-treasurer', 'reject-treasurer', 'accept'])) || $receipt->treasurer_id != Auth::user()->employee->id) {
                 return response()->json(['error' => true,  'message' => 'Anda tidak berhak melalukan aksi ini'], 500);
             }
 
@@ -106,11 +148,11 @@ class ReceiptActionController extends Controller
 
             if ($request->res == 'Y') {
                 $receipt->status = 'accept';
-                $log->activity = 'ppk-approv';
+                $log->activity = 'treasurer-approv';
                 $log->description = 'Melakukan Approv';
             } else {
-                $receipt->status = 'reject-ppk';
-                $log->activity = 'ppk-reject';
+                $receipt->status = 'reject-treasurer';
+                $log->activity = 'treasurer-reject';
                 if (!empty($request->description)) {
                     $log->description = 'Melakukan Penolakan dengan alasan ' . $request->description;
                 } else {
@@ -143,7 +185,7 @@ class ReceiptActionController extends Controller
 
             if ($request->res == 'Y') {
                 $receipt->status = 'wait-ppk';
-                $receipt->spi_id = Auth::user()->id;
+                $receipt->spi_id = Auth::user()->employee->id;
                 $log->activity = "spi-approv";
                 $log->description = "Melakukan Approv";
             } else {

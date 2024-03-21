@@ -141,19 +141,25 @@
                             <h4 class="float-start"> Detail
                                 Kwitansi {!! status_receipt($receipt->status) !!}</h4>
                             @if (in_array($receipt->status, ['wait-verificator', 'reject-verificator', 'wait-ppk']) &&
-                                    $receipt->ppk->employee_staff->staff_id == Auth::user()->id)
+                                    $receipt->ppk->head_id == Auth::user()->employee?->id)
                                 <div class="float-end p-2">
                                     <x-custom.payment-receipt.verification-modal :receipt="$receipt" />
                                 </div>
                             @endif
-                            @if ($receipt->status == 'accept' && $receipt->ppk->employee_staff->staff_id == Auth::user()->id)
+                            @if ($receipt->status == 'accept' && $receipt->ppk->head_id == Auth::user()->employee?->id)
                                 <div class="float-end p-2">
                                     <x-custom.payment-receipt.app-money-modal :receipt="$receipt" />
                                 </div>
                             @endif
-                            @if (in_array($receipt->status, ['wait-ppk', 'reject-ppk', 'accept']) && $receipt->ppk->id == Auth::user()->id)
+                            @if (in_array($receipt->status, ['wait-ppk', 'reject-ppk', 'accept']) && $receipt->ppk_id == Auth::user()->employee->id)
                                 <div class="float-end p-2">
                                     <x-custom.payment-receipt.ppk-modal :receipt="$receipt" />
+                                </div>
+                            @endif
+                            @if (in_array($receipt->status, ['wait-treasurer', 'reject-treasurer', 'accept']) &&
+                                    $receipt->treasurer_id == Auth::user()->employee->id)
+                                <div class="float-end p-2">
+                                    <x-custom.payment-receipt.treasurer-modal :receipt="$receipt" />
                                 </div>
                             @endif
                             @if (in_array($receipt->status, ['wait-spi', 'reject-spi']) && Auth::user()->hasRole('SPI'))
@@ -259,7 +265,8 @@
                                             Pelaksana</label>
                                         <div class="col-sm-8">
                                             <p class="form-control">
-                                                {{ $receipt->activity_implementer }}
+                                                {{ $receipt->pelaksana->user->name }} /
+                                                {{ $receipt->pelaksana->id }}
                                             </p>
                                         </div>
                                     </div>
@@ -293,8 +300,8 @@
                                         <div class="col-sm-8">
                                             <p class="form-control">
                                                 @if ($receipt->treasurer)
-                                                    {{ $receipt->treasurer?->name }} /
-                                                    {{ $receipt->treasurer?->nik }}
+                                                    {{ $receipt->treasurer?->user->name }} /
+                                                    {{ $receipt->treasurer?->id }}
                                                 @else
                                                     -
                                                 @endif
@@ -308,8 +315,8 @@
                                             PPK</label>
                                         <div class="col-sm-8">
                                             <p class="form-control">
-                                                {{ $receipt->ppk->name }} /
-                                                {{ $receipt->ppk->employee_staff->id }}
+                                                {{ $receipt->ppk->user->name }} /
+                                                {{ $receipt->ppk->id }}
                                             </p>
                                         </div>
                                     </div>
@@ -325,7 +332,7 @@
                                                     {{ $receipt->verification->last()->user->identity_number }} (
                                                     {{ $receipt->verification->last()->date }})
                                                 @else
-                                                    {{ $receipt->ppk->employee_staff->staff->name }} ( Belum
+                                                    {{ $receipt->ppk->head_id }} ( Belum
                                                     Diverifikasi)
                                                 @endif
                                             </p>
@@ -421,7 +428,7 @@
                                                     </a>
                                                 </td>
                                             </tr>
-                                            @if ($receipt->ppk->employee_staff->staff_id == Auth::user()->id)
+                                            @if ($receipt->ppk->head_id == Auth::user()->employee?->id)
                                                 <tr>
                                                     <td>
                                                         Draft Form Verifikasi
@@ -468,7 +475,8 @@
                                                         @if (Auth::user()->id == $verif->verification_user &&
                                                                 in_array($receipt->status, ['reject-verificator', 'wait-verificator', 'wait-spi']))
                                                             <x-custom.payment-receipt.verification-modal
-                                                                :receipt="$receipt" :dataVerif="$verif" :btnText="'edit'" />
+                                                                :receipt="$receipt" :dataVerif="$verif"
+                                                                :btnText="'edit'" />
                                                         @endif
                                                     </td>
                                                 </tr>

@@ -34,6 +34,12 @@
                     $menuTitle === 'Rencana Penarikan Dana' ||
                     $menuTitle === 'Rekap Kegiatan dan Upload Data Dukung')
                 => true,
+            ($authUser->hasRole('STAF PPK') ||
+                $authUser->hasRole('SPI') ||
+                $authUser->hasRole('PPK') ||
+                $authUser->hasRole('BENDAHARA')) &&
+                ($menuTitle === 'Pembayaran' || $menuTitle === 'Rekam Pembayaran' || $menuTitle === 'Usulan Pembayaran')
+                => true,
             default => false,
         };
     @endphp

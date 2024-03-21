@@ -4,21 +4,6 @@
 <?php
 $imageSrc = 'logo.png';
 
-function checkbox($number, $desc, $span = 'ADA', $res = false)
-{
-    if ($res == 'Y') {
-        $checked = 'checked';
-    } else {
-        $checked = '';
-    }
-    return "<tr class='no-border'>
-                                    <td class='no-border' style='width: 10px'>$number.</td>
-                                    <td class='no-border'>$desc</td>
-                                    <td class='no-border' style='width: 10px'>
-                                        <input style='vertical-align: top ;  transform: scale(1.5); margin-top:  -5px !important ; padding-top: -10px  !important ;height: 15px !important' type='checkbox' ' . $checked . '>
-                                        </td>
-                                </tr>";
-}
 ?>
 
 <head>
@@ -176,16 +161,16 @@ function checkbox($number, $desc, $span = 'ADA', $res = false)
                             <table class="no-border" style="width: 90%">
 
 
-                                {!! checkbox('a', 'SPBy/Kwitansi LS', '', $items->item_2_a) !!}
-                                {!! checkbox('b', 'NOTA / INVOICE DGN NMR, TGL, TTD DAN CAP ', '', $items->item_2_b) !!}
-                                {{-- {!! checkbox('c', 'NMR, TGL, TANDATANGAN DAN <br>CAP PADA DOKUMEN') !!} --}}
+                                {!! dompdf_checkbox('a', 'SPBy/Kwitansi LS', '', $items->item_2_a) !!}
+                                {!! dompdf_checkbox('b', 'NOTA / INVOICE DGN NMR, TGL, TTD DAN CAP ', '', $items->item_2_b) !!}
+                                {{-- {!! dompdf_checkbox('c', 'NMR, TGL, TANDATANGAN DAN <br>CAP PADA DOKUMEN') !!} --}}
                             </table>
                         </td>
                         <td style="width : 50%">
                             <table class="no-border" style="width: 90%">
-                                {!! checkbox('c', 'FOTOCOPY NPWP (SUPLIER BARU)', '', $items->item_2_c) !!}
-                                {!! checkbox('d', 'FOTOCOPY BUKU REKENING<br> (SUPLIER BARU)', '', $items->item_2_d) !!}
-                                {!! checkbox('e', 'DOKUMENTASI', '', $items->item_2_e) !!}
+                                {!! dompdf_checkbox('c', 'FOTOCOPY NPWP (SUPLIER BARU)', '', $items->item_2_c) !!}
+                                {!! dompdf_checkbox('d', 'FOTOCOPY BUKU REKENING<br> (SUPLIER BARU)', '', $items->item_2_d) !!}
+                                {!! dompdf_checkbox('e', 'DOKUMENTASI', '', $items->item_2_e) !!}
                             </table>
                         </td>
                     </tr>
@@ -200,15 +185,15 @@ function checkbox($number, $desc, $span = 'ADA', $res = false)
                     <tr class="">
                         <td style="width : 50%">
                             <table class="no-border" style="width: 90%">
-                                {!! checkbox('a', 'DAFTAR HONOR', '', $items->item_3_a) !!}
-                                {!! checkbox('b', 'SK', '', $items->item_3_b) !!}
-                                {!! checkbox('c', 'RUNDOWN ACARA (PENCAIRAN <br> HONOR NARASUMBER)', '', $items->item_3_c) !!}
+                                {!! dompdf_checkbox('a', 'DAFTAR HONOR', '', $items->item_3_a) !!}
+                                {!! dompdf_checkbox('b', 'SK', '', $items->item_3_b) !!}
+                                {!! dompdf_checkbox('c', 'RUNDOWN ACARA (PENCAIRAN <br> HONOR NARASUMBER)', '', $items->item_3_c) !!}
                             </table>
                         </td>
                         <td style="width : 50%">
                             <table class="no-border" style="width: 90%">
-                                {!! checkbox('d', 'SURAT TUGAS NARASUMBER', '', $items->item_3_d) !!}
-                                {!! checkbox('e', 'DOKUMENTASI', '', $items->item_3_e) !!}
+                                {!! dompdf_checkbox('d', 'SURAT TUGAS NARASUMBER', '', $items->item_3_d) !!}
+                                {!! dompdf_checkbox('e', 'DOKUMENTASI', '', $items->item_3_e) !!}
                             </table>
                         </td>
                     </tr>
@@ -223,20 +208,20 @@ function checkbox($number, $desc, $span = 'ADA', $res = false)
                     <tr class="">
                         <td style="width : 50%">
                             <table class="no-border" style="width: 90%">
-                                {!! checkbox('a', 'SURAT TUGAS', '', $items->item_4_a) !!}
-                                {!! checkbox('b', 'SPD', '', $items->item_4_b) !!}
-                                {!! checkbox('c', 'KWITANSI LS', '', $items->item_4_c) !!}
-                                {!! checkbox('d', 'DAFTAR RAMPUNG', '', $items->item_4_d) !!}
-                                {!! checkbox('e', 'INVOICE HOTEL', '', $items->item_4_e) !!}
+                                {!! dompdf_checkbox('a', 'SURAT TUGAS', '', $items->item_4_a) !!}
+                                {!! dompdf_checkbox('b', 'SPD', '', $items->item_4_b) !!}
+                                {!! dompdf_checkbox('c', 'KWITANSI LS', '', $items->item_4_c) !!}
+                                {!! dompdf_checkbox('d', 'DAFTAR RAMPUNG', '', $items->item_4_d) !!}
+                                {!! dompdf_checkbox('e', 'INVOICE HOTEL', '', $items->item_4_e) !!}
                             </table>
                         </td>
                         <td style="width : 50%">
                             <table class="no-border" style="width: 90%">
-                                {!! checkbox('f', 'TIKET PP', '', $items->item_4_f) !!}
-                                {!! checkbox('g', 'DAFTAR RILL', '', $items->item_4_g) !!}
-                                {!! checkbox('h', 'UNDANGAN / MEMO', '', $items->item_4_h) !!}
-                                {!! checkbox('i', 'LAPORAN PERJALANAN DINAS', '', $items->item_4_i) !!}
-                                {!! checkbox('j', 'DOKUMENTASI', '', $items->item_4_j) !!}
+                                {!! dompdf_checkbox('f', 'TIKET PP', '', $items->item_4_f) !!}
+                                {!! dompdf_checkbox('g', 'DAFTAR RILL', '', $items->item_4_g) !!}
+                                {!! dompdf_checkbox('h', 'UNDANGAN / MEMO', '', $items->item_4_h) !!}
+                                {!! dompdf_checkbox('i', 'LAPORAN PERJALANAN DINAS', '', $items->item_4_i) !!}
+                                {!! dompdf_checkbox('j', 'DOKUMENTASI', '', $items->item_4_j) !!}
                             </table>
                         </td>
                     </tr>
@@ -257,7 +242,8 @@ function checkbox($number, $desc, $span = 'ADA', $res = false)
                 <br>
                 <br>
                 <br>
-                {{ $receipt->activity_implementer }}
+                {{ $receipt->pelaksana->user->name }}<br>
+                {{ strtoupper($receipt->pelaksana->identity_type) . '. ' . $receipt->pelaksana->id }}
             </td>
             <td class="text-top" style="width: 35%">
                 VERIFIKATOR<br>STAF PEJABAT PEMBUAT KOMITMEN<br>TANGGAL<br>
@@ -321,10 +307,10 @@ function checkbox($number, $desc, $span = 'ADA', $res = false)
                             <br>
                             <br>
                             <br>
-                            {!! $receipt->spi?->name ?? '<br>' !!}
+                            {!! $receipt->spi?->user->name ?? '<br>' !!}
                             <hr>
-                            {{ strtoupper($receipt->spi?->employee->identity_type ?? '') }}.
-                            {!! strtoupper($receipt->spi?->employee->id) ?? '<br>' !!}
+                            {{ strtoupper($receipt->spi?->identity_type ?? '') }}.
+                            {!! strtoupper($receipt->spi?->id) ?? '<br>' !!}
 
                         </td>
                         <td>
@@ -338,10 +324,10 @@ function checkbox($number, $desc, $span = 'ADA', $res = false)
                             <br>
                             <br>
                             @if ($receipt->status == 'accept')
-                                {{ $receipt->ppk->name }}
+                                {{ $receipt->ppk->user->name }}
                                 <hr>
-                                {{ strtoupper($receipt->ppk->employee->identity_type ?? '') }}.
-                                {{ strtoupper($receipt->ppk->employee->id) }}
+                                {{ strtoupper($receipt->ppk->identity_type ?? '') }}.
+                                {{ strtoupper($receipt->ppk->id) }}
                             @else
                                 <br>
                                 <hr><br>

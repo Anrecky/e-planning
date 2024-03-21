@@ -30,23 +30,28 @@ return new class extends Migration
             $table->date('activity_date')->nullable();
             $table->string('berkas')->nullable();
             $table->string('reference_number')->nullable();
-            $table->string('activity_implementer')->nullable();
+            $table->unsignedBigInteger('activity_implementer')->nullable();
             $table->unsignedBigInteger('ppk_id');
             $table->unsignedBigInteger('treasurer_id')->nullable();
             $table->unsignedBigInteger('spi_id')->nullable();
+            $table->foreign('activity_implementer')
+                ->references('id')
+                ->on('employees')
+                ->onUpdate('cascade')
+                ->onDelete('cascade');
             $table->foreign('ppk_id')
                 ->references('id')
-                ->on('users')
+                ->on('employees')
                 ->onUpdate('cascade')
                 ->onDelete('cascade');
             $table->foreign('treasurer_id')
                 ->references('id')
-                ->on('users')
+                ->on('employees')
                 ->onUpdate('cascade')
                 ->onDelete('cascade');
             $table->foreign('spi_id')
                 ->references('id')
-                ->on('users')
+                ->on('employees')
                 ->onUpdate('cascade')
                 ->onDelete('cascade');
             $table->string('provider');
