@@ -4,6 +4,7 @@ use App\Http\Controllers\AccountCodeController;
 use App\Http\Controllers\AccountCodeReceptionController;
 use App\Http\Controllers\AssetItemController;
 use App\Http\Controllers\BudgetImplementationDetailController;
+use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\PaymentReceiptController;
 use App\Http\Controllers\PPKController;
 use App\Http\Controllers\ProgramTargetController;
@@ -17,7 +18,7 @@ use Illuminate\Support\Facades\Route;
 Route::middleware(['auth', 'web'])->group(function () {
     Route::get('/verificators', [VerificatorController::class, 'getVerificators'])->name('verificators.index');
     Route::get('/program-targets', [ProgramTargetController::class, 'getProgramTargets'])->name('program_targets.index');
-    Route::get('/search-employee/{param}', [SearchEmployeeController::class, 'index'])->name('search.employee');
+    Route::get('/employees/heads', [EmployeeController::class, 'getHeads'])->name('employees.heads');
     Route::get('/withdrawal-plans/{activityId}/{year?}', [WithdrawalPlanController::class, 'getWithdrawalPlans'])->name('withdrawal_plans.activity');
     Route::get('/activity/{activityId}/account-codes', [AccountCodeController::class, 'getAccountCodesByActivity'])->name('account_codes.activity');
     Route::get('/details/{activityId}/{accountCodeId}', [BudgetImplementationDetailController::class, 'getByActivityAccountCode'])->name('budget_implementation_details.activity_account_code');
