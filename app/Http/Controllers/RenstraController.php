@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Renstra;
+use App\Models\RenstraIndicator;
+use App\Models\RenstraMission;
 use Illuminate\Http\Request;
 
 class RenstraController extends Controller
@@ -29,8 +31,7 @@ class RenstraController extends Controller
 
     public function mission()
     {
-        $renstra = Renstra::first();
-
+        $renstra = Renstra::with('missions')->first();
         return view('app.mission', ['title' => 'Misi', 'renstra' => $renstra]);
     }
 
@@ -39,16 +40,9 @@ class RenstraController extends Controller
         $validatedData = $request->validate([
             'mission.*' => 'required|string|max:255', // Validate each mission input
         ]);
-
         $renstra = Renstra::first();
-        // If there are existing missions, append the new ones; otherwise, set them directly
-        if (is_array($renstra->mission)) {
-            $renstra->mission = array_merge($renstra->mission, $validatedData['mission']);
-        } else {
-            $renstra->mission = $validatedData['mission'];
-        }
-
-        $renstra->save();
+        foreach ($validatedData['mission'] as $data)
+            RenstraMission::create(['renstra_id' => $renstra->id, 'description' => $data]);
 
         return redirect()->route('mission.index')->with('success', 'Berhasil menambahkan misi.');
     }
@@ -56,62 +50,36 @@ class RenstraController extends Controller
 
     public function deleteMission(Request $request)
     {
-        $index = $request->index; // Get the index of the mission to delete
-
-        $renstra = Renstra::first();
-        if ($renstra) {
-            $missions = $renstra->mission;
-            if (is_array($missions) && isset($missions[$index])) {
-                unset($missions[$index]); // Remove the mission
-                $renstra->mission = array_values($missions); // Reindex the array
-                $renstra->save();
-            }
-        }
-
+        RenstraMission::find($request->id)->delete();
         return response()->json(['success' => 'Berhasil menghapus misi.']);
     }
 
     public function iku()
     {
         $renstra = Renstra::first();
+        $missions = RenstraMission::get();
+        $ikus = RenstraIndicator::with('mission')->get();
+        // dd($ikus);
 
-        return view('app.iku', ['title' => 'Indikator Kinerja Utama', 'renstra' => $renstra]);
+        return view('app.iku', ['title' => 'Indikator Kinerja Utama', 'renstra' => $renstra, 'missions' => $missions, 'ikus' => $ikus]);
     }
 
     public function storeIku(Request $request)
     {
         $validatedData = $request->validate([
             'iku.*' => 'required|string|max:255', // Validate each iku input
+            'misi' => 'required|integer', // Validate each iku input
         ]);
-
-        $renstra = Renstra::first();
-        // If there are existing iku, append the new ones; otherwise, set them directly
-        if (is_array($renstra->iku)) {
-            $renstra->iku = array_merge($renstra->iku, $validatedData['iku']);
-        } else {
-            $renstra->iku = $validatedData['iku'];
-        }
-
-        $renstra->save();
-
+        foreach ($validatedData['iku'] as $data)
+            RenstraIndicator::create(['renstra_mission_id' => $validatedData['misi'], 'description' => $data]);
         return redirect()->route('iku.index')->with('success', 'IKU berhasil ditambahkan.');
     }
     // Add this method to your RenstraController
 
     public function deleteIku(Request $request)
     {
-        $index = $request->index; // Get the index of the mission to delete
 
-        $renstra = Renstra::first();
-        if ($renstra) {
-            $iku = $renstra->iku;
-            if (is_array($iku) && isset($iku[$index])) {
-                unset($iku[$index]); // Remove the iku
-                $renstra->iku = array_values($iku); // Reindex the array
-                $renstra->save();
-            }
-        }
-
-        return response()->json(['success' => 'Mission deleted successfully.']);
+        RenstraIndicator::find($request->id)->delete();
+        return response()->json(['success' => 'Berhasil menghapus indikator.']);
     }
 }

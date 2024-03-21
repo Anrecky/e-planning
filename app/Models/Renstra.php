@@ -16,4 +16,9 @@ class Renstra extends Model
         'iku' => 'array',
         'capaian' => 'array',
     ];
+
+    public function missions()
+    {
+        return $this->hasMany(RenstraMission::class);
+    }
 }

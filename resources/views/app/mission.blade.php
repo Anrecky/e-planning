@@ -94,13 +94,13 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @forelse ($missions as $index => $mission)
+                                @forelse ($renstra->missions as $index => $mission)
                                     <tr>
                                         <td style="width:40px;">{{ $loop->iteration }}</td>
-                                        <td>{{ $mission }}</td>
+                                        <td>{{ $mission->description }}</td>
                                         <td class="text-center">
                                             <a href="javascript:void(0);" class="btn btn-danger btn-sm" role="button"
-                                                onclick="confirmDelete({{ $index }});">
+                                                onclick="confirmDeleteMission({{ $mission->id }});">
                                                 <i class="text-white" data-feather="trash-2"></i>
                                             </a>
                                         </td>
@@ -180,7 +180,7 @@
                 feather.replace();
             })
 
-            function confirmDelete(index) {
+            function confirmDeleteMission(index) {
                 Swal.fire({
                     title: 'Anda yakin ingin hapus?',
                     text: "Data tidak dapat dikembalikan!",
@@ -200,7 +200,7 @@
             function deleteMission(index) {
                 // Assuming you have a route defined in Laravel to handle the deletion that expects the index
                 axios.post("{{ route('mission.delete') }}", {
-                        index: index
+                        id: index
                     })
                     .then(function(response) {
                         // Handle success (e.g., show a success message and remove the row from the table)

@@ -1,8 +1,4 @@
 <x-custom.app-layout :scrollspy="false">
-    @php
-        $ikus = $renstra->iku ?? [];
-    @endphp
-
     <x-slot:pageTitle>
         {{ $title }}
     </x-slot>
@@ -90,13 +86,14 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach ($ikus as $index => $iku)
+                                @foreach ($ikus as $iku)
                                     <tr>
                                         <td style="width:40px;">{{ $loop->iteration }}</td>
-                                        <td>{{ $iku }}</td>
+                                        <td>{{ $iku->description }}</td>
+                                        <td>{{ $iku->mission->description }}</td>
                                         <td class="text-center">
                                             <a href="javascript:void(0);" class="btn btn-danger btn-sm" role="button"
-                                                onclick="confirmDelete({{ $index }});">
+                                                onclick="confirmDelete({{ $iku->id }});">
                                                 <i class="text-white" data-feather="trash-2"></i>
                                             </a>
                                         </td>
@@ -138,11 +135,12 @@
                                 <select class="form-select @error('misi') is-invalid @enderror" id="selectTypeRole"
                                     name="misi" required>
                                     <option selected disabled value="">Pilih Misi...</option>
-                                    {{-- @foreach ($roles as $role)
-                                        <option value="{{ $role->name }}"
-                                            {{ old('user_role') == $role->name ? 'selected' : '' }}>
-                                            {{ $role->name }}</option>
-                                    @endforeach --}}
+                                    @foreach ($missions as $mission)
+                                        <option value="{{ $mission->id }}"
+                                            {{ old('misi') == $mission->id ? 'selected' : '' }}>
+                                            {{ $mission->description }}
+                                        </option>
+                                    @endforeach
                                 </select>
                                 @error('misi')
                                     <div class="invalid-feedback">{{ $message }}</div>
@@ -209,7 +207,7 @@
             function deleteIKU(index) {
                 // Assuming you have a route defined in Laravel to handle the deletion that expects the index
                 axios.post("{{ route('iku.delete') }}", {
-                        index: index
+                        id: index
                     })
                     .then(function(response) {
                         console.log(response);
