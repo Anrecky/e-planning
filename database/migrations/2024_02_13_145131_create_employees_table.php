@@ -24,7 +24,8 @@ return new class extends Migration
             $table->foreign('head_id')
                 ->references('id')
                 ->on('employees')
-                ->onDelete('set null');
+                ->onDelete('set null')
+                ->onUpdate('cascade');
             $table->timestamps();
             $table->unique('user_id');
         });

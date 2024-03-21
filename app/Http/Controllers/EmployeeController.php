@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Employee;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 
 class EmployeeController extends Controller
 {
@@ -61,5 +62,28 @@ class EmployeeController extends Controller
     public function destroy(Employee $employee)
     {
         //
+    }
+
+    public function getHeads(Request $request)
+    {
+        try {
+            $search = $request->input('search', '');
+            $limit = $request->input('limit', 10);
+
+            $query = Employee::query()
+                ->with('user')
+                ->where('id', '!=', auth()->user()->employee->id);
+
+            if (!empty($search)) {
+                $query->where('id', 'LIKE', "%{$search}%");
+            }
+            Log::info($query->get());
+            // $heads = $query->get(['id', 'user.name']);
+
+            // return response()->json($heads);
+        } catch (\Exception $e) {
+            Log::error($e->getMessage());
+            return back()->with('error', 'Gagal menarik data pegawai');
+        }
     }
 }

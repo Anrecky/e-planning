@@ -62,5 +62,6 @@ class RolesAndPermissionsSeeder extends Seeder
         foreach ($roles as $role) {
             Role::create(['name' => $role]);
         }
+        Role::where('name', 'ADMIN FAKULTAS/UNIT')->first()->givePermissionTo('view SBM&SBI');
     }
 }

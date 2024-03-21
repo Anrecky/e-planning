@@ -17,7 +17,7 @@ class UserController extends Controller
     public function index()
     {
         $title = 'Kelola User';
-        $users = User::notAdmin()->get();
+        $users = User::with('employee')->notAdmin()->get();
         $roles = Role::all();
         $work_units = WorkUnit::all();
         $identity_types = ['nik', 'nip', 'nidn'];

@@ -93,8 +93,8 @@
                                         @endforeach
                                     </td>
                                     <td>{{ $user->name }}</td>
-                                    <td>{{ $user->identity_number ?? '-' }}</td>
-                                    <td>{{ $user->position ?? '-' }}</td>
+                                    <td>{{ $user->employee->id ?? '-' }}</td>
+                                    <td>{{ $user->employee->position ?? '-' }}</td>
                                     <td>{{ $user->email ?? '-' }}</td>
                                     <td class="text-center">
                                         {{-- <button type="button" class="btn btn-sm btn-info"
@@ -207,6 +207,41 @@
                 });
                 $("#createModal").on('shown.bs.modal', async function(e) {
                     const formCreate = $("#form-create");
+                    formCreate.find('#selectHeadOf').select2({
+                        dropdownParent: formCreate.find('.headOfWrapper'),
+                        placeholder: 'Pilih Atasan',
+                        theme: 'bootstrap-5',
+                        ajax: {
+                            transport: function(params, success, failure) {
+                                axios.get(`{{ route('employees.heads') }}`, {
+                                        params: {
+                                            search: params.data.term,
+                                            limit: 10
+                                        }
+                                    })
+                                    .then(function(response) {
+                                        success({
+                                            results: response.data.map(function(
+                                                item) {
+                                                return {
+                                                    id: item.id,
+                                                    text: item.name +
+                                                        ' - ' +
+                                                        item
+                                                        .identity_number
+                                                };
+                                            })
+                                        });
+                                    })
+                                    .catch(function(error) {
+                                        // Call the `failure` function in case of an error
+                                        failure(error);
+                                    });
+                            },
+                            delay: 250,
+                            cache: true
+                        }
+                    });
                     formCreate.find('#selectTypeRole').on('change', function() {
                         if (formCreate.find('#selectTypeRole').val() == 'PPK') {
                             formCreate.find('#createSelectStaff').prop('disabled', false)
@@ -244,7 +279,7 @@
                     } else {
                         formEdit.find('#letter_reference').prop('disabled', true)
                     }
-                    formEdit.find('#editSelectStaff').select2({
+                    {{-- formEdit.find('#editSelectStaff').select2({
                         dropdownParent: formEdit.find('.staffWrapper'),
                         placeholder: 'Pilih PPK',
                         theme: 'bootstrap-5',
@@ -278,7 +313,7 @@
                             delay: 250,
                             cache: true
                         }
-                    });
+                    }); --}}
                     formEdit.find('#selectTypeRole').on('change', function() {
                         if (formEdit.find('#selectTypeRole').val() == 'PPK') {
                             formEdit.find('#editSelectStaff').prop('disabled', false)
@@ -293,40 +328,6 @@
                         }
                     }).trigger('change')
 
-                });
-
-                $('#createSelectStaff').select2({
-                    dropdownParent: $("#form-create").find('.staffWrapper'),
-                    placeholder: 'Pilih PPK',
-                    theme: 'bootstrap-5',
-                    ajax: {
-                        transport: function(params, success, failure) {
-                            axios.get(`{{ route('search.employee', 'staff') }}`, {
-                                    params: {
-                                        search: params.data.term,
-                                        limit: 10
-                                    }
-                                })
-                                .then(function(response) {
-                                    success({
-                                        results: response.data.map(function(item) {
-                                            return {
-                                                id: item.id,
-                                                text: item.name + ' - ' +
-                                                    item
-                                                    .identity_number
-                                            };
-                                        })
-                                    });
-                                })
-                                .catch(function(error) {
-                                    // Call the `failure` function in case of an error
-                                    failure(error);
-                                });
-                        },
-                        delay: 250,
-                        cache: true
-                    }
                 });
             });
         </script>
