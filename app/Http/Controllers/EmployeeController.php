@@ -71,16 +71,18 @@ class EmployeeController extends Controller
             $limit = $request->input('limit', 10);
 
             $query = Employee::query()
-                ->with('user')
-                ->where('id', '!=', auth()->user()->employee->id);
+                ->join('users', 'employees.user_id', '=', 'users.id')
+                ->limit($limit)
+                // ->where('id', '!=', auth()->user()->employee->id)
+            ;
 
             if (!empty($search)) {
-                $query->where('id', 'LIKE', "%{$search}%");
+                $query->where('employees.id', 'LIKE', "%{$search}%");
+                $query->orWhere('users.name', 'LIKE', "%{$search}%");
             }
-            Log::info($query->get());
-            // $heads = $query->get(['id', 'user.name']);
 
-            // return response()->json($heads);
+            $heads = $query->get(['employees.id', 'users.name']);
+            return response()->json($heads);
         } catch (\Exception $e) {
             Log::error($e->getMessage());
             return back()->with('error', 'Gagal menarik data pegawai');

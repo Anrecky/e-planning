@@ -17,10 +17,10 @@
         </div>
     </div>
     <div class="mb-4 row align-items-center headOfWrapper">
-        <label for="selectHeadOf" class="col-sm-3 col-form-label">Atasan (opsional)</label>
+        <label for="selectHeadOf" class="col-sm-3 col-form-label">Staff (opsional)</label>
         <div class="col-sm-8">
             <select class="form-select" style=" width: 100% !important" name="head_id" id="selectHeadOf">
-                <option selected disabled value="">Pilih Atasan...</option>
+                <option selected disabled value="">Pilih Staff...</option>
             </select>
         </div>
     </div>

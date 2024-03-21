@@ -30,7 +30,7 @@
     <div class="mb-4 row align-items-center staffWrapper">
         <label for="selectVerifier" class="col-sm-4 col-form-label">Staff</label>
         <div class="col-sm-8">
-            <select class="form-select" style=" width: 100% !important" name="staff_id" id="editSelectStaff">
+            <select class="form-select" style=" width: 100% !important" name="head_id" id="editSelectStaff">
                 <option selected disabled value="">Pilih Staff...</option>
             </select>
         </div>

@@ -21,11 +21,11 @@ return new class extends Migration
             $table->foreignIdFor(User::class)->onDelete('cascade');
             $table->enum('identity_type', ['nip', 'nik', 'nidn'])->default('nik');
             $table->unsignedBigInteger('head_id')->nullable();
-            $table->foreign('head_id')
-                ->references('id')
-                ->on('employees')
-                ->onDelete('set null')
-                ->onUpdate('cascade');
+            // $table->foreign('head_id')
+            //     ->references('id')
+            //     ->on('employees')
+            //     ->onDelete('set null')
+            //     ->onUpdate('cascade');
             $table->timestamps();
             $table->unique('user_id');
         });

@@ -209,7 +209,7 @@
                     const formCreate = $("#form-create");
                     formCreate.find('#selectHeadOf').select2({
                         dropdownParent: formCreate.find('.headOfWrapper'),
-                        placeholder: 'Pilih Atasan',
+                        placeholder: 'Pilih Staff',
                         theme: 'bootstrap-5',
                         ajax: {
                             transport: function(params, success, failure) {
@@ -228,7 +228,7 @@
                                                     text: item.name +
                                                         ' - ' +
                                                         item
-                                                        .identity_number
+                                                        .id
                                                 };
                                             })
                                         });
@@ -264,28 +264,29 @@
                     formEdit.attr('action', updateUrl);
                     formEdit.find('#selectTypeRole').val(user.roles[0].name ?? null).trigger('change');
                     formEdit.find('input[name="user_name"]').val(user.name);
-                    formEdit.find('input[name="position"]').val(user.employee_staff?.position);
-                    formEdit.find('input[name="identity_number"]').val(user.employee_staff?.id);
-                    formEdit.find('#selectWorkUnit').val(user.employee_staff?.work_unit_id ?? null);
+                    formEdit.find('input[name="position"]').val(user.employee?.position);
+                    formEdit.find('input[name="identity_number"]').val(user.employee?.id);
+                    formEdit.find('#selectWorkUnit').val(user.employee?.work_unit_id ?? null);
                     formEdit.find('input[name="email"]').val(user.email);
-                    formEdit.find('#selectIdentityType').val(user.employee_staff?.identity_type);
-                    formEdit.find('input[name="letter_reference"]').val(user.letter_reference);
+                    formEdit.find('#selectIdentityType').val(user.employee?.identity_type);
+                    formEdit.find('input[name="letter_reference"]').val(user.employee?.letter_reference);
+                    console.log(user);
                     if (user.roles[0].name == 'PPK') {
                         var selectedTreasurerOption = new Option(
-                            `${user.employee_staff?.staff?.name ?? ''} `,
-                            user.employee_staff?.staff_id ?? null, true, true);
+                            `${user.employee?.head_id  ?? ''} `,
+                            user.employee?.head_id ?? null, true, true);
                         formEdit.find('#editSelectStaff').append(selectedTreasurerOption).trigger('change');
 
                     } else {
                         formEdit.find('#letter_reference').prop('disabled', true)
                     }
-                    {{-- formEdit.find('#editSelectStaff').select2({
+                    formEdit.find('#editSelectStaff').select2({
                         dropdownParent: formEdit.find('.staffWrapper'),
                         placeholder: 'Pilih PPK',
                         theme: 'bootstrap-5',
                         ajax: {
                             transport: function(params, success, failure) {
-                                axios.get(`{{ route('search.employee', 'staff') }}`, {
+                                axios.get(`{{ route('employees.heads') }}`, {
                                         params: {
                                             search: params.data.term,
                                             limit: 10
@@ -301,7 +302,7 @@
                                                     text: item.name +
                                                         ' - ' +
                                                         item
-                                                        .identity_number
+                                                        .id
                                                 };
                                             })
                                         });
@@ -313,7 +314,7 @@
                             delay: 250,
                             cache: true
                         }
-                    }); --}}
+                    });
                     formEdit.find('#selectTypeRole').on('change', function() {
                         if (formEdit.find('#selectTypeRole').val() == 'PPK') {
                             formEdit.find('#editSelectStaff').prop('disabled', false)

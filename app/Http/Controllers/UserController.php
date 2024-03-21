@@ -84,8 +84,8 @@ class UserController extends Controller
             'user_role' => 'required|exists:roles,name',
             'position' => 'string|required_if:identity_number,true',
             'work_unit' => 'integer|required_if:identity_number,true',
-            'head_id' => 'integer',
-            'letter_reference' => 'string',
+            'head_id' => 'required_if:user_role,PPK',
+            'letter_reference' => 'required_if:user_role,PPK',
         ]);
         // Hanya enkripsi dan update password jika field password diisi
         if (!empty($request->password)) {
@@ -114,13 +114,19 @@ class UserController extends Controller
         } else {
             if ($validatedData['user_role'] == 'PPK') {
                 $employee->head_id = $validatedData['head_id'] ?? null;
+                $employee->letter_reference = $validatedData['letter_reference'];
             } else {
                 $employee->head_id = null;
+                $employee->letter_reference = null;
             }
+            if ($employee->id != $validatedData['identity_number']) {
+                Employee::where('head_id', $employee->id)
+                    ->update(['head_id' => $validatedData['identity_number']]);
+            };
+
             $employee->id = $validatedData['identity_number'];
             $employee->position = $validatedData['position'];
             $employee->work_unit_id = $validatedData['work_unit'];
-            $employee->letter_reference = $validatedData['letter_reference'];
             $employee->identity_type = $validatedData['identity_type'];
             $employee->save();
         }
