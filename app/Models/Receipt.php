@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Carbon\Carbon;
 
 class Receipt extends Model
 {
@@ -59,5 +60,23 @@ class Receipt extends Model
     public function logs(): HasMany
     {
         return $this->hasMany(ReceiptLog::class, 'receipt_id', 'id');
+    }
+
+    public function scopeGenerateNumber($query, $receipt)
+    {
+        $receipt->load('ppk');
+        $year = Carbon::createFromFormat('Y-m-d', $receipt->activity_date)->year;
+        $number = 'VR/LS/' . $receipt->ppk->letter_reference . '/' . $year;
+        $tmp = Receipt::where('ppk_id', '=', $receipt->ppk_id)->where('reference_number', 'like', '%' . $number)->orderBy('reference_number', 'desc')->first('reference_number');
+        if ($tmp) {
+            $splitReference = explode('/', $tmp->reference_number)[0];
+            $newNumber = str_pad($splitReference + 1, 3, '0', STR_PAD_LEFT);
+            $number =  $newNumber . '/' . $number;
+        } else {
+            $number = '001/' . $number;
+        }
+
+        $receipt->reference_number = $number;
+        $receipt->save();
     }
 }

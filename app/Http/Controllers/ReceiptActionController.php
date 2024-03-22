@@ -3,14 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Receipt;
-use App\Models\Activity;
 use App\Models\PaymentVerification;
-use App\Models\PPK;
 use App\Models\ReceiptLog;
-use App\Models\Role;
-use App\Models\Treasurer;
-use App\Models\User;
-use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
@@ -65,18 +59,6 @@ class ReceiptActionController extends Controller
             if (!in_array($receipt->status, ['draft', 'reject-verificator', 'reject-ppk', 'reject-spi'])) {
                 return response()->json(['error' => true,  'message' => 'Anda tidak memiliki hak pada tahap ini'], 400);
             }
-            if (empty($receipt->reference_number)) {
-                $year = Carbon::createFromFormat('Y-m-d', $receipt->activity_date)->year;
-                $number = 'VR/LS/' . $year;
-                $tmp = Receipt::where('ppk_id', '=', $receipt->ppk_id)->where('reference_number', 'like', '%' . $number)->orderBy('reference_number', 'desc')->first('reference_number');
-                if ($tmp) {
-                    $splitReference = explode('/', $tmp->reference_number)[0];
-                    $newNumber = str_pad($splitReference + 1, 3, '0', STR_PAD_LEFT);
-                    $receipt->reference_number = $newNumber . '/' . $number;
-                } else {
-                    $receipt->reference_number = '001/' . $number;
-                }
-            }
             $receipt->status = 'wait-verificator';
             $receipt->save();
             $log = new ReceiptLog;
@@ -97,7 +79,6 @@ class ReceiptActionController extends Controller
     {
         try {
             $receipt->load('ppk');
-            // dd($receipt);
             if (!(in_array($receipt->status, ['wait-ppk', 'reject-ppk', 'accept'])) || $receipt->ppk_id != Auth::user()->employee->id) {
                 return response()->json(['error' => true,  'message' => 'Anda tidak berhak melalukan aksi ini'], 500);
             }
@@ -105,9 +86,10 @@ class ReceiptActionController extends Controller
             $log = new ReceiptLog;
 
             if ($request->res == 'Y') {
-                if ($receipt->type == 'direct')
+                if ($receipt->type == 'direct') {
+                    Receipt::generateNumber($receipt);
                     $receipt->status = 'accept';
-                else if ($receipt->type == 'treasurer')
+                } else if ($receipt->type == 'treasurer')
                     $receipt->status = 'wait-treasurer';
 
                 $log->activity = 'ppk-approv';
