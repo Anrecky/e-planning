@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Activity;
+use App\Models\BudgetImplementationDetail;
 use App\Models\Employee;
 use App\Models\PaymentVerification;
 use App\Models\PPK;
@@ -15,7 +16,6 @@ use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Auth;
-
 use PDF;
 
 class PaymentReceiptController extends Controller
@@ -97,6 +97,13 @@ class PaymentReceiptController extends Controller
     {
         $requestAmount = $request->input('amount');
         $cleanedAmount = preg_replace('/[^0-9]/', '', $requestAmount);
+
+        $detail = BudgetImplementationDetail::select('total')->find($request->detail);
+        $sum = Receipt::where('budget_implementation_detail_id', '=', $request->detail)->sum('amount');
+        $sisa = $detail->total - $sum;
+        if ($sisa - $cleanedAmount < 0)
+            return back()->with('error', 'Maaf Sisa pagu tidak cukup, sisa pagu yaitu Rp. ' . number_format($sisa, 0, ',', '.'));
+
         $validatedData = $request->validate([
             'type' => 'in:direct,treasurer',
             'perjadin' => 'in:N,Y',
