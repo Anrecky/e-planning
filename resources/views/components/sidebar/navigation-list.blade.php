@@ -17,7 +17,6 @@
         $authUser = auth()->user();
         $menuTitle = $menu['title'];
         $show = match (true) {
-            $authUser->hasRole('SUPER ADMIN PERENCANAAN') => true,
             $authUser->hasPermissionTo('view SBM&SBI') &&
                 ($menuTitle === 'Administrasi' || $menuTitle === 'SBM dan SBI')
                 => true,
@@ -43,7 +42,7 @@
             default => false,
         };
     @endphp
-    @if ($show)
+    @if ($show || $authUser->hasRole('SUPER ADMIN PERENCANAAN'))
         <li class="{{ $liClass }} {{ $menu['active'] && $depth !== 1 ? 'active' : '' }}">
             <a href="{{ $hrefUrl }}" @if ($hasChildren) data-bs-toggle="collapse" @endif
                 aria-expanded="{{ $menu['active'] ? 'true' : 'false' }}"

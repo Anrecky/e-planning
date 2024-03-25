@@ -73,7 +73,7 @@ class NavigationServiceProvider extends ServiceProvider
                             'Cetak Laporan',
                             url('#'),
                             fn (Section $section) => $section
-                                ->add('Laporan FA Detail', url('#'))
+                                ->add('Laporan FA Detail', route('detailed-FA-report.index'))
                         )
                 )
                 ->add(
