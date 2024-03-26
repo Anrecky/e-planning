@@ -32,6 +32,6 @@ class Employee extends Model
 
     public function headOf(): BelongsTo
     {
-        return $this->belongsTo(Employee::class, 'head_id', 'id');
+        return $this->belongsTo(Employee::class, 'head_id', 'id')->with('user');
     }
 }

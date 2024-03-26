@@ -177,6 +177,7 @@ Route::middleware(['auth'])->prefix('admin')->group(function () {
             Route::post('upload-berkas', 'upload_berkas')->name('upload-berkas');
             Route::post('ajukan', 'ajukan')->name('ajukan');
             Route::post('change-status-money', 'change_money_app')->name('change-status-money-app');
+            Route::post('update-rampung', 'update_ramppung')->name('update-rampung');
             Route::post('verification', 'verification')->name('verification');
             Route::post('spi', 'spi')->name('spi');
             Route::post('ppk', 'ppk')->name('ppk');

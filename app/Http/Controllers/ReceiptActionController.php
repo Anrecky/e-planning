@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Receipt;
 use App\Models\PaymentVerification;
+use App\Models\ReceiptFollowing;
 use App\Models\ReceiptLog;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -67,6 +68,58 @@ class ReceiptActionController extends Controller
             $log->activity = 'submit';
             $log->description = 'Mengirimkan pengajuan ke verifikator';
             $log->save();
+
+            return response()->json(['error' => false], 200);
+        } catch (\Exception $e) {
+            Log::error($e);
+
+            return response()->json(['error' => true, 'message' => $e->getMessage()], 500);
+        }
+    }
+
+    public function update_ramppung(Request $request, Receipt $receipt)
+    {
+        try {
+
+            if ($receipt->user_entry != Auth::user()->id) {
+                return response()->json(['error' => true,  'message' => 'Anda tidak memiliki izin untuk mengunggah file untuk tanda terima ini.'], 400);
+            }
+
+            $receipt->load('pengikut');
+
+            foreach ($receipt->pengikut as $p) {
+                foreach ($request['amount_' . $p->id] as $k_x => $x) {
+                    $data[$p->id][] = [
+                        'rinc' => $request['rinc_' . $p->id][$k_x],
+                        'desc' => $request['desc_' . $p->id][$k_x],
+                        'amount' => $request['amount_' . $p->id][$k_x],
+                    ];
+                }
+                // ReceiptFollowing::find($p->id)->update(['datas' => null]);
+
+                ReceiptFollowing::find($p->id)->update(['datas' => json_encode($data[$p->id])]);
+                // var_dump($request['amount_' . $p->id]);
+            }
+            var_dump($data);
+            die();
+            // var_dump($request);
+            // echo json_encode($request);
+
+            die();
+            // if (empty($receipt->berkas)) {
+            //     return response()->json(['error' => true,  'message' => "Berkas belum diunggah!!."], 400);
+            // }
+            // if (!in_array($receipt->status, ['draft', 'reject-verificator', 'reject-ppk', 'reject-spi'])) {
+            //     return response()->json(['error' => true,  'message' => 'Anda tidak memiliki hak pada tahap ini'], 400);
+            // }
+            // $receipt->status = 'wait-verificator';
+            // $receipt->save();
+            // $log = new ReceiptLog;
+            // $log->receipt_id = $receipt->id;
+            // $log->user_id = $receipt->user_entry;
+            // $log->activity = 'submit';
+            // $log->description = 'Mengirimkan pengajuan ke verifikator';
+            // $log->save();
 
             return response()->json(['error' => false], 200);
         } catch (\Exception $e) {

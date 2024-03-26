@@ -8,6 +8,7 @@ use App\Models\Employee;
 use App\Models\PaymentVerification;
 use App\Models\PPK;
 use App\Models\Receipt;
+use App\Models\ReceiptFollowing;
 use App\Models\ReceiptLog;
 use App\Models\Role;
 use App\Models\Treasurer;
@@ -34,14 +35,13 @@ class PaymentReceiptController extends Controller
         $treasurersRole = Role::where('name', 'BENDAHARA')->first();
         $treasurers = $treasurersRole->users()->get()->toArray();
         $activities = Activity::all();
-        $receipts = Receipt::with(['ppk', 'treasurer', 'detail']);
+        $receipts = Receipt::with(['ppk', 'treasurer', 'detail', 'pengikut']);
         if (!(Auth::user()->hasRole(['SUPER ADMIN PERENCANAAN']))) {
             $receipts =  $receipts->where('user_entry', '=', Auth::user()->id);
         } else {
-            // $receipts = $receipts->where('user_entry', '-', Auth::user()->id);
         }
         $receipts = $receipts->get();
-
+        // dd($receipts);
         return view('app.payment-receipt', compact('title', 'ppks', 'treasurers', 'activities', 'receipts'));
     }
 
@@ -84,7 +84,7 @@ class PaymentReceiptController extends Controller
         $receipt = Receipt::with(['ppk', 'treasurer', 'detail', 'verification', 'logs', 'pelaksana'])->findOrFail($receipt->id);
         $receipt->verification->load('user');
         $receipt->logs->load('user');
-        // $receipt->ppk->load('employee');
+        $receipt->ppk->load('employee_staff');
         // if ($receipt->treasurer_id)
         //     $receipt->treasurer->load('employee');
         $receipt->detail->load('expenditureUnit', 'budgetImplementation');
@@ -113,6 +113,7 @@ class PaymentReceiptController extends Controller
             'provider' => 'nullable|string',
             'provider_organization' => 'nullable|string',
             'ppk' => 'required|integer',
+            'activity_followings.*' => 'integer',
             'treasurer' => 'required_if:type,treasurer,integer',
             'detail' => 'required|exists:budget_implementation_details,id',
         ]);
@@ -126,6 +127,7 @@ class PaymentReceiptController extends Controller
             $receipt->activity_implementer = $validatedData['activity_implementer'];
             $receipt->activity_date = $validatedData['activity_date'];
             $receipt->amount = $validatedData['amount'];
+            $receipt->activity_followings = json_encode($validatedData['activity_followings']);
             $receipt->provider_organization = $validatedData['provider_organization'];
             $receipt->provider = $validatedData['provider'];
             $receipt->ppk_id = $validatedData['ppk'];
@@ -134,11 +136,19 @@ class PaymentReceiptController extends Controller
             $receipt->user_entry = Auth::user()->id;
             $receipt->save();
 
+            foreach ($validatedData['activity_followings'] as $foll) {
+                $following = new ReceiptFollowing();
+                $following->user_id = $foll;
+                $following->receipt_id = $receipt->id;
+                $following->datas = null;
+                $following->save();
+            }
+
             $log = new ReceiptLog;
             $log->receipt_id = $receipt->id;
             $log->user_id = $receipt->user_entry;
             $log->activity = "entry-receipt";
-            $log->description = "Melalukan Entri Kuitansi";
+            $log->description = "Membuat Draft Pembayaran";
             $log->save();
 
             return back()->with('success', 'Data penerimaan berhasil dibuat.');

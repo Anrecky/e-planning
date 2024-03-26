@@ -24,6 +24,7 @@ class Receipt extends Model
         'provider',
         'provider_organization',
         'activity_implementer',
+        'activity_followings',
         'ppk_id',
         'treasurer_id',
         'budget_implementation_detail_id',
@@ -31,21 +32,21 @@ class Receipt extends Model
 
     public function ppk(): BelongsTo
     {
-        return $this->belongsTo(Employee::class, 'ppk_id', 'id')->with('user');
+        return $this->belongsTo(User::class, 'ppk_id', 'id')->with('employee');
     }
 
     public function treasurer(): BelongsTo
     {
-        return $this->belongsTo(Employee::class, 'treasurer_id', 'id')->with('user');
+        return $this->belongsTo(User::class, 'treasurer_id', 'id')->with('employee');
     }
     public function pelaksana(): BelongsTo
     {
-        return $this->belongsTo(Employee::class, 'activity_implementer', 'id')->with('user');
+        return $this->belongsTo(User::class, 'activity_implementer', 'id')->with('employee');
     }
 
     public function spi(): BelongsTo
     {
-        return $this->belongsTo(Employee::class, 'spi_id', 'id')->with('user');
+        return $this->belongsTo(User::class, 'spi_id', 'id')->with('employee');
     }
     public function detail(): BelongsTo
     {
@@ -60,6 +61,10 @@ class Receipt extends Model
     public function logs(): HasMany
     {
         return $this->hasMany(ReceiptLog::class, 'receipt_id', 'id');
+    }
+    public function pengikut(): HasMany
+    {
+        return $this->hasMany(ReceiptFollowing::class, 'receipt_id', 'id')->with('user');
     }
 
     public function scopeGenerateNumber($query, $receipt)

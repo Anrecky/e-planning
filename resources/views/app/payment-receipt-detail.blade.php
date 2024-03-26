@@ -173,6 +173,10 @@
                                     <x-custom.payment-receipt.submit-modal :receipt="$receipt" />
                                 </div>
                             @endif
+
+                            <div class="float-end p-2">
+                                <x-custom.payment-receipt.rampung-modal :receipt="$receipt" />
+                            </div>
                         </div>
 
                     </div>
@@ -265,7 +269,7 @@
                                             Pelaksana</label>
                                         <div class="col-sm-8">
                                             <p class="form-control">
-                                                {{ $receipt->pelaksana->user->name }} /
+                                                {{ $receipt->pelaksana->name }} /
                                                 {{ $receipt->pelaksana->id }}
                                             </p>
                                         </div>
@@ -300,7 +304,7 @@
                                         <div class="col-sm-8">
                                             <p class="form-control">
                                                 @if ($receipt->treasurer)
-                                                    {{ $receipt->treasurer?->user->name }} /
+                                                    {{ $receipt->treasurer?->name }} /
                                                     {{ $receipt->treasurer?->id }}
                                                 @else
                                                     -
@@ -315,7 +319,7 @@
                                             PPK</label>
                                         <div class="col-sm-8">
                                             <p class="form-control">
-                                                {{ $receipt->ppk->user->name }} /
+                                                {{ $receipt->ppk->name }} /
                                                 {{ $receipt->ppk->id }}
                                             </p>
                                         </div>
@@ -328,11 +332,11 @@
                                         <div class="col-sm-8">
                                             <p class="form-control">
                                                 @if ($receipt->verification->last())
-                                                    {{ $receipt->verification->last()->user->name }} /
+                                                    {{ $receipt->verification->last()->name }} /
                                                     {{ $receipt->verification->last()->user->identity_number }} (
                                                     {{ $receipt->verification->last()->date }})
                                                 @else
-                                                    {{ $receipt->ppk->head_id }} ( Belum
+                                                    {{ $receipt->ppk->employee_staff?->headOf?->user->name }} ( Belum
                                                     Diverifikasi)
                                                 @endif
                                             </p>

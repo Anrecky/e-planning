@@ -126,6 +126,7 @@
                                 <th scope="col">Tanggal Kegiatan</th>
                                 <th scope="col">Jumlah</th>
                                 <th scope="col">Pelaksana Kegiatan</th>
+                                <th scope="col">Pengikut</th>
                                 <th scope="col">Bendahara</th>
                                 <th scope="col">PPK</th>
                                 <th scope="col">Penyedia</th>
@@ -140,9 +141,25 @@
                                     <td>{{ $receipt->description }}</td>
                                     <td>{{ $receipt->activity_date }}</td>
                                     <td>Rp {{ number_format($receipt->amount, 0, ',', '.') }}</td>
-                                    <td>{{ $receipt->activity_implementer ?? '-' }}</td>
+                                    <td>{{ $receipt->pelaksana->name ?? '-' }}</td>
+                                    <td>
+                                        @php
+                                            $firstIteration = true;
+                                        @endphp
+
+                                        @foreach ($receipt->pengikut as $pengikut)
+                                            @if ($firstIteration)
+                                                @php
+                                                    $firstIteration = false;
+                                                @endphp
+                                            @else
+                                                ,<br>
+                                            @endif
+                                            {{ $pengikut->user->name }}
+                                        @endforeach
+                                    </td>
                                     <td>{{ $receipt->treasurer->name ?? '-' }}</td>
-                                    <td>{{ $receipt->ppk?->user->name }}</td>
+                                    <td>{{ $receipt->ppk->name }}</td>
                                     <td>{{ $receipt->provider }} {{ $receipt->provider_organization }}</td>
                                     <td class="text-center">
                                         <a class="btn-group btn btn-sm btn-primary temporary-edit"
@@ -240,6 +257,15 @@
                             <div class="col-sm-8">
                                 <select class="form-select" name="activity_implementer" id="createSelectPelaksana">
                                     <option selected disabled value="">Pilih Pelaksana...</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="mb-4 row pengikutWrapper ">
+                            <label for="selectActivityExecutor" class="col-sm-2 col-form-label">Pengikut
+                                Kegiatan</label>
+                            <div class="col-sm-8">
+                                <select class="form-select" multiple="multiple" name="activity_followings[]"
+                                    id="createSelectPengikut">
                                 </select>
                             </div>
                         </div>
@@ -505,10 +531,9 @@
                                         success({
                                             results: response.data.map(function(item) {
                                                 return {
-                                                    id: item.id,
+                                                    id: item.user_id,
                                                     text: item.name + ' - ' +
-                                                        item
-                                                        .id
+                                                        item.id
                                                 };
                                             })
                                         });
@@ -540,10 +565,48 @@
                                         success({
                                             results: response.data.map(function(item) {
                                                 return {
-                                                    id: item.id,
+                                                    id: item.user_id,
                                                     text: item.name + ' - ' +
-                                                        item
-                                                        .id
+                                                        item.id
+                                                };
+                                            })
+                                        });
+                                    })
+                                    .catch(function(error) {
+                                        // Call the `failure` function in case of an error
+                                        failure(error);
+                                    });
+                            },
+                            delay: 250,
+                            cache: true
+                        }
+                    }).on('change', function() {
+
+                    });
+                    // $('#createSelectPelaksana')
+
+                    $('#createSelectPengikut').select2({
+                        dropdownParent: $("#form-create").find('.pengikutWrapper'),
+                        placeholder: 'Pilih Pengikut',
+                        theme: 'bootstrap-5',
+                        ajax: {
+                            transport: function(params, success, failure) {
+                                // Using Axios to fetch the data
+                                axios.get(`{{ route('employees.search.pengikut') }}`, {
+                                        params: {
+                                            search: params.data.term,
+                                            pelaksana: $('#createSelectPelaksana').val(),
+                                            limit: 10
+                                        }
+                                    })
+                                    .then(function(response) {
+                                        // Call the `success` function with the formatted results
+                                        success({
+                                            results: response.data.map(function(item) {
+                                                return {
+                                                    id: item.user_id,
+                                                    text: item.name + ' - ' +
+                                                        item.id
                                                 };
                                             })
                                         });
@@ -575,10 +638,9 @@
                                         success({
                                             results: response.data.map(function(item) {
                                                 return {
-                                                    id: item.id,
+                                                    id: item.user_id,
                                                     text: item.name + ' - ' +
-                                                        item
-                                                        .id
+                                                        item.id
                                                 };
                                             })
                                         });
@@ -688,11 +750,10 @@
                                             results: response.data.map(function(
                                                 item) {
                                                 return {
-                                                    id: item.id,
+                                                    id: item.user_id,
                                                     text: item.name +
                                                         ' - ' +
-                                                        item
-                                                        .id
+                                                        item.id
                                                 };
                                             })
                                         });
@@ -732,11 +793,10 @@
                                             results: response.data.map(function(
                                                 item) {
                                                 return {
-                                                    id: item.id,
+                                                    id: item.user_id,
                                                     text: item.name +
                                                         ' - ' +
-                                                        item
-                                                        .id
+                                                        item.id
                                                 };
                                             })
                                         });
@@ -777,11 +837,10 @@
                                             results: response.data.map(function(
                                                 item) {
                                                 return {
-                                                    id: item.id,
+                                                    id: item.user_id,
                                                     text: item.name +
                                                         ' - ' +
-                                                        item
-                                                        .id
+                                                        item.id
                                                 };
                                             })
                                         });

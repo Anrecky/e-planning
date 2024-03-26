@@ -24,34 +24,35 @@ return new class extends Migration
                 'wait-treasurer', 'reject-treasurer',
                 'accept'
             ])->default('draft');
-            $table->enum('status_money_app', ['N', 'Y'])->default('N');
+            $table->enum('status_money_app', ['N', 'R', 'Y'])->default('N');
             $table->text('description')->nullable();
             $table->decimal('amount', 15, 2)->default(0);
             $table->date('activity_date')->nullable();
             $table->string('berkas')->nullable();
             $table->string('reference_number')->nullable();
             $table->unsignedBigInteger('activity_implementer')->nullable();
+            $table->json('activity_followings')->nullable();
             $table->unsignedBigInteger('ppk_id');
             $table->unsignedBigInteger('treasurer_id')->nullable();
             $table->unsignedBigInteger('spi_id')->nullable();
             $table->foreign('activity_implementer')
                 ->references('id')
-                ->on('employees')
+                ->on('users')
                 ->onUpdate('cascade')
                 ->onDelete('cascade');
             $table->foreign('ppk_id')
                 ->references('id')
-                ->on('employees')
+                ->on('users')
                 ->onUpdate('cascade')
                 ->onDelete('cascade');
             $table->foreign('treasurer_id')
                 ->references('id')
-                ->on('employees')
+                ->on('users')
                 ->onUpdate('cascade')
                 ->onDelete('cascade');
             $table->foreign('spi_id')
                 ->references('id')
-                ->on('employees')
+                ->on('users')
                 ->onUpdate('cascade')
                 ->onDelete('cascade');
             $table->string('provider');

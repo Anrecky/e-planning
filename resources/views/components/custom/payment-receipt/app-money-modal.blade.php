@@ -23,7 +23,8 @@
                         <div class="col-sm-8">
                             <select class="form-control" name="status_money_app" id="status_money_app">
                                 <option value="N">Belum Entri</option>
-                                <option value="Y">Sudah Entri</option>
+                                <option value="R">Sudah Entri / Belum Terbit SP2D</option>
+                                <option value="Y">Sudah Entri dan Terbit SP2D</option>
                             </select>
                         </div>
                     </div>

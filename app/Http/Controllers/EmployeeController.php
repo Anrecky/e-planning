@@ -117,15 +117,29 @@ class EmployeeController extends Controller
             return back()->with('error', 'Gagal menarik data pegawai');
         }
     }
-    private function search($search, $limit, $role = false)
+
+    public function searchPengikut(Request $request)
     {
-        $query = Employee::with('user')->select('employees.id', 'users.name')
+        try {;
+            $res = $this->search($request->input('search', ''), $request->input('limit', 10), false, $request->input('pelaksana'));
+            return response()->json($res);
+        } catch (\Exception $e) {
+            Log::error($e->getMessage());
+            return back()->with('error', 'Gagal menarik data pegawai');
+        }
+    }
+    private function search($search, $limit, $role = false, $ex_role = false)
+    {
+        $query = Employee::with('user')->select('employees.id', 'employees.user_id', 'users.name')
             ->join('users', 'employees.user_id', 'users.id')->limit($limit);
         if (!empty($search)) {
             $query->where('employees.id', 'LIKE', "%{$search}%")
                 ->orWhereHas('user', function ($q) use ($search) {
                     $q->where('name', 'LIKE', "%{$search}%");
                 });
+        }
+        if (!empty($ex_role)) {
+            $query->where('employees.user_id', '<>', $ex_role);
         }
 
         if (!empty($role)) {

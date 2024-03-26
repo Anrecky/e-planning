@@ -37,6 +37,7 @@
             ($authUser->hasRole('STAF PPK') ||
                 $authUser->hasRole('SPI') ||
                 $authUser->hasRole('PPK') ||
+                $authUser->hasRole('Pelaksana Kegiatan') ||
                 $authUser->hasRole('BENDAHARA')) &&
                 ($menuTitle === 'Pembayaran' || $menuTitle === 'Rekam Pembayaran' || $menuTitle === 'Usulan Pembayaran')
                 => true,
