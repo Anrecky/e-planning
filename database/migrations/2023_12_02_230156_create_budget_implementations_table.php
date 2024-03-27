@@ -13,7 +13,6 @@ return new class extends Migration
     {
         Schema::create('budget_implementations', function (Blueprint $table) {
             $table->id();
-            $table->integer('revision')->default(0);
             $table->timestamps();
         });
     }
