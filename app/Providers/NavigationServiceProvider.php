@@ -26,6 +26,7 @@ class NavigationServiceProvider extends ServiceProvider
                                 ->add('Misi', route('mission.index'))
                                 ->add('Indikator Kinerja Utama', route('iku.index'))
                                 ->add('Capaian Kinerja Tahun Sebelumnya', url('#'))
+                                ->attributes(['permission' => 'view perencanaan'])
                         )
                         ->add(
                             'RKT',
@@ -35,6 +36,7 @@ class NavigationServiceProvider extends ServiceProvider
                                 ->add('Misi', route('mission.index'))
                                 ->add('Indikator Kinerja Utama', url('#'))
                                 ->add('Capaian Kinerja Tahun Sebelumnya', url('#'))
+                                ->attributes(['permission' => 'view perencanaan'])
                         )
                         ->add(
                             'Perkin',
@@ -42,16 +44,19 @@ class NavigationServiceProvider extends ServiceProvider
                             fn (Section $section) => $section
                                 ->add('Sasaran Program', route('program_target.index'))
                                 ->add('Misi', route('performance_indicator.index'))
+                                ->attributes(['permission' => 'view perencanaan'])
                         )
+                        ->attributes(['permission' => 'view perencanaan'])
                 )
                 ->add(
                     'Penganggaran',
                     url('#'),
                     fn (Section $section) => $section
-                        ->add('Usulan Dipa', route('budget_implementation.index'))
-                        ->add('Revisi Dipa', url('#'))
-                        ->add('Rencana Penarikan Dana', route('withdrawal_plan.index'))
-                        ->add('Rekap Kegiatan dan Upload Data Dukung', route('activity_recap.index'))
+                        ->add('Usulan Dipa', route('budget_implementation.index'), fn ($section) => $section->attributes(['permission' => 'view penganggaran']))
+                        ->add('Revisi Dipa', url('#'), fn ($section) => $section->attributes(['permission' => 'view penganggaran']))
+                        ->add('Rencana Penarikan Dana', route('withdrawal_plan.index'), fn ($section) => $section->attributes(['permission' => 'view penganggaran']))
+                        ->add('Rekap Kegiatan dan Upload Data Dukung', route('activity_recap.index'), fn ($section) => $section->attributes(['permission' => 'view penganggaran']))
+                        ->attributes(['permission' => 'view penganggaran'])
                 )
                 ->add(
                     'Pembayaran',
@@ -59,11 +64,14 @@ class NavigationServiceProvider extends ServiceProvider
                     fn (Section $section) => $section
                         ->add(
                             'Rekam Pembayaran',
-                            route('payment-receipt.index')
+                            route('payment-receipt.index'),
+                            fn ($section) => $section->attributes(['permission' => 'view pembayaran'])
                         )->add(
                             'Usulan Pembayaran',
-                            route('payment-receipt.list')
+                            route('payment-receipt.list'),
+                            fn ($section) => $section->attributes(['permission' => 'view pembayaran'])
                         )
+                        ->attributes(['permission' => 'view pembayaran'])
                 )
                 ->add(
                     'Pelaporan',
@@ -73,8 +81,10 @@ class NavigationServiceProvider extends ServiceProvider
                             'Cetak Laporan',
                             url('#'),
                             fn (Section $section) => $section
-                                ->add('Laporan FA Detail', route('detailed-FA-report.index'))
+                                ->add('Laporan FA Detail', route('detailed-FA-report.index'), fn ($section) => $section->attributes(['permission' => 'view pelaporan']))
+                                ->attributes(['permission' => 'view pelaporan'])
                         )
+                        ->attributes(['permission' => 'view pelaporan'])
                 )
                 ->add(
                     'Administrasi',
@@ -99,8 +109,9 @@ class NavigationServiceProvider extends ServiceProvider
                                 ->add('PPK', route('ppk.index'))
                                 ->add('Verifikator', url('#'))
                         )
-                        ->add('SBM dan SBI', route('sbm_sbi.index'))
+                        ->add('SBM dan SBI', route('sbm_sbi.index'), fn ($section) => $section->attributes(['permission' => 'view sbm&sbi']))
                         ->add('Manajemen User', route('user.index'))
+                        ->attributes(['permission' => 'view sbm&sbi'])
                 );
         });
     }

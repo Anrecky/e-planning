@@ -16,31 +16,13 @@
         $ulClass = $depth === 0 ? 'submenu' : 'sub-submenu';
         $authUser = auth()->user();
         $menuTitle = $menu['title'];
-        $show = match (true) {
-            $authUser->hasPermissionTo('view SBM&SBI') &&
-                ($menuTitle === 'Administrasi' || $menuTitle === 'SBM dan SBI')
-                => true,
-            $authUser->hasRole('ADMIN FAKULTAS/UNIT') &&
-                ($menuTitle === 'Pelaporan' || $menuTitle === 'Cetak Laporan' || $menuTitle === 'Laporan FA Detail')
-                => true,
-            $authUser->hasRole('ADMIN FAKULTAS/UNIT') &&
-                ($menuTitle === 'Pembayaran' || $menuTitle === 'Rekam Pembayaran' || $menuTitle === 'Usulan Pembayaran')
-                => true,
-            $authUser->hasRole('ADMIN FAKULTAS/UNIT') &&
-                ($menuTitle === 'Penganggaran' ||
-                    $menuTitle === 'Usulan Dipa' ||
-                    $menuTitle === 'Revisi Dipa' ||
-                    $menuTitle === 'Rencana Penarikan Dana' ||
-                    $menuTitle === 'Rekap Kegiatan dan Upload Data Dukung')
-                => true,
-            ($authUser->hasRole('STAF PPK') ||
-                $authUser->hasRole('SPI') ||
-                $authUser->hasRole('PPK') ||
-                $authUser->hasRole('BENDAHARA')) &&
-                ($menuTitle === 'Pembayaran' || $menuTitle === 'Rekam Pembayaran' || $menuTitle === 'Usulan Pembayaran')
-                => true,
-            default => false,
-        };
+        $show = false;
+        if (
+            isset($menu['attributes']['permission']) &&
+            $authUser->hasAnyPermission($menu['attributes']['permission'])
+        ) {
+            $show = true;
+        }
     @endphp
     @if ($show || $authUser->hasRole('SUPER ADMIN PERENCANAAN'))
         <li class="{{ $liClass }} {{ $menu['active'] && $depth !== 1 ? 'active' : '' }}">
