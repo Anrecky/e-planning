@@ -14,54 +14,71 @@ class RolesAndPermissionsSeeder extends Seeder
         // Reset cached roles and permissions
         app()[\Spatie\Permission\PermissionRegistrar::class]->forgetCachedPermissions();
 
-        $roles = [
-            'PPK',
-            'SPI',
-            'STAF PPK',
-            'SUPER ADMIN PERENCANAAN',
-            'ADMIN FAKULTAS/UNIT',
-            'KPA (REKTOR)',
-            'BENDAHARA',
-            'Pelaksana Kegiatan'
+        $rolesAndPermissions = [
+            'PPK' => [
+                'view sbm&sbi',
+                'view pelaporan',
+                'view pembayaran',
+                'view penganggaran',
+                'approval pembayaran',
+                'approval penganggaran'
+            ],
+            'SPI' => [
+                'view sbmsbi',
+                'view pelaporan',
+                'view pembayaran',
+                'view penganggaran',
+                'view perencanaan',
+                'approval and comment pembayaran',
+                'approval and comment penganggaran',
+                'approval and comment perencanaan'
+            ],
+            'STAF PPK' => [
+                'view sbmsbi',
+                'view pelaporan',
+                'view pembayaran',
+                'approval pelaporan',
+                'approval pembayaran',
+            ],
+            'SUPER ADMIN PERENCANAAN' => [],
+            'ADMIN FAKULTAS/UNIT' => [
+                'view sbmsbi',
+                'view pelaporan',
+                'view pembayaran',
+                'input pembayaran',
+                'edit pembayaran',
+                'view penganggaran',
+                'input penganggaran',
+                'edit penganggaran',
+            ],
+            'KPA (REKTOR)' => [
+                'view pelaporan',
+                'view perencanaan',
+                'view penganggaran',
+                'view pembayaran',
+            ],
+            'BENDAHARA' => [
+                'view sbmsbi',
+                'approval bendahara'
+            ],
+            'Pelaksana Kegiatan' => [
+                'view sbmsbi',
+                'view pembayaran',
+                'input pembayaran',
+                'edit pembayaran',
+            ]
         ];
-
-        $models = [
-            'AccountCode', 'AccountCodeReception', 'Activity', 'ActivityRecap',
-            'Asset', 'AssetItem', 'BudgetImplementation', 'BudgetImplementationDetail',
-            'Employee', 'ExpenditureUnit', 'InstitutionalBudget', 'PaymentVerification',
-            'PerformanceIndicator', 'ProgramTarget', 'PPK', 'Receipt', 'ReceiptLog',
-            'Reception', 'Renstra', 'Role', 'Treasurer', 'UnitBudget',
-            'User', 'Verificator', 'WithdrawalPlan', 'WorkUnit'
-        ];
-
-        $actions = ['create', 'edit', 'delete'];
-
-        // Generate permissions for all models except 'SBMSBI'
-        $permissions = collect($actions)->flatMap(function ($action) use ($models) {
-            return collect($models)->map(function ($model) use ($action) {
-                return [
-                    'name' => $action . ' ' . strtolower(Str::snake($model, ' ')),
-                    'guard_name' => 'web',
-                ];
-            });
-        });
-
-        // Add 'upload' permission for 'SBM&SBI' model
-        $permissions->push([
-            'name' => 'upload SBM&SBI',
-            'guard_name' => 'web',
-        ]);
-        $permissions->push([
-            'name' => 'view SBM&SBI',
-            'guard_name' => 'web',
-        ]);
-
-        Permission::insert($permissions->toArray());
-
-        // Create roles
-        foreach ($roles as $role) {
-            Role::create(['name' => $role]);
+        foreach ($rolesAndPermissions as $roleName => $permissions) {
+            $role = Role::create(['name' => $roleName]);
+            foreach ($permissions as $permission) {
+                if ($role->name !== 'SUPER ADMIN PERENCANAAN') {
+                    $permission =  Permission::firstOrCreate(['name' => $permission]);
+                    $role->givePermissionTo($permission);
+                }
+            }
         }
-        Role::where('name', 'ADMIN FAKULTAS/UNIT')->first()->givePermissionTo('view SBM&SBI');
+        Role::where('name', 'SUPER ADMIN PERENCANAAN')->first()->givePermissionTo(Permission::all());
+
+        // Role::where('name', 'ADMIN FAKULTAS/UNIT')->first()->givePermissionTo('view SBM&SBI');
     }
 }
