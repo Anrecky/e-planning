@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Receipt;
 use App\Models\PaymentVerification;
-use App\Models\ReceiptFollowing;
+use App\Models\ReceiptData;
 use App\Models\ReceiptLog;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -80,46 +80,33 @@ class ReceiptActionController extends Controller
     public function update_ramppung(Request $request, Receipt $receipt)
     {
         try {
-
             if ($receipt->user_entry != Auth::user()->id) {
                 return response()->json(['error' => true,  'message' => 'Anda tidak memiliki izin untuk mengunggah file untuk tanda terima ini.'], 400);
             }
-
+            if (!in_array($receipt->status, ['draft', 'reject-verificator', 'reject-ppk', 'reject-spi', 'reject-tresurer'])) {
+                return response()->json(['error' => true,  'message' => 'Anda tidak memiliki hak pada tahap ini'], 400);
+            }
             $receipt->load('pengikut');
-
             foreach ($receipt->pengikut as $p) {
+                $total = 0;
                 foreach ($request['amount_' . $p->id] as $k_x => $x) {
                     $data[$p->id][] = [
                         'rinc' => $request['rinc_' . $p->id][$k_x],
                         'desc' => $request['desc_' . $p->id][$k_x],
-                        'amount' => $request['amount_' . $p->id][$k_x],
+                        'amount' => preg_replace('/[^0-9]/', '', $request['amount_' . $p->id][$k_x]),
                     ];
+
+                    $total = $total + (int) preg_replace('/[^0-9]/', '', $request['amount_' . $p->id][$k_x]);
                 }
-                // ReceiptFollowing::find($p->id)->update(['datas' => null]);
-
-                ReceiptFollowing::find($p->id)->update(['datas' => json_encode($data[$p->id])]);
-                // var_dump($request['amount_' . $p->id]);
+                ReceiptData::find($p->id)->update(['datas' => json_encode($data[$p->id]), 'amount' => $total]);
             }
-            var_dump($data);
-            die();
-            // var_dump($request);
-            // echo json_encode($request);
 
-            die();
-            // if (empty($receipt->berkas)) {
-            //     return response()->json(['error' => true,  'message' => "Berkas belum diunggah!!."], 400);
-            // }
-            // if (!in_array($receipt->status, ['draft', 'reject-verificator', 'reject-ppk', 'reject-spi'])) {
-            //     return response()->json(['error' => true,  'message' => 'Anda tidak memiliki hak pada tahap ini'], 400);
-            // }
-            // $receipt->status = 'wait-verificator';
-            // $receipt->save();
-            // $log = new ReceiptLog;
-            // $log->receipt_id = $receipt->id;
-            // $log->user_id = $receipt->user_entry;
-            // $log->activity = 'submit';
-            // $log->description = 'Mengirimkan pengajuan ke verifikator';
-            // $log->save();
+            $log = new ReceiptLog;
+            $log->receipt_id = $receipt->id;
+            $log->user_id = $receipt->user_entry;
+            $log->activity = 'rampung';
+            $log->description = 'Update data Rampung';
+            $log->save();
 
             return response()->json(['error' => false], 200);
         } catch (\Exception $e) {
@@ -140,7 +127,6 @@ class ReceiptActionController extends Controller
 
             if ($request->res == 'Y') {
                 if ($receipt->type == 'direct') {
-                    Receipt::generateNumber($receipt);
                     $receipt->status = 'accept';
                 } else if ($receipt->type == 'treasurer')
                     $receipt->status = 'wait-treasurer';
@@ -220,7 +206,7 @@ class ReceiptActionController extends Controller
 
             if ($request->res == 'Y') {
                 $receipt->status = 'wait-ppk';
-                $receipt->spi_id = Auth::user()->employee->id;
+                $receipt->spi_id = Auth::user()->id;
                 $log->activity = "spi-approv";
                 $log->description = "Melakukan Approv";
             } else {
@@ -292,6 +278,8 @@ class ReceiptActionController extends Controller
             $log = new ReceiptLog;
 
             if ($payment_verification->result == 'Y') {
+                Receipt::generateNumber($receipt);
+
                 $log->activity = "verificator-approv";
                 $log->description = "Melakukan Verifikasi dengan hasil Lengkap";
                 $receipt->status = "wait-spi";

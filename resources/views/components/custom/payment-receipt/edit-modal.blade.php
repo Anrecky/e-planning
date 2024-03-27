@@ -23,13 +23,29 @@
                     <div class="mb-4 row">
                         <label for="selectPerjadinReceipt" class="col-sm-2 col-form-label">Perjalanan Dinas</label>
                         <div class="col-sm-8">
-                            <select name="perjadin" class="form-select" id="selectPerjadinReceipt">
+                            <select name="perjadin" class="form-select" id="selectPerjadinReceiptEdit">
                                 <option selected disabled value="">Pilih ...</option>
                                 <option value="Y">Perjalanan Dinas</option>
                                 <option value="N">Non Perjalanan Dinas</option>
                             </select>
                         </div>
                     </div>
+                    <div class="mb-4 row" id="wrapperSpdNumberEdit">
+                        <label for="inputSpdNumberEdit" class="col-sm-2 col-form-label">Nomor SPD
+                        </label>
+                        <div class="col-sm-8">
+                            <input type="text" class="form-control" name="spd_number" id="inputSpdNumberEdit">
+                        </div>
+                    </div>
+
+                    <div class="mb-4 row" id="wrapperSpdTujuanEdit">
+                        <label for="inputSpdTujuanEdit" class="col-sm-2 col-form-label">Tujuan SPD
+                        </label>
+                        <div class="col-sm-8">
+                            <input type="text" class="form-control" name="spd_tujuan" id="inputSpdTujuanEdit">
+                        </div>
+                    </div>
+
                     <div class="mb-4 row">
                         <label for="inputDisbursementDescription" class="col-sm-2 col-form-label">Uraian
                             Pencairan</label>
@@ -43,6 +59,15 @@
                         <div class="col-sm-8">
                             <select class="form-select" name="activity_implementer" id="editSelectPelaksana">
                                 <option selected disabled value="">Pilih Pelaksana...</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="mb-4 row pengikutWrapperEdit " id="pengikutWrapperEdit">
+                        <label for="selectActivityExecutor" class="col-sm-2 col-form-label">Pengikut
+                            Kegiatan</label>
+                        <div class="col-sm-8">
+                            <select class="form-select" style="width:100% !important" multiple="multiple"
+                                name="activity_followings[]" id="createSelectPengikutEdit">
                             </select>
                         </div>
                     </div>

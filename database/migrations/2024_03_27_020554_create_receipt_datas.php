@@ -13,7 +13,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('receipt_followings', function (Blueprint $table) {
+        Schema::create('receipt_data', function (Blueprint $table) {
             $table->id();
             $table->foreignIdFor(Receipt::class)
                 ->constrained()
@@ -24,6 +24,7 @@ return new class extends Migration
                 ->onUpdate('cascade')
                 ->onDelete('cascade');
             $table->json('datas')->nullable();
+            $table->decimal('amount', 15, 2)->default(0);
             $table->timestamps();
         });
     }

@@ -66,11 +66,46 @@
         .title {
             text-align: center;
         }
+
+        .page_break {
+            page-break-before: always;
+        }
     </style>
 </head>
 
 <body>
-    <div class="receipt">
+    @if ($receipt->perjadin == 'N')
+        @php
+            $penerima['name'] = $receipt->provider;
+            $penerima['sub'] = $receipt->provider_organization;
+            $penerima['total'] = $receipt->amount;
+
+        @endphp
+    @else
+        @php $i= 1 @endphp
+        @foreach ($receipt->pengikut as $p)
+            @if ($i != 1)
+                <div class="page_break"></div>
+            @endif
+            @php
+                $i++;
+                $penerima['name'] = $p->user->name;
+                $penerima['sub'] = strtoupper($p->user->employee->identity_type) . '. ' . $p->user->employee->id;
+                $penerima['total'] = 0;
+                if (!empty($p->datas)) {
+                    foreach (json_decode($p->datas) as $key => $value) {
+                        $penerima['total'] = (int) $penerima['total'] + (int) $value->amount;
+                    }
+                }
+            @endphp
+            <x-custom.payment-receipt.print-kwitansi-page :receipt="$receipt" :penerima="$penerima" />
+        @endforeach
+    @endif
+
+    {{-- @include('components.custom.payment-receipt.print-kwitansi-ls') --}}
+
+
+    {{-- <div class="receipt">
         <div class="receipt-header">
             <h2>KUITANSI PEMBAYARAN LANGSUNG</h2>
         </div>
@@ -98,7 +133,6 @@
             </div>
             <br>
             <div class="section">
-                {{-- <h2 class="title">KWITANSI / BUKTI PEMBAYARAN</h2> --}}
                 <table class="fullwidth text-top">
                     <tr>
                         <td style="width: 200px">Sudah Terima Dari</td>
@@ -144,9 +178,9 @@
 
                     </tr>
                     <tr>
-                        <td>{{ $receipt->ppk->user->name }}</td>
+                        <td>{{ $receipt->ppk->name }}</td>
                         <td></td>
-                        <td>{{ $receipt->type == 'direct' ? $receipt->provider : $receipt->treasurer->user->name }}</td>
+                        <td>{{ $receipt->type == 'direct' ? $receipt->provider : $receipt->treasurer->name }}</td>
                     </tr>
                     <tr>
                         <td>{{ strtoupper($receipt->ppk->identity_type) }}.
@@ -163,7 +197,8 @@
                     <tr>
                         <td style="width: 50%">Penerima Uang
                         </td>
-                        <td style="width: 50%">Barang/pekerjaan telah diterima/diselesaikan dengan baik dan lengkap</td>
+                        <td style="width: 50%">Barang/pekerjaan telah diterima/diselesaikan dengan baik dan lengkap
+                        </td>
                     </tr>
                     <tr>
                         <td></td>
@@ -176,7 +211,7 @@
                     </tr>
                     <tr>
                         <td>{{ $receipt->provider }}</td>
-                        <td>{{ $receipt->pelaksana->user->name }}</td>
+                        <td>{{ $receipt->pelaksana->name }}</td>
                     </tr>
                     <tr>
                         <td>{{ $receipt->provider_organization ?? '' }}</td>
@@ -187,7 +222,8 @@
             @else
                 <table class="text-top fullwidth">
                     <tr>
-                        <td style="width: 50%">Barang/pekerjaan telah diterima/diselesaikan dengan baik dan lengkap</td>
+                        <td style="width: 50%">Barang/pekerjaan telah diterima/diselesaikan dengan baik dan lengkap
+                        </td>
                     </tr>
                     <tr>
                         <td>Pejabat yang bertanggung jawab,</td>
@@ -206,7 +242,8 @@
             @endif
         </div>
 
-    </div>
+    </div> --}}
+
 </body>
 
 </html>

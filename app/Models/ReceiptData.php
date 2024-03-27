@@ -5,11 +5,12 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class ReceiptFollowing extends Model
+class ReceiptData extends Model
 {
     use HasFactory;
     protected $fillable = [
-        'datas'
+        'datas',
+        'amount'
     ];
     public function user()
     {

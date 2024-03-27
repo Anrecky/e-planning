@@ -64,7 +64,7 @@ class Receipt extends Model
     }
     public function pengikut(): HasMany
     {
-        return $this->hasMany(ReceiptFollowing::class, 'receipt_id', 'id')->with('user');
+        return $this->hasMany(ReceiptData::class, 'receipt_id', 'id')->with('user');
     }
 
     public function scopeGenerateNumber($query, $receipt)

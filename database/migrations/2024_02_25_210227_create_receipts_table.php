@@ -30,6 +30,8 @@ return new class extends Migration
             $table->date('activity_date')->nullable();
             $table->string('berkas')->nullable();
             $table->string('reference_number')->nullable();
+            $table->string('spd_number')->nullable();
+            $table->string('spd_tujuan')->nullable();
             $table->unsignedBigInteger('activity_implementer')->nullable();
             $table->json('activity_followings')->nullable();
             $table->unsignedBigInteger('ppk_id');
@@ -55,7 +57,7 @@ return new class extends Migration
                 ->on('users')
                 ->onUpdate('cascade')
                 ->onDelete('cascade');
-            $table->string('provider');
+            $table->string('provider')->nullable();
             $table->string('provider_organization')->nullable();
             $table->foreignIdFor(BudgetImplementationDetail::class)
                 ->constrained()

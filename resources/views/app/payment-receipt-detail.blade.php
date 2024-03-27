@@ -20,8 +20,8 @@
         @vite(['resources/scss/light/plugins/flatpickr/custom-flatpickr.scss'])
         @vite(['resources/scss/dark/plugins/flatpickr/custom-flatpickr.scss'])
         <link rel="stylesheet" href="{{ asset('plugins/table/datatable/datatables.css') }}">
-        @vite(['resources/scss/light/plugins/table/datatable/dt-global_style.scss'])
-        @vite(['resources/scss/dark/plugins/table/datatable/dt-global_style.scss'])
+        {{-- @vite(['resources/scss/light/plugins/table/datatable/dt-global_style.scss']) --}}
+        {{-- @vite(['resources/scss/dark/plugins/table/datatable/dt-global_style.scss']) --}}
         <!-- Select2 CSS -->
         <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
         <link rel="stylesheet"
@@ -140,8 +140,10 @@
                         <div class="col-xl-12 col-md-12 col-sm-12 col-12">
                             <h4 class="float-start"> Detail
                                 Kwitansi {!! status_receipt($receipt->status) !!}</h4>
+                            {{-- @dd($receipt->ppk->employee->head_id) --}}
                             @if (in_array($receipt->status, ['wait-verificator', 'reject-verificator', 'wait-ppk']) &&
-                                    $receipt->ppk->head_id == Auth::user()->employee?->id)
+                                    $receipt->ppk->employee->head_id == Auth::user()->employee?->id &&
+                                    $receipt->ppk->employee->head_id != null)
                                 <div class="float-end p-2">
                                     <x-custom.payment-receipt.verification-modal :receipt="$receipt" />
                                 </div>
@@ -151,13 +153,13 @@
                                     <x-custom.payment-receipt.app-money-modal :receipt="$receipt" />
                                 </div>
                             @endif
-                            @if (in_array($receipt->status, ['wait-ppk', 'reject-ppk', 'accept']) && $receipt->ppk_id == Auth::user()->employee->id)
+                            @if (in_array($receipt->status, ['wait-ppk', 'reject-ppk', 'accept']) && $receipt->ppk_id == Auth::user()->id)
                                 <div class="float-end p-2">
                                     <x-custom.payment-receipt.ppk-modal :receipt="$receipt" />
                                 </div>
                             @endif
                             @if (in_array($receipt->status, ['wait-treasurer', 'reject-treasurer', 'accept']) &&
-                                    $receipt->treasurer_id == Auth::user()->employee->id)
+                                    $receipt->treasurer_id == Auth::user()->id)
                                 <div class="float-end p-2">
                                     <x-custom.payment-receipt.treasurer-modal :receipt="$receipt" />
                                 </div>
@@ -172,11 +174,13 @@
                                 <div class="float-end p-2">
                                     <x-custom.payment-receipt.submit-modal :receipt="$receipt" />
                                 </div>
+
+                                <div class="float-end p-2">
+                                    <x-custom.payment-receipt.rampung-modal :receipt="$receipt" />
+                                </div>
                             @endif
 
-                            <div class="float-end p-2">
-                                <x-custom.payment-receipt.rampung-modal :receipt="$receipt" />
-                            </div>
+
                         </div>
 
                     </div>
@@ -210,7 +214,19 @@
                                     COA
                                 </button>
                             </li>
-
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link" id="pills-profile-icon-tab" data-bs-toggle="pill"
+                                    data-bs-target="#rampung" type="button" role="tab"
+                                    aria-controls="pills-profile-icon" aria-selected="false">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                        viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                        stroke-linecap="round" stroke-linejoin="round" class="feather feather-user">
+                                        <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                                        <circle cx="12" cy="7" r="4"></circle>
+                                    </svg>
+                                    Rampung
+                                </button>
+                            </li>
                             <li class="nav-item" role="presentation">
                                 <button class="nav-link" id="pills-contact-icon-tab" data-bs-toggle="pill"
                                     data-bs-target="#pills-document" type="button" role="tab"
@@ -332,8 +348,8 @@
                                         <div class="col-sm-8">
                                             <p class="form-control">
                                                 @if ($receipt->verification->last())
-                                                    {{ $receipt->verification->last()->name }} /
-                                                    {{ $receipt->verification->last()->user->identity_number }} (
+                                                    {{-- @dd($receipt) --}}
+                                                    {{ $receipt->verification->last()->user->name }} (
                                                     {{ $receipt->verification->last()->date }})
                                                 @else
                                                     {{ $receipt->ppk->employee_staff?->headOf?->user->name }} ( Belum
@@ -413,7 +429,6 @@
 
                             <div class="tab-pane fade" id="pills-document" role="tabpanel"
                                 aria-labelledby="pills-icon-tab" tabindex="0">
-
                                 <div class="table-responsive">
                                     <table class="table table-bordered">
                                         <tbody>
@@ -432,6 +447,19 @@
                                                     </a>
                                                 </td>
                                             </tr>
+                                            @if ($receipt->perjadin == 'Y')
+                                                <tr>
+                                                    <td>
+                                                        Rampung
+                                                    </td>
+                                                    <td class="text-center">
+                                                        <a target="_blank"
+                                                            href="{{ route('payment-receipt.print-rampung', $receipt) }}">
+                                                            <span class="badge badge-light-success">Download</span>
+                                                        </a>
+                                                    </td>
+                                                </tr>
+                                            @endif
                                             @if ($receipt->ppk->head_id == Auth::user()->employee?->id)
                                                 <tr>
                                                     <td>
@@ -489,7 +517,76 @@
                                     </table>
                                 </div>
                             </div>
+                            <div class="tab-pane fade" id="rampung" role="tabpanel"
+                                aria-labelledby="pills-icon-tab" tabindex="0">
+                                {{-- <div class="table-responsive"> --}}
 
+                                <table class="table table-bordered">
+                                    <tbody>
+                                        <tr class="text-center">
+                                            <td scope="col" style="width: 20px"><b>No</b></td>
+                                            <td scope="col"><b>Perincian</b></td>
+                                            <td scope="col"><b>Keterangan</b></td>
+                                            <td scope="col"><b>Rupiah</b></td>
+                                        </tr>
+                                        @foreach ($receipt->pengikut as $pengikut)
+                                            <tr>
+                                                <td scope="text-center" colspan="4">
+
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td scope="text-center" colspan="4">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="24"
+                                                        height="24" viewBox="0 0 24 24" fill="none"
+                                                        stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                                        stroke-linejoin="round" class="feather feather-arrow-right">
+                                                        <line x1="5" y1="12" x2="19"
+                                                            y2="12"></line>
+                                                        <polyline points="12 5 19 12 12 19"></polyline>
+                                                    </svg> <b>{{ $pengikut->user->name }}</b>
+                                                </td>
+                                            </tr>
+                                            <?php
+                                            $row_p = 1;
+                                            $total = 0;
+                                            ?>
+                                            @if (!empty($pengikut->datas))
+                                                @foreach (json_decode($pengikut->datas) as $p_data)
+                                                    <tr>
+                                                        <td>
+                                                            <p>{{ $row_p }}</p>
+                                                        </td>
+                                                        <td>
+                                                            <p>{{ $p_data->rinc }}</p>
+                                                        </td>
+                                                        <td>
+                                                            <p>{{ $p_data->desc }}</p>
+                                                        </td>
+                                                        <td class="text-right" style="text-align: right">
+                                                            <p class="text-right">
+                                                                {{ number_format((int) $p_data->amount, 0, ',', '.') }}
+                                                            </p>
+                                                        </td>
+                                                        @php $total = $total+ (int) $p_data->amount @endphp
+                                                    </tr>
+                                                    <?php $row_p++; ?>
+                                                @endforeach
+                                            @endif
+                                            <tr>
+                                                <td scope="text-center" colspan="3">
+                                                    Total
+                                                </td>
+                                                <td scope="text-center" style="text-align: right">
+                                                    {{ number_format((int) $total, 0, ',', '.') }}
+
+                                                </td>
+                                            </tr>
+                                        @endforeach
+                                    </tbody>
+                                </table>
+                                {{-- </div> --}}
+                            </div>
                             <div class="tab-pane fade" id="pills-log" role="tabpanel"
                                 aria-labelledby="pills-icon-tab" tabindex="0">
                                 <div class="table-responsive">

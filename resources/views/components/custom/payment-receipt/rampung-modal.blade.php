@@ -1,15 +1,15 @@
 @props(['receipt'])
 
-<button type="button" class="btn btn-sm btn-primary  mb-2 mt-2" data-bs-target="#uploadModal" data-bs-toggle="modal">
+<button type="button" class="btn btn-sm btn-primary  mb-2 mt-2" data-bs-target="#rampungModal" data-bs-toggle="modal">
     <i data-feather="upload"></i> Form Rampung
 </button>
 
-<div class="modal fade c-modal-bg" id="uploadModal" tabindex="-1" role="dialog" aria-labelledby="uploadModalTitle"
+<div class="modal fade c-modal-bg" id="rampungModal" tabindex="-1" role="dialog" aria-labelledby="rampungModalTitle"
     aria-hidden="true" data-bs-focus="false">
     <div class="modal-dialog modal-xl modal-dialog-centered" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="uploadModalTitle">Form Rampung</h5>
+                <h5 class="modal-title" id="rampungModalTitle">Form Rampung</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Tutup"></button>
             </div>
             <div class="modal-body">
@@ -19,6 +19,11 @@
                     @method('POST')
                     <input name="receipt" value="{{ $receipt->id }}" type="hidden">
                     @foreach ($receipt->pengikut as $pengikut)
+                        {{-- @dd($pengikut) --}}
+                        {{-- @php
+                            echo json_encode($pengikut->datas, true);
+                            die();
+                        @endphp --}}
                         <div class="form-group d-flex align-items-center">
                             <button type="button" data-target="{{ $pengikut->id }}" id="add_rampung"
                                 class="add_rampung btn btn-sm btn-primary py-0 px-2">
@@ -43,20 +48,19 @@
     document.addEventListener('DOMContentLoaded', function() {
         let count_row = [];
 
-        function render_row(id) {
+        function render_row(id, data = false) {
             if (!count_row[id]) {
                 count_row[id] = {
                     'row': 1
                 };
             }
-            console.log(count_row);
             html = `         <div class="input-group mb-2" id="rampung_row_${id}_${count_row[id]['row']}">
                                 <span class="input-group-text">${count_row[id]['row']}.</span>
-                                <input type="text" placeholder="Perincian" name="rinc_${id}[]"
+                                <input type="text" placeholder="Perincian" value="${data.rinc??''}" name="rinc_${id}[]"
                                     class="form-control">
-                                    <input type="text"  placeholder="Keterangan" name="desc_${id}[]"
+                                    <input type="text"  placeholder="Keterangan" value="${data.desc??''}" name="desc_${id}[]"
                                     class="form-control">
-                                    <input type="text" placeholder="Jumlah" name="amount_${id}[]"
+                                    <input type="text" placeholder="Jumlah" value="${data.amount??''}" name="amount_${id}[]"
                                         class="form-control amount_rampung">
                                 <button type="button" data-parent="${id}" data-row="${count_row[id]['row']}" class="remove_rampung btn btn-danger remove-iku">
                                     <i data-feather="trash"></i>
@@ -85,7 +89,6 @@
             $('.remove_rampung').on('click', function(ev) {
                 let parent = $(this).data('parent');
                 let row = $(this).data('row');
-                console.log(`#rampung_row_${parent}_${row}`);
                 $(`#rampung_row_${parent}_${row}`).remove()
             })
 
@@ -93,7 +96,14 @@
 
 
         @foreach ($receipt->pengikut as $p)
-            render_row({{ $p->id }})
+            @if (!empty($p->datas))
+                tmp_data = JSON.parse(@json($p->datas));
+                Object.keys(tmp_data).forEach(function(key) {
+                    render_row({{ $p->id }}, tmp_data[key])
+                });
+            @else
+                render_row({{ $p->id }})
+            @endif
         @endforeach
 
         $('#form-money-app').submit(function(e) {

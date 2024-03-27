@@ -183,6 +183,9 @@ if (!function_exists('status_app_keuangan')) {
     {
         if ($var == "N") {
             return "<span class='badge badge-light-danger'>Belum Entry</span>";
+        } else
+        if ($var == "R") {
+            return "<span class='badge badge-light-warning'>Belum terbit SP2D</span>";
         } elseif ($var == "Y") {
             return "<span class='badge badge-light-success'>Selesai</span>";
         } else

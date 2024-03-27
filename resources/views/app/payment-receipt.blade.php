@@ -243,6 +243,20 @@
                                 </select>
                             </div>
                         </div>
+                        <div class="mb-4 row" id="wrapperSpdNumber">
+                            <label for="inputSpdNumber" class="col-sm-2 col-form-label">Nomor SPD
+                            </label>
+                            <div class="col-sm-8">
+                                <input type="text" class="form-control" name="spd_number" id="inputSpdNumber">
+                            </div>
+                        </div>
+                        <div class="mb-4 row" id="wrapperSpdTujuan">
+                            <label for="inputSpdTujuan" class="col-sm-2 col-form-label">Tujuan SPD
+                            </label>
+                            <div class="col-sm-8">
+                                <input type="text" class="form-control" name="spd_tujuan" id="inputSpdTujuan">
+                            </div>
+                        </div>
                         <div class="mb-4 row">
                             <label for="inputDisbursementDescription" class="col-sm-2 col-form-label">Uraian
                                 Pencairan</label>
@@ -260,12 +274,12 @@
                                 </select>
                             </div>
                         </div>
-                        <div class="mb-4 row pengikutWrapper ">
+                        <div class="mb-4 row pengikutWrapper " id="pengikutWrapper">
                             <label for="selectActivityExecutor" class="col-sm-2 col-form-label">Pengikut
                                 Kegiatan</label>
                             <div class="col-sm-8">
-                                <select class="form-select" multiple="multiple" name="activity_followings[]"
-                                    id="createSelectPengikut">
+                                <select class="form-select" style="width:100% !important" multiple="multiple"
+                                    name="activity_followings[]" id="createSelectPengikut">
                                 </select>
                             </div>
                         </div>
@@ -511,6 +525,32 @@
                     //     $(this).val(format_number($(this).val()))
                     // })
 
+                    $('#selectPerjadinReceipt').on('change', function() {
+                        console.log($(this).val())
+                        if ($(this).val() == 'Y') {
+                            $('#inputSpdNumber').prop('disabled', false);
+                            $('#inputSpdNumber').prop('required', true);
+                            $('#wrapperSpdNumber').css('display', "");
+
+                            $('#inputSpdTujuan').prop('disabled', false);
+                            $('#inputSpdTujuan').prop('required', true);
+                            $('#wrapperSpdTujuan').css('display', "");
+
+                            $('#createSelectPengikut').prop('disabled', false);
+                            $('#pengikutWrapper').css('display', "");
+                        } else {
+                            $('#inputSpdNumber').prop('required', false);
+                            $('#inputSpdNumber').prop('disabled', true);
+                            $('#wrapperSpdNumber').css('display', "none");
+
+                            $('#inputSpdTujuan').prop('required', false);
+                            $('#inputSpdTujuan').prop('disabled', true);
+                            $('#wrapperSpdTujuan').css('display', "none");
+
+                            $('#createSelectPengikut').prop('disabled', true);
+                            $('#pengikutWrapper').css('display', "none");
+                        }
+                    }).trigger('change')
 
                     handleSelectTypeReceipt($('#selectTypeReceipt'))
                     $('#createSelectPPK').select2({
@@ -706,11 +746,89 @@
                     formEdit.find('#inputSupplierOrganizationName').val(receipt.provider_organization);
                     formEdit.find('#selectApproveId').val(receipt.budget_implementation_detail_id);
                     formEdit.find('#selectApproveName').val(receipt.detail?.name);
-                    formEdit.find('#selectPerjadinReceipt').val(receipt.perjadin);
+                    formEdit.find('#selectPerjadinReceiptEdit').val(receipt.perjadin);
+                    formEdit.find('#inputSpdNumberEdit').val(receipt.spd_number);
+                    formEdit.find('#inputSpdTujuanEdit').val(receipt.spd_tujuan);
+
                     flatpickr(formEdit.find('#basicFlatpickr'), {
                         defaultDate: receipt.activity_date,
                         static: true,
                     });
+
+                    $('#selectPerjadinReceiptEdit').on('change', function() {
+                        console.log($(this).val())
+                        if ($(this).val() == 'Y') {
+                            formEdit.find('#inputSpdNumberEdit').prop('disabled', false);
+                            formEdit.find('#inputSpdNumberEdit').prop('required', true);
+                            formEdit.find('#wrapperSpdNumberEdit').css('display', "");
+
+                            formEdit.find('#inputSpdTujuanEdit').prop('disabled', false);
+                            formEdit.find('#inputSpdTujuanEdit').prop('required', true);
+                            formEdit.find('#wrapperSpdTujuanEdit').css('display', "");
+
+                            formEdit.find('#createSelectPengikutEdit').prop('disabled', false);
+                            formEdit.find('#pengikutWrapperEdit').css('display', "");
+
+                            $('#createSelectPengikutEdit').select2({
+                                dropdownParent: $("#form-edit").find(
+                                    '.pengikutWrapperEdit'),
+                                placeholder: 'Pilih Pengikut',
+                                theme: 'bootstrap-5',
+                                ajax: {
+                                    transport: function(params, success, failure) {
+                                        // Using Axios to fetch the data
+                                        axios.get(
+                                                `{{ route('employees.search.pengikut') }}`, {
+                                                    params: {
+                                                        search: params.data.term,
+                                                        pelaksana: formEdit.find(
+                                                            '#editSelectPelaksana'
+                                                        ).val(),
+                                                        limit: 10
+                                                    }
+                                                })
+                                            .then(function(response) {
+                                                // Call the `success` function with the formatted results
+                                                success({
+                                                    results: response.data
+                                                        .map(function(
+                                                            item) {
+                                                            return {
+                                                                id: item
+                                                                    .user_id,
+                                                                text: item
+                                                                    .name +
+                                                                    ' - ' +
+                                                                    item
+                                                                    .id
+                                                            };
+                                                        })
+                                                });
+                                            })
+                                            .catch(function(error) {
+                                                // Call the `failure` function in case of an error
+                                                failure(error);
+                                            });
+                                    },
+                                    delay: 250,
+                                    cache: true
+                                }
+                            });
+
+                        } else {
+                            formEdit.find('#inputSpdNumberEdit').prop('required', false);
+                            formEdit.find('#inputSpdNumberEdit').prop('disabled', true);
+                            formEdit.find('#wrapperSpdNumberEdit').css('display', "none");
+
+                            formEdit.find('#inputSpdTujuanEdit').prop('required', false);
+                            formEdit.find('#inputSpdTujuanEdit').prop('disabled', true);
+                            formEdit.find('#wrapperSpdTujuanEdit').css('display', "none");
+
+                            formEdit.find('#createSelectPengikutEdit').prop('disabled', true);
+                            formEdit.find('#pengikutWrapperEdit').css('display', "none");
+                        }
+                    }).trigger('change')
+
                     const inputAmountEl = formEdit.find("#inputAmount");
                     inputAmountEl.val(parseInt(receipt.amount));
                     // Restrict keyboard input
@@ -854,12 +972,34 @@
                             cache: true
                         }
                     });
-                    var option = new Option(`${receipt.activity_implementer} `, receipt
-                        .activity_implementer,
+
+                    $('#editSelectPelaksana').on('change', () => {
+                        var cr = $('#editSelectPelaksana').val();
+                        $('#createSelectPengikutEdit').find("option[value='" + cr + "']").remove();
+                    })
+                    console.log(receipt.pelaksana.name)
+                    var option = new Option(`${receipt.pelaksana.name} `, receipt.activity_implementer,
                         true,
                         true);
                     $('#editSelectPelaksana').append(option).trigger('change');
 
+                    console.log(receipt.pengikut)
+
+                    Object.keys(receipt.pengikut).forEach(function(properti) {
+                        console.log(properti + ': ' + receipt.pengikut[properti].id);
+                        console.log(properti + ': ' + receipt.pengikut[properti].user.name);
+                        if (receipt.pengikut[properti].user.id != receipt.activity_implementer) {
+
+                            var option = new Option(`${receipt.pengikut[properti].user.name} `,
+                                receipt
+                                .pengikut[properti].user.id,
+                                true,
+                                true);
+
+                            $('#createSelectPengikutEdit').append(option);
+
+                        }
+                    });
 
                 }).on('hidden.bs.modal', function() {
                     const formEdit = $("#form-edit");

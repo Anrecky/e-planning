@@ -169,6 +169,7 @@ Route::middleware(['auth'])->prefix('admin')->group(function () {
         ]);
 
         Route::get('rekam-kuitansi/print-kwitansi/{receipt}', [PaymentReceiptController::class, 'print_kwitansi'])->name('payment-receipt.print-kwitansi');
+        Route::get('rekam-kuitansi/print-rampung/{receipt}', [PaymentReceiptController::class, 'print_rampung'])->name('payment-receipt.print-rampung');
         Route::get('rekam-kuitansi/print-tiket/{receipt}/{verif?}', [PaymentReceiptController::class, 'print_ticket'])->name('payment-receipt.print-ticket');
         Route::get('kuitansi/detail/{receipt}', [PaymentReceiptController::class, 'detail'])->name('payment-receipt.detail');
         Route::get('kuitansi/', [PaymentReceiptController::class, 'list'])->name('payment-receipt.list');
