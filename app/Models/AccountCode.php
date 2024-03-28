@@ -8,6 +8,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class AccountCode extends Model
 {
+    protected $fillable = ['name', 'code'];
+
     use HasFactory;
 
     public function budgetImplementations()
