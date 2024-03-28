@@ -29,7 +29,7 @@ class RolesAndPermissionsSeeder extends Seeder
                 'view pembayaran',
                 'view penganggaran',
                 'view perencanaan',
-                'approval and comment pembayaran',
+                'approval pembayaran',
                 'approval and comment penganggaran',
                 'approval and comment perencanaan'
             ],
