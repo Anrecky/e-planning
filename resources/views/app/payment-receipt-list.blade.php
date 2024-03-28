@@ -1,5 +1,4 @@
 <x-custom.app-layout :scrollspy="false">
-
     <x-slot:pageTitle>
         {{ $title }}
     </x-slot>
@@ -130,7 +129,20 @@
                                     <td>{{ $receipt->description }}</td>
                                     <td>{{ $receipt->activity_date }}</td>
                                     <td>Rp {{ number_format($receipt->amount, 0, ',', '.') }}</td>
-                                    <td>{{ $receipt->activity_implementer ?? '-' }}</td>
+                                    <td> @php
+                                        $firstIteration = true;
+                                    @endphp
+                                        @foreach ($receipt->pengikut as $pengikut)
+                                            @if ($firstIteration)
+                                                @php
+                                                    $firstIteration = false;
+                                                @endphp
+                                            @else
+                                                ,<br>
+                                            @endif
+                                            {{ $pengikut->user->name }}
+                                        @endforeach
+                                    </td>
                                     <td>{{ $receipt->treasurer->name ?? '-' }}</td>
                                     <td>{{ $receipt->ppk->name }}</td>
                                     <td>{{ $receipt->provider }}</td>

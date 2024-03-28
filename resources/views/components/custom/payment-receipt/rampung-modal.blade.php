@@ -1,7 +1,7 @@
 @props(['receipt'])
 
 <button type="button" class="btn btn-sm btn-primary  mb-2 mt-2" data-bs-target="#rampungModal" data-bs-toggle="modal">
-    <i data-feather="upload"></i> Form Rampung
+    <i data-feather="edit-3"></i> Form {{ $receipt->perjadin == 'Y' ? 'Rampung' : 'Daftar Terima' }}
 </button>
 
 <div class="modal fade c-modal-bg" id="rampungModal" tabindex="-1" role="dialog" aria-labelledby="rampungModalTitle"
@@ -9,7 +9,8 @@
     <div class="modal-dialog modal-xl modal-dialog-centered" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="rampungModalTitle">Form Rampung</h5>
+                <h5 class="modal-title" id="rampungModalTitle">Form
+                    {{ $receipt->perjadin == 'Y' ? 'Rampung' : 'Daftar Terima' }}</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Tutup"></button>
             </div>
             <div class="modal-body">

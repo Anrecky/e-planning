@@ -106,6 +106,10 @@
                 /* border-color: blue */
             }
 
+            .tbl-break-sub-total {
+                background-color: #eaeaec
+            }
+
             .c-modal-bg {
                 /* position: fixed; */
                 /* top: 0; */
@@ -174,10 +178,6 @@
                                 <div class="float-end p-2">
                                     <x-custom.payment-receipt.submit-modal :receipt="$receipt" />
                                 </div>
-
-                                <div class="float-end p-2">
-                                    <x-custom.payment-receipt.rampung-modal :receipt="$receipt" />
-                                </div>
                             @endif
 
 
@@ -224,7 +224,7 @@
                                         <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
                                         <circle cx="12" cy="7" r="4"></circle>
                                     </svg>
-                                    Rampung
+                                    {{ $receipt->perjadin == 'Y' ? 'Rampung' : 'Daftar Terima' }}
                                 </button>
                             </li>
                             <li class="nav-item" role="presentation">
@@ -447,19 +447,19 @@
                                                     </a>
                                                 </td>
                                             </tr>
-                                            @if ($receipt->perjadin == 'Y')
-                                                <tr>
-                                                    <td>
-                                                        Rampung
-                                                    </td>
-                                                    <td class="text-center">
-                                                        <a target="_blank"
-                                                            href="{{ route('payment-receipt.print-rampung', $receipt) }}">
-                                                            <span class="badge badge-light-success">Download</span>
-                                                        </a>
-                                                    </td>
-                                                </tr>
-                                            @endif
+                                            {{-- @if ($receipt->perjadin == 'Y') --}}
+                                            <tr>
+                                                <td>
+                                                    {{ $receipt->perjadin == 'Y' ? 'Rampung' : 'Daftar Terima' }}
+                                                </td>
+                                                <td class="text-center">
+                                                    <a target="_blank"
+                                                        href="{{ route('payment-receipt.print-rampung', $receipt) }}">
+                                                        <span class="badge badge-light-success">Download</span>
+                                                    </a>
+                                                </td>
+                                            </tr>
+                                            {{-- @endif --}}
                                             @if ($receipt->ppk->head_id == Auth::user()->employee?->id)
                                                 <tr>
                                                     <td>
@@ -520,7 +520,12 @@
                             <div class="tab-pane fade" id="rampung" role="tabpanel"
                                 aria-labelledby="pills-icon-tab" tabindex="0">
                                 {{-- <div class="table-responsive"> --}}
-
+                                @if (in_array($receipt->status, ['draft', 'reject-verificator', 'reject-ppk', 'reject-spi']) &&
+                                        $receipt->user_entry == Auth::user()->id)
+                                    <div class="float-end p-2">
+                                        <x-custom.payment-receipt.rampung-modal :receipt="$receipt" />
+                                    </div>
+                                @endif
                                 <table class="table table-bordered">
                                     <tbody>
                                         <tr class="text-center">
@@ -529,8 +534,9 @@
                                             <td scope="col"><b>Keterangan</b></td>
                                             <td scope="col"><b>Rupiah</b></td>
                                         </tr>
+                                        @php $grand_total  = 0; @endphp
                                         @foreach ($receipt->pengikut as $pengikut)
-                                            <tr>
+                                            <tr class="tbl-break-sub-total">
                                                 <td scope="text-center" colspan="4">
 
                                                 </td>
@@ -575,14 +581,30 @@
                                             @endif
                                             <tr>
                                                 <td scope="text-center" colspan="3">
-                                                    Total
+                                                    Sub Total
                                                 </td>
                                                 <td scope="text-center" style="text-align: right">
                                                     {{ number_format((int) $total, 0, ',', '.') }}
 
                                                 </td>
                                             </tr>
+
+                                            @php $grand_total = $grand_total + $total @endphp
                                         @endforeach
+                                        <tr style="background-color: #4361ee">
+                                            <td scope="text-center " colspan="4">
+
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td scope="text-center" colspan="3">
+                                                Total
+                                            </td>
+                                            <td scope="text-center" style="text-align: right">
+                                                {{ number_format((int) $grand_total, 0, ',', '.') }}
+
+                                            </td>
+                                        </tr>
                                     </tbody>
                                 </table>
                                 {{-- </div> --}}

@@ -52,7 +52,7 @@
         }
 
         .section .table-container {
-            padding-left: 65%;
+            padding-left: 58%;
             margin-left: 20px;
             /* Jarak antara tabel dan konten lainnya */
         }
@@ -81,6 +81,7 @@
             $penerima['total'] = $receipt->amount;
 
         @endphp
+        <x-custom.payment-receipt.print-kwitansi-page :receipt="$receipt" :penerima="$penerima" />
     @else
         @php $i= 1 @endphp
         @foreach ($receipt->pengikut as $p)
@@ -101,9 +102,6 @@
             <x-custom.payment-receipt.print-kwitansi-page :receipt="$receipt" :penerima="$penerima" />
         @endforeach
     @endif
-
-    {{-- @include('components.custom.payment-receipt.print-kwitansi-ls') --}}
-
 
     {{-- <div class="receipt">
         <div class="receipt-header">

@@ -248,6 +248,7 @@ $imageSrc = 'logo.png';
                 <br>
                 <br>
                 <br>
+                <br>
                 {{ Auth::user()->name }}<br>
                 {{ strtoupper(Auth::user()->employee->identity_type ?? '') . '. ' . Auth::user()->employee?->id ?? '' }}
 
@@ -255,7 +256,7 @@ $imageSrc = 'logo.png';
             <td class="text-top">
                 NAMA KEGIATAN DI POK : <br>
                 {{ $receipt->detail->budgetImplementation->activity->name ?? '-' }}<br><br>
-                <br>KODE KEGIATAN / MAX :
+                <br>KODE KEGIATAN / MAk :
                 <br>
                 {{ $receipt->detail->budgetImplementation->activity->code ?? '-' }} /
 

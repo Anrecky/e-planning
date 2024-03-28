@@ -5,11 +5,11 @@
     <div class="receipt-body">
         <div class="section">
             <div class="table-container">
-                <table class="fullwidth text-top">
+                <table class="fullwidth text-top" style="max-width: 50%">
                     <tr>
                         <td style="width: 120px">Tahun Anggaran</td>
                         <td>:</td>
-                        <td>{{ \Carbon\Carbon::parse($receipt->activity_date)->format('Y') }}</td>
+                        <td style="width: 320px">{{ \Carbon\Carbon::parse($receipt->activity_date)->format('Y') }}</td>
                     </tr>
                     <tr>
                         <td>Nomor Bukti</td>

@@ -51,10 +51,22 @@ class ReceiptActionController extends Controller
     {
         try {
 
+            if ($receipt->amount != $receipt->pengikut->sum('amount')) {
+                if ($receipt->perjadin == 'Y') {
+                    return response()->json(['error' => true, 'message' => 'Jumlah pada daftar rampung tidak sama dengan jumlah pencairan tau belum terisi !!'], 400);
+                } else {
+                    return response()->json(['error' => true, 'message' => 'Jumlah pada daftar terima tidak sama dengan jumlah pencairan tau belum terisi !!'], 400);
+                }
+            }
+
+
             if ($receipt->user_entry != Auth::user()->id) {
                 return response()->json(['error' => true,  'message' => 'Anda tidak memiliki izin untuk mengunggah file untuk tanda terima ini.'], 400);
             }
             if (empty($receipt->berkas)) {
+                return response()->json(['error' => true,  'message' => "Berkas belum diunggah!!."], 400);
+            }
+            if (empty($receipt->pelaksana)) {
                 return response()->json(['error' => true,  'message' => "Berkas belum diunggah!!."], 400);
             }
             if (!in_array($receipt->status, ['draft', 'reject-verificator', 'reject-ppk', 'reject-spi'])) {
@@ -100,7 +112,6 @@ class ReceiptActionController extends Controller
                 }
                 ReceiptData::find($p->id)->update(['datas' => json_encode($data[$p->id]), 'amount' => $total]);
             }
-
             $log = new ReceiptLog;
             $log->receipt_id = $receipt->id;
             $log->user_id = $receipt->user_entry;
@@ -118,11 +129,7 @@ class ReceiptActionController extends Controller
     public function ppk(Request $request, Receipt $receipt)
     {
         try {
-            $receipt->load('ppk');
-            if (!(in_array($receipt->status, ['wait-ppk', 'reject-ppk', 'accept'])) || $receipt->ppk_id != Auth::user()->employee->id) {
-                return response()->json(['error' => true,  'message' => 'Anda tidak berhak melalukan aksi ini'], 500);
-            }
-
+            $receipt = Receipt::accessibility(true)->findOrFail($receipt->id);
             $log = new ReceiptLog;
 
             if ($request->res == 'Y') {
@@ -151,7 +158,6 @@ class ReceiptActionController extends Controller
             return response()->json(['error' => false,  'message' => $request->res], 200);
         } catch (\Exception $e) {
             Log::error($e);
-
             return response()->json(['error' => true, 'message' => $e->getMessage()], 500);
         }
     }
@@ -160,8 +166,10 @@ class ReceiptActionController extends Controller
     {
         try {
             $receipt->load('treasurer');
-            // dd($receipt);
-            if (!(in_array($receipt->status, ['wait-treasurer', 'reject-treasurer', 'accept'])) || $receipt->treasurer_id != Auth::user()->employee->id) {
+            $receipt->accessibility(true, $receipt->id, true);
+            // echo json_encode($receipt);
+            // die();
+            if (!(in_array($receipt->status, ['wait-treasurer', 'reject-treasurer', 'accept'])) || $receipt->treasurer_id != Auth::user()->id) {
                 return response()->json(['error' => true,  'message' => 'Anda tidak berhak melalukan aksi ini'], 500);
             }
 
@@ -198,6 +206,7 @@ class ReceiptActionController extends Controller
     {
         try {
             $receipt->load('ppk');
+
             if (!(in_array($receipt->status, ['wait-spi', 'reject-spi'])) || !(Auth::user()->hasRole('SPI'))) {
                 return response()->json(['error' => true,  'message' => 'Anda tidak berhak melalukan aksi ini'], 500);
             }
@@ -240,7 +249,7 @@ class ReceiptActionController extends Controller
         ]);
 
         try {
-
+            $receipt = Receipt::accessibility(true)->findOrFail($receipt->id);
             $items = [
                 '2' => ['a', 'b', 'c', 'd', 'e'],
                 '3' => ['a', 'b', 'c', 'd', 'e'],
@@ -253,8 +262,7 @@ class ReceiptActionController extends Controller
                     $result['item_' . $key_i . '_' . $i] = !empty($tmp['item_' . $key_i . '_' . $i]) ? 'Y' : null;
                 }
             }
-            // dd($result);
-            // dd($request->toArray());
+
             if ($request->idVerification) {
                 $payment_verification = PaymentVerification::findOrFail($request->idVerification);
             } else {
@@ -278,7 +286,8 @@ class ReceiptActionController extends Controller
             $log = new ReceiptLog;
 
             if ($payment_verification->result == 'Y') {
-                Receipt::generateNumber($receipt);
+                if (empty($receipt->reference_number))
+                    Receipt::generateNumber($receipt);
 
                 $log->activity = "verificator-approv";
                 $log->description = "Melakukan Verifikasi dengan hasil Lengkap";

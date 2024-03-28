@@ -107,11 +107,20 @@ $imageSrc = 'logo.png';
     }
 
     .f1 {
-        font-size: 16
+        font-size: 16;
+        letter-spacing: 2px;
+        line-height: 1;
     }
 
     .f2 {
-        font-size: 14
+        font-size: 13;
+        letter-spacing: 1px;
+        line-height: 1;
+    }
+
+    .f3 {
+        font-size: 13;
+        line-height: 0.9;
     }
 
     .text-top {
@@ -130,11 +139,16 @@ $imageSrc = 'logo.png';
 @endphp
 
 <body>
-
+    @php $i= 1 @endphp
     @foreach ($receipt->pengikut as $pengikut)
+        @if ($i != 1)
+            <div class="page_break"></div>
+        @endif
+        @php $i++ @endphp
+
         <table style="width:100% ;margin: 0px ; padding :0px; " class="no-border">
-            <tr class="no-border">
-                <td style="width: 150px" class="no-border"><img style="width: 150px; height:100px" src="{{ $imageSrc }}"
+            <tr class="sno-border">
+                <td style="width: 120px" class="no-border"><img style="width: 130px; height:100px" src="{{ $imageSrc }}"
                         alt="auth-img">
                 </td>
                 <td class="text-center no-border" style="margin: 0px ; padding:0px">
@@ -146,15 +160,19 @@ $imageSrc = 'logo.png';
                         SYAIKH ABDURRAHMAN SIDDIK<br>
                         BANGKA BELITUNG
                     </h4>
-                    <p style="margin: 0px ; padding:0px;font-size:13px">Jalan Raya Petaling KM 13 Kec. Mendo Barat Kab.
+                    <p class="f3" style="margin: 0px ; padding:0px;font-size:13px">Jalan Raya Petaling KM 13 Kec.
+                        Mendo
+                        Barat Kab.
                         Bangka
                         Prov. Kep. Bangka Belitung 33173<br>
                         E-mail : humas@iainsasbabel.ac.id
                 </td>
             </tr>
         </table>
-        <hr>
-        <h4 class="f1 text-center">RINCIAN BIAYA PERJALANAN DINAS
+        <hr style="line-height: 0.1; padding-top:0.5px; margin-top:1 ;  height: 0.1px; background-color: #000000;">
+        {{-- <hr style="line-height: 0.1; padding-top:0px; margin-top:0 ;  height: 0.1px; background-color: #000000;"> --}}
+        <h4 class="f1 text-center" style="margin-left:100px">
+            {{ $receipt->perjadin == 'Y' ? 'RINCIAN BIAYA PERJALAN DINAS' : 'DAFTAR TERIMA' }}
         </h4>
         <table class="no-border">
             <tr>
@@ -171,8 +189,10 @@ $imageSrc = 'logo.png';
             <tr>
                 <td class="text-top">Kegiatan </td>
                 <td class="text-top">:</td>
-                <td>Pembayaran Biaya Perjalan Dinas {{ $receipt->description }} Tanggal
-                    {{ \Carbon\Carbon::parse($receipt->activity_date)->translatedFormat('j F Y') }}</td>
+                <td>{{ $receipt->description }}
+                    {{-- Tanggal --}}
+                    {{-- {{ \Carbon\Carbon::parse($receipt->activity_date)->translatedFormat('j F Y') }} --}}
+                </td>
             </tr>
             <tr>
                 <td>Tujuan</td>
@@ -267,9 +287,6 @@ $imageSrc = 'logo.png';
                 </td>
             </tr>
         </table>
-
-        <div class="page_break">
-        </div>
     @endforeach
 
 

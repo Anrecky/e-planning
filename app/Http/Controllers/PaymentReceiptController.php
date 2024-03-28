@@ -51,43 +51,21 @@ class PaymentReceiptController extends Controller
         // $ppks = PPK::all();
         // $treasurers = Treasurer::all();
         $activities = Activity::all();
-        $receipts = Receipt::select('receipts.*')
-            // ->selectRaw('users.name as name_ppk, employees.id as identity_number_ppk,employees.user_id as user_id_ppk, employees.head_id as head_id_ppk')
-            ->with(['ppk', 'treasurer', 'detail'])
-            // ->join('users', 'receipts.ppk_id', 'users.id')
-            ->join('users as u', 'u.id', 'receipts.ppk_id')
-            ->join('employees as p', 'p.user_id', 'u.id');
-        if (Auth::user()->hasRole('PPK')) {
-            $receipts = $receipts->whereIn('status', ['wait-treasurer', 'reject-treasurer', 'wait-ppk', 'reject-ppk', 'accept'])
-                ->where('ppk_id',  Auth::user()->id);
-        }
-        if (Auth::user()->hasRole('SPI')) {
-            $receipts = $receipts->whereIn('status', ['wait-treasurer', 'reject-treasurer', 'wait-spi', 'reject-spi', 'wait-ppk', 'reject-ppk', 'accept']);
-        }
-        if (Auth::user()->hasRole('STAF PPK')) {
-            $receipts = $receipts->whereIn('status', ['wait-treasurer', 'reject-treasurer', 'wait-verificator', 'reject-verificator', 'wait-ppk', 'reject-ppk', 'accept'])
-                ->where('p.head_id',  Auth::user()->id);
-        }
-        if (Auth::user()->hasRole('BENDAHARA')) {
-            $receipts = $receipts->whereIn('status', ['wait-treasurer', 'reject-treasurer', 'accept'])
-                ->where('treasurer_id',  Auth::user()->id);
-        }
-        $receipts = $receipts->get();
+        $receipts = Receipt::with(['ppk', 'treasurer', 'detail'])->accessibility()->get();
+        // dd($receipts);
+        // ->join('users', 'receipts.ppk_id', 'users.id')
         return view('app.payment-receipt-list', compact('title',  'activities', 'receipts'));
     }
 
     public function detail(Receipt $receipt)
     {
-        $title = 'Detail Kuitansi';
-        $receipt = Receipt::with(['ppk', 'treasurer', 'detail', 'verification', 'logs', 'pelaksana'])->findOrFail($receipt->id);
+        $receipt = Receipt::with(['ppk', 'treasurer', 'detail', 'verification', 'logs', 'pelaksana'])->where('receipts.id', '=', $receipt->id)->accessibility()->firstOrFail();
         $receipt->verification->load('user');
         $receipt->logs->load('user');
         $receipt->ppk->load('employee_staff');
-        // if ($receipt->treasurer_id)
-        //     $receipt->treasurer->load('employee');
         $receipt->detail->load('expenditureUnit', 'budgetImplementation');
         $receipt->detail->budgetImplementation->load('activity', 'accountCode');
-        // dd($receipt->verification[0]);
+        $title = 'Detail Kuitansi';
         return view('app.payment-receipt-detail', compact('title', 'receipt'));
     }
 
@@ -171,6 +149,8 @@ class PaymentReceiptController extends Controller
     public function update(Request $request, Receipt $receipt)
     {
         try {
+            $receipt = $receipt->accessibility(true, $receipt->id, true)->first();
+            // dd($receipt);
             if (!(in_array($receipt->status, ['draft', 'reject-spi', 'reject-ppk', 'reject-verificator', 'reject-treasurer'])))
                 return back()->with('error', "Tidak diizinkan lagi untuk melakukan perubahan");
 
@@ -209,8 +189,8 @@ class PaymentReceiptController extends Controller
             $receipt->user_entry = Auth::user()->id;
             $receipt->save();
 
-            array_unshift($validatedData['activity_followings'], $receipt->activity_implementer);
-            if (!empty($validatedData['activity_followings']))
+            if (!empty($validatedData['activity_followings'])) {
+                array_unshift($validatedData['activity_followings'], $receipt->activity_implementer);
                 foreach ($validatedData['activity_followings'] as $foll) {
                     $existingReceiptData = ReceiptData::where('user_id', $foll)->where('receipt_id', $receipt->id)->exists();
                     if (!$existingReceiptData) {
@@ -221,6 +201,9 @@ class PaymentReceiptController extends Controller
                         $newReceiptData->save();
                     }
                 }
+            } else {
+                $validatedData['activity_followings'][] = $receipt->acactivity_implementer;
+            }
 
             ReceiptData::where('receipt_id', $receipt->id)->whereNotIn('user_id', $validatedData['activity_followings'])->delete();
 
@@ -267,8 +250,8 @@ class PaymentReceiptController extends Controller
             $receipt = $receipt->with(['ppk', 'treasurer', 'detail', 'pelaksana'])->findOrFail($receipt->id);
             // dd($receipt);
             $dompdf = new PDF();
-            // return view('components.custom.payment-receipt.print-kwitansi-ls', compact('receipt'));
-            $pdf = PDF::loadView('components.custom.payment-receipt.print-kwitansi-ls', compact('receipt'));
+            // return view('components.custom.payment-receipt.print-kwitansi-engine', compact('receipt'));
+            $pdf = PDF::loadView('components.custom.payment-receipt.print-kwitansi-engine', compact('receipt'));
             $pdf->setPaper('A4', 'portrait');
             return $pdf->stream('invoice.pdf');
         } catch (\Exception $e) {
@@ -310,8 +293,8 @@ class PaymentReceiptController extends Controller
                 // return view('components.custom.payment-receipt.print-verification', compact('receipt', 'verifData'));
                 $pdf = PDF::loadView('components.custom.payment-receipt.print-verification', compact('receipt', 'verifData'));
             } else
-                return view('components.custom.payment-receipt.print-ticket', compact('receipt'));
-            // $pdf = PDF::loadView('components.custom.payment-receipt.print-ticket', compact('receipt'));
+                // return view('components.custom.payment-receipt.print-ticket', compact('receipt'));
+                $pdf = PDF::loadView('components.custom.payment-receipt.print-ticket', compact('receipt'));
             // $customPaper = array(0, 0, 816, 1247);
             // $pdf->setPaper($customPaper);
             $pdf->setPaper('legal', 'portrait');

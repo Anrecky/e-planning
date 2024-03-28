@@ -242,11 +242,12 @@ $imageSrc = 'logo.png';
                 <br>
                 <br>
                 <br>
-                {{ $receipt->pelaksana->user->name }}<br>
-                {{ strtoupper($receipt->pelaksana->identity_type) . '. ' . $receipt->pelaksana->id }}
+                {{ $receipt->pelaksana->name }}<br>
+                {{ strtoupper($receipt->pelaksana->employee->identity_type) . '. ' . $receipt->pelaksana->employee->id }}
             </td>
             <td class="text-top" style="width: 35%">
                 VERIFIKATOR<br>STAF PEJABAT PEMBUAT KOMITMEN<br>TANGGAL<br>
+                <br>
                 <br>
                 <br>
                 <br>
@@ -257,9 +258,10 @@ $imageSrc = 'logo.png';
             <td class="text-top">
                 NAMA KEGIATAN DI POK : <br>
                 {{ $receipt->detail->budgetImplementation->activity->name ?? '-' }}<br><br>
-                <br>KODE KEGIATAN / MAX :
+                <br>KODE KEGIATAN / MAK :
                 <br>
                 {{ $receipt->detail->budgetImplementation->activity->code ?? '-' }} /
+                {{ $receipt->detail->budgetImplementation->accountCode->code ?? '-' }}
 
             </td>
         </tr>
@@ -307,10 +309,10 @@ $imageSrc = 'logo.png';
                             <br>
                             <br>
                             <br>
-                            {!! $receipt->spi?->user->name ?? '<br>' !!}
+                            {!! $receipt->spi?->name ?? '<br>' !!}
                             <hr>
-                            {{ strtoupper($receipt->spi?->identity_type ?? '') }}.
-                            {!! strtoupper($receipt->spi?->id) ?? '<br>' !!}
+                            {{ strtoupper($receipt->spi?->employee?->identity_type ?? '') }}.
+                            {!! strtoupper($receipt->spi?->employee?->id) ?? '<br>' !!}
 
                         </td>
                         <td>
@@ -324,10 +326,10 @@ $imageSrc = 'logo.png';
                             <br>
                             <br>
                             @if ($receipt->status == 'accept')
-                                {{ $receipt->ppk->user->name }}
+                                {{ $receipt->ppk->name }}
                                 <hr>
-                                {{ strtoupper($receipt->ppk->identity_type ?? '') }}.
-                                {{ strtoupper($receipt->ppk->id) }}
+                                {{ strtoupper($receipt->ppk->employee->identity_type ?? '') }}.
+                                {{ strtoupper($receipt->ppk->employee->id) }}
                             @else
                                 <br>
                                 <hr><br>

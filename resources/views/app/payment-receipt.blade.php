@@ -126,7 +126,6 @@
                                 <th scope="col">Tanggal Kegiatan</th>
                                 <th scope="col">Jumlah</th>
                                 <th scope="col">Pelaksana Kegiatan</th>
-                                <th scope="col">Pengikut</th>
                                 <th scope="col">Bendahara</th>
                                 <th scope="col">PPK</th>
                                 <th scope="col">Penyedia</th>
@@ -141,7 +140,6 @@
                                     <td>{{ $receipt->description }}</td>
                                     <td>{{ $receipt->activity_date }}</td>
                                     <td>Rp {{ number_format($receipt->amount, 0, ',', '.') }}</td>
-                                    <td>{{ $receipt->pelaksana->name ?? '-' }}</td>
                                     <td>
                                         @php
                                             $firstIteration = true;
