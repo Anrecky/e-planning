@@ -69,7 +69,7 @@ class NavigationServiceProvider extends ServiceProvider
                         )->add(
                             'Usulan Pembayaran',
                             route('payment-receipt.list'),
-                            fn ($section) => $section->attributes(['permission' => 'view pembayaran'])
+                            fn ($section) => $section->attributes(['permission' => 'approval pembayaran'])
                         )
                         ->attributes(['permission' => 'view pembayaran'])
                 )

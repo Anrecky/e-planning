@@ -59,6 +59,7 @@ class RolesAndPermissionsSeeder extends Seeder
             ],
             'BENDAHARA' => [
                 'view sbmsbi',
+                'view pembayaran',
                 'approval bendahara',
                 'approval pembayaran',
             ],
