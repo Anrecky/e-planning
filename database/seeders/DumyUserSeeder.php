@@ -13,46 +13,46 @@ class DumyUserSeeder extends Seeder
      */
     public function run(): void
     {
-        $u = User::create([
+        $u = User::firstOrCreate([
             'name' => 'Super Adm',
             'email' => 'admin2@mail.com',
-            'password' => Hash::make('superAdmin123!.'),
-        ]);
+
+        ], ['password' => Hash::make('superAdmin123!.'),]);
         $u->assignRole('SUPER ADMIN PERENCANAAN');
 
-        $u = User::create([
+        $u = User::firstOrCreate([
             'name' => 'PPK',
             'email' => 'ppk@mail.com',
-            'password' => Hash::make('123'),
-        ]);
+
+        ], ['password' => Hash::make('123'),]);
         $u->assignRole('PPK');
 
-        $u = User::create([
+        $u = User::firstOrCreate([
             'name' => 'Staff PPK',
             'email' => 'staff@mail.com',
-            'password' => Hash::make('123'),
-        ]);
+
+        ], ['password' => Hash::make('123'),]);
         $u->assignRole('STAF PPK');
 
-        $u = User::create([
+        $u = User::firstOrCreate([
             'name' => 'SPI',
             'email' => 'spi@mail.com',
-            'password' => Hash::make('123'),
-        ]);
+
+        ], ['password' => Hash::make('123'),]);
         $u->assignRole('SPI');
 
-        $u = User::create([
+        $u = User::firstOrCreate([
             'name' => 'BENDAHARA',
             'email' => 'bendahara@mail.com',
-            'password' => Hash::make('123'),
-        ]);
+
+        ], ['password' => Hash::make('123'),]);
         $u->assignRole('BENDAHARA');
 
-        $u = User::create([
+        $u = User::firstOrCreate([
             'name' => 'Pelaksana',
             'email' => 'pelaksana@mail.com',
-            'password' => Hash::make('123'),
-        ]);
+
+        ], ['password' => Hash::make('123'),]);
         $u->assignRole('Pelaksana Kegiatan');
     }
 }

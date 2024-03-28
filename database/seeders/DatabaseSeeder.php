@@ -23,7 +23,6 @@ class DatabaseSeeder extends Seeder
     public function run()
     {
 
-
         if (config('app.env') == 'local') {
             // Path to your SQL file
             $sqlFilePath = database_path('seeders/eplanning.sql');

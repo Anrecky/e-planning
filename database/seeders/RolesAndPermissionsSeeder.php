@@ -70,7 +70,7 @@ class RolesAndPermissionsSeeder extends Seeder
             ]
         ];
         foreach ($rolesAndPermissions as $roleName => $permissions) {
-            $role = Role::create(['name' => $roleName]);
+            $role = Role::firstOrCreate(['name' => $roleName]);
             foreach ($permissions as $permission) {
                 if ($role->name !== 'SUPER ADMIN PERENCANAAN') {
                     $permission =  Permission::firstOrCreate(['name' => $permission]);

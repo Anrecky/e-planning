@@ -27,7 +27,7 @@ class BudgetImplementationInputArrayService
 
         if (isset($inputData['bi'])) {
             $this->handleExistingBudgetImplementation($inputData['bi'], $inputData['accounts']);
-        } elseif (! empty($inputData['accounts'])) {
+        } elseif (!empty($inputData['accounts'])) {
             $this->processAccounts($inputData['accounts'], $activity);
         } else {
             $this->createBudgetImplementationWithUniqueCheck($activity, null);
@@ -37,7 +37,7 @@ class BudgetImplementationInputArrayService
     private function handleExistingBudgetImplementation($biId, $accounts)
     {
         $oldBudgetImplementation = BudgetImplementation::find($biId);
-        if (! $oldBudgetImplementation) {
+        if (!$oldBudgetImplementation) {
             Log::error("Budget implementation not found with ID: $biId");
 
             return;
@@ -48,11 +48,11 @@ class BudgetImplementationInputArrayService
 
         // Process accounts with the same activity but potentially different account codes
         foreach ($accounts as $accountData) {
-            $this->createBudgetImplementationWithUniqueCheck($activity, $accountData, $oldBudgetImplementation->revision + 1);
+            $this->createBudgetImplementationWithUniqueCheck($activity, $accountData);
         }
     }
 
-    private function createBudgetImplementationWithUniqueCheck(Activity $activity, $accountData, $revision = 0)
+    private function createBudgetImplementationWithUniqueCheck(Activity $activity, $accountData)
     {
         $accountCodeId = null;
         if ($accountData) {
@@ -65,12 +65,10 @@ class BudgetImplementationInputArrayService
             [
                 'activity_id' => $activity->id,
                 'account_code_id' => $accountCodeId,
-                'revision' => 0,
             ],
             [
                 'activity_id' => $activity->id,
                 'account_code_id' => $accountCodeId,
-                'revision' => 0,
             ]
         );
 
@@ -95,11 +93,11 @@ class BudgetImplementationInputArrayService
 
     private function createBudgetImplementationDetails($budgetImplementation, $accountData)
     {
-        if (isset($accountData['expenditures']) && ! empty($accountData['expenditures'])) {
+        if (isset($accountData['expenditures']) && !empty($accountData['expenditures'])) {
             foreach ($accountData['expenditures'] as $detail) {
                 // Check if $detail['id'] is set to determine if it's for creating a new detail
 
-                if (! isset($detail['id']) && empty($detail['id'])) {
+                if (!isset($detail['id']) && empty($detail['id'])) {
                     BudgetImplementationDetail::create([
                         'budget_implementation_id' => $budgetImplementation->id,
                         'expenditure_unit_id' => ExpenditureUnit::where('code', $detail['unit'])->first()->id,

@@ -25,8 +25,8 @@ return new class extends Migration
                 ->onUpdate('cascade')
                 ->onDelete('cascade');
 
-            // Add a unique constraint on activity, account_code, and revision
-            $table->unique(['activity_id', 'account_code_id', 'revision'], 'unique_activity_account_revision');
+            // Add a unique constraint on activity, account_code
+            $table->unique(['activity_id', 'account_code_id'], 'unique_activity_account_code');
         });
     }
 

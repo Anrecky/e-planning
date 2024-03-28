@@ -9,7 +9,7 @@ class BudgetImplementation extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['revision', 'activity_id', 'account_code_id'];
+    protected $fillable = ['activity_id', 'account_code_id'];
 
     public function activity()
     {
@@ -26,16 +26,6 @@ class BudgetImplementation extends Model
         return $this->hasMany(BudgetImplementationDetail::class);
     }
 
-    /**
-     * Scope a query to only include initial DIPA (Daftar Isian Pelaksanaan Anggaran) records.
-     *
-     * @param  \Illuminate\Database\Eloquent\Builder  $query
-     * @return \Illuminate\Database\Eloquent\Builder
-     */
-    public function scopeInitialBudget($query)
-    {
-        return $query->where('revision', 0);
-    }
 
     /**
      * Scope a query to group data by activity code.
@@ -75,7 +65,6 @@ class BudgetImplementation extends Model
     public static function getGroupedDataWithTotals()
     {
         $budgetImplementations = self::with(['activity', 'accountCode', 'details'])
-            ->initialBudget()
             ->get();
 
         return $budgetImplementations
